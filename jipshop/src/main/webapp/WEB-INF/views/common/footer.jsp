@@ -1,54 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>집사상점</title>
 
-<style>
-.header {
-    background-color: #e9dcc7;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-}
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css">
 
-.logo-area {
-    display: flex;
-    align-items: center;
-}
+<footer class="footer">
+    <div class="footer-container">
+        
+        <div class="footer-left">
+            <img src="${pageContext.request.contextPath}/resources/css/logo.png" 
+                 alt="집사상점 로고" 
+                 class="footer-logo">
+        </div>
 
-.logo-area img {
-    width: 80px;
-    margin-right: 10px;
-}
+        <div class="footer-center">
+            <div class="footer-links">
+                <a href="${pageContext.request.contextPath}/terms">이용약관</a>
+                <span>|</span>
+                <a href="${pageContext.request.contextPath}/privacy">개인정보처리방침</a>
+            </div>
 
-.store-name {
-    font-size: 28px;
-    font-weight: bold;
-}
+            <div class="footer-info">
+                <p>전화번호 : 02-0000-0000</p>
+                <p>주소 : 서울시 강남구 역삼동 51-54</p>
+            </div>
+        </div>
 
-.info {
-    margin-left: 200px;
-    font-size: 18px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="header">
-    <div class="logo-area">
-        <img src="images/logo.png" alt="로고">
-        <span class="store-name">집사상점</span>
     </div>
-
-    <div class="info">
-        전화번호 : 02-0000-0000 <br>
-        주소 : 서울시 강남구 역삼동 51-54
-    </div>
-</div>
-
-</body>
-</html>
+</footer>
