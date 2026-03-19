@@ -97,9 +97,9 @@
                     <a href="#" class="nav-link">추천</a>
                 </li>
 
-                <li class="menu-item">
-                    <a href="#" class="nav-link">커뮤니티</a>
-                </li>
+              <li class="menu-item">
+    			<a href="${pageContext.request.contextPath}/community/communityMain2" class="nav-link">커뮤니티</a>
+				</li>
             </ul>
 
         </div>
