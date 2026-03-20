@@ -29,7 +29,7 @@
         </div>
 
         <!-- 메인 폼 카드 -->
-        <form name="registerForm" id="registerForm" action="/member/insert" method="post">
+        <form name="registerForm" id="registerForm" action="${pageContext.request.contextPath}/member/insert" method="post">
         <div class="reg-card">
 
           <!-- 아이디 + 중복체크 -->
@@ -192,6 +192,84 @@
       alert('주소 검색 버튼을 눌러 도로명 주소를 먼저 선택해주세요.');
       return false;
     }
+  }
+
+  /* ── 회원가입 유효성 검사 ── */
+  function checkRegist() {
+    const username        = document.getElementById('memberId').value.trim();
+    const password        = document.getElementById('password').value.trim();
+    const passwordConfirm = document.getElementById('passwordConfirm').value.trim();
+    const email           = document.getElementById('email').value.trim();
+    const name            = document.getElementById('name').value.trim();
+    const zipCode         = document.getElementById('zipCode').value.trim();
+    const streetAdr       = document.getElementById('streetAdr').value.trim();
+    const detailAdr       = document.getElementById('detailAdr').value.trim();
+    const phone           = document.getElementById('phone').value.trim();
+
+    // 아이디
+    if (username === '') {
+      alert('아이디를 입력해주세요.');
+      document.getElementById('memberId').focus();
+      return;
+    }
+
+    // 비밀번호
+    if (password === '') {
+      alert('비밀번호를 입력해주세요.');
+      document.getElementById('memberPwd').focus();
+      return;
+    }
+
+    // 비밀번호 확인
+    if (passwordConfirm === '') {
+      alert('비밀번호 확인을 입력해주세요.');
+      document.getElementById('passwordConfirm').focus();
+      return;
+    }
+    if (password !== passwordConfirm) {
+      alert('비밀번호가 일치하지 않습니다.');
+      document.getElementById('passwordConfirm').focus();
+      return;
+    }
+
+    // 이메일
+    if (email === '') {
+      alert('이메일을 입력해주세요.');
+      document.getElementById('email').focus();
+      return;
+    }
+
+    // 이름
+    if (name === '') {
+      alert('이름을 입력해주세요.');
+      document.getElementById('memberName').focus();
+      return;
+    }
+
+    // 주소 — 우편번호 & 도로명 주소
+    if (zipCode === '' || streetAdr === '') {
+      alert('주소 검색 버튼을 눌러 주소를 입력해주세요.');
+      return;
+    }
+
+    // 상세 주소
+    if (detailAdr === '') {
+      alert('상세 주소를 입력해주세요.');
+      document.getElementById('detailAdr').focus();
+      return;
+    }
+
+    // 전화번호
+    if (phone === '') {
+      alert('전화번호를 입력해주세요.');
+      document.getElementById('phone').focus();
+      return;
+    }
+
+    // 모든 검사 통과 → address 합산 후 폼 제출
+    const fullAddress = zipCode + ' ' + streetAdr + ' ' + detailAdr;
+    document.getElementById('address').value = fullAddress;
+    document.getElementById('registerForm').submit();
   }
 
   /* ── 아이디 중복체크 ── */
