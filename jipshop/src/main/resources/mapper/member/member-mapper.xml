@@ -3,7 +3,7 @@
 <mapper namespace="member">
 	<insert id="insertMember">
 		INSERT INTO MEMBER VALUES(
-			SEQ_UNO.NEXTVAL,
+			SEQ_MEMBER.NEXTVAL,
 			#{memberId},
 			#{memberPwd},
 			#{memberName},

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -74,6 +75,8 @@
             <input class="reg-input" type="text" id="detailAdr" name="detailAdr"
                    placeholder="상세 주소를 입력하세요." style="margin-bottom:0;"
                    onclick="addrCheck()" />
+            <!-- 최종 합산 주소 (VO의 address 필드로 전송) -->
+            <input type="hidden" id="address" name="address" />
           </div>
 
           <!-- 전화번호 -->
@@ -169,6 +172,27 @@
     toggleBtn.classList.toggle('open', isOpen);
   });
 
+  /* ── 다음 주소 API ── */
+  function sample4_execDaumPostcode() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        // 도로명 주소 우선, 없으면 지번 주소
+        var roadAddr = data.roadAddress || data.jibunAddress;
+        document.getElementById('zipCode').value   = data.zonecode;
+        document.getElementById('streetAdr').value = roadAddr;
+        // 상세주소로 포커스 이동
+        document.getElementById('detailAdr').focus();
+      }
+    }).open();
+  }
+
+  /* ── 상세주소 입력 전 도로명 주소 선택 여부 확인 ── */
+  function addrCheck() {
+    if (document.getElementById('streetAdr').value === '') {
+      alert('주소 검색 버튼을 눌러 도로명 주소를 먼저 선택해주세요.');
+      return false;
+    }
+  }
 
   /* ── 아이디 중복체크 ── */
   function idCheck() {
