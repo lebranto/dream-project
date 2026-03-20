@@ -1,16 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" />
 <header class="site-header">
-
     <!-- 상단 유틸 메뉴 -->
     <div class="top-bar">
         <div class="top-menu">
             <a href="#">로그인</a>
             <a href="#">회원가입</a>
-            <a href="#">마이페이지</a>
+            <a href="${contextPath}/mypage/purchase">마이페이지</a>
             <a href="#">문의</a>
         </div>
     </div>
@@ -18,21 +18,21 @@
     <!-- 로고 / 검색 / 아이콘 -->
     <div class="header-middle">
         <div class="logo-area">
-            <a href="#">
-                <img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="로고" width=60 >
+            <a href="${pageContext.request.contextPath}">
+                <img src="${contextPath}/resources/img/logo.png" alt="로고" width=60 >
             </a>
         </div>
 
         <div class="search-area">
             <input type="text" placeholder="검색어를 입력하세요">
             <button type="button">
-                <img src="${pageContext.request.contextPath}/resources/img/search_icon.png" alt="검색">
+                <img src="${contextPath}/resources/img/search_icon.png" alt="검색">
             </button>
         </div>
 
         <div class="icon-area">
             <a href="#">
-                <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
+                <img src="${contextPath}/resources/img/장바구니.png" alt="장바구니">
             </a>
         </div>
     </div>
