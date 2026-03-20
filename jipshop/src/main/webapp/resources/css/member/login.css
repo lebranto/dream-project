@@ -1,0 +1,199 @@
+.container {
+  width: 1440px;
+  min-height: 640px;
+  margin: 0 auto;
+  background-color: #f0f0f0;
+  box-sizing: border-box;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 640px;
+  padding: 60px 20px;
+  box-sizing: border-box;
+}
+
+/* ── Login Section ── */
+.frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 520px;
+}
+
+/* ── Title ── */
+.div-wrapper {
+  width: 100%;
+  text-align: center;
+}
+
+.text-wrapper {
+  font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333333;
+  margin: 0;
+  padding: 0;
+  letter-spacing: -0.3px;
+}
+
+/* ── Card ── */
+.div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 80%;
+  max-width: 520px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* ── Input Fields ── */
+.frame-5,
+.frame-4 {
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid #b4b4b4;
+  background-color: #ffffff;
+}
+
+.frame-5 {
+  border-top: 1px solid #b4b4b4;
+  border-left: 1px solid #b4b4b4;
+  border-right: 1px solid #b4b4b4;
+  border-bottom: 1px solid #b4b4b4;
+}
+
+.frame-4 {
+  border-left: 1px solid #b4b4b4;
+  border-right: 1px solid #b4b4b4;
+  border-bottom: 1px solid #b4b4b4;
+}
+
+.text-wrapper-6 {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-size: 14px;
+  color: #333333;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.text-wrapper-6::placeholder {
+  color: #aaaaaa;
+  font-size: 14px;
+}
+
+.text-wrapper-6:focus {
+  background-color: #ffffff;
+}
+
+/* ── Login Button ── */
+.frame-2 {
+  width: 100%;
+  padding: 12px 0 0 0;
+  box-sizing: border-box;
+}
+
+.frame-2 button.text-wrapper-2 {
+  width: 100%;
+  height: 48px;
+  background-color: #e8c97e;
+  color: #5a3e1b;
+  font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.frame-2 button.text-wrapper-2:hover {
+  background-color: #d9b660;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.frame-2 button.text-wrapper-2:active {
+  background-color: #c9a650;
+}
+
+/* ── Remember Me ── */
+.group-wrapper {
+  width: 100%;
+  padding: 12px 4px 4px 4px;
+  box-sizing: border-box;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.rectangle {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  accent-color: #d4a843;
+  flex-shrink: 0;
+}
+
+.text-wrapper-3 {
+  font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-size: 13px;
+  color: #666666;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ── Footer Links ── */
+.frame-3 {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 4px 20px 4px;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+.text-wrapper-4,
+.text-wrapper-5 {
+  font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-size: 13px;
+  color: #666666;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.text-wrapper-4:hover,
+.text-wrapper-5:hover {
+  color: #c08c2a;
+  text-decoration: underline;
+}
+
+/* ── Screen reader only ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

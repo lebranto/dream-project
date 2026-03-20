@@ -35,6 +35,11 @@ public class MemberController {
 	        return "privacy";
 	    }
 	    
+	    @GetMapping("/login")
+	    public String loginMember() {
+			return "member/login";
+		}
+	    
 	    @GetMapping("/insert")
 		public String enrollForm() {
 			return "member/memberEnrollForm";
@@ -45,6 +50,7 @@ public class MemberController {
 				Model model, 
 				RedirectAttributes ra
 				) {
+	    
 			int result = mService.insertMember(m);
 			
 			if(result > 0) {

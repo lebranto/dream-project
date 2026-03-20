@@ -39,7 +39,7 @@
           </div>
 
           <!-- 비밀번호 -->
-          <input class="reg-input" type="password" id="password" placeholder="비밀번호" name="password" autocomplete="new-password" />
+          <input class="reg-input" type="password" id="memberPwd" placeholder="비밀번호" name="memberPwd" autocomplete="new-password" />
 
           <!-- 비밀번호 확인 -->
           <input class="reg-input" type="password" id="passwordConfirm" placeholder="비밀번호 확인" name="passwordConfirm" />
@@ -54,7 +54,7 @@
           <!-- 이름 -->
           <div class="reg-field-group">
             <div class="reg-field-label">이름 <span class="reg-required-dot"></span></div>
-            <input class="reg-input" type="text" id="name" placeholder="이름을(를) 입력하세요." name="name" />
+            <input class="reg-input" type="text" id="memberName" placeholder="이름을(를) 입력하세요." name="memberName" />
           </div>
 
           <!-- 주소 (다음 주소 API) -->
@@ -196,25 +196,25 @@
 
   /* ── 회원가입 유효성 검사 ── */
   function checkRegist() {
-    const username        = document.getElementById('memberId').value.trim();
-    const password        = document.getElementById('password').value.trim();
+    const memberId        = document.getElementById('memberId').value.trim();
+    const memberPwd       = document.getElementById('memberPwd').value.trim();
     const passwordConfirm = document.getElementById('passwordConfirm').value.trim();
     const email           = document.getElementById('email').value.trim();
-    const name            = document.getElementById('name').value.trim();
+    const memberName      = document.getElementById('memberName').value.trim();
     const zipCode         = document.getElementById('zipCode').value.trim();
     const streetAdr       = document.getElementById('streetAdr').value.trim();
     const detailAdr       = document.getElementById('detailAdr').value.trim();
     const phone           = document.getElementById('phone').value.trim();
 
     // 아이디
-    if (username === '') {
+    if (memberId === '') {
       alert('아이디를 입력해주세요.');
       document.getElementById('memberId').focus();
       return;
     }
 
     // 비밀번호
-    if (password === '') {
+    if (memberPwd === '') {
       alert('비밀번호를 입력해주세요.');
       document.getElementById('memberPwd').focus();
       return;
@@ -222,9 +222,9 @@
 
  // 비밀번호 형식 (8자 이상, 대소문자+숫자+특수문자)
     const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
-    if (!pwRegex.test(password)) {
+    if (!pwRegex.test(memberPwd)) {
       alert('비밀번호는 8자리 이상의 대소문자, 숫자, 특수문자를 포함해야 합니다.');
-      document.getElementById('password').focus();
+      document.getElementById('memberPwd').focus();
       return;
     }
 
@@ -235,7 +235,7 @@
       return;
     }
 
-    if (password !== passwordConfirm) {
+    if (memberPwd !== passwordConfirm) {
       alert('비밀번호가 일치하지 않습니다.');
       document.getElementById('passwordConfirm').focus();
       return;
@@ -256,7 +256,7 @@
     }
 
     // 이름
-    if (name === '') {
+    if (memberName === '') {
       alert('이름을 입력해주세요.');
       document.getElementById('memberName').focus();
       return;
