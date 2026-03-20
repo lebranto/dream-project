@@ -7,6 +7,10 @@
   <title>회원가입 — 집사상점</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/memberEnrollForm.css">
+  <!-- 다음 주소 API -->
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
@@ -165,6 +169,36 @@
     toggleBtn.classList.toggle('open', isOpen);
   });
 
+
+  /* ── 아이디 중복체크 ── */
+  function idCheck() {
+    const memberId = document.getElementById('memberId').value.trim();
+
+    if (memberId === '') {
+      alert('아이디를 입력해주세요.');
+      document.getElementById('memberId').focus();
+      return;
+    }
+
+    $.ajax({
+      url  : "${pageContext.request.contextPath}/member/idCheck",
+      type : "GET",
+      data : { memberId : memberId },
+      success : function(result) {
+        if (result == 1) {
+          alert('이미 사용중인 아이디입니다.');
+          document.getElementById('memberId').value = '';
+          document.getElementById('memberId').focus();
+        } else {
+          alert('사용 가능한 아이디입니다.');
+        }
+      },
+      error : function(xhr, status, error) {
+        alert('서버 통신 중 오류가 발생했습니다.');
+        console.error(status, error);
+      }
+    });
+  }
 </script>
 </body>
 </html>

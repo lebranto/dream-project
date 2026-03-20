@@ -7,7 +7,7 @@
     <div class="footer-container">
         
         <div class="footer-left">
-            <img src="${pageContext.request.contextPath}/resources/css/logo.png" 
+            <img src="${pageContext.request.contextPath}/resources/img/logo.png" 
                  alt="집사상점 로고" 
                  class="footer-logo">
         </div>
