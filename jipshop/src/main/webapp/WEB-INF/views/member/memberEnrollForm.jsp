@@ -220,12 +220,21 @@
       return;
     }
 
+ // 비밀번호 형식 (8자 이상, 대소문자+숫자+특수문자)
+    const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+    if (!pwRegex.test(password)) {
+      alert('비밀번호는 8자리 이상의 대소문자, 숫자, 특수문자를 포함해야 합니다.');
+      document.getElementById('password').focus();
+      return;
+    }
+
     // 비밀번호 확인
     if (passwordConfirm === '') {
       alert('비밀번호 확인을 입력해주세요.');
       document.getElementById('passwordConfirm').focus();
       return;
     }
+
     if (password !== passwordConfirm) {
       alert('비밀번호가 일치하지 않습니다.');
       document.getElementById('passwordConfirm').focus();
@@ -235,6 +244,13 @@
     // 이메일
     if (email === '') {
       alert('이메일을 입력해주세요.');
+      document.getElementById('email').focus();
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('이메일 형식이 올바르지 않습니다. (예: example@email.com)');
       document.getElementById('email').focus();
       return;
     }
@@ -265,7 +281,15 @@
       document.getElementById('phone').focus();
       return;
     }
-
+	
+ 	// 전화번호 형식 (010-0000-0000 또는 01000000000)
+    const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
+    if (!phoneRegex.test(phone)) {
+      alert('전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)');
+      document.getElementById('phone').focus();
+      return;
+    }
+    
     // 모든 검사 통과 → address 합산 후 폼 제출
     const fullAddress = zipCode + ' ' + streetAdr + ' ' + detailAdr;
     document.getElementById('address').value = fullAddress;
