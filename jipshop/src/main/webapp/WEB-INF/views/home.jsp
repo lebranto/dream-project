@@ -8,9 +8,10 @@
 <head>
 <meta charset="UTF-8">
 <title>메인 페이지슬라이드</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainslide.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainslide.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main3.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 </head>
 <body>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
@@ -275,13 +276,74 @@
         </div>
       </div>
     </section>
+
+     <nav class="view-2" aria-label="사이드 메뉴">
+          <div class="frame-19">
+            <div class="rectangle-7"></div>
+            <span class="text-wrapper-14">커뮤니티</span>
+            <div class="group-11" aria-hidden="true">
+              <div class="ellipse-3"></div>
+              <div class="ellipse-4"></div>
+              <div class="ellipse-5"></div>
+              <div class="ellipse-6"></div>
+            </div>
+          </div>
+          <div class="frame-20">
+            <div class="rectangle-7"></div>
+            <span class="text-wrapper-14">마이페이지</span>
+            <div class="group-11" aria-hidden="true">
+              <div class="ellipse-3"></div>
+              <div class="ellipse-4"></div>
+              <div class="ellipse-5"></div>
+              <div class="ellipse-6"></div>
+            </div>
+          </div>
+          <div class="frame-20">
+            <div class="rectangle-7"></div>
+            <span class="text-wrapper-14">장바구니</span>
+            <div class="group-11" aria-hidden="true">
+              <div class="ellipse-3"></div>
+              <div class="ellipse-4"></div>
+              <div class="ellipse-5"></div>
+              <div class="ellipse-6"></div>
+            </div>
+          </div>
+          <div class="frame-20">
+            <div class="rectangle-7"></div>
+            <span class="text-wrapper-14">고객센터</span>
+            <div class="group-11" aria-hidden="true">
+              <div class="ellipse-3"></div>
+              <div class="ellipse-4"></div>
+              <div class="ellipse-5"></div>
+              <div class="ellipse-6"></div>
+            </div>
+          </div>
+            <div class="frame-20">
+            <div class="rectangle-7"></div>
+            <span class="text-wrapper-14" onclick="scrollToTop()"style="cursor: pointer;">위로</span>
+            <div class="group-11" aria-hidden="true">
+              <div class="ellipse-3"></div>
+              <div class="ellipse-4"></div>
+              <div class="ellipse-5"></div>
+              <div class="ellipse-6"></div>
+            </div>
+          </div>
+        </nav>
+
+         <script>
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+  </script>
+
 	</div>
   </div>
-</body>
-</html>
-    
-    
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>
-</html>
+    
+    
+
