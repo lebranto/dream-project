@@ -21,5 +21,10 @@ public class MemberServiceImpl implements MemberService{
 	public int idCheck(String memberId) {
 		return memberDao.idCheck(memberId);
 	}
+
+	@Override
+	public Member loginMember(Member m) {
+		return memberDao.loginMember(m);
+	}
 	
 }
