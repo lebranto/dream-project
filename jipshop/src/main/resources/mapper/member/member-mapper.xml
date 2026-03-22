@@ -34,6 +34,13 @@
 		FROM MEMBER
 		WHERE MEMBER_ID= #{memberId}
 	</select>
-
+	
+	<select id="loginMember" resultType="member">
+		SELECT *
+		FROM MEMBER
+		WHERE MEMBER_ID  = #{memberId}
+			AND MEMBER_PWD = #{memberPwd}
+			AND MEMBER_ACTIVE_YN = 'Y'
+	</select>
 	
 </mapper>

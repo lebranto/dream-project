@@ -8,4 +8,6 @@ public interface MemberDao {
 
 	int idCheck(String memberId);
 
+	Member loginMember(Member m);
+
 }

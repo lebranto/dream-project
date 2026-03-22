@@ -22,4 +22,9 @@ public class MemberDaoImpl implements MemberDao{
 		return session.selectOne("member.idCheck", memberId);
 	}
 
+	@Override
+	public Member loginMember(Member m) {
+		return session.selectOne("member.loginMember", m);
+	}
+
 }
