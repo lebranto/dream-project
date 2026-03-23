@@ -16,7 +16,9 @@ a {
 }
 
 .pet-board-wrap {
-    width: 800px;
+    width: 80%;
+    max-width: 1320px;
+    min-width: 1100px;
     margin: 0 auto;
     padding: 35px 0 40px;
     background-color: #efefef;
@@ -24,10 +26,10 @@ a {
 
 /* 자랑게시판 제목 */
 .pet-board-title-box {
-    width: 550px;
+    width: 700px;
     height: 80px;
     margin: 0 auto 25px;
-    background-color: #efe6cf;
+    background-color: #F8E6C1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,26 +41,38 @@ a {
     color: #111;
 }
 
+.category-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #efc85c;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    border: none;
+    cursor: pointer;
+}
+
 /* =========================
-   검색영역 : 커뮤니티 코드와 동일
+   검색영역
    ========================= */
-.search-area {
-    width: 590px;
+.pet-board-search-area {
+    width: 860px;
     margin: 0 auto 25px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.search-select-wrap {
+.pet-board-search-select-wrap {
     position: relative;
-    width: 165px;
+    width: 180px;
     height: 38px;
-    background-color: #f8f5f2;
+    background-color: #FFF6DE;
     border: 1px solid #ddd;
+    flex-shrink: 0;
 }
 
-.search-select {
+.pet-board-search-select {
     width: 100%;
     height: 100%;
     border: none;
@@ -70,27 +84,28 @@ a {
     cursor: pointer;
 }
 
-.search-select-wrap::after {
+.pet-board-search-select-wrap::after {
     content: "▲\A▼";
     white-space: pre;
     position: absolute;
     right: 10px;
     top: 5px;
     font-size: 10px;
-    color: #d6c89e;
+    color: #D9D9D9;
     line-height: 10px;
     pointer-events: none;
 }
 
-.search-input-wrap {
+.pet-board-search-input-wrap {
     flex: 1;
     height: 38px;
     display: flex;
     border: 1px solid #ddd;
-    background-color: #f8f5f2;
+    background-color: #FFF9F6;
+    min-width: 0;
 }
 
-.search-input {
+.pet-board-search-input {
     flex: 1;
     border: none;
     padding: 0 12px;
@@ -99,26 +114,35 @@ a {
     outline: none;
 }
 
-.search-btn {
+.pet-board-search-btn {
     width: 45px;
     border: none;
     background-color: #f8f5f2;
     font-size: 24px;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
-.write-btn {
-    width: 95px;
-    height: 38px;
-    border: 1px solid #d8d1c2;
-    background-color: #efe6cf;
+.pet-board-write-btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 110px;
+    height: 40px;
+    background-color: #f9ead7;
+    border: 1px solid #c0c0c0;
+    color: #222;
+    text-decoration: none;
+    border-radius: 6px;
     font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
 }
 /* ========================= */
 
 .section-title {
-    width: 720px;
+    width: 100%;
+    max-width: 1080px;
     margin: 0 auto 8px;
     font-size: 18px;
     font-weight: 500;
@@ -126,16 +150,17 @@ a {
 
 /* 목록 */
 .board-list-box {
-    width: 720px;
+    width: 100%;
+    max-width: 1080px;
     margin: 0 auto;
-    border-top: 2px solid #d2b675;
+    border-top: 2px solid #F2B947;
     background-color: transparent;
 }
 
 .board-list-header,
 .board-list-row {
     display: grid;
-    grid-template-columns: 70px 1.7fr 90px 70px 80px 90px 85px;
+    grid-template-columns: 90px 2.3fr 120px 90px 100px 110px 100px;
     align-items: center;
 }
 
@@ -167,7 +192,7 @@ a {
 
 .col-title {
     text-align: center;
-    padding: 0 8px;
+    padding: 0 12px;
 }
 
 .title-ellipsis {
@@ -214,7 +239,8 @@ a {
 
 /* 페이징 */
 .pagination-area {
-    width: 720px;
+    width: 100%;
+    max-width: 1080px;
     margin: 28px auto 0;
     display: flex;
     justify-content: center;

@@ -10,56 +10,49 @@
 <meta charset="UTF-8">
 <title>${boardTypeName}</title>
 <link rel="stylesheet" href="./tipFree.css">
-<link rel="stylesheet" href="${contextPath}/resources/css/board/tipFreeBoardList.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/tipFree.css">
 </head>
 <body>
-
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 <div class="board-wrap">
 
     <!-- 게시판 제목 -->
-    <div class="board-title-box">
-        <h1>${boardTypeName}</h1>
-    </div>
+    
+
+<div class="board-title-box">
+    <h1 class="community-title">
+        <c:choose>
+            <c:when test="${param.boardType eq 'tip'}">육아 꿀팁 게시판</c:when>
+            <c:when test="${param.boardType eq 'free'}">자유 게시판</c:when>
+            <c:otherwise>게시판</c:otherwise>
+        </c:choose>
+    </h1>
+</div>
 
     <!-- 검색 영역 : 기존과 동일 형식 -->
-    <form class="search-area" action="${contextPath}/board/common/list" method="get">
+    <form class="bsearch-area" action="${contextPath}/community/tipFreeBoard" method="get">
         <input type="hidden" name="boardType" value="${boardType}">
 
-        <div class="search-select-wrap">
-            <select name="searchType" class="search-select">
-                <option value="titleWriterContent"
-                    <c:if test="${empty param.searchType or param.searchType == 'titleWriterContent'}">selected</c:if>>
-                    제목 / 작성자 / 내용
-                </option>
-                <option value="title"
-                    <c:if test="${param.searchType == 'title'}">selected</c:if>>
-                    제목
-                </option>
-                <option value="writer"
-                    <c:if test="${param.searchType == 'writer'}">selected</c:if>>
-                    작성자
-                </option>
-                <option value="content"
-                    <c:if test="${param.searchType == 'content'}">selected</c:if>>
-                    내용
-                </option>
+        <div class="bsearch-select-wrap">
+            <select name="searchType" class="bsearch-select">
+                <option value="all">제목 / 작성자 / 내용</option>
+                <option value="title" ${param.searchType == 'title' ? 'selected' : ''}>제목</option>
+                <option value="writer" ${param.searchType == 'writer' ? 'selected' : ''}>작성자</option>
+                <option value="content" ${param.searchType == 'content' ? 'selected' : ''}>내용</option>
+               
             </select>
         </div>
 
-        <div class="search-input-wrap">
+        <div class="bsearch-input-wrap">
             <input type="text"
                    name="keyword"
-                   class="search-input"
+                   class="bsearch-input"
                    placeholder="검색어를 입력해주세요"
                    value="${param.keyword}">
             <button type="submit" class="search-btn">🔍</button>
         </div>
 
-        <button type="button"
-                class="write-btn"
-                onclick="location.href='${contextPath}/board/common/write?boardType=${boardType}'">
-            게시글 작성
-        </button>
+        <a href="${pageContext.request.contextPath}/community/writeBoard?boardType=${param.boardType}" class="bwrite-btn">게시글 작성</a>
     </form>
 
     <h2 class="section-title">최신게시물목록</h2>
@@ -81,7 +74,7 @@
             <c:when test="${not empty boardList}">
                 <c:forEach var="board" items="${boardList}" varStatus="status">
                     <div class="board-list-row"
-                         onclick="location.href='${contextPath}/board/common/detail/${board.boardNo}?boardType=${boardType}'">
+                         onclick="location.href='${contextPath}/community/detail?boardNo=${board.boardNo}'">
 
                  <div class="col-no">${(pagination.currentPage - 1) * 10 + status.count}</div>
                         <div class="col-category">
@@ -155,6 +148,6 @@
     </c:if>
 
 </div>
-
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

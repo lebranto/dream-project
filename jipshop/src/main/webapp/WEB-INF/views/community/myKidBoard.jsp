@@ -9,55 +9,36 @@
 <head>
 <meta charset="UTF-8">
 <title>우리아이 자랑 게시판</title>
-<link rel="stylesheet" href="./myKidBoard.css">
-<link rel="stylesheet" href="${contextPath}/resources/css/board/petBoardList.css">
+<link rel="stylesheet" href="${contextPath}/resources/css/community/myKidBoard.css">
 </head>
 <body>
 
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
+
 <div class="pet-board-wrap">
 
-    <!-- 페이지 제목 -->
     <div class="pet-board-title-box">
         <h1>우리 아이 자랑 게시판</h1>
     </div>
 
-    <!-- 검색영역 : 커뮤니티 코드 기반으로 동일 사이즈 -->
-    <form class="search-area" action="${contextPath}/board/pet/list" method="get">
-        <div class="search-select-wrap">
-            <select name="searchType" class="search-select">
-                <option value="titleWriterContent"
-                    <c:if test="${empty param.searchType or param.searchType == 'titleWriterContent'}">selected</c:if>>
-                    제목 / 작성자 / 내용
-                </option>
-                <option value="title"
-                    <c:if test="${param.searchType == 'title'}">selected</c:if>>
-                    제목
-                </option>
-                <option value="writer"
-                    <c:if test="${param.searchType == 'writer'}">selected</c:if>>
-                    작성자
-                </option>
-                <option value="content"
-                    <c:if test="${param.searchType == 'content'}">selected</c:if>>
-                    내용
-                </option>
+    <!-- 검색 -->
+    <form class="pet-board-search-area" action="${contextPath}/community/myKidBoard" method="get">
+        <div class="pet-board-search-select-wrap">
+            <select name="searchType" class="pet-board-search-select">
+                <option value="all">제목 / 작성자 / 내용</option>
+                <option value="title" ${param.searchType == 'title' ? 'selected' : ''}>제목</option>
+                <option value="writer" ${param.searchType == 'writer' ? 'selected' : ''}>작성자</option>
+                <option value="content" ${param.searchType == 'content' ? 'selected' : ''}>내용</option>
             </select>
         </div>
 
-        <div class="search-input-wrap">
-            <input type="text"
-                   name="keyword"
-                   class="search-input"
-                   placeholder="검색어를 입력해주세요"
-                   value="${param.keyword}">
-            <button type="submit" class="search-btn">🔍</button>
+        <div class="pet-board-search-input-wrap">
+            <input type="text" name="keyword" class="pet-board-search-input"
+                   placeholder="검색어를 입력해주세요" value="${param.keyword}">
+            <button type="submit" class="pet-board-search-btn">🔍</button>
         </div>
 
-        <button type="button"
-                class="write-btn"
-                onclick="location.href='${contextPath}/board/pet/write'">
-            게시글 작성
-        </button>
+        <a href="${contextPath}/community/writeBoard?boardType=myKidBoard" class="pet-board-write-btn">게시글 작성</a>
     </form>
 
     <h2 class="section-title">최신게시물목록</h2>
@@ -78,11 +59,11 @@
             <c:when test="${not empty boardList}">
                 <c:forEach var="board" items="${boardList}" varStatus="status">
                     <div class="board-list-row"
-                         onclick="location.href='${contextPath}/board/pet/detail/${board.boardNo}'">
+                         onclick="location.href='${contextPath}/community/detail?boardNo=${board.boardNo}'">
 
-                        <div class="col-no">${(pagination.currentPage - 1) * 10 + status.count}</div>
+                        <div class="col-no">${status.count}</div>
                         <div class="col-title title-ellipsis">${board.boardTitle}</div>
-                        <div class="col-writer">${board.memberNickname}</div>
+                        <div class="col-writer">${board.memberId}</div>
                         <div class="col-view">${board.readCount}</div>
                         <div class="col-like">${board.likeCount}</div>
                         <div class="col-date">${board.createDate}</div>
@@ -99,6 +80,7 @@
                                 </c:choose>
                             </div>
                         </div>
+
                     </div>
                 </c:forEach>
             </c:when>
@@ -110,57 +92,9 @@
 
     </div>
 
-    <!-- 페이징 -->
-  <c:if test="${pagination != null && pagination.maxPage > 0}">
-    <div class="pet-paging">
-
-        <!-- 이전 -->
-        <c:choose>
-            <c:when test="${pagination.currentPage > 1}">
-                <a class="pet-page-nav"
-                   href="${contextPath}/board/pet/list?cp=${pagination.currentPage - 1}&searchType=${param.searchType}&keyword=${param.keyword}">
-                    &lt;
-                </a>
-            </c:when>
-            <c:otherwise>
-                <span class="pet-page-nav disabled">&lt;</span>
-            </c:otherwise>
-        </c:choose>
-
-        <!-- 숫자 -->
-        <div class="pet-page-num-wrap">
-            <c:forEach var="i" begin="${pagination.startPage}" end="${pagination.endPage}">
-                <c:choose>
-                    <c:when test="${i == pagination.currentPage}">
-                        <span class="pet-page-num current">${i}</span>
-                    </c:when>
-                    <c:otherwise>
-                        <a class="pet-page-num"
-                           href="${contextPath}/board/pet/list?cp=${i}&searchType=${param.searchType}&keyword=${param.keyword}">
-                            ${i}
-                        </a>
-                    </c:otherwise>
-                </c:choose>
-            </c:forEach>
-        </div>
-
-        <!-- 다음 -->
-        <c:choose>
-            <c:when test="${pagination.currentPage < pagination.maxPage}">
-                <a class="pet-page-nav"
-                   href="${contextPath}/board/pet/list?cp=${pagination.currentPage + 1}&searchType=${param.searchType}&keyword=${param.keyword}">
-                    &gt;
-                </a>
-            </c:when>
-            <c:otherwise>
-                <span class="pet-page-nav disabled">&gt;</span>
-            </c:otherwise>
-        </c:choose>
-
-    </div>
-</c:if>
-
 </div>
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 </html>

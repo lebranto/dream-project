@@ -36,21 +36,21 @@
     <!-- 로고 / 검색 / 아이콘 -->
     <div class="header-middle">
         <div class="logo-area">
-            <a href="${pageContext.request.contextPath}">
-                <img src="${contextPath}/resources/img/logo.png" alt="로고" width=60 >
+            <a href="#">
+                <img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="로고" width=60 >
             </a>
         </div>
 
         <div class="search-area">
             <input type="text" placeholder="검색어를 입력하세요">
             <button type="button">
-                <img src="${contextPath}/resources/img/search_icon.png" alt="검색">
+                <img src="${pageContext.request.contextPath}/resources/img/search_icon.png" alt="검색">
             </button>
         </div>
 
         <div class="icon-area">
             <a href="#">
-                <img src="${contextPath}/resources/img/장바구니.png" alt="장바구니">
+                <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
             </a>
         </div>
     </div>
@@ -116,7 +116,7 @@
                 </li>
 
               <li class="menu-item">
-    			<a href="${pageContext.request.contextPath}/community/communityMain2" class="nav-link">커뮤니티</a>
+    			<a href="${pageContext.request.contextPath}/community/main" class="nav-link">커뮤니티</a>
 				</li>
             </ul>
 
