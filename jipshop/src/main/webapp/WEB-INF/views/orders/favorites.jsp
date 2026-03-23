@@ -163,7 +163,7 @@ input[type="checkbox"] {
 
 <body>
 
-<jsp:include page="/WEB-INF/views/common/header2.jsp" />
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 <div class="content-wrapper">
 

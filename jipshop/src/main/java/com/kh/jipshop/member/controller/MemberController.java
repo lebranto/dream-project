@@ -104,10 +104,6 @@ public class MemberController {
 		return "common/FAQ";
 	}
 	
-	    @RequestMapping("/privacy")
-	    public String privacy() {
-	        return "privacy";
-	    }
 	    
 	    @GetMapping("/login")
 	    public String loginMember() {
