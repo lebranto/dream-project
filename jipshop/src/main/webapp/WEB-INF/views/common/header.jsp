@@ -1,38 +1,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" />
 <header class="site-header">
-
     <!-- 상단 유틸 메뉴 -->
     <div class="top-bar">
         <div class="top-menu">
-            <a href="#">로그인</a>
-            <a href="#">회원가입</a>
-            <a href="#">마이페이지</a>
-            <a href="#">문의</a>
+        	<!-- 로그인하지 않은 사용자가 보게될 화면 -->
+        	<c:choose>
+        		<c:when test="${empty loginUser }">
+        		<!-- 로그인 전 -->
+	        		<a href="${contextPath}/member/login">로그인</a>
+			        <a href="${contextPath}/member/insert">회원가입</a>
+			        <a href="${contextPath}/mypage/purchase">마이페이지</a>
+			        <a href="#">문의</a>    
+        		</c:when>
+	            <c:otherwise>
+	                   <label>${loginUser.memberName}님 환영합니다.</label> &nbsp;&nbsp;
+	                   <a href="${contextPath}/mypage/purchase">마이페이지</a>
+	                   <a href="#">문의</a>
+	                   <form:form method="post" action="${contextPath}/member/logout" style="display: inline;">
+						    <button type="submit" class="border-0 bg-transparent text-secondary p-0 ml-2">로그아웃</button>
+						</form:form>
+	            </c:otherwise>
+        		
+            
+            </c:choose>
+            
         </div>
     </div>
 
     <!-- 로고 / 검색 / 아이콘 -->
     <div class="header-middle">
         <div class="logo-area">
-            <a href="#">
-                <img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="로고" width=60 >
+            <a href="${pageContext.request.contextPath}">
+                <img src="${contextPath}/resources/img/logo.png" alt="로고" width=60 >
             </a>
         </div>
 
         <div class="search-area">
             <input type="text" placeholder="검색어를 입력하세요">
             <button type="button">
-                <img src="${pageContext.request.contextPath}/resources/img/search_icon.png" alt="검색">
+                <img src="${contextPath}/resources/img/search_icon.png" alt="검색">
             </button>
         </div>
 
         <div class="icon-area">
             <a href="#">
-                <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
+                <img src="${contextPath}/resources/img/장바구니.png" alt="장바구니">
             </a>
         </div>
     </div>

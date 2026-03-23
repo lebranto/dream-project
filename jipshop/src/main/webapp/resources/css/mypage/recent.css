@@ -1,0 +1,317 @@
+ * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "맑은 고딕", sans-serif;
+    }
+
+    body {
+      background: #efefef;
+      color: #444;
+    }
+
+    :root {
+      --sidebar-width: 130px;
+      --sidebar-gap: 70px;
+      --main-width: 940px;
+      --point-bg: #eadfc7;
+      --point-deep: #ddb972;
+      --line-color: #8f8f8f;
+      --soft-gray: #d9d9d9;
+      --button-yellow: #e6b84f;
+      --small-btn: #dcdcdc;
+      --green-arrow: #46c796;
+    }
+
+    a {
+      text-decoration: none;
+      color: #9b7b46;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 250px;
+      left: 25px;
+      width: var(--sidebar-width);
+      z-index: 10;
+    }
+
+    .menu-group {
+      margin-bottom: 38px;
+      text-align: center;
+    }
+
+    .menu-title {
+      background: var(--point-deep);
+      color: #5a4325;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 7px 0;
+      margin-bottom: 10px;
+    }
+
+    .menu-list {
+      list-style: none;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #444;
+    }
+
+    .content-wrap {
+      width: 100%;
+      min-height: 100vh;
+      padding-top: 16px;
+      padding-left: calc(var(--sidebar-width) + var(--sidebar-gap) + 25px);
+      padding-right: 20px;
+    }
+
+    .content {
+      max-width: var(--main-width);
+      margin: 0 auto;
+    }
+
+    .page-title {
+      width: 380px;
+      margin: 0 auto 30px;
+      background: var(--point-bg);
+      color: #9b7b46;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 12px 0;
+      border-radius: 4px;
+    }
+
+    .recent-summary {
+      width: 100%;
+      background: var(--point-bg);
+      border: 1px solid var(--line-color);
+      border-radius: 5px;
+      text-align: center;
+      padding: 18px 10px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .period-btn,
+    .date-input,
+    .search-btn {
+      height: 38px;
+      border-radius: 6px;
+      border: 1px solid var(--line-color);
+      background: var(--point-bg);
+      font-size: 13px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .period-btn {
+      width: 70px;
+      cursor: pointer;
+    }
+
+    .date-group {
+      display: flex;
+      align-items: center;
+      padding-left: 270px;
+      gap: 8px;
+      margin-left: 10px;
+    }
+
+    .date-input {
+      width: 120px;
+      padding: 0 10px;
+      outline: none;
+    }
+
+    .search-btn {
+      width: 70px;
+      background: var(--button-yellow);
+      border: none;
+      cursor: pointer;
+    }
+
+    .table-header {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      background: var(--soft-gray);
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      color: #444;
+      padding: 12px 10px;
+      margin-bottom: 10px;
+    }
+
+    .empty-box {
+      width: 100%;
+      min-height: 150px;
+      border: 1px solid var(--line-color);
+      border-radius: 14px;
+      background: #f7f7f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #444;
+      padding: 20px;
+    }
+
+    .recent-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .recent-card {
+      width: 100%;
+      border: 1px solid var(--line-color);
+      border-radius: 14px;
+      background: #f7f7f7;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      align-items: center;
+      min-height: 98px;
+      padding: 12px 14px;
+    }
+
+    .product-cell {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .product-thumb {
+      width: 92px;
+      height: 68px;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #ddd;
+      flex-shrink: 0;
+    }
+
+    .product-info {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #444;
+      word-break: keep-all;
+    }
+
+    .product-name {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .view-cell {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .go-cell {
+      text-align: center;
+    }
+
+    .go-btn {
+      width: 90px;
+      height: 34px;
+      border: none;
+      background: var(--small-btn);
+      font-size: 12px;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+
+    .pagination {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .page-arrow,
+    .page-btn {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #b7a784;
+      background: var(--point-bg);
+      color: #444;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .page-arrow {
+      border: none;
+      background: transparent;
+      color: var(--green-arrow);
+      font-size: 22px;
+      width: 24px;
+    }
+
+    .page-btn.active {
+      background: #d8c8a5;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 20px 10px 0;
+      }
+
+      .menu-group {
+        width: 120px;
+        margin-bottom: 12px;
+      }
+
+      .content-wrap {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .page-title {
+        width: 260px;
+      }
+
+      .table-header {
+        display: none;
+      }
+
+      .recent-card {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 16px;
+      }
+
+      .view-cell,
+      .go-cell {
+        text-align: left;
+      }
+
+      .empty-box {
+        font-size: 20px;
+      }
+    }
