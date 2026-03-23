@@ -5,7 +5,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.kh.jipshop.mypage.model.vo.Orders;
+import com.kh.jipshop.mypage.model.vo.Purchase;
 import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class MypageDaoImpl implements MypageDao {
 	
 	
 	@Override
-	public List<Orders> orderList(int orderNo) {
+	public List<Purchase> orderList(int orderNo) {
 		
 		return session.selectList("orderList",orderNo);
 	}
