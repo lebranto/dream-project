@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" />
@@ -9,27 +10,22 @@
     <!-- 상단 유틸 메뉴 -->
     <div class="top-bar">
         <div class="top-menu">
-        	<!-- 로그인하지 않은 사용자가 보게될 화면 -->
-        	<c:choose>
-        		<c:when test="${empty loginUser }">
-        		<!-- 로그인 전 -->
-	        		<a href="${contextPath}/member/login">로그인</a>
-			        <a href="${contextPath}/member/insert">회원가입</a>
-			        <a href="${contextPath}/mypage/purchase">마이페이지</a>
-			        <a href="#">문의</a>    
-        		</c:when>
-	            <c:otherwise>
-	                   <label>${loginUser.memberName}님 환영합니다.</label> &nbsp;&nbsp;
-	                   <a href="${contextPath}/mypage/purchase">마이페이지</a>
-	                   <a href="#">문의</a>
-	                   <form:form method="post" action="${contextPath}/member/logout" style="display: inline;">
-						    <button type="submit" class="border-0 bg-transparent text-secondary p-0 ml-2">로그아웃</button>
-						</form:form>
-	            </c:otherwise>
-        		
-            
-            </c:choose>
-            
+            <!-- 로그인하지 않은 사용자가 보게될 화면 -->
+            <sec:authorize access="isAnonymous()">
+                 <a href="${contextPath}/member/login">로그인</a>
+		         <a href="${contextPath}/security/insert">회원가입</a>
+		         <a href="${contextPath}/mypage/purchase">마이페이지</a>
+		         <a href="#">문의</a>                           	
+		     </sec:authorize>
+		     
+		     <sec:authorize access="isAuthenticated()">
+                <label><sec:authentication property="principal.memberName"/>님 환영합니다.</label> &nbsp;&nbsp;
+                <a href="${contextPath}/mypage/purchase">마이페이지</a>
+                <a href="#">문의</a>
+		        <form:form method="post" action="${contextPath}/member/logout" style="display: inline;">
+				    <button type="submit" class="border-0 bg-transparent text-secondary p-0 ml-2">로그아웃</button>
+				</form:form>
+             </sec:authorize>
         </div>
     </div>
 

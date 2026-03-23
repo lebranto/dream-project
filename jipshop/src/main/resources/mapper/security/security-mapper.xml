@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="security">
+	<select id="loadUserByUsername" resultMap="userDetailResultMap">
+		SELECT * FROM MEMBER
+		WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<resultMap id="userDetailResultMap" type="memberExt" >
+		<id column="MEMBER_NO" property="memberNo"/>
+		<result column="MEMBER_ID" property="memberId"/>
+		<result column="MEMBER_PWD" property="memberPwd"/>
+		<result column="MEMBER_NAME" property="memberName"/>
+		
+		<collection property="authorities"
+			javaType="arrayList"
+			ofType="org.springframework.security.core.authority.SimpleGrantedAuthority"
+			select="selectAuthorities"
+			column="MEMBER_NO"
+		/>
+	</resultMap>
+	
+	<select id="selectAuthorities" resultMap="authMap">
+		SELECT * FROM AUTHORITIES
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	<resultMap id="authMap" type="org.springframework.security.core.authority.SimpleGrantedAuthority">
+		<constructor>
+			<arg column="AUTHORITY" javaType="string"/>
+		</constructor>
+	</resultMap>
+</mapper>

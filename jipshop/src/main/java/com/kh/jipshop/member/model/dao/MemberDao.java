@@ -10,4 +10,6 @@ public interface MemberDao {
 
 	Member loginMember(Member m);
 
+	void insertAuthority(Member m);
+
 }
