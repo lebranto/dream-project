@@ -16,7 +16,7 @@
 <body>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<jsp:include page="/WEB-INF/views/common/header2.jsp" />
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 <h1>
 	Hello world!  
 </h1>

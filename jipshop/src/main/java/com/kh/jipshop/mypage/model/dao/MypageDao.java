@@ -11,6 +11,8 @@ public interface MypageDao {
 
 	List<RecentlyViewed> recentlyList(Integer viewId);
 
+	List<RecentlyViewed> inquiryList(Integer inquiryId);
+
 
 
 }

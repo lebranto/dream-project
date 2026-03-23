@@ -18,9 +18,9 @@ public class MypageDaoImpl implements MypageDao {
 	
 	
 	@Override
-	public List<Orders> orderList(int orderNo) {
+	public List<Orders> orderList(int memeberId) {
 		
-		return session.selectList("orderList",orderNo);
+		return session.selectList("mypage.orderList",memeberId);
 	}
 
 
@@ -28,6 +28,13 @@ public class MypageDaoImpl implements MypageDao {
 	public List<RecentlyViewed> recentlyList(Integer viewId) {
 		
 		return session.selectList("recentlyList",viewId);
+	}
+
+
+	@Override
+	public List<RecentlyViewed> inquiryList(Integer inquiryId) {
+		
+		return session.selectList("inquiryList",inquiryId);
 	}
 
 }

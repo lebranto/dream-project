@@ -11,5 +11,7 @@ public interface MypageService {
 
 	List<RecentlyViewed> recentlyList(Integer viewId);
 
+	List<RecentlyViewed> inquiryList(Integer inquiryId);
+
 	
 }

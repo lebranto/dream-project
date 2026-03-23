@@ -29,5 +29,11 @@ public class MypageServiceImpl implements MypageService {
 		return mDao.recentlyList(viewId);
 	}
 
+	@Override
+	public List<RecentlyViewed> inquiryList(Integer inquiryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
