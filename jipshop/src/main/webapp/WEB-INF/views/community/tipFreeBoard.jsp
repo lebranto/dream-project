@@ -9,7 +9,6 @@
 <head>
 <meta charset="UTF-8">
 <title>${boardTypeName}</title>
-<link rel="stylesheet" href="./tipFree.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community/tipFree.css">
 </head>
 <body>

@@ -59,49 +59,67 @@ public class BoardListController {
 
         int result = boardService.insertBoard(board);
 
-        if (result > 0) {
+        if (result <= 0) {
+            return "redirect:/community/writeBoard";
+        }
 
-            // ⭐ 중요: 방금 생성된 boardNo 가져와야 함
-            int boardNo = board.getBoardNo();
+        int boardNo = board.getBoardNo();
+        System.out.println("insert result = " + result);
+        System.out.println("boardNo = " + boardNo);
 
-            if (imageFiles != null) {
-                int level = 1;
+        if (imageFiles != null && !imageFiles.isEmpty()) {
 
-                for (MultipartFile file : imageFiles) {
+            String filePath = "/resources/uploadFiles/";
+            String savePath = session.getServletContext().getRealPath(filePath);
 
-                    if (!file.isEmpty()) {
+            System.out.println("savePath = " + savePath);
+            System.out.println("imageFiles size = " + imageFiles.size());
 
-                        String originName = file.getOriginalFilename();
-                        String changeName = System.currentTimeMillis() + "_" + originName;
+            File folder = new File(savePath);
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
 
-                        String filePath = "/resources/uploadFiles/";
+            int level = 1;
 
-                        // 실제 파일 저장
-                        try {
-                            file.transferTo(new File(
-                                    session.getServletContext().getRealPath(filePath) + changeName
-                            ));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+            for (MultipartFile file : imageFiles) {
 
-                        BoardImage img = new BoardImage();
-                        img.setBoardNo(boardNo);
-                        img.setOriginName(originName);
-                        img.setChangeName(changeName);
-                        img.setFilePath(filePath);
-                        img.setFileLevel(level++);
+                if (file == null || file.isEmpty()) {
+                    System.out.println("빈 파일이라 건너뜀");
+                    continue;
+                }
 
-                        boardService.insertBoardImage(img);
-                    }
+                String originName = file.getOriginalFilename();
+                String changeName = System.currentTimeMillis() + "_" + originName;
+
+                System.out.println("originName = " + originName);
+                System.out.println("changeName = " + changeName);
+
+                try {
+                    File dest = new File(savePath + File.separator + changeName);
+                    System.out.println("dest 경로 = " + dest.getAbsolutePath());
+
+                    file.transferTo(dest);
+                    System.out.println("파일 저장 성공");
+
+                    BoardImage img = new BoardImage();
+                    img.setBoardNo(boardNo);
+                    img.setOriginName(originName);
+                    img.setChangeName(changeName);
+                    img.setFilePath(filePath);
+                    img.setFileLevel(level++);
+
+                    int imgResult = boardService.insertBoardImage(img);
+                    System.out.println("img insert result = " + imgResult);
+
+                } catch (Exception e) {
+                    System.out.println("이미지 저장/등록 중 오류 발생");
+                    e.printStackTrace();
                 }
             }
 
-            return "redirect:/community/main";
-
-        } else {
-            return "redirect:/community/writeBoard";
         }
+        return "redirect:/community/main";
     }
     @GetMapping("/rewrite")
     public String rewriteForm(@RequestParam("boardNo") int boardNo,

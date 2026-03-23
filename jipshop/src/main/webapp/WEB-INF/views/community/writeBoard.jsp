@@ -223,7 +223,6 @@
         const mergedFiles = selectedImages.concat(files);
 
         if (mergedFiles.length > 3) {
-            imageInput.value = "";
             showModal("사진은 최대 3개까지만 첨부할 수 있습니다.");
             return;
         }
@@ -231,7 +230,6 @@
         selectedImages = mergedFiles;
         updateImageInput();
         renderImagePreview();
-        imageInput.value = "";
     });
 
     function updateImageInput() {
