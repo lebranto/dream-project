@@ -91,12 +91,7 @@ public class MemberController {
 	public String FAQ() {
 		return "common/FAQ";
 	}
-	
-    @RequestMapping("/privacy")
-    public String privacy() {
-        return "privacy";
-    }
-    
+  
     @GetMapping("/login")
     public String loginMember() {
 		return "member/login";

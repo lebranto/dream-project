@@ -190,7 +190,7 @@ body {
 <body>
 
 <!-- ✅ 헤더 -->
-<jsp:include page="/WEB-INF/views/common/header2.jsp" />
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 <div class="cart-container">
 
