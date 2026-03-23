@@ -7,16 +7,16 @@
     <div class="footer-container">
         
         <div class="footer-left">
-            <img src="${pageContext.request.contextPath}/resources/css/logo.png" 
+            <img src="${pageContext.request.contextPath}/resources/img/logo.png" 
                  alt="집사상점 로고" 
                  class="footer-logo">
         </div>
 
         <div class="footer-center">
             <div class="footer-links">
-                <a href="${pageContext.request.contextPath}/terms">이용약관</a>
+                <a href="${pageContext.request.contextPath}/member/terms">이용약관</a>
                 <span>|</span>
-                <a href="${pageContext.request.contextPath}/privacy">개인정보처리방침</a>
+                <a href="${pageContext.request.contextPath}/member/privacy">개인정보처리방침</a>
             </div>
 
             <div class="footer-info">
