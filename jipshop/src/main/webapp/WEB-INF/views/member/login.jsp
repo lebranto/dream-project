@@ -28,7 +28,7 @@
 
           <!-- Login Form Card -->
           <form:form id="loginForm" cssClass="div"
-                     action="${pageContext.request.contextPath}/member/login"
+                     action="${pageContext.request.contextPath}/member/loginProcess"
                      method="post">
 
               <!-- Username Input -->

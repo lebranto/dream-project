@@ -43,4 +43,8 @@
 			AND MEMBER_ACTIVE_YN = 'Y'
 	</select>
 	
+	<insert id="insertAuthority">
+		INSERT INTO AUTHORITIES VALUES (#{memberNo}, 'ROLE_USER')
+	</insert>
+	
 </mapper>

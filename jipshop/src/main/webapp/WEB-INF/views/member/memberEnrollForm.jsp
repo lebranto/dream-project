@@ -29,7 +29,7 @@
         </div>
 
         <!-- 메인 폼 카드 -->
-        <form name="registerForm" id="registerForm" action="${pageContext.request.contextPath}/member/insert" method="post">
+        <form:form name="registerForm" id="registerForm" action="${pageContext.request.contextPath}/security/insert" method="post">
         <div class="reg-card">
 
           <!-- 아이디 + 중복체크 -->
@@ -153,7 +153,7 @@
         <div class="reg-submit-wrap">
           <button type="button" class="reg-btn-submit" onclick="checkRegist()">가입하기</button>
         </div>
-        </form>
+        </form:form>
 
       </div>
     </div>
@@ -212,7 +212,14 @@
       document.getElementById('memberId').focus();
       return;
     }
-
+    
+    const idRegex = /^[a-zA-Z0-9_]+$/;
+    if (!idRegex.test(memberId)) {
+      alert('아이디는 영문자, 숫자, 언더바(_)만 사용 가능합니다.');
+      document.getElementById('memberId').focus();
+      return;
+    }
+	
     // 비밀번호
     if (memberPwd === '') {
       alert('비밀번호를 입력해주세요.');
