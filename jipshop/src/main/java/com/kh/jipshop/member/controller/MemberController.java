@@ -4,18 +4,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.jipshop.member.model.service.MemberService;
-import com.kh.jipshop.member.model.vo.Member;
 
 
 @Controller
@@ -34,11 +27,6 @@ public class MemberController {
 		return "terms";
 	}
 
-	@RequestMapping("/privacy")
-	public String privacy() {
-		return "privacy";
-	}
-	
 	@RequestMapping("/completed")
 	public String completed() {
 		return "common/completed";
@@ -104,24 +92,24 @@ public class MemberController {
 		return "common/FAQ";
 	}
 	
-	    @RequestMapping("/privacy")
-	    public String privacy() {
-	        return "privacy";
-	    }
-	    
-	    @GetMapping("/login")
-	    public String loginMember() {
-			return "member/login";
-		}
+    @RequestMapping("/privacy")
+    public String privacy() {
+        return "privacy";
+    }
+    
+    @GetMapping("/login")
+    public String loginMember() {
+		return "member/login";
+	}
+	
+	// 비동기 요청 처리
+	@ResponseBody // 반환값을 jsp가 아닌, 반환해야할 값으로 처리하게 하는 주석
+	@GetMapping("/idCheck")
+	public int idCheck(String memberId) {
+		int result = mService.idCheck(memberId);
 		
-		// 비동기 요청 처리
-		@ResponseBody // 반환값을 jsp가 아닌, 반환해야할 값으로 처리하게 하는 주석
-		@GetMapping("/idCheck")
-		public int idCheck(String memberId) {
-			int result = mService.idCheck(memberId);
-			
-			return result;
-		}
+		return result;
+	}
 		
 		
 }

@@ -16,10 +16,7 @@
 <body>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<jsp:include page="/WEB-INF/views/common/header2.jsp" />
-<h1>
-	Hello world!  
-</h1>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<!-- 메인페이지 첫번쨰 슬라이스 상단  --> 
     <section class="main-banner-wrap">

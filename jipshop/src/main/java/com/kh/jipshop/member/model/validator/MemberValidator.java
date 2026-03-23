@@ -24,11 +24,11 @@ public class MemberValidator implements Validator{
 			// 사용자가 입력한 아이디가 4~20자 사이인지 검사
 			if(!(member.getMemberId().length() >= 4 &&
 				member.getMemberId().length() <= 20)) {
-				errors.rejectValue("userId", "length","아이디는 4~20자 이내여야 합니다.");
+				errors.rejectValue("memberId", "length","아이디는 4~20자 이내여야 합니다.");
 			}
 			// 사용자가 입력한 문자열이 영문자, 숫자, _로만 이루어져 있는지 확인
 			if(!member.getMemberId().matches("^[a-zA-Z0-9_]+$")) {
-				errors.rejectValue("userId", "pattern", "아이디는 영문, 숫자, _만 사용가능합니다.");
+				errors.rejectValue("memberId", "pattern", "아이디는 영문, 숫자, _만 사용가능합니다.");
 			}
 		}
 		
