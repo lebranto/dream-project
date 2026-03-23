@@ -86,7 +86,7 @@
       </div>
 
       <c:choose>
-        <c:when test="${empty purchaseList}">
+        <c:when test="${empty orderList}">
           <div class="empty-box">
             구매 한 내역이 없습니다.
           </div>
@@ -94,36 +94,26 @@
 
         <c:otherwise>
           <div class="purchase-list">
-            <c:forEach var="p" items="${purchaseList}">
+            <c:forEach var="orders" items="${orderList}">
               <div class="purchase-card">
                 <div class="product-cell">
-                  <img class="product-thumb" src="${p.productImage}" alt="${p.productName}">
+                  <!-- <img class="product-thumb" src="${p.productImage}" alt="${p.productName}"> -->
                   <div class="product-info">
-                    <div class="product-name">${p.productName}</div>
-                    <div>${p.price}원</div>
+                    <!--<div class="product-name">${orders.productName}</div>-->
+                    <div>${orders.totalPrice}원</div>
                   </div>
                 </div>
 
-                <div class="info-cell">${p.orderDate}</div>
+                <div class="info-cell">${orders.orderDate}</div>
                 <div class="info-cell">${p.orderNumber}</div>
 
                 <div class="info-cell">
                   <div>${p.deliveryStatus}</div>
-                  <span class="status-badge">${p.detailStatus}</span>
+                  <span class="status-badge">${odrders.deliveryStatus}</span>
                 </div>
 
                 <div class="info-cell">
-                  <c:choose>
-                    <c:when test="${p.cancelPossible eq 'Y'}">
-                      <form action="${contextPath}/mypage/cancelOrder" method="post">
-                        <input type="hidden" name="orderNo" value="${p.orderNumber}">
-                        <button class="cancel-btn" type="submit">구매 취소</button>
-                      </form>
-                    </c:when>
-                    <c:otherwise>
-                      취소 불가
-                    </c:otherwise>
-                  </c:choose>
+                  <button class="cancel-btn" type="submit">구매 취소</button>
                 </div>
               </div>
             </c:forEach>
