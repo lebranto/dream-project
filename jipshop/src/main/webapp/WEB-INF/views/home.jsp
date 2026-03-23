@@ -14,10 +14,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
 </head>
 <body>
+
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<div>
-<jsp:include page="/WEB-INF/views/common/header.jsp" />
-</div>
+<jsp:include page="/WEB-INF/views/common/header2.jsp" />
+<h1>
+	Hello world!  
+</h1>
 
 	<!-- 메인페이지 첫번쨰 슬라이스 상단  --> 
     <section class="main-banner-wrap">

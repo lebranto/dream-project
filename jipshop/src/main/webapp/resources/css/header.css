@@ -64,10 +64,13 @@ img {
     padding: 0 60px;
 }
 
+.logo-area {
+    width: 150px;
+}
 
 .logo-area img {
-   width: 200px;
-   height: 320px;
+    width: 400px;
+    height: auto;
     object-fit: contain;
 }
 
