@@ -249,7 +249,13 @@
 		</dependency>
 	    <!-- 게시판 서비스 관련 의존성 끝 -->
 		
-		
+		<!-- coolsms api 의존성 -->
+		<dependency>
+		    <groupId>net.nurigo</groupId>
+		    <artifactId>sdk</artifactId>
+		    <version>4.3.0</version>
+		</dependency>
+		<!-- coolsms api 의존성 끝 -->
 		
 		 
 	</dependencies>

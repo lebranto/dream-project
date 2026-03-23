@@ -30,6 +30,7 @@
 
         <!-- 메인 폼 카드 -->
         <form:form name="registerForm" id="registerForm" action="${pageContext.request.contextPath}/security/insert" method="post">
+        	
         <div class="reg-card">
 
           <!-- 아이디 + 중복체크 -->
@@ -84,12 +85,16 @@
             <div class="reg-field-label">전화번호 <span class="reg-required-dot"></span></div>
             <div class="reg-phone-row">
               <input class="reg-input" type="tel" id="phone" placeholder="전화번호를 입력하세요 (010-1234-5678)" name="phone" />
-              <button type="button" class="reg-btn-verify">인증</button>
+              <button type="button" class="reg-btn-verify" id="btnSendSms" onclick="sendSms()">인증</button>
             </div>
             <div class="reg-phone-row">
-              <input class="reg-input" type="text" id="verifyCode" placeholder="인증번호" name="verifyCode" />
-              <button type="button" class="reg-btn-verify">확인</button>
+              <div style="flex:1; position:relative;">
+                <input class="reg-input" type="text" id="verifyCode" placeholder="인증번호 6자리" name="verifyCode" style="margin-bottom:0; width:100%;" />
+                <span id="smsTimer" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:13px; color:#e05555; display:none;"></span>
+              </div>
+              <button type="button" class="reg-btn-verify" id="btnVerifySms" onclick="verifySms()">확인</button>
             </div>
+            <input type="hidden" id="phoneVerified" name="phoneVerified" value="N" />
           </div>
 
           <!-- 구분선 -->
@@ -212,14 +217,13 @@
       document.getElementById('memberId').focus();
       return;
     }
-    
     const idRegex = /^[a-zA-Z0-9_]+$/;
     if (!idRegex.test(memberId)) {
       alert('아이디는 영문자, 숫자, 언더바(_)만 사용 가능합니다.');
       document.getElementById('memberId').focus();
       return;
     }
-	
+
     // 비밀번호
     if (memberPwd === '') {
       alert('비밀번호를 입력해주세요.');
@@ -227,7 +231,7 @@
       return;
     }
 
- // 비밀번호 형식 (8자 이상, 대소문자+숫자+특수문자)
+    // 비밀번호 형식 (8자 이상, 대소문자+숫자+특수문자)
     const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
     if (!pwRegex.test(memberPwd)) {
       alert('비밀번호는 8자리 이상의 대소문자, 숫자, 특수문자를 포함해야 합니다.');
@@ -241,7 +245,6 @@
       document.getElementById('passwordConfirm').focus();
       return;
     }
-
     if (memberPwd !== passwordConfirm) {
       alert('비밀번호가 일치하지 않습니다.');
       document.getElementById('passwordConfirm').focus();
@@ -254,7 +257,6 @@
       document.getElementById('email').focus();
       return;
     }
-    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert('이메일 형식이 올바르지 않습니다. (예: example@email.com)');
@@ -288,15 +290,22 @@
       document.getElementById('phone').focus();
       return;
     }
-	
- 	// 전화번호 형식 (010-0000-0000 또는 01000000000)
+
+    // 전화번호 형식 (010-0000-0000 또는 01000000000)
     const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
     if (!phoneRegex.test(phone)) {
       alert('전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)');
       document.getElementById('phone').focus();
       return;
     }
-    
+
+    // 전화번호 인증 여부 확인
+    if (document.getElementById('phoneVerified').value !== 'Y') {
+      alert('전화번호 인증을 완료해주세요.');
+      document.getElementById('phone').focus();
+      return;
+    }
+
     // 모든 검사 통과 → address 합산 후 폼 제출
     const fullAddress = zipCode + ' ' + streetAdr + ' ' + detailAdr;
     document.getElementById('address').value = fullAddress;
@@ -331,6 +340,120 @@
         console.error(status, error);
       }
     });
+  }
+
+  /* ── SMS 인증번호 발송 ── */
+  let smsTimerInterval = null;
+
+  function sendSms() {
+    const phone = document.getElementById('phone').value.trim();
+
+    if (phone === '') {
+      alert('전화번호를 입력해주세요.');
+      document.getElementById('phone').focus();
+      return;
+    }
+
+    const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
+    if (!phoneRegex.test(phone)) {
+      alert('전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)');
+      document.getElementById('phone').focus();
+      return;
+    }
+
+    $.ajax({
+      url  : "${pageContext.request.contextPath}/sms/send",
+      type : "POST",
+      data : { phone : phone },
+      success : function(result) {
+        if (result.success) {
+          alert(result.message);
+          // 인증 완료 초기화
+          document.getElementById('phoneVerified').value = 'N';
+          document.getElementById('verifyCode').value = '';
+          // 3분 타이머 시작
+          startSmsTimer(180);
+          // 버튼 비활성화 (재발송 방지)
+          document.getElementById('btnSendSms').disabled = true;
+          document.getElementById('btnSendSms').textContent = '재발송';
+          setTimeout(function() {
+            document.getElementById('btnSendSms').disabled = false;
+          }, 30000); // 30초 후 재발송 가능
+        } else {
+          alert(result.message);
+        }
+      },
+      error : function() {
+        alert('SMS 발송 중 오류가 발생했습니다.');
+      }
+    });
+  }
+
+  /* ── SMS 인증번호 확인 ── */
+  function verifySms() {
+    const code = document.getElementById('verifyCode').value.trim();
+
+    if (code === '') {
+      alert('인증번호를 입력해주세요.');
+      document.getElementById('verifyCode').focus();
+      return;
+    }
+
+    $.ajax({
+      url  : "${pageContext.request.contextPath}/sms/verify",
+      type : "POST",
+      data : { code : code },
+      success : function(result) {
+        if (result.success) {
+          alert(result.message);
+          // 인증 완료 처리
+          document.getElementById('phoneVerified').value = 'Y';
+          // 타이머 중지
+          clearInterval(smsTimerInterval);
+          document.getElementById('smsTimer').style.display = 'none';
+          // 버튼 비활성화
+          document.getElementById('btnVerifySms').disabled = true;
+          document.getElementById('btnSendSms').disabled   = true;
+          document.getElementById('verifyCode').readOnly   = true;
+        } else {
+          alert(result.message);
+          document.getElementById('verifyCode').value = '';
+          document.getElementById('verifyCode').focus();
+        }
+      },
+      error : function() {
+        alert('인증 확인 중 오류가 발생했습니다.');
+      }
+    });
+  }
+
+  /* ── 3분 카운트다운 타이머 ── */
+  function startSmsTimer(seconds) {
+    clearInterval(smsTimerInterval);
+    const timerEl = document.getElementById('smsTimer');
+    timerEl.style.display = 'inline';
+
+    let remaining = seconds;
+    timerEl.textContent = formatTime(remaining);
+
+    smsTimerInterval = setInterval(function() {
+      remaining--;
+      timerEl.textContent = formatTime(remaining);
+
+      if (remaining <= 0) {
+        clearInterval(smsTimerInterval);
+        timerEl.textContent = '만료';
+        timerEl.style.color = '#aaa';
+        document.getElementById('btnSendSms').disabled  = false;
+        document.getElementById('btnSendSms').textContent = '재발송';
+      }
+    }, 1000);
+  }
+
+  function formatTime(sec) {
+    const m = String(Math.floor(sec / 60)).padStart(2, '0');
+    const s = String(sec % 60).padStart(2, '0');
+    return m + ':' + s;
   }
 </script>
 </body>

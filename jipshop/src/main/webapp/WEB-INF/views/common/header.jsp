@@ -33,7 +33,7 @@
     <div class="header-middle">
         <div class="logo-area">
             <a href="${pageContext.request.contextPath}">
-                <img src="${contextPath}/resources/img/logo.png" alt="로고" width=60 >
+                <img src="${pageContext.request.contextPath}/resources/images/logo.png">
             </a>
         </div>
 

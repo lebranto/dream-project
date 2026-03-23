@@ -19,6 +19,8 @@
 	 -->
 	 <!-- 정적파일에 대한 보안검사 제외 옵션 -->
 	<security:http security="none" pattern="/resources/**"/>
+	<!-- SMS 인증 경로 보안 제외 -->
+	<security:http security="none" pattern="/sms/**"/>
 	<security:http auto-config="true">
 		<!-- 
 			메인페이지, 회원가입페이지, 로그인페이지, 아이디 중복 체크 기능은
@@ -28,7 +30,7 @@
 		 <security:intercept-url pattern="/security/insert" access="permitAll" />
 		 <security:intercept-url pattern="/member/login" access="permitAll" />
 		 <security:intercept-url pattern="/member/idCheck" access="permitAll" />
-		 
+		 <security:intercept-url pattern="/sms/**" access="permitAll" />  <!-- ← 추가 -->
 		 
 		 <!-- 
 		 	form-login
@@ -53,6 +55,7 @@
 			invalidate-session="true"
 			logout-success-url="/"
 		/>
+		
 		 <!-- 
 		 	remember-me
 		 	 - session의 생명시간이 초과되어도 사용자의 인증상태를 유지하게 하는 필터
