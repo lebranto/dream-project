@@ -237,8 +237,7 @@
       cursor: pointer;
       border-radius: 2px;
     }
-
-    .pagination {
+.pagination {
       margin-top: 28px;
       display: flex;
       justify-content: center;
@@ -257,6 +256,10 @@
       cursor: pointer;
       font-size: 12px;
       font-weight: bold;
+      text-align: center;
+      line-height: 34px;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .page-arrow {
@@ -270,6 +273,14 @@
     .page-btn.active {
       background: #d8c8a5;
     }
+    
+    .filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
 
     @media (max-width: 900px) {
       .sidebar {
@@ -314,4 +325,23 @@
       .empty-box {
         font-size: 20px;
       }
+
+ }
+      
+ .period-form,
+.date-form {
+  margin: 0;
+}
+
+.period-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.date-group {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
     }
+}

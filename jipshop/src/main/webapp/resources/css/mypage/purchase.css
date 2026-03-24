@@ -282,6 +282,16 @@
     .page-btn.active {
       background: #d8c8a5;
     }
+    
+    .filter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+    
 
     @media (max-width: 900px) {
       .sidebar {
@@ -330,4 +340,21 @@
       .empty-box {
         font-size: 20px;
       }
+      
+.period-form,
+.date-form {
+  margin: 0;
+}
+
+.period-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.date-group {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
     }
+}
