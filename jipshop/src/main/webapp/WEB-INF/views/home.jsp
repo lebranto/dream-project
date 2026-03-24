@@ -329,7 +329,7 @@
           </div>
         </nav>
 
-         <script>
+  <script>
     function scrollToTop() {
       window.scrollTo({
         top: 0,
