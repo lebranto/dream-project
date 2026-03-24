@@ -33,7 +33,6 @@
     <!-- 로고 / 검색+아이콘 -->
     <div class="header-middle">
         <div class="header-middle-inner">
-
             <!-- 로고 (왼쪽 끝) -->
             <div class="logo-area">
                 <a href="${pageContext.request.contextPath}">
@@ -60,11 +59,10 @@
         </div>
     </div>
 
-    <!-- 메인 네비 -->
     <nav class="main-nav">
         <div class="nav-inner">
             <div class="all-menu">
-                <a href="#" class="nav-link all-menu-btn">
+                <a href="javascript:void(0);" class="nav-link all-menu-btn">
                     <span class="menu-circle">☰</span>
                     <span>전체 메뉴</span>
                 </a>
@@ -72,38 +70,39 @@
                     <div class="allmenu-wrap">
                         <div class="allmenu-box">
                             <div class="allmenu-title">강아지</div>
-                            <a href="#">사료</a>
-                            <a href="#">장난감</a>
-                            <a href="#">외출용품</a>
-                            <a href="#">미용용품</a>
+                            <a href="${pageContext.request.contextPath}/dog/feed">사료</a>
+                            <a href="${pageContext.request.contextPath}/dog/toy">장난감</a>
+                            <a href="${pageContext.request.contextPath}/dog/outdoor">외출용품</a>
+                            <a href="${pageContext.request.contextPath}/dog/groom">미용용품</a>
                         </div>
                         <div class="allmenu-box">
                             <div class="allmenu-title">고양이</div>
-                            <a href="#">사료</a>
-                            <a href="#">장난감</a>
-                            <a href="#">외출용품</a>
-                            <a href="#">미용용품</a>
+                            <a href="${pageContext.request.contextPath}/cat/feed">사료</a>
+                            <a href="${pageContext.request.contextPath}/cat/toy">장난감</a>
+                            <a href="${pageContext.request.contextPath}/cat/outdoor">외출용품</a>
+                            <a href="${pageContext.request.contextPath}/cat/groom">미용용품</a>
                         </div>
                     </div>
                 </div>
             </div>
+
             <ul class="main-menu">
                 <li class="menu-item has-sub">
-                    <a href="#" class="nav-link">강아지</a>
+                    <a href="javascript:void(0);" class="nav-link">강아지</a>
                     <div class="small-dropdown">
-                        <a href="#">사료</a>
-                        <a href="#">장난감</a>
-                        <a href="#">외출용품</a>
-                        <a href="#">미용용품</a>
+                        <a href="${pageContext.request.contextPath}/dog/feed">사료</a>
+                        <a href="${pageContext.request.contextPath}/dog/toy">장난감</a>
+                        <a href="${pageContext.request.contextPath}/dog/outdoor">외출용품</a>
+                        <a href="${pageContext.request.contextPath}/dog/groom">미용용품</a>
                     </div>
                 </li>
                 <li class="menu-item has-sub">
-                    <a href="#" class="nav-link">고양이</a>
+                    <a href="javascript:void(0);" class="nav-link">고양이</a>
                     <div class="small-dropdown">
-                        <a href="#">사료</a>
-                        <a href="#">장난감</a>
-                        <a href="#">외출용품</a>
-                        <a href="#">미용용품</a>
+                        <a href="${pageContext.request.contextPath}/cat/feed">사료</a>
+                        <a href="${pageContext.request.contextPath}/cat/toy">장난감</a>
+                        <a href="${pageContext.request.contextPath}/cat/outdoor">외출용품</a>
+                        <a href="${pageContext.request.contextPath}/cat/groom">미용용품</a>
                     </div>
                 </li>
                 <li class="menu-item">

@@ -18,11 +18,11 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<!-- 메인페이지 첫번쨰 슬라이스 상단  --> 
+   <!-- 메인페이지 첫번쨰 슬라이스 상단  --> 
     <section class="main-banner-wrap">
     
         <div class="main-banner" id="mainBanner">
-	
+   
             <div class="banner-track" id="bannerTrack">
 
                 <div class="banner-slide">
@@ -138,7 +138,7 @@
     </script>
 
   <div class="wrap">
-	<div class="inner">
+   <div class="inner">
     <!-- 추천상품 -->
     <section class="recommend-section">
       <h2 class="section-title">추천상품</h2>
@@ -275,7 +275,6 @@
         </div>
       </div>
     </section>
-
      <nav class="view-2" aria-label="사이드 메뉴">
           <div class="frame-19">
             <div class="rectangle-7"></div>
