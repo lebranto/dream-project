@@ -2,9 +2,8 @@ package com.kh.jipshop.community.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,7 @@ import com.kh.jipshop.community.model.vo.Board;
 import com.kh.jipshop.community.model.vo.BoardComment;
 import com.kh.jipshop.community.model.vo.BoardImage;
 import com.kh.jipshop.community.model.vo.BoardLike;
-import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.security.model.vo.MemberExt;
 
 @Controller
 @RequestMapping("/community")
@@ -28,7 +27,7 @@ public class CommunityMainController {
     private CommunityService communityService;
 
     @GetMapping("/detail")
-    public String detail(@RequestParam("boardNo") int boardNo, Model model, HttpSession session) {
+    public String detail(@RequestParam("boardNo") int boardNo, Model model, Authentication auth) {
 
         communityService.increaseReadCount(boardNo);
 
@@ -38,10 +37,13 @@ public class CommunityMainController {
 
         int likeCount = communityService.selectLikeCount(boardNo);
 
-        Member loginUser = (Member) session.getAttribute("loginUser");
+        int loginMemberNo = 0;
         int likeCheck = 0;
 
-        if(loginUser != null) {
+        if (auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof MemberExt) {
+            MemberExt loginUser = (MemberExt) auth.getPrincipal();
+            loginMemberNo = loginUser.getMemberNo();
+
             BoardLike boardLike = new BoardLike();
             boardLike.setBoardNo(boardNo);
             boardLike.setMemberNo(loginUser.getMemberNo());
@@ -55,19 +57,20 @@ public class CommunityMainController {
         model.addAttribute("commentList", commentList);
         model.addAttribute("likeCount", likeCount);
         model.addAttribute("likeCheck", likeCheck);
+        model.addAttribute("loginMemberNo", loginMemberNo); // ⭐ 이거 핵심
 
         return "community/boardDetail";
     }
 
     @ResponseBody
     @PostMapping(value="/like", produces="application/json; charset=UTF-8")
-    public String boardLike(@RequestParam("boardNo") int boardNo, HttpSession session) {
+    public String boardLike(@RequestParam("boardNo") int boardNo, Authentication auth) {
 
-        Member loginUser = (Member) session.getAttribute("loginUser");
-
-        if(loginUser == null) {
+        if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof MemberExt)) {
             return "{\"result\":\"loginRequired\"}";
         }
+
+        MemberExt loginUser = (MemberExt) auth.getPrincipal();
 
         BoardLike boardLike = new BoardLike();
         boardLike.setBoardNo(boardNo);

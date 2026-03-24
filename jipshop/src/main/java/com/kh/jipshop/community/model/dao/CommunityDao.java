@@ -46,4 +46,6 @@ public interface CommunityDao {
 	int selectLikeCount(SqlSessionTemplate sqlSession, int boardNo);
 
 	List<Board> selectBoardListBySearch(SqlSessionTemplate sqlSession, Map<String, Object> paramMap);
+
+	int deleteBoard(SqlSessionTemplate sqlSession, Board board);
 }

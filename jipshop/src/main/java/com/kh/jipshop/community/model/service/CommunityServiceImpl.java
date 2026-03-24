@@ -113,4 +113,9 @@ public class CommunityServiceImpl implements CommunityService {
 	    public List<Board> selectBoardListBySearch(Map<String, Object> paramMap) {
 	        return communityDao.selectBoardListBySearch(sqlSession, paramMap);
 	    }
+
+	    @Override
+	    public int deleteBoard(Board board) {
+	        return communityDao.deleteBoard(sqlSession, board);
+	    }
 }

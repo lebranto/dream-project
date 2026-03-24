@@ -100,4 +100,8 @@ import com.kh.jipshop.community.model.vo.BoardLike;
 		    public List<Board> selectBoardListBySearch(SqlSessionTemplate sqlSession, Map<String, Object> paramMap) {
 		        return sqlSession.selectList("communityMapper.selectBoardListBySearch", paramMap);
 		    }
+		    @Override
+		    public int deleteBoard(SqlSessionTemplate sqlSession, Board board) {
+		        return sqlSession.update("communityMapper.deleteBoard", board);
+		    }
 }

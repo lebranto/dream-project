@@ -72,7 +72,7 @@
         #{boardNo},
         #{memberNo},
         #{boardCode},
-        #{categoryCode},
+        NULLIF(#{categoryCode}, 0),
         #{boardTitle},
         #{boardContent},
         0,
@@ -311,7 +311,13 @@
          WHERE BOARD_NO = #{boardNo}
            AND MEMBER_NO = #{memberNo}
     </update>
-
+<!-- 게시글 삭제 -->
+<update id="deleteBoard" parameterType="com.kh.jipshop.community.model.vo.Board">
+    UPDATE BOARD
+       SET BOARD_ACTIVE = 'N'
+     WHERE BOARD_NO = #{boardNo}
+       AND MEMBER_NO = #{memberNo}
+</update>
     <!-- 삭제할 기존 이미지들 삭제 -->
     <delete id="deleteBoardImageList" parameterType="list">
         DELETE FROM BOARD_IMG

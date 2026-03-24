@@ -106,7 +106,7 @@
         <div class="modify-form-label">사진 업로드</div>
 
         <div class="modify-upload-box">
-            <div class="modify-origin-title">수정전 업로드 사진</div>
+            <div class="rewrite-old-upload-title">수정전 업로드 사진</div>
 
             <div class="modify-preview-row" id="modifyExistingImageArea">
                 <c:forEach var="img" items="${imageList}">
@@ -120,13 +120,13 @@
                 </c:forEach>
             </div>
 
-            <div class="modify-new-title">새로 첨부할 사진</div>
+            <div class="rewrite-new-upload-title">새로 첨부할 사진</div>
             <div class="modify-preview-row" id="modifyNewImageArea"></div>
         </div>
 
-        <div class="modify-upload-control">
-            <label for="modifyImageInput" class="modify-file-btn">사진 첨부</label>
-            <span id="modifyImageCountText">0개</span>
+        <div class="rewrite-upload-control">
+            <label for="modifyImageInput" class="rewrite-file-btn">사진 첨부</label>
+            <span id="modifyImageCountText" class="rewrite-file-count-text">0개</span>
         </div>
 
         <input type="file"
@@ -138,7 +138,7 @@
     </div>
 
     <div class="modify-submit-area">
-        <button type="submit" class="modify-submit-btn">수정완료</button>
+        <button type="submit" class="rewrite-submit-btn">수정완료</button>
     </div>
 
 </form>
@@ -258,6 +258,7 @@ function bindRemove(){
 document.getElementById("modifyForm").addEventListener("submit", function(e){
     const title = document.getElementById("modifyBoardTitle").value.trim();
     const content = document.getElementById("modifyBoardContent").value.trim();
+
     const boardCode = "${board.boardCode}";
     const categoryCode = modifyCategoryCode.value;
 

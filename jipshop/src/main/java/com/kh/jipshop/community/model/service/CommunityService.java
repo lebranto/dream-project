@@ -44,5 +44,9 @@ public interface CommunityService {
 		int increaseReadCount(int boardNo);
 
 		List<Board> selectBoardListBySearch(Map<String, Object> paramMap);
+
+		int deleteBoard(Board board);
+
+		
 	
 }

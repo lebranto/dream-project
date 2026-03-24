@@ -80,21 +80,35 @@
     </div>
 
     <!-- 좋아요 / 싫어요 -->
-    <div class="reaction-area">
-        <button type="button"
-                class="reaction-btn like-btn ${likeCheck > 0 ? 'active-like' : ''}"
-                id="likeBtn">👍</button>
+   <div class="reaction-area">
+    <button type="button"
+            id="likeBtn"
+            class="reaction-btn ${likeCheck > 0 ? 'active-like' : ''}">
+        👍
+    </button>
 
-        <button type="button"
-                class="reaction-btn dislike-btn"
-                id="dislikeBtn">👎</button>
-    </div>
+    <button type="button"
+            id="dislikeBtn"
+            class="reaction-btn">
+        👎
+    </button>
+</div>
 
     <!-- 수정/삭제 -->
     <div class="board-action-area">
-        <a href="${contextPath}/community/rewrite?boardNo=${board.boardNo}" class="action-btn edit-btn">수정</a>
-        <button type="button" class="action-btn delete-btn" id="openDeleteModalBtn">삭제</button>
-    </div>
+    <c:if test="${loginMemberNo ne 0 and loginMemberNo eq board.memberNo}">
+        <a class="action-btn"
+           href="${pageContext.request.contextPath}/community/rewrite?boardNo=${board.boardNo}">
+            수정
+        </a>
+
+        <a class="action-btn"
+           href="${pageContext.request.contextPath}/community/delete?boardNo=${board.boardNo}"
+           onclick="return confirm('정말 삭제하시겠습니까?');">
+            삭제
+        </a>
+    </c:if>
+</div>
 
     <!-- 댓글 등록 -->
     <div class="comment-write-wrap">
@@ -160,52 +174,26 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
 
-    const contextPath = "${contextPath}";
-    const boardNo = "${board.boardNo}";
-
-    /* 좋아요 / 싫어요 */
+document.addEventListener("DOMContentLoaded", function () {
     const likeBtn = document.getElementById("likeBtn");
     const dislikeBtn = document.getElementById("dislikeBtn");
-    const likeCountArea = document.getElementById("likeCountArea");
 
-    likeBtn.addEventListener("click", function() {
+    if (!likeBtn || !dislikeBtn) return;
 
-        fetch(contextPath + "/community/like", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "boardNo=" + boardNo
-        })
-        .then(response => response.json())
-        .then(data => {
-
-            if (data.result === "loginRequired") {
-                alert("로그인 후 이용해주세요.");
-                location.href = contextPath + "/member/login";
-                return;
-            }
-
-            if (data.result === "success") {
-                likeCountArea.innerText = data.likeCount;
-
-                if (data.likeCheck == "1") {
-                    likeBtn.classList.add("active-like");
-                } else {
-                    likeBtn.classList.remove("active-like");
-                }
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        });
+    likeBtn.addEventListener("click", function () {
+        likeBtn.classList.toggle("active-like");
+        dislikeBtn.classList.remove("active-dislike");
     });
 
-    dislikeBtn.addEventListener("click", function() {
-        alert("싫어요 기능은 아직 구현 전입니다.");
+    dislikeBtn.addEventListener("click", function () {
+        dislikeBtn.classList.toggle("active-dislike");
+        likeBtn.classList.remove("active-like");
     });
+});
+
+
+  
 
     /* 삭제 모달 */
     const deleteModal = document.getElementById("deleteModal");
