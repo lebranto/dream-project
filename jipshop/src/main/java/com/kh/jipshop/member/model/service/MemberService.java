@@ -1,6 +1,7 @@
 package com.kh.jipshop.member.model.service;
 
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 
 public interface MemberService {
 
@@ -9,5 +10,7 @@ public interface MemberService {
 	int idCheck(String memberId);
 
 	Member loginMember(Member m);
+
+	int insertPet(Pet pet);
 	
 }

@@ -47,4 +47,26 @@
 		INSERT INTO AUTHORITIES VALUES (#{memberNo}, 'ROLE_USER')
 	</insert>
 	
+	<insert id="insertPet" parameterType="com.kh.jipshop.member.model.vo.Pet">
+	    <selectKey keyProperty="petNo" resultType="int" order="BEFORE">
+	        SELECT SEQ_PET.NEXTVAL FROM DUAL
+	    </selectKey>
+	    INSERT INTO PET (
+	        PET_NO,
+	        MEMBER_NO,
+	        PET_TYPE,
+	        PET_NAME,
+	        PET_AGE,
+	        PET_WEIGHT,
+	        PET_PHOTO
+	    ) VALUES (
+	        #{petNo},
+	        #{memberNo},
+	        #{petType},
+	        #{petName},
+	        #{petAge},
+	        #{petWeight},
+	        #{petPhoto}
+	    )
+	</insert>
 </mapper>

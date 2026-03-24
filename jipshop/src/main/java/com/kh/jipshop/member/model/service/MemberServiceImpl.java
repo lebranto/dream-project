@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.jipshop.member.model.dao.MemberDao;
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -28,5 +29,14 @@ public class MemberServiceImpl implements MemberService{
 	public Member loginMember(Member m) {
 		return memberDao.loginMember(m);
 	}
+
+	@Override
+	public int insertPet(Pet pet) {
+		return memberDao.insertPet(pet);
+	}
+
+
+
+	
 	
 }
