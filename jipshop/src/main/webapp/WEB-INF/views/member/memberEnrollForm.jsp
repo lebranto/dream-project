@@ -29,7 +29,9 @@
         </div>
 
         <!-- 메인 폼 카드 -->
-        <form:form name="registerForm" id="registerForm" action="${pageContext.request.contextPath}/security/insert" method="post">
+        <form:form id="registerForm"
+		    action="${pageContext.request.contextPath}/security/insert?${_csrf.parameterName}=${_csrf.token}"
+		    method="post" enctype="multipart/form-data">
         	
         <div class="reg-card">
 
@@ -114,10 +116,11 @@
                 <div class="reg-pet-form-title">애완동물 정보</div>
 
                 <!-- 사진 등록 -->
-                <label class="reg-file-label" for="petPhoto">
-                  📁&nbsp; 사진 파일 올리기
-                  <input id="petPhoto" type="file" accept="image/*" style="display:none;" name="petPhoto" />
-                </label>
+				<label class="reg-file-label" for="petPhoto" id="fileLabel">
+				  📁&nbsp; <span id="fileNameText">사진 파일 올리기</span>
+				  <input id="petPhoto" type="file" accept="image/*" style="display:none;" name="petPhoto" 
+				         onchange="updateFileName(this)" />
+				</label>
 
                 <!-- 동물 종류 -->
                 <div class="reg-pet-type-row">
@@ -455,6 +458,13 @@
     const s = String(sec % 60).padStart(2, '0');
     return m + ':' + s;
   }
+  
+  /* ── 파일 선택 시 파일명 표시 ── */
+  function updateFileName(input) {
+    const fileName = input.files[0] ? input.files[0].name : '사진 파일 올리기';
+    document.getElementById('fileNameText').textContent = fileName;
+  }
+  
 </script>
 </body>
 </html>

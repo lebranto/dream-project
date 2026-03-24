@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 
 @Repository
 public class MemberDaoImpl implements MemberDao{
@@ -32,5 +33,11 @@ public class MemberDaoImpl implements MemberDao{
 		session.insert("member.insertAuthority", m);
 		
 	}
+
+	@Override
+	public int insertPet(Pet pet) {
+		return session.insert("member.insertPet",pet);
+	}
+
 
 }
