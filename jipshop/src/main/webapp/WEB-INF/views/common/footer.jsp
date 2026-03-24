@@ -14,9 +14,9 @@
 
         <div class="footer-center">
             <div class="footer-links">
-                <a href="${pageContext.request.contextPath}/terms">이용약관</a>
+                <a href="${pageContext.request.contextPath}/member/terms">이용약관</a>
                 <span>|</span>
-                <a href="${pageContext.request.contextPath}/privacy">개인정보처리방침</a>
+                <a href="${pageContext.request.contextPath}/member/privacy">개인정보처리방침</a>
             </div>
 
             <div class="footer-info">
