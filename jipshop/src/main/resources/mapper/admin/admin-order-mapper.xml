@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="adminOrderMapper">
+
+    <resultMap type="com.kh.jipshop.admin.model.vo.AdminOrder" id="adminOrderResultMap">
+        <result property="rowNum" column="ROW_NUM"/>
+        <result property="orderId" column="ORDER_ID"/>
+        <result property="orderDateStr" column="ORDER_DATE_STR"/>
+
+        <result property="ordererName" column="ORDERER_NAME"/>
+        <result property="ordererPhone" column="ORDERER_PHONE"/>
+        <result property="ordererEmail" column="ORDERER_EMAIL"/>
+        <result property="ordererAddress" column="ORDERER_ADDRESS"/>
+
+        <result property="recvName" column="RECV_NAME"/>
+        <result property="recvPhone" column="RECV_PHONE"/>
+        <result property="recvAddress" column="RECV_ADDRESS"/>
+
+        <result property="productId" column="PRODUCT_ID"/>
+        <result property="productName" column="PRODUCT_NAME"/>
+        <result property="productPrice" column="PRODUCT_PRICE"/>
+        <result property="productPhoto1" column="PRODUCT_PHOTO1"/>
+
+        <result property="companyName" column="COMPANY_NAME"/>
+        <result property="companyPhone" column="COMPANY_PHONE"/>
+        <result property="companyAddress" column="COMPANY_ADDRESS"/>
+
+        <result property="expectedDateStr" column="EXPECTED_DATE_STR"/>
+        <result property="deliveryYn" column="DELIVERY_YN"/>
+        <result property="deliveryStatus" column="DELIVERY_STATUS"/>
+        <result property="dnum" column="DNUM"/>
+
+        <result property="orderCancelYn" column="ORDER_CANCEL_YN"/>
+
+        <result property="startAddress" column="START_ADDRESS"/>
+        <result property="arriveAddress" column="ARRIVE_ADDRESS"/>
+    </resultMap>
+
+    <!-- 개수 -->
+    <select id="selectOrderListCount" parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch" resultType="_int">
+        SELECT COUNT(*)
+        FROM ORDERS O
+        JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
+        JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
+        LEFT JOIN DELIVERY D ON O.ORDER_ID = D.ORDER_ID
+        LEFT JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID
+        LEFT JOIN COMPANY C ON P.COMPANY_CODE = C.COMPANY_CODE
+        WHERE 1 = 1
+        <if test="startDate != null and endDate != null">
+            AND O.ORDER_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
+                                 AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + 0.99999
+        </if>
+    </select>
+
+    <!-- 목록 -->
+    <select id="selectOrderList" parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch" resultMap="adminOrderResultMap">
+        SELECT *
+        FROM (
+            SELECT
+                   ROW_NUMBER() OVER (ORDER BY O.ORDER_ID DESC) AS ROW_NUM,
+                   O.ORDER_ID,
+                   TO_CHAR(O.ORDER_DATE, 'YYYY-MM-DD') AS ORDER_DATE_STR,
+                   O.ORDERER_NAME,
+                   O.ORDERER_PHONE,
+                   O.ORDERER_EMAIL,
+                   O.RECV_NAME,
+                   O.RECV_PHONE,
+                   O.RECV_ADDRESS,
+                   O.RECV_ADDRESS AS ORDERER_ADDRESS,
+                   O.ORDER_CANCEL_YN,
+
+                   P.PRODUCT_ID,
+                   P.PRODUCT_NAME,
+                   P.PRODUCT_PRICE,
+                   P.PRODUCT_PHOTO1,
+
+                   NVL(C.COMPANY_NAME, '-') AS COMPANY_NAME,
+                   NVL(C.COMPANY_PHONE, '-') AS COMPANY_PHONE,
+                   NVL(C.ADDRESS_ADDRESS, '-') AS COMPANY_ADDRESS,
+
+                   TO_CHAR(D.EXPECTED_DATE, 'YYYY-MM-DD') AS EXPECTED_DATE_STR,
+                   NVL(S.DELIVERY_YN, 'N') AS DELIVERY_YN,
+                   NVL(S.DELIVERY_STATUS, '배송 준비') AS DELIVERY_STATUS,
+                   NVL(S.DNUM, '-') AS DNUM,
+
+                   NVL(C.ADDRESS_ADDRESS, '000시 000구 000읍') AS START_ADDRESS,
+                   O.RECV_ADDRESS AS ARRIVE_ADDRESS
+
+            FROM ORDERS O
+            JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
+            JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
+            LEFT JOIN DELIVERY D ON O.ORDER_ID = D.ORDER_ID
+            LEFT JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID
+            LEFT JOIN COMPANY C ON P.COMPANY_CODE = C.COMPANY_CODE
+            WHERE 1 = 1
+            <if test="startDate != null and endDate != null">
+                AND O.ORDER_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
+                                     AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + 0.99999
+            </if>
+        )
+        ORDER BY ORDER_ID DESC
+    </select>
+
+    <!-- 배송 여부 수정 -->
+    <update id="updateDeliveryYn" parameterType="hashmap">
+        UPDATE STATUS
+           SET DELIVERY_YN = #{deliveryYn},
+               DELIVERY_STATUS =
+                    CASE
+                        WHEN #{deliveryYn} = 'Y' THEN '배송완료'
+                        ELSE '배송중'
+                    END
+         WHERE DELIVERY_ID = (
+                SELECT DELIVERY_ID
+                FROM DELIVERY
+                WHERE ORDER_ID = #{orderId}
+         )
+    </update>
+
+    <!-- STATUS 삭제 -->
+    <delete id="deleteStatusByOrderIds" parameterType="arraylist">
+        DELETE FROM STATUS
+         WHERE DELIVERY_ID IN (
+            SELECT DELIVERY_ID
+            FROM DELIVERY
+            WHERE ORDER_ID IN
+            <foreach collection="list" item="orderId" open="(" separator="," close=")">
+                #{orderId}
+            </foreach>
+         )
+    </delete>
+
+    <!-- DELIVERY 삭제 -->
+    <delete id="deleteDeliveryByOrderIds" parameterType="arraylist">
+        DELETE FROM DELIVERY
+         WHERE ORDER_ID IN
+         <foreach collection="list" item="orderId" open="(" separator="," close=")">
+            #{orderId}
+         </foreach>
+    </delete>
+
+    <!-- ORDER_DETAIL 삭제 -->
+    <delete id="deleteOrderDetailByOrderIds" parameterType="arraylist">
+        DELETE FROM ORDER_DETAIL
+         WHERE ORDER_ID IN
+         <foreach collection="list" item="orderId" open="(" separator="," close=")">
+            #{orderId}
+         </foreach>
+    </delete>
+
+    <!-- ORDERS 삭제 -->
+    <delete id="deleteOrdersByOrderIds" parameterType="arraylist">
+        DELETE FROM ORDERS
+         WHERE ORDER_ID IN
+         <foreach collection="list" item="orderId" open="(" separator="," close=")">
+            #{orderId}
+         </foreach>
+    </delete>
+
+</mapper>

@@ -1,52 +1,73 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" />
 <header class="site-header">
-
+    <!-- 상단 유틸 메뉴 -->
     <div class="top-bar">
-        <div class="top-menu">
-            <a href="#">로그인</a>
-            <a href="#">회원가입</a>
-            <a href="#">마이페이지</a>
-            <a href="${pageContext.request.contextPath}/inquiry/list">문의</a>
+        <div class="top-bar-inner">
+            <div class="top-menu">
+              <sec:authorize access="isAnonymous()">
+                 <a href="${contextPath}/member/login">로그인</a>
+                 <a href="${contextPath}/security/insert">회원가입</a>
+                 <a href="${contextPath}/mypage/purchase">마이페이지</a>
+                 <a href="#">문의</a>
+              </sec:authorize>
+             <sec:authorize access="isAuthenticated()">
+                <label><sec:authentication property="principal.memberName"/>님 환영합니다.</label> &nbsp;&nbsp;
+                <a href="${contextPath}/mypage/purchase">마이페이지</a>
+                <a href="#">문의</a>
+                <form:form method="post" action="${contextPath}/member/logout" style="display: inline;">
+                    <button type="submit" class="border-0 bg-transparent text-secondary p-0 ml-2">로그아웃</button>
+                </form:form>
+             </sec:authorize>
+            </div>
         </div>
     </div>
 
+    <!-- 로고 / 검색+아이콘 -->
     <div class="header-middle">
-        <div class="logo-area">
-            <a href="${pageContext.request.contextPath}/">
-                <img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="로고" width="60">
-            </a>
-        </div>
+        <div class="header-middle-inner">
+            <!-- 로고 (왼쪽 끝) -->
+            <div class="logo-area">
+                <a href="${pageContext.request.contextPath}">
+                    <img src="${pageContext.request.contextPath}/resources/images/logo.png">
+                </a>
+            </div>
 
-        <div class="search-area">
-            <input type="text" placeholder="검색어를 입력하세요">
-            <button type="button">
-                <img src="${pageContext.request.contextPath}/resources/img/search_icon.png" alt="검색">
-            </button>
-        </div>
+            <!-- 검색창 + 하트 + 장바구니 묶음 (오른쪽 끝) -->
+            <div class="search-icon-group">
+                <div class="search-area">
+                    <input type="text" placeholder="검색어를 입력하세요">
+                    <button type="button">
+                        <img src="${pageContext.request.contextPath}/resources/img/search_icon.png" alt="검색">
+                    </button>
+                </div>
+                <div class="icon-area">
+                    <a href="#"><i class="bi bi-heart"></i></a>
+                    <a href="#">
+                        <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
+                    </a>
+                </div>
+            </div>
 
-        <div class="icon-area">
-            <a href="#">
-                <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
-            </a>
         </div>
     </div>
 
     <nav class="main-nav">
         <div class="nav-inner">
-
             <div class="all-menu">
                 <a href="javascript:void(0);" class="nav-link all-menu-btn">
                     <span class="menu-circle">☰</span>
                     <span>전체 메뉴</span>
                 </a>
-
                 <div class="allmenu-dropdown">
                     <div class="allmenu-wrap">
-
                         <div class="allmenu-box">
                             <div class="allmenu-title">강아지</div>
                             <a href="${pageContext.request.contextPath}/dog/feed">사료</a>
@@ -54,7 +75,6 @@
                             <a href="${pageContext.request.contextPath}/dog/outdoor">외출용품</a>
                             <a href="${pageContext.request.contextPath}/dog/groom">미용용품</a>
                         </div>
-
                         <div class="allmenu-box">
                             <div class="allmenu-title">고양이</div>
                             <a href="${pageContext.request.contextPath}/cat/feed">사료</a>
@@ -62,7 +82,6 @@
                             <a href="${pageContext.request.contextPath}/cat/outdoor">외출용품</a>
                             <a href="${pageContext.request.contextPath}/cat/groom">미용용품</a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -77,7 +96,6 @@
                         <a href="${pageContext.request.contextPath}/dog/groom">미용용품</a>
                     </div>
                 </li>
-
                 <li class="menu-item has-sub">
                     <a href="javascript:void(0);" class="nav-link">고양이</a>
                     <div class="small-dropdown">
@@ -87,16 +105,13 @@
                         <a href="${pageContext.request.contextPath}/cat/groom">미용용품</a>
                     </div>
                 </li>
-
                 <li class="menu-item">
                     <a href="#" class="nav-link">추천</a>
                 </li>
-
                 <li class="menu-item">
-                    <a href="#" class="nav-link">커뮤니티</a>
+                    <a href="${pageContext.request.contextPath}/community/main" class="nav-link">커뮤니티</a>
                 </li>
             </ul>
-
         </div>
     </nav>
 
