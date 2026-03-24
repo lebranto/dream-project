@@ -1,147 +1,103 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>집사생활</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 
-<style>
+<header class="site-header">
 
-body{
-    margin:0;
-    font-family: Arial, sans-serif;
-}
-
-/* 상단 로그인 메뉴 */
-.top-bar{
-    
-    background:#e9c77b;
-    height:35px;
-    display:flex;
-    justify-content:flex-end;
-    align-items:center;
-    padding-right:40px;
-    font-size:14px;
-    min-width: none;
-}
-
-.top-bar a{
-    margin-left:20px;
-    text-decoration:none;
-    color:black;
-}
-
-/* 로고 + 검색 */
-.header{
-    background:#eeeeee;
-    height:80px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 40px;
-}
-
-/* 로고 */
-.logo{
-    font-size:22px;
-    font-weight:bold;
-}
-
-/* 검색창 */
-.search-box{
-    display:flex;
-    align-items:center;
-}
-
-.search-box input{
-    width:400px;
-    height:35px;
-    border-radius:20px;
-    border:1px solid #999;
-    padding-left:15px;
-}
-
-/* 장바구니 */
-.cart{
-    font-size:22px;
-}
-
-/* 메뉴 */
-.menu{
-    background:#e9c77b;
-    height:50px;
-    display:flex;
-    align-items:center;
-}
-
-.menu-left{
-    width:200px;
-    display:flex;
-    align-items:center;
-    padding-left:30px;
-}
-
-.menu-right{
-    flex:1;
-    display:flex;
-    justify-content:center;
-}
-
-.menu-right a{
-    margin:0 40px;
-    text-decoration:none;
-    color:black;
-    font-weight:bold;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<!-- 상단 로그인 메뉴 -->
-<div class="top-bar">
-    <a href="login.jsp">로그인</a>
-    <a href="join.jsp">회원가입</a>
-    <a href="mypage.jsp">마이페이지</a>
-    <a href="qna.jsp">문의</a>
-</div>
-
-<!-- 로고 + 검색 -->
-<div class="header">
-
-    <div class="logo">
-        <img herf="">
+    <div class="top-bar">
+        <div class="top-menu">
+            <a href="#">로그인</a>
+            <a href="#">회원가입</a>
+            <a href="#">마이페이지</a>
+            <a href="${pageContext.request.contextPath}/inquiry/list">문의</a>
+        </div>
     </div>
 
-    <div class="search-box">
-        <input type="text" placeholder="검색어 입력">
+    <div class="header-middle">
+        <div class="logo-area">
+            <a href="${pageContext.request.contextPath}/">
+                <img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="로고" width="60">
+            </a>
+        </div>
+
+        <div class="search-area">
+            <input type="text" placeholder="검색어를 입력하세요">
+            <button type="button">
+                <img src="${pageContext.request.contextPath}/resources/img/search_icon.png" alt="검색">
+            </button>
+        </div>
+
+        <div class="icon-area">
+            <a href="#">
+                <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
+            </a>
+        </div>
     </div>
 
-    <div class="cart">
-        🛒
-    </div>
+    <nav class="main-nav">
+        <div class="nav-inner">
 
-</div>
+            <div class="all-menu">
+                <a href="javascript:void(0);" class="nav-link all-menu-btn">
+                    <span class="menu-circle">☰</span>
+                    <span>전체 메뉴</span>
+                </a>
 
-<!-- 메뉴 -->
-<div class="menu">
+                <div class="allmenu-dropdown">
+                    <div class="allmenu-wrap">
 
-    <div class="menu-left">
-        ☰ 전체 메뉴
-    </div>
+                        <div class="allmenu-box">
+                            <div class="allmenu-title">강아지</div>
+                            <a href="${pageContext.request.contextPath}/dog/feed">사료</a>
+                            <a href="${pageContext.request.contextPath}/dog/toy">장난감</a>
+                            <a href="${pageContext.request.contextPath}/dog/outdoor">외출용품</a>
+                            <a href="${pageContext.request.contextPath}/dog/groom">미용용품</a>
+                        </div>
 
-    <div class="menu-right">
-        <a href="#">강아지</a>
-        <a href="#">고양이</a>
-        <a href="#">추천</a>
-        <a href="#">커뮤니티</a>
-    </div>
+                        <div class="allmenu-box">
+                            <div class="allmenu-title">고양이</div>
+                            <a href="${pageContext.request.contextPath}/cat/feed">사료</a>
+                            <a href="${pageContext.request.contextPath}/cat/toy">장난감</a>
+                            <a href="${pageContext.request.contextPath}/cat/outdoor">외출용품</a>
+                            <a href="${pageContext.request.contextPath}/cat/groom">미용용품</a>
+                        </div>
 
-</div>
+                    </div>
+                </div>
+            </div>
 
-</body>
-</html>
+            <ul class="main-menu">
+                <li class="menu-item has-sub">
+                    <a href="javascript:void(0);" class="nav-link">강아지</a>
+                    <div class="small-dropdown">
+                        <a href="${pageContext.request.contextPath}/dog/feed">사료</a>
+                        <a href="${pageContext.request.contextPath}/dog/toy">장난감</a>
+                        <a href="${pageContext.request.contextPath}/dog/outdoor">외출용품</a>
+                        <a href="${pageContext.request.contextPath}/dog/groom">미용용품</a>
+                    </div>
+                </li>
+
+                <li class="menu-item has-sub">
+                    <a href="javascript:void(0);" class="nav-link">고양이</a>
+                    <div class="small-dropdown">
+                        <a href="${pageContext.request.contextPath}/cat/feed">사료</a>
+                        <a href="${pageContext.request.contextPath}/cat/toy">장난감</a>
+                        <a href="${pageContext.request.contextPath}/cat/outdoor">외출용품</a>
+                        <a href="${pageContext.request.contextPath}/cat/groom">미용용품</a>
+                    </div>
+                </li>
+
+                <li class="menu-item">
+                    <a href="#" class="nav-link">추천</a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="#" class="nav-link">커뮤니티</a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+</header>

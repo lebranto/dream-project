@@ -1,232 +1,32 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<html>
-<head>
-   <title>Home</title>
-</head>
-<body>
-
-<jsp:include page="/WEB-INF/views/common/header.jsp" />
-
-<!-- 메인페이지 첫번쨰 슬라이스 상단  -->
-<section>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>메인 페이지</title>
-
-<style>
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-    }
-
-    body{
-        font-family: 'Malgun Gothic', sans-serif;
-    }
-
-    .main-banner-wrap{
-        width:100%;
-        background:#f8f6ef;
-    }
-
-    .main-banner{
-        position:relative;
-        width:100%;
-        max-width:1700px;
-        height:650px;
-        margin:0 auto;
-        overflow:hidden;
-    }
-
-
-    .banner-track{
-        display:flex;
-        width:500%;
-        height:100%;
-        transition:transform 0.6s ease-in-out;
-    }
-
-    .banner-slide{
-        width:20%;
-        height:100%;
-        flex-shrink:0;
-        position:relative;
-    }
-
-    .banner-slide img{
-        width:100%;
-        height:100%;
-        object-fit:cover;
-        display:block;
-    }
-
-.banner-overlay{
-    position:absolute;
-    left:80px;
-    top:155px;
-    transform:none;
-}
-
-    .banner-overlay .badge{
-        display:inline-block;
-        padding:8px 14px;
-        border-radius:20px;
-        background:#d81b60;
-        color:#fff;
-        font-size:14px;
-        font-weight:bold;
-        margin-bottom:16px;
-    }
-
-    .banner-overlay h2{
-        font-size:42px;
-        font-weight:800;
-        line-height:1.25;
-        margin-bottom:14px;
-    }
-
-    .banner-overlay p{
-        font-size:18px;
-        color:#555;
-    }
-
-    .banner-btn{
-        position:absolute;
-        top:50%;
-        transform:translateY(-50%);
-        z-index:10;
-        width:46px;
-        height:46px;
-        border:none;
-        border-radius:50%;
-        background:rgba(0,0,0,0.35);
-        color:#fff;
-        font-size:24px;
-        cursor:pointer;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-    }
-
-    .banner-btn:hover{
-        background:rgba(0,0,0,0.55);
-    }
-
-    .banner-prev{
-        left:20px;
-    }
-
-    .banner-next{
-        right:20px;
-    }
-
-    .banner-dots{
-        position:absolute;
-        left:50%;
-        bottom:24px;
-        transform:translateX(-50%);
-        display:flex;
-        gap:10px;
-        z-index:10;
-    }
-
-    .banner-dot{
-        width:12px;
-        height:12px;
-        border-radius:50%;
-        border:none;
-        background:rgba(255,255,255,0.65);
-        cursor:pointer;
-        transition:all 0.3s;
-    }
-
-    .banner-dot.active{
-        width:28px;
-        border-radius:20px;
-        background:#f0c419;
-    }
-
-    .banner-counter{
-        position:absolute;
-        right:24px;
-        bottom:20px;
-        z-index:10;
-        padding:8px 14px;
-        border-radius:18px;
-        background:rgba(0,0,0,0.45);
-        color:#fff;
-        font-size:14px;
-    }
-
-    @media (max-width:1024px){
-        .main-banner{
-            height:420px;
-        }
-
-        .banner-overlay{
-            left:40px;
-        }
-
-        .banner-overlay h2{
-            font-size:32px;
-        }
-
-        .banner-overlay p{
-            font-size:16px;
-        }
-    }
-
-    @media (max-width:768px){
-        .main-banner{
-            height:320px;
-        }
-
-        .banner-overlay{
-            left:24px;
-        }
-
-        .banner-overlay .badge{
-            font-size:12px;
-            padding:6px 10px;
-            margin-bottom:10px;
-        }
-
-        .banner-overlay h2{
-            font-size:24px;
-            margin-bottom:8px;
-        }
-
-        .banner-overlay p{
-            font-size:14px;
-        }
-
-        .banner-btn{
-            width:38px;
-            height:38px;
-            font-size:20px;
-        }
-    }
-</style>
+<title>메인 페이지슬라이드</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainslide.css">
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css">
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main3.css">
 </head>
 <body>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<div>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
+</div>
 
-    <!-- 메인 배너 슬라이드 -->
+   <!-- 메인페이지 첫번쨰 슬라이스 상단  --> 
     <section class="main-banner-wrap">
+    
         <div class="main-banner" id="mainBanner">
-
+   
             <div class="banner-track" id="bannerTrack">
 
                 <div class="banner-slide">
-                    <img src="${contextPath}/resources/images/banner/banner1.png" alt="배너1">
+                    <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309.png" alt="배너1">
                     <div class="banner-overlay">
                         <span class="badge">BEST</span>
                         <p>인기 사료와 간식을 한눈에 만나보세요</p>
@@ -235,7 +35,7 @@
 
 
                 <div class="banner-slide">
-                    <img src="${contextPath}/resources/images/banner/banner3.png" alt="배너2">
+                    <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_01.png" alt="배너2">
                     <div class="banner-overlay">
                         <span class="badge">LIVING</span>
                         <p>생활용품과 위생용품도 편리하게 쇼핑</p>
@@ -243,7 +43,7 @@
                 </div>
 
                 <div class="banner-slide">
-                    <img src="${contextPath}/resources/images/banner/banner4.png" alt="배너3">
+                    <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_02.png" alt="배너3">
                     <div class="banner-overlay">
                         <span class="badge">CARE</span>
                         <p>칫솔 · 위생용품 · 데일리 케어 추천</p>
@@ -251,10 +51,10 @@
                 </div>
 
                 <div class="banner-slide">
-                    <img src="${contextPath}/resources/images/banner/banner5.png" alt="배너4">
+                    <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_03.png" alt="배너4">
                     <div class="banner-overlay">
                         <span class="badge">CAT</span>
-                        <p>기호성과 영양을 함께 고려한 추천 상품</p>
+                        <p>체질을 생각한 고양이 맞춤 상품</p>
                     </div>
                 </div>
 
@@ -335,19 +135,153 @@
                 updateSlide(index);
             });
         });
-
-        
-
-       
-
-
     </script>
 
+  <div class="wrap">
+   <div class="inner">
+    <!-- 추천상품 -->
+    <section class="recommend-section">
+      <h2 class="section-title">추천상품</h2>
+
+      <div class="recommend-content">
+        <div class="recommend-left">
+          <div class="product-card">
+            <img src="https://via.placeholder.com/140x140" alt="상품" />
+            <div class="product-name">바른먹거리 반려견 사료</div>
+            <div class="price">19,800원</div>
+            <div class="badge">BEST</div>
+            <div class="cart">🛒</div>
+          </div>
+
+          <div class="product-card">
+            <img src="https://via.placeholder.com/140x140" alt="상품" />
+            <div class="product-name">바른먹거리 반려견 사료</div>
+            <div class="price">19,800원</div>
+            <div class="badge">BEST</div>
+            <div class="cart">🛒</div>
+          </div>
+
+          <div class="product-card">
+            <img src="https://via.placeholder.com/140x140" alt="상품" />
+            <div class="product-name">바른먹거리 반려견 사료</div>
+            <div class="price">19,800원</div>
+            <div class="badge">BEST</div>
+            <div class="cart">🛒</div>
+          </div>
+
+          <div class="product-card">
+            <img src="https://via.placeholder.com/140x140" alt="상품" />
+            <div class="product-name">바른먹거리 반려견 사료</div>
+            <div class="price">19,800원</div>
+            <div class="badge">BEST</div>
+            <div class="cart">🛒</div>
+          </div>
+        </div>
+
+        <div class="recommend-right">
+          <div class="category-buttons">
+            <button class="active">강아지</button>
+            <button>고양이</button>
+            <button>추천템</button>
+          </div>
+
+          <div class="pet-image">
+            <img src="https://via.placeholder.com/260x260" alt="강아지 고양이 이미지" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 신상품 -->
+    <section class="product-section">
+      <h2 class="section-title">신상품</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://via.placeholder.com/120x120" alt="상품" />
+          <div class="product-name">신상품 사료 1</div>
+          <div class="price">19,800원</div>
+          <div class="badge">NEW</div>
+          <div class="cart">🛒</div>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/120x120" alt="상품" />
+          <div class="product-name">신상품 사료 2</div>
+          <div class="price">19,800원</div>
+          <div class="badge">NEW</div>
+          <div class="cart">🛒</div>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/120x120" alt="상품" />
+          <div class="product-name">신상품 사료 3</div>
+          <div class="price">19,800원</div>
+          <div class="badge">NEW</div>
+          <div class="cart">🛒</div>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/120x120" alt="상품" />
+          <div class="product-name">신상품 사료 4</div>
+          <div class="price">19,800원</div>
+          <div class="badge">NEW</div>
+          <div class="cart">🛒</div>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/120x120" alt="상품" />
+          <div class="product-name">신상품 사료 5</div>
+          <div class="price">19,800원</div>
+          <div class="badge">NEW</div>
+          <div class="cart">🛒</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 장바구니 꿀템 상품 -->
+    <section class="product-section">
+      <h2 class="section-title">장바구니 꿀템 상품</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://via.placeholder.com/120x120" alt="상품" />
+          <div class="product-name">꿀템 상품 1</div>
+          <div class="price">19,800원</div>
+          <div class="badge">추천</div>
+          <div class="cart">🛒</div>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/120x120" alt="상품" />
+          <div class="product-name">꿀템 상품 2</div>
+          <div class="price">19,800원</div>
+          <div class="badge">추천</div>
+          <div class="cart">🛒</div>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/120x120" alt="상품" />
+          <div class="product-name">꿀템 상품 3</div>
+          <div class="price">19,800원</div>
+          <div class="badge">추천</div>
+          <div class="cart">🛒</div>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/120x120" alt="상품" />
+          <div class="product-name">꿀템 상품 4</div>
+          <div class="price">19,800원</div>
+          <div class="badge">추천</div>
+          <div class="cart">🛒</div>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/120x120" alt="상품" />
+          <div class="product-name">꿀템 상품 5</div>
+          <div class="price">19,800원</div>
+          <div class="badge">추천</div>
+          <div class="cart">🛒</div>
+        </div>
+      </div>
+    </section>
+   </div>
+  </div>
 </body>
 </html>
-</section>
-
+    
+    
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
 </body>
+</html>
 </html>
