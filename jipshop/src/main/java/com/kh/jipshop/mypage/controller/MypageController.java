@@ -23,16 +23,18 @@ public class MypageController {
 
     @GetMapping("/purchase")
     public String orderList(
-            @RequestParam(required = false) Integer memeberId,
+            @RequestParam(required = false) Integer memberNo,
             Model model
             ) {
-        
-            if(memeberId==null) {
-            	memeberId=0;
-                return "mypage/purchase";
-            }
-            
-            List<Orders> list = mService.orderList(memeberId); 
+    	System.out.println("mService = " + mService);
+    	System.out.println("memberNo = " + memberNo); 
+        	
+    		memberNo=1;
+    	
+    
+    	
+    	
+            List<Orders> list = mService.orderList(memberNo); 
             model.addAttribute("orderlist",list);
             
             return "mypage/purchase";
@@ -42,7 +44,6 @@ public class MypageController {
     public String recentlyList(@RequestParam(required = false) Integer viewId,
             Model model) {
     	   if(viewId==null) {
-               viewId=0;
                return "mypage/purchase";
            }
     	

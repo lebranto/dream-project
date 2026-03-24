@@ -7,7 +7,7 @@ import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
 
 public interface MypageService {
 
-	List<Orders> orderList(int orderNo);
+	List<Orders> orderList(int memberNo);
 
 	List<RecentlyViewed> recentlyList(Integer viewId);
 
