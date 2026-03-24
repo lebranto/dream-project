@@ -10,6 +10,42 @@
 <meta charset="UTF-8">
 <title>게시글 수정</title>
 <link rel="stylesheet" href="${contextPath}/resources/css/community/rewrite.css">
+
+<style>
+    .modify-category-wrap{
+        margin-bottom: 24px;
+    }
+
+    .modify-category-label{
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #222;
+    }
+
+    .modify-category-group{
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .modify-category-btn{
+        min-width: 90px;
+        height: 40px;
+        border: 1px solid #ddd;
+        background: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .modify-category-btn.active{
+        background: #efc24f;
+        border-color: #efc24f;
+        color: #222;
+    }
+</style>
 </head>
 <body>
 
@@ -27,6 +63,28 @@
     <input type="hidden" name="categoryCode" id="modifyCategoryCode" value="${board.categoryCode}">
 
     <div id="deleteImageInputArea"></div>
+
+    <c:if test="${board.boardCode == 2}">
+        <div class="modify-category-wrap">
+            <div class="modify-category-label">카테고리 선택 *</div>
+            <div class="modify-category-group">
+                <button type="button" class="modify-category-btn" data-code="201">강아지</button>
+                <button type="button" class="modify-category-btn" data-code="202">고양이</button>
+                <button type="button" class="modify-category-btn" data-code="203">공통</button>
+            </div>
+        </div>
+    </c:if>
+
+    <c:if test="${board.boardCode == 3}">
+        <div class="modify-category-wrap">
+            <div class="modify-category-label">카테고리 선택 *</div>
+            <div class="modify-category-group">
+                <button type="button" class="modify-category-btn" data-code="301">질문</button>
+                <button type="button" class="modify-category-btn" data-code="302">고민</button>
+                <button type="button" class="modify-category-btn" data-code="303">자유</button>
+            </div>
+        </div>
+    </c:if>
 
     <div class="modify-form-block">
         <div class="modify-form-label">제목 수정 *</div>
@@ -74,6 +132,7 @@
         <input type="file"
                id="modifyImageInput"
                name="imageFiles"
+               accept="image/*"
                multiple
                hidden>
     </div>
@@ -91,9 +150,23 @@ const modifyNewImageArea = document.getElementById("modifyNewImageArea");
 const modifyExistingImageArea = document.getElementById("modifyExistingImageArea");
 const modifyImageCountText = document.getElementById("modifyImageCountText");
 const deleteImageInputArea = document.getElementById("deleteImageInputArea");
+const modifyCategoryCode = document.getElementById("modifyCategoryCode");
+const categoryButtons = document.querySelectorAll(".modify-category-btn");
 
 let modifySelectedImages = [];
 let deletedImageNos = [];
+
+categoryButtons.forEach(btn => {
+    if (btn.dataset.code === modifyCategoryCode.value) {
+        btn.classList.add("active");
+    }
+
+    btn.addEventListener("click", function(){
+        categoryButtons.forEach(item => item.classList.remove("active"));
+        this.classList.add("active");
+        modifyCategoryCode.value = this.dataset.code;
+    });
+});
 
 document.querySelectorAll(".modify-existing-remove-btn").forEach(btn => {
     btn.onclick = function(){
@@ -105,7 +178,7 @@ document.querySelectorAll(".modify-existing-remove-btn").forEach(btn => {
 
         this.parentElement.remove();
         renderDeleteInputs();
-    }
+    };
 });
 
 function renderDeleteInputs(){
@@ -124,19 +197,17 @@ modifyImageInput.addEventListener("change", function(e){
     const files = Array.from(e.target.files);
     if(files.length === 0) return;
 
-    const existingCount = modifyExistingImageArea.children.length;
+    const existingCount = modifyExistingImageArea.querySelectorAll(".modify-existing-item").length;
     const newCount = modifySelectedImages.length;
 
     if(existingCount + newCount + files.length > 3){
         alert("이미지는 최대 3개까지만 가능합니다.");
-        modifyImageInput.value = "";
         return;
     }
 
     modifySelectedImages = modifySelectedImages.concat(files);
     updateInputFiles();
     renderPreview();
-    modifyImageInput.value = "";
 });
 
 function updateInputFiles(){
@@ -160,25 +231,23 @@ function renderPreview(){
             div.className = "modify-preview-item";
 
             div.innerHTML =
-                `<img src="${e.target.result}">
-                 <button type="button"
-                         class="modify-remove-btn"
-                         data-index="${index}">×</button>`;
+                '<img src="' + e.target.result + '">' +
+                '<button type="button" class="modify-remove-btn" data-index="' + index + '">×</button>';
 
             modifyNewImageArea.appendChild(div);
+            bindRemove();
         };
 
         reader.readAsDataURL(file);
     });
 
     modifyImageCountText.innerText = modifySelectedImages.length + "개";
-    bindRemove();
 }
 
 function bindRemove(){
     document.querySelectorAll("#modifyNewImageArea .modify-remove-btn").forEach(btn => {
         btn.onclick = function(){
-            const index = this.dataset.index;
+            const index = parseInt(this.dataset.index);
             modifySelectedImages.splice(index, 1);
             updateInputFiles();
             renderPreview();
@@ -189,6 +258,14 @@ function bindRemove(){
 document.getElementById("modifyForm").addEventListener("submit", function(e){
     const title = document.getElementById("modifyBoardTitle").value.trim();
     const content = document.getElementById("modifyBoardContent").value.trim();
+    const boardCode = "${board.boardCode}";
+    const categoryCode = modifyCategoryCode.value;
+
+    if ((boardCode === "2" || boardCode === "3") && !categoryCode) {
+        alert("카테고리를 선택해주세요.");
+        e.preventDefault();
+        return;
+    }
 
     if(title === ""){
         alert("제목을 입력해주세요.");

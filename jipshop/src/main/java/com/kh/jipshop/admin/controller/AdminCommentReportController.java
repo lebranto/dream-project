@@ -25,7 +25,7 @@ public class AdminCommentReportController {
 
         model.addAttribute("list", list);
 
-        return "admin/AdminCommentReport";
+        return "admin/adminCommentReport";
     }
 
     // 🔥 2. 신고 상세
@@ -36,7 +36,7 @@ public class AdminCommentReportController {
 
         model.addAttribute("report", report);
 
-        return "admin/AdminCommentReportDetail"; // 상세 JSP 따로 만들었을 경우
+        return "admin/adminCommentReport"; // 상세 JSP 따로 만들었을 경우
         // 만약 하나로 쓸거면 "admin/AdminCommentReport" 로 바꿔도 됨
     }
 

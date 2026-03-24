@@ -71,8 +71,21 @@
 
     <form id="writeForm" action="${contextPath}/community/insertBoard" method="post" enctype="multipart/form-data">
 
-   <input type="hidden" name="boardCode" value="1">
-        <!-- 카테고리 코드만 보냄 -->
+        <c:choose>
+            <c:when test="${param.boardType eq 'myKidBoard'}">
+                <input type="hidden" name="boardCode" value="1">
+            </c:when>
+            <c:when test="${param.boardType eq 'tip'}">
+                <input type="hidden" name="boardCode" value="2">
+            </c:when>
+            <c:when test="${param.boardType eq 'free'}">
+                <input type="hidden" name="boardCode" value="3">
+            </c:when>
+            <c:otherwise>
+                <input type="hidden" name="boardCode" value="1">
+            </c:otherwise>
+        </c:choose>
+
         <input type="hidden" name="categoryCode" id="categoryCode">
 
         <div class="board-title-box">
@@ -89,7 +102,7 @@
         <c:if test="${param.boardType eq 'tip'}">
             <div class="form-block inline-block">
                 <div class="form-label">
-                    반려동물 종 선택 <span class="required">*</span>
+                    카테고리 선택 <span class="required">*</span>
                 </div>
 
                 <div class="select-btn-group">
@@ -179,7 +192,6 @@
     const customModalConfirm = document.getElementById("customModalConfirm");
 
     let selectedImages = [];
-    let isSubmitted = false;
     let focusTarget = null;
 
     function showModal(message, target) {
@@ -190,7 +202,9 @@
 
     function closeModal() {
         customModal.classList.remove("show");
-        if (focusTarget) focusTarget.focus();
+        if (focusTarget) {
+            focusTarget.focus();
+        }
     }
 
     customModalConfirm.addEventListener("click", closeModal);
@@ -269,7 +283,7 @@
 
         removeButtons.forEach(function(btn) {
             btn.onclick = function() {
-                const index = Number(this.dataset.index);
+                const index = parseInt(this.dataset.index);
                 selectedImages.splice(index, 1);
                 updateImageInput();
                 renderImagePreview();
@@ -280,11 +294,14 @@
     writeForm.addEventListener("submit", function(e) {
         const title = titleInput.value.trim();
         const content = contentInput.value.trim();
+        const categoryCode = categoryCodeInput.value;
 
-        if ((boardType === "tip" || boardType === "free") && categoryCodeInput.value === "") {
-            e.preventDefault();
-            showModal("카테고리를 선택해주세요.", categoryButtons.length > 0 ? categoryButtons[0] : null);
-            return;
+        if (boardType === "tip" || boardType === "free") {
+            if (!categoryCode) {
+                e.preventDefault();
+                showModal("카테고리를 선택해주세요.");
+                return;
+            }
         }
 
         if (title === "") {
@@ -295,23 +312,8 @@
 
         if (content.length < 5) {
             e.preventDefault();
-            showModal("내용은 5글자 이상 입력해주세요.", contentInput);
+            showModal("내용은 5자 이상 입력해주세요.", contentInput);
             return;
-        }
-
-        isSubmitted = true;
-    });
-
-    window.addEventListener("beforeunload", function(e) {
-        const hasDraft =
-            titleInput.value.trim() !== "" ||
-            contentInput.value.trim() !== "" ||
-            categoryCodeInput.value !== "" ||
-            selectedImages.length > 0;
-
-        if (!isSubmitted && hasDraft) {
-            e.preventDefault();
-            e.returnValue = "";
         }
     });
 </script>
