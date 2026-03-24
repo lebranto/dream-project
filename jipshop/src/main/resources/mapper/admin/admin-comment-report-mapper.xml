@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminCommentReportMapper">
+
+    <select id="selectDetail" resultType="com.kh.jipshop.admin.model.vo.AdminCommentReport">
+        SELECT
+            CR.REPORT_ID,
+            CR.COMMENT_ID,
+            RT.TYPE_NAME AS REPORT_TYPE_NAME,
+            CR.REPORT_REASON,
+            CR.REPORT_DATE,
+            BC.BOARD_NO,
+            BC.COMMENT_CONTENT,
+            BC.COMMENT_REG_DATE,
+            M.MEMBER_ID AS COMMENT_WRITER_ID
+        FROM COMMENT_REPORT CR
+        JOIN REPORT_TYPE RT ON CR.REPORT_TYPE_ID = RT.REPORT_TYPE_ID
+        JOIN BOARD_COMMENT BC ON CR.COMMENT_ID = BC.COMMENT_ID
+        JOIN MEMBER M ON BC.MEMBER_NO = M.MEMBER_NO
+        WHERE CR.REPORT_ID = #{reportId}
+    </select>
+
+    <update id="deleteComment">
+        UPDATE BOARD_COMMENT
+        SET COMMENT_ACTIVE_YN = 'N'
+        WHERE COMMENT_ID = #{commentId}
+    </update>
+
+    <update id="updateReportStatus">
+        UPDATE COMMENT_REPORT
+        SET REPORT_PROCESS_YN = 'Y'
+        WHERE REPORT_ID = #{reportId}
+    </update>
+
+<select id="selectReportList" resultType="com.kh.jipshop.admin.model.vo.AdminCommentReport">
+    SELECT
+        CR.REPORT_ID,
+        CR.COMMENT_ID,
+        RT.TYPE_NAME AS REPORT_TYPE_NAME,
+        CR.REPORT_REASON,
+        CR.REPORT_DATE,
+        CR.REPORT_PROCESS_YN
+    FROM COMMENT_REPORT CR
+    JOIN REPORT_TYPE RT ON CR.REPORT_TYPE_ID = RT.REPORT_TYPE_ID
+    ORDER BY CR.REPORT_ID DESC
+</select>
+</mapper>

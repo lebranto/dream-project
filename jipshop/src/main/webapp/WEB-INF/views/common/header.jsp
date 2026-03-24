@@ -10,13 +10,13 @@
     <!-- 상단 유틸 메뉴 -->
     <div class="top-bar">
         <div class="top-menu">
-            <!-- 로그인하지 않은 사용자가 보게될 화면 -->
-            <sec:authorize access="isAnonymous()">
-                 <a href="${contextPath}/member/login">로그인</a>
+          <!-- 로그인하지 않은 사용자가 보게될 화면 -->
+          <sec:authorize access="isAnonymous()">
+             <a href="${contextPath}/member/login">로그인</a>
 		         <a href="${contextPath}/security/insert">회원가입</a>
 		         <a href="${contextPath}/mypage/purchase">마이페이지</a>
 		         <a href="#">문의</a>                           	
-		     </sec:authorize>
+		      </sec:authorize>
 		     
 		     <sec:authorize access="isAuthenticated()">
                 <label><sec:authentication property="principal.memberName"/>님 환영합니다.</label> &nbsp;&nbsp;
@@ -40,13 +40,13 @@
         <div class="search-area">
             <input type="text" placeholder="검색어를 입력하세요">
             <button type="button">
-                <img src="${contextPath}/resources/img/search_icon.png" alt="검색">
+                <img src="${pageContext.request.contextPath}/resources/img/search_icon.png" alt="검색">
             </button>
         </div>
 
         <div class="icon-area">
             <a href="#">
-                <img src="${contextPath}/resources/img/장바구니.png" alt="장바구니">
+                <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
             </a>
         </div>
     </div>
@@ -111,9 +111,9 @@
                     <a href="#" class="nav-link">추천</a>
                 </li>
 
-                <li class="menu-item">
-                    <a href="#" class="nav-link">커뮤니티</a>
-                </li>
+              <li class="menu-item">
+    			<a href="${pageContext.request.contextPath}/community/main" class="nav-link">커뮤니티</a>
+				</li>
             </ul>
 
         </div>
