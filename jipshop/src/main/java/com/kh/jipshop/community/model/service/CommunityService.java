@@ -47,6 +47,10 @@ public interface CommunityService {
 
 		int deleteBoard(Board board);
 
+		int insertComment(BoardComment comment);
+
+		int insertCommentReport(int memberNo, int commentId);
+
 		
 	
 }

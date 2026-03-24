@@ -25,7 +25,7 @@ public class CommunityMainController {
 
     @Autowired
     private CommunityService communityService;
-
+//조회수
     @GetMapping("/detail")
     public String detail(@RequestParam("boardNo") int boardNo, Model model, Authentication auth) {
 
@@ -61,7 +61,7 @@ public class CommunityMainController {
 
         return "community/boardDetail";
     }
-
+//좋아요
     @ResponseBody
     @PostMapping(value="/like", produces="application/json; charset=UTF-8")
     public String boardLike(@RequestParam("boardNo") int boardNo, Authentication auth) {
@@ -90,5 +90,46 @@ public class CommunityMainController {
         int likeCheck = communityService.checkBoardLike(boardLike);
 
         return "{\"result\":\"success\", \"updateResult\":\"" + result + "\", \"likeCount\":\"" + likeCount + "\", \"likeCheck\":\"" + likeCheck + "\"}";
+    }
+    //댓글등록
+    @PostMapping("/insertComment")
+    public String insertComment(@RequestParam("boardNo") int boardNo,
+                                @RequestParam("commentContent") String commentContent,
+                                Authentication auth) {
+
+        if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof MemberExt)) {
+            return "redirect:/member/login";
+        }
+
+        MemberExt loginUser = (MemberExt) auth.getPrincipal();
+
+        if (commentContent == null || commentContent.trim().isEmpty()) {
+            return "redirect:/community/detail?boardNo=" + boardNo;
+        }
+
+        BoardComment comment = new BoardComment();
+        comment.setBoardNo(boardNo);
+        comment.setMemberNo(loginUser.getMemberNo());
+        comment.setCommentContent(commentContent.trim());
+
+        int result = communityService.insertComment(comment);
+
+        return "redirect:/community/detail?boardNo=" + boardNo;
+    }
+    //댓글 신고 
+    @PostMapping("/reportComment")
+    public String reportComment(@RequestParam("boardNo") int boardNo,
+                                @RequestParam("commentId") int commentId,
+                                Authentication auth) {
+
+        if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof MemberExt)) {
+            return "redirect:/member/login";
+        }
+
+        MemberExt loginUser = (MemberExt) auth.getPrincipal();
+
+        int result = communityService.insertCommentReport(loginUser.getMemberNo(), commentId);
+
+        return "redirect:/community/detail?boardNo=" + boardNo;
     }
 }

@@ -362,3 +362,26 @@ button {
 .cancel-btn {
     background-color: #e0e0e0;
 }
+.report-modal-box {
+    width: 420px;
+    padding: 34px 30px;
+}
+
+.report-modal-box h3 {
+    font-size: 22px;
+    margin-bottom: 18px;
+}
+
+.report-main-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.report-sub-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 28px;
+}

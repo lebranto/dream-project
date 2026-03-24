@@ -48,4 +48,8 @@ public interface CommunityDao {
 	List<Board> selectBoardListBySearch(SqlSessionTemplate sqlSession, Map<String, Object> paramMap);
 
 	int deleteBoard(SqlSessionTemplate sqlSession, Board board);
+
+	int insertComment(SqlSessionTemplate sqlSession, BoardComment comment);
+
+	int insertCommentReport(SqlSessionTemplate sqlSession, int reporterMemberNo, int commentId);
 }
