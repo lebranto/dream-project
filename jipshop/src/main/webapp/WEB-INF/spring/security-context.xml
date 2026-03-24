@@ -30,7 +30,7 @@
 		 <security:intercept-url pattern="/security/insert" access="permitAll" />
 		 <security:intercept-url pattern="/member/login" access="permitAll" />
 		 <security:intercept-url pattern="/member/idCheck" access="permitAll" />
-		 <security:intercept-url pattern="/sms/**" access="permitAll" />  <!-- ← 추가 -->
+		 <security:intercept-url pattern="/sms/**" access="permitAll" />
 		 
 		 <!-- 
 		 	form-login
