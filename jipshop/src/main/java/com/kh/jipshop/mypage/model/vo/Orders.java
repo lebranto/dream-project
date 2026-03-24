@@ -17,7 +17,7 @@ public class Orders {
     private int orderTotalPrice;
     private int orderDeliveryFee;
     private String ordererName;
-    private String odererPhone;
+    private String ordererPhone;
     private String ordererEmail;
     private String orderMemo;
     
@@ -28,9 +28,9 @@ public class Orders {
     
     // 구매 취소 관련
     private char orderCancleYn;
-    private Date cancleRequestDate;
-    private String cancleReason;
-    private String cancleStatus;
+    private Date cancelRequestDate;
+    private String cancelReason;
+    private String cancelStatus;
 	
 	
 	

@@ -18,9 +18,9 @@ public class MypageServiceImpl implements MypageService {
 	private final MypageDao mDao;
 
 	@Override
-	public List<Orders> orderList(int orderNo) {
+	public List<Orders> orderList(int memberNo) {
 		
-		return mDao.orderList(orderNo);
+		return mDao.orderList(memberNo);
 	}
 
 	@Override

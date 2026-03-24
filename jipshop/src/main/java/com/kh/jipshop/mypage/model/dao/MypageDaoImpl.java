@@ -18,9 +18,9 @@ public class MypageDaoImpl implements MypageDao {
 	
 	
 	@Override
-	public List<Orders> orderList(int memeberId) {
+	public List<Orders> orderList(int memberId) {
 		
-		return session.selectList("mypage.orderList",memeberId);
+		return session.selectList("mypage.orderList",memberId);
 	}
 
 
