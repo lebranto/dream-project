@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,19 +28,9 @@ body{
     padding-bottom:15px;
 }
 
-.title{
-    font-size:24px;
-    font-weight:bold;
-}
-
-.step{
-    font-size:13px;
-    color:#bbb;
-}
-
-.step b{
-    color:#000;
-}
+.title{ font-size:24px; font-weight:bold; }
+.step{ font-size:13px; color:#bbb; }
+.step b{ color:#000; }
 
 /* 테이블 */
 .order-table{
@@ -75,7 +64,7 @@ body{
     object-fit:cover;
 }
 
-/* 총 금액 박스 */
+/* 총 금액 */
 .total-box{
     margin-top:20px;
     border:1px solid #ddd;
@@ -85,25 +74,13 @@ body{
     gap:60px;
 }
 
-.total-box div{
-    text-align:center;
-}
+.total-box div{ text-align:center; }
 
-.price1{
-    color:#FFD780;
-    font-weight:bold;
-}
+.price1{ color:#FFD780; font-weight:bold; }
+.price2{ color:#FF9B65; font-weight:bold; }
 
-.price2{
-    color:#FF9B65;
-    font-weight:bold;
-}
-
-/* 주문자 정보 */
-.info-title{
-    margin-top:40px;
-    font-weight:bold;
-}
+/* 입력 */
+.info-title{ margin-top:40px; font-weight:bold; }
 
 .info-table{
     width:100%;
@@ -122,14 +99,28 @@ body{
 }
 
 .info-table td:first-child{
-    white-space: nowrap;   /* 줄바꿈 방지 */
-    width:120px;           /* 필요하면 조절 */
+    white-space: nowrap;
+    width:120px;
+}
+
+/* ⭐ 라벨 정렬 + 필수 표시 */
+.label{
+    display:inline-block;
+    padding-left:12px;
+    position:relative;
+}
+
+.label.required::before{
+    content:"*";
+    position:absolute;
+    left:0;
+    color:#FF9B65;
+    font-weight:bold;
 }
 
 
 </style>
 
-<!-- ✅ 주소 API -->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </head>
@@ -140,125 +131,120 @@ body{
 
 <div class="container">
 
-    <!-- 상단 -->
-    <div class="top-area">
-        <div class="title">주문서작성/결제</div>
-        <div class="step">
-            01 장바구니 > <b>02 주문서작성/결제</b> > 03 주문완료
-        </div>
+<!-- 상단 -->
+<div class="top-area">
+    <div class="title">주문서작성/결제</div>
+    <div class="step">
+        01 장바구니 > <b>02 주문서작성/결제</b> > 03 주문완료
     </div>
+</div>
 
-    <!-- 주문상품 -->
-    <h4>주문상세내역</h4>
+<!-- 주문상품 -->
+<h4>주문상세내역</h4>
 
-    <table class="order-table">
-        <tr>
-            <th>상품/옵션 정보</th>
-            <th>수량</th>
-            <th>상품금액</th>
-            <th>배송비</th>
-        </tr>
+<table class="order-table">
+<tr>
+    <th>상품/옵션 정보</th>
+    <th>수량</th>
+    <th>상품금액</th>
+    <th>배송비</th>
+</tr>
 
-        <tr>
-            <td>
-                <div class="product">
-                    <img src="https://placehold.co/80x80" />
-                    관절 건강 강아지 사료 1kg
-                </div>
-            </td>
-            <td>1개</td>
-            <td>19,900원</td>
-            <td>무료배송</td>
-        </tr>
-    </table>
-
-    <div style="margin-top:10px; color:#555;">&lt; 장바구니 가기</div>
-
-    <!-- 총 금액 -->
-    <div class="total-box">
-        <div>
-            총 1개의 상품금액<br>
-            <span class="price1">19,900원</span>
+<tr>
+    <td>
+        <div class="product">
+            <img src="https://placehold.co/80x80" />
+            관절 건강 강아지 사료 1kg
         </div>
-        <div>
-            배송비<br>
-            0원
-        </div>
-        <div>
-            합계<br>
-            <span class="price2">19,900원</span>
-        </div>
-    </div>
+    </td>
+    <td>1개</td>
+    <td>19,900원</td>
+    <td>무료배송</td>
+</tr>
+</table>
 
-    <!-- 주문자 정보 -->
-    <div class="info-title">주문자 정보</div>
+<div style="margin-top:10px; color:#555;">&lt; 장바구니 가기</div>
 
-    <table class="info-table">
-        <tr>
-            <td>주문하시는 분</td>
-            <td><input type="text"></td>
-        </tr>
-        <tr>
-            <td>전화번호</td>
-            <td><input type="text"></td>
-        </tr>
-        <tr>
-            <td>핸드폰 번호</td>
-            <td><input type="text"></td>
-        </tr>
-        <tr>
-            <td>이메일</td>
-            <td>
-                <input type="text">
-                <select>
-                    <option>직접입력</option>
-                    <option>naver.com</option>
-                    <option>gmail.com</option>
-                </select>
-            </td>
-        </tr>
-    </table>
-    
-    <!-- 배송정보 -->
+<!-- 총 금액 -->
+<div class="total-box">
+    <div>총 1개의 상품금액<br><span class="price1">19,900원</span></div>
+    <div>배송비<br>0원</div>
+    <div>합계<br><span class="price2">19,900원</span></div>
+</div>
+
+<!-- 주문자 정보 -->
+<div class="info-title">주문자 정보</div>
+
+<table class="info-table">
+<tr>
+    <td><span class="label required">주문하시는 분</span></td>
+    <td><input type="text" id="orderName"></td>
+</tr>
+<tr>
+    <td><span class="label">전화번호</span></td>
+    <td><input type="text"></td>
+</tr>
+<tr>
+    <td><span class="label required">핸드폰 번호</span></td>
+    <td><input type="text" id="orderPhone"></td>
+</tr>
+<tr>
+    <td><span class="label required">이메일</span></td>
+    <td>
+        <input type="text" id="email1">
+        <select id="email2">
+            <option value="">직접입력</option>
+            <option>naver.com</option>
+            <option>gmail.com</option>
+        </select>
+    </td>
+</tr>
+</table>
+
+<!-- 배송정보 -->
 <h4 style="margin-top:40px;">배송정보</h4>
 
 <table class="info-table">
-    <tr>
-        <td>배송지 확인</td>
-        <td>
-        <input type="radio" name="addr" checked>기본 배송지
-        <input type="radio" name="addr">최근 배송지
-        <input type="radio" name="addr">직접 입력
-        <select>
-            <option>배송지 관리</option>
-        </select>
+<tr>
+<td><span class="label">배송지 확인</span></td>
+<td>
+<input type="radio" name="addr" checked>기본 배송지
+<input type="radio" name="addr">최근 배송지
+<input type="radio" name="addr">직접 입력
+<select>
+<option>배송지 관리</option>
+</select>
 </td>
-    </tr>
-    <tr>
-        <td>받으실 분</td>
-        <td><input type="text"></td>
-    </tr>
-    <tr>
-        <td>받으실 곳</td>
-        <td>
-            <!-- ✅ 여기만 수정 -->
-            <input type="text" id="address" placeholder="주소">
-            <button type="button" onclick="execDaumPostcode()">우편번호 검색</button><br><br>
-            <input type="text" id="detailAddress" placeholder="상세주소">
-        </td>
-    </tr>
-    <tr>
-        <td>전화번호</td>
-        <td><input type="text"></td>
-    </tr>
-    <tr>
-        <td>핸드폰 번호</td>
-        <td><input type="text"></td>
-    </tr>
-    <tr>
-        <td>구매자 메모</td>
-        <td><input type="text" style="width:400px;"></td>
-    </tr>
+</tr>
+
+<tr>
+<td><span class="label required">받으실 분</span></td>
+<td><input type="text" id="receiver"></td>
+</tr>
+
+<tr>
+<td><span class="label required">받으실 곳</span></td>
+<td>
+<input type="text" id="address" placeholder="주소">
+<button type="button" onclick="execDaumPostcode()">우편번호 검색</button><br><br>
+<input type="text" id="detailAddress" placeholder="상세주소">
+</td>
+</tr>
+
+<tr>
+<td><span class="label">전화번호</span></td>
+<td><input type="text"></td>
+</tr>
+
+<tr>
+<td><span class="label required">핸드폰 번호</span></td>
+<td><input type="text" id="receiverPhone"></td>
+</tr>
+
+<tr>
+<td><span class="label">구매자 메모</span></td>
+<td><input type="text" style="width:400px;"></td>
+</tr>
 </table>
 
 <!-- 결제수단 -->
@@ -274,13 +260,13 @@ body{
     </div>
 
     <div style="margin-top:15px;">
-        입금자명 <input type="text" style="width:200px; height:35px;">
+        입금자명 <input type="text" id="depositor" style="width:200px; height:35px;">
     </div>
 
     <div style="margin-top:10px;">
         입금은행 
-        <select>
-            <option>선택하세요</option>
+        <select id="bank">
+            <option value="">선택하세요</option>
             <option>국민은행 05499012421*** 집사상점</option>
             <option>우리은행 69024653318*** 집사상점</option>
         </select>
@@ -291,66 +277,84 @@ body{
 <h4 style="margin-top:40px;">결제정보</h4>
 
 <table class="info-table">
-    <tr>
-        <td>상품 합계 금액</td>
-        <td>19,900원</td>
-    </tr>
-    <tr>
-        <td>배송비</td>
-        <td>0원</td>
-    </tr>
-    <tr>
-        <td><b>최종 결제 금액</b></td>
-        <td><b>19,900원</b></td>
-    </tr>
+<tr>
+    <td>상품 합계 금액</td>
+    <td>19,900원</td>
+</tr>
+<tr>
+    <td>배송비</td>
+    <td>0원</td>
+</tr>
+<tr>
+    <td><b>최종 결제 금액</b></td>
+    <td><b>19,900원</b></td>
+</tr>
 </table>
 
-<!-- 결제 동의 -->
+<!-- 동의 -->
 <div style="margin-top:20px; text-align:center;">
-    <label>
-        <input type="checkbox">
-        <span style="color:red;">(필수)</span> 구매하실 상품의 결제정보를 확인하였으며, 구매진행에 동의합니다.
-    </label>
+<label>
+<input type="checkbox" id="agree">
+<span style="color:red;">(필수)</span> 구매하실 상품의 결제정보를 확인하였으며, 구매진행에 동의합니다.
+</label>
 </div>
 
-<!-- 결제 버튼 -->
+<!-- 버튼 -->
 <div style="text-align:center; margin-top:20px;">
-    <button style="
-        width:200px;
-        height:50px;
-        font-size:18px;
-        background:#eee;
-        border:1px solid #ccc;
-        border-radius:5px;
-        cursor:pointer;
-    ">
-        결제하기
-    </button>
+<button id="payBtn" style="width:200px;height:50px;font-size:18px;background:#eee;border:1px solid #ccc;border-radius:5px;">
+결제하기
+</button>
 </div>
 
 </div>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
-<!-- ✅ 주소 API 함수 -->
 <script>
 function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
-
-            var addr = '';
-
-            if (data.userSelectedType === 'R') {
-                addr = data.roadAddress;
-            } else {
-                addr = data.jibunAddress;
-            }
-
-            document.getElementById("address").value = addr;
+            document.getElementById("address").value = data.roadAddress || data.jibunAddress;
             document.getElementById("detailAddress").focus();
         }
     }).open();
 }
+
+// ✅ 필수 체크
+document.getElementById("payBtn").addEventListener("click", function(){
+
+    const required = [
+        "orderName","orderPhone","email1",
+        "receiver","address","detailAddress","receiverPhone",
+        "depositor"
+    ];
+
+    for(let id of required){
+        let el = document.getElementById(id);
+        if(!el.value.trim()){
+            alert("필수 입력사항 확인해주세요");
+            el.focus();
+            return;
+        }
+    }
+
+    if(document.getElementById("email2").value === ""){
+        alert("필수 입력사항 확인해주세요");
+        return;
+    }
+
+    if(document.getElementById("bank").value === ""){
+        alert("필수 입력사항 확인해주세요");
+        return;
+    }
+
+    if(!document.getElementById("agree").checked){
+        alert("필수 입력사항 확인해주세요");
+        return;
+    }
+
+    alert("결제 진행합니다");
+});
 </script>
 
 </body>
