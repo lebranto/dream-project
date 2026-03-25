@@ -22,7 +22,7 @@ import com.kh.jipshop.member.model.vo.Member;
 @SessionAttributes({"loginUser"})
 public class MemberController {
   
-	@Autowired //�쓽議댁꽦二쇱엯
+	@Autowired 
 	private MemberService mService;
 	
   @RequestMapping("/")
@@ -104,8 +104,8 @@ public class MemberController {
 		return "member/login";
 	}
 	
-	// 鍮꾨룞湲� �슂泥� 泥섎━
-	@ResponseBody // 諛섑솚媛믪쓣 jsp媛� �븘�땶, 諛섑솚�빐�빞�븷 媛믪쑝濡� 泥섎━�븯寃� �븯�뒗 二쇱꽍
+	
+	@ResponseBody 
 	@GetMapping("/idCheck")
 	public int idCheck(String memberId) {
 		int result = mService.idCheck(memberId);
@@ -123,10 +123,10 @@ public class MemberController {
 	    List<String> memberIds = mService.findMemberId(m);
 	    if (memberIds != null && !memberIds.isEmpty()) {
 	        result.put("success", true);
-	        result.put("memberIds", memberIds); // 由ъ뒪�듃濡� 諛섑솚
+	        result.put("memberIds", memberIds); // 리스트로 반환
 	    } else {
 	        result.put("success", false);
-	        result.put("message", "�엯�젰�븯�떊 �젙蹂댁� �씪移섑븯�뒗 �븘�씠�뵒媛� �뾾�뒿�땲�떎.");
+	        result.put("message", "입력하신 정보와 일치하는 아이디가 없습니다.");
 	    }
 	    return result;
 	}
