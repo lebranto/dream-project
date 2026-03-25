@@ -72,30 +72,30 @@
 
         <c:otherwise>
           <div class="inquiry-list">
-            <c:forEach var="q" items="${inquiryList}">
+            <c:forEach var="i" items="${inquiryList}">
               <div class="inquiry-card">
-                <div class="number-cell">${q.inquiryNo}</div>
-                <div class="title-cell">${q.inquiryTitle}</div>
-                <div class="date-cell">${q.createDate}</div>
-                <div class="status-cell">${q.answerStatus}</div>
+                <div class="number-cell">${i.inquiryId}</div>
+                <div class="title-cell">${i.inquiryContent}</div>
+                <div class="date-cell">${i.inquryRegDate}</div>
+                <div class="status-cell">${i.replyYn}</div>
               </div>
             </c:forEach>
           </div>
 
           <div class="pagination">
             <c:if test="${pi.currentPage > 1}">
-              <a class="page-arrow" href="${contextPath}/mypage/question?cpage=${pi.currentPage - 1}">◀</a>
+              <a class="page-arrow" href="${contextPath}/mypage/inquiry?cpage=${pi.currentPage - 1}">◀</a>
             </c:if>
 
             <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
               <a class="page-btn ${p == pi.currentPage ? 'active' : ''}"
-                 href="${contextPath}/mypage/question?cpage=${p}">
+                 href="${contextPath}/mypage/inquiry?cpage=${p}">
                 ${p}
               </a>
             </c:forEach>
 
             <c:if test="${pi.currentPage < pi.maxPage}">
-              <a class="page-arrow" href="${contextPath}/mypage/question?cpage=${pi.currentPage + 1}">▶</a>
+              <a class="page-arrow" href="${contextPath}/mypage/inquiry?cpage=${pi.currentPage + 1}">▶</a>
             </c:if>
           </div>
         </c:otherwise>
