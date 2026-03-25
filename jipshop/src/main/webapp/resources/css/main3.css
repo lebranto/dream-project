@@ -15,7 +15,7 @@
    
    
    .inner {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 
@@ -143,6 +143,7 @@
     .product-grid .product-card img {
       height: 120px;
     }
+    
 
     /* 반응형 */
     @media (max-width: 1024px) {
