@@ -27,7 +27,6 @@ public class SmsController {
     private static final String API_KEY      = "NCSV2H8XE9A1JPVI";
     private static final String API_SECRET   = "2XUKX6WYNRMUAHR9GFF6USHJ0J6UJPB0";
     private static final String FROM_NUMBER  = "01027159165 "; // 발신번호 (Coolsms에 등록된 번호)
-    private final MemberService mService; 
  
     // ── 인증번호 발송 ──
     @ResponseBody

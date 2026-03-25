@@ -46,5 +46,15 @@ public class MemberDaoImpl implements MemberDao{
 		return session.selectList("member.findMemberId", m);
 	}
 
+	@Override
+	public int findMemberByIdAndPhone(Member m) {
+		return session.selectOne("member.findMemberByIdAndPhone", m);
+	}
+
+	@Override
+	public int updateMemberPwd(Member m) {
+		return session.update("member.updateMemberPwd",m);
+	}
+
 
 }

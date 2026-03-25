@@ -19,4 +19,8 @@ public interface MemberDao {
 
 	List<String> findMemberId(Member m);
 
+	int findMemberByIdAndPhone(Member m);
+
+	int updateMemberPwd(Member m);
+
 }

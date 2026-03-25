@@ -42,6 +42,16 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.findMemberId(m);
 	}
 
+	@Override
+	public int findMemberByIdAndPhone(Member m) {
+		return memberDao.findMemberByIdAndPhone(m);
+	}
+
+	@Override
+	public int updateMemberPwd(Member m) {
+		return memberDao.updateMemberPwd(m);
+	}
+
 
 
 	

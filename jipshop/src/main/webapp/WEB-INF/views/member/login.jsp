@@ -199,7 +199,11 @@
 
       // 엔터키로도 로그인 가능
       document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') checkLogin();
+    	  if (e.key === 'Enter') {
+		    // 모달이 열려있으면 엔터키 로그인 무시
+		    if (document.getElementById('findModal').classList.contains('active')) return;
+		    checkLogin();
+    	  }
       });
       
       /* ── 모달 열기/닫기 ── */
@@ -345,6 +349,44 @@
 	      } else { alert(res.message); }
 	    }
 	  });
+	}
+	
+	function changePwd() {
+	  const memberId      = document.getElementById('findPwdId').value.trim();
+	  const phone         = document.getElementById('findPwdPhone').value.trim();
+	  const newPwd        = document.getElementById('newPwd').value.trim();
+	  const newPwdConfirm = document.getElementById('newPwdConfirm').value.trim();
+	
+	  if (newPwd === '') { alert('새 비밀번호를 입력해주세요.'); return; }
+	  const pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+	  if (!pwRegex.test(newPwd)) { alert('비밀번호는 8자리 이상의 대소문자, 숫자, 특수문자를 포함해야 합니다.'); return; }
+	  if (newPwd !== newPwdConfirm) { alert('비밀번호가 일치하지 않습니다.'); return; }
+	
+	  $.ajax({
+	    url: ctx + '/security/resetPwd', type: 'POST',
+	    data: { memberId: memberId, phone: phone, memberPwd: newPwd, '${_csrf.parameterName}': '${_csrf.token}'},
+	    success: function(res) {
+	      document.getElementById('findPwdForm').style.display = 'none';
+	      const result = document.getElementById('findPwdResult');
+	      result.classList.add('active');
+	      document.getElementById('findPwdResultMsg').textContent = res.message;
+	      if (res.success) { result.classList.remove('fail'); }
+	      else { result.classList.add('fail'); }
+	    }
+	  });
+	}
+
+	function resetFindPwd() {
+	  document.getElementById('findPwdForm').style.display = 'block';
+	  document.getElementById('findPwdResult').classList.remove('active');
+	  ['findPwdId', 'findPwdPhone', 'findPwdCode', 'newPwd', 'newPwdConfirm']
+	    .forEach(id => document.getElementById(id).value = '');
+	  document.getElementById('findPwdCode').readOnly       = false;
+	  document.getElementById('btnFindPwdSend').disabled    = false;
+	  document.getElementById('btnFindPwdVerify').disabled  = false;
+	  document.getElementById('pwdChangeArea').classList.remove('active');
+	  clearInterval(findPwdTimerInterval);
+	  document.getElementById('findPwdTimer').style.display = 'none';
 	}
    
    function goLogin() { closeFindModal(); }

@@ -16,5 +16,9 @@ public interface MemberService {
 	int insertPet(Pet pet);
 
 	List<String> findMemberId(Member m);
+
+	int findMemberByIdAndPhone(Member m);
+
+	int updateMemberPwd(Member m);
 	
 }

@@ -2,11 +2,13 @@ package com.kh.jipshop.security.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -155,8 +158,44 @@ public class SecurityController {
 	        throw new RuntimeException("회원가입 실패");
 	    }
 	
+	}
 	
-	
+	// 비밀번호 찾기 - 아이디 + 전화번호 인증 후 변경
+	@ResponseBody
+	@PostMapping("/resetPwd")
+	public Map<String, Object> resetPwd(
+	        Member member,
+	        HttpSession session) {
+
+	    Map<String, Object> result = new HashMap<>();
+
+	    // SMS 인증 완료 여부 확인
+	    Boolean pwdVerified = (Boolean) session.getAttribute("pwdPhoneVerified");
+	    if (pwdVerified == null || !pwdVerified) {
+	        result.put("success", false);
+	        result.put("message", "전화번호 인증을 완료해주세요.");
+	        return result;
+	    }
+
+	    // 전화번호 '-' 제거
+	    if (member.getPhone() != null) {
+	        member.setPhone(member.getPhone().replaceAll("-", ""));
+	    }
+
+	    // 비밀번호 암호화
+	    String encPwd = passwordEncoder.encode(member.getMemberPwd());
+	    member.setMemberPwd(encPwd);
+
+	    int updateResult = mService.updateMemberPwd(member);
+	    if (updateResult > 0) {
+	        session.removeAttribute("pwdPhoneVerified");
+	        result.put("success", true);
+	        result.put("message", "비밀번호가 변경되었습니다.");
+	    } else {
+	        result.put("success", false);
+	        result.put("message", "비밀번호 변경에 실패했습니다.");
+	    }
+	    return result;
 	}
 	
 }

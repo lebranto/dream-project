@@ -78,4 +78,18 @@
 	      AND PHONE = #{phone}
 	      AND MEMBER_ACTIVE_YN = 'Y'
 	</select>
+	
+	<select id="findMemberByIdAndPhone" parameterType="Member" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE MEMBER_ID = #{memberId}
+		  AND PHONE = #{phone}
+		  AND MEMBER_ACTIVE_YN = 'Y'
+	</select>
+	
+	<update id="updateMemberPwd" parameterType="Member">
+		UPDATE MEMBER
+	    SET MEMBER_PWD = #{memberPwd}
+	    WHERE MEMBER_ID = #{memberId}
+	</update>
 </mapper>

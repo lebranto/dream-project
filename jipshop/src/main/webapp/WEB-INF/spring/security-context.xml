@@ -32,6 +32,7 @@
 		 <security:intercept-url pattern="/member/idCheck" access="permitAll" />
 		 <security:intercept-url pattern="/sms/**" access="permitAll" />
 		 <security:intercept-url pattern="/member/findId" access="permitAll" />
+		 <security:intercept-url pattern="/security/resetPwd" access="permitAll" />
 		 
 		 <!-- 
 		 	form-login
