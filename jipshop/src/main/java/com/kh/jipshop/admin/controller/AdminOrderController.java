@@ -60,4 +60,12 @@ public class AdminOrderController {
 
         return "redirect:/admin/order/list";
     }
+    @GetMapping("/list2")
+    public String selectOrderList2() {
+    	return "admin/orderList";
+    }
+    @GetMapping("/cancelList")
+    public String CancelList() {
+    	return "admin/orderCancelList";
+    }
 }
