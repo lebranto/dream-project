@@ -22,7 +22,6 @@ import com.kh.jipshop.member.model.vo.Member;
 @SessionAttributes({"loginUser"})
 public class MemberController {
   
-	@Autowired //의존성주입
 	private MemberService mService;
 	
   @RequestMapping("/")
@@ -104,8 +103,6 @@ public class MemberController {
 		return "member/login";
 	}
 	
-	// 비동기 요청 처리
-	@ResponseBody // 반환값을 jsp가 아닌, 반환해야할 값으로 처리하게 하는 주석
 	@GetMapping("/idCheck")
 	public int idCheck(String memberId) {
 		int result = mService.idCheck(memberId);

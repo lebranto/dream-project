@@ -26,11 +26,16 @@
 			메인페이지, 회원가입페이지, 로그인페이지, 아이디 중복 체크 기능은
 			모든 사용자가 이용 가능하도록 설정.
 		 -->
+		  <!-- 커뮤니티 작성 및 수정삭제 권한  -->
+		 <security:intercept-url pattern="/community/**" access="isAuthenticated()" />
+		 
+		 
 		 <security:intercept-url pattern="/" access="permitAll" />
 		 <security:intercept-url pattern="/security/insert" access="permitAll" />
 		 <security:intercept-url pattern="/member/login" access="permitAll" />
 		 <security:intercept-url pattern="/member/idCheck" access="permitAll" />
-		 <security:intercept-url pattern="/sms/**" access="permitAll" />
+		 <security:intercept-url pattern="/sms/**" access="permitAll" />  <!-- ← 추가 -->
+		 <security:csrf disabled="true"/>
 		 <security:intercept-url pattern="/member/findId" access="permitAll" />
 		 <security:intercept-url pattern="/security/resetPwd" access="permitAll" />
 		 
@@ -80,6 +85,7 @@
 		 <security:access-denied-handler 
 		 	error-page="/security/accessDenied"
 		 />
+		
 	</security:http>
 	 <!-- 
 	 	Authentication Manager / Provider 등록을 위한 bean객체 등록		 	
@@ -101,4 +107,6 @@
 		  		<security:password-encoder ref="bcryptPasswordEncoder"/>
 		  </security:authentication-provider>
 	  </security:authentication-manager>
+	  
+	
 </beans>

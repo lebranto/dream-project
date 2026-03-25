@@ -1,5 +1,6 @@
 package com.kh.jipshop.community.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -99,5 +100,21 @@ import com.kh.jipshop.community.model.vo.BoardLike;
 		    @Override
 		    public List<Board> selectBoardListBySearch(SqlSessionTemplate sqlSession, Map<String, Object> paramMap) {
 		        return sqlSession.selectList("communityMapper.selectBoardListBySearch", paramMap);
+		    }
+		    @Override
+		    public int deleteBoard(SqlSessionTemplate sqlSession, Board board) {
+		        return sqlSession.update("communityMapper.deleteBoard", board);
+		    }
+		    @Override
+		    public int insertComment(SqlSessionTemplate sqlSession, BoardComment comment) {
+		        return sqlSession.insert("communityMapper.insertComment", comment);
+		    }
+		    @Override
+		    public int insertCommentReport(SqlSessionTemplate sqlSession, int reporterMemberNo, int commentId) {
+		        Map<String, Integer> param = new HashMap<>();
+		        param.put("reporterMemberNo", reporterMemberNo);
+		        param.put("commentId", commentId);
+
+		        return sqlSession.insert("communityMapper.insertCommentReport", param);
 		    }
 }

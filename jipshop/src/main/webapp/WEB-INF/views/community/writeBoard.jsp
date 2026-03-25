@@ -70,7 +70,7 @@
 <div class="write-wrap">
 
     <form id="writeForm" action="${contextPath}/community/insertBoard" method="post" enctype="multipart/form-data">
-
+  		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
         <c:choose>
             <c:when test="${param.boardType eq 'myKidBoard'}">
                 <input type="hidden" name="boardCode" value="1">

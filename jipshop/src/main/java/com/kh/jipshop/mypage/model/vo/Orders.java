@@ -12,7 +12,7 @@ public class Orders {
 	
     // 주문관련
     private int orderId;
-    private int memberId;
+    private int memberNo;
     private Date orderDate;
     private int orderTotalPrice;
     private int orderDeliveryFee;

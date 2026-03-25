@@ -5,6 +5,7 @@
 
 <mapper namespace="adminOrderMapper">
 
+    <!-- 주문관리 ResultMap -->
     <resultMap type="com.kh.jipshop.admin.model.vo.AdminOrder" id="adminOrderResultMap">
         <result property="rowNum" column="ROW_NUM"/>
         <result property="orderId" column="ORDER_ID"/>
@@ -34,74 +35,135 @@
         <result property="dnum" column="DNUM"/>
 
         <result property="orderCancelYn" column="ORDER_CANCEL_YN"/>
+        <result property="cancelStatus" column="CANCEL_STATUS"/>
+        <result property="cancelRequestDate" column="CANCEL_REQUEST_DATE"/>
 
         <result property="startAddress" column="START_ADDRESS"/>
         <result property="arriveAddress" column="ARRIVE_ADDRESS"/>
     </resultMap>
 
-    <!-- 개수 -->
-    <select id="selectOrderListCount" parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch" resultType="_int">
-        SELECT COUNT(*)
-        FROM ORDERS O
-        JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
-        JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
-        LEFT JOIN DELIVERY D ON O.ORDER_ID = D.ORDER_ID
-        LEFT JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID
-        LEFT JOIN COMPANY C ON P.COMPANY_CODE = C.COMPANY_CODE
+    <!-- 주문취소관리 ResultMap -->
+    <resultMap type="com.kh.jipshop.admin.model.vo.AdminOrderCancel" id="adminOrderCancelResultMap">
+        <result property="rnum" column="RNUM" />
+        <result property="orderId" column="ORDER_ID" />
+        <result property="memberNo" column="MEMBER_NO" />
+        <result property="orderDate" column="ORDER_DATE" />
+        <result property="orderTotalPrice" column="ORDER_TOTAL_PRICE" />
+        <result property="orderDeliveryFee" column="ORDER_DELIVERY_FEE" />
+        <result property="ordererName" column="ORDERER_NAME" />
+        <result property="ordererPhone" column="ORDERER_PHONE" />
+        <result property="ordererEmail" column="ORDERER_EMAIL" />
+        <result property="recvName" column="RECV_NAME" />
+        <result property="recvAddress" column="RECV_ADDRESS" />
+        <result property="recvPhone" column="RECV_PHONE" />
+        <result property="orderMemo" column="ORDER_MEMO" />
+        <result property="orderCancelYn" column="ORDER_CANCEL_YN" />
+        <result property="cancelRequestDate" column="CANCEL_REQUEST_DATE" />
+        <result property="cancelReason" column="CANCEL_REASON" />
+        <result property="cancelStatus" column="CANCEL_STATUS" />
+        <result property="detailId" column="DETAIL_ID" />
+        <result property="productId" column="PRODUCT_ID" />
+        <result property="detailQty" column="DETAIL_QTY" />
+        <result property="detailPrice" column="DETAIL_PRICE" />
+        <result property="productName" column="PRODUCT_NAME" />
+    </resultMap>
+
+    <!-- 주문관리 날짜 검색 -->
+    <sql id="orderDateSearchCondition">
         WHERE 1 = 1
-        <if test="startDate != null and endDate != null">
-            AND O.ORDER_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
-                                 AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + 0.99999
+        <if test="startYear != null and startYear != ''
+               and startMonth != null and startMonth != ''
+               and startDay != null and startDay != ''">
+            AND O.ORDER_DATE <![CDATA[>=]]>
+            TO_DATE(#{startYear} || '-' || #{startMonth} || '-' || #{startDay}, 'YYYY-MM-DD')
         </if>
+
+        <if test="endYear != null and endYear != ''
+               and endMonth != null and endMonth != ''
+               and endDay != null and endDay != ''">
+            AND O.ORDER_DATE <![CDATA[<]]>
+            TO_DATE(#{endYear} || '-' || #{endMonth} || '-' || #{endDay}, 'YYYY-MM-DD') + 1
+        </if>
+    </sql>
+
+    <!-- 주문취소관리 날짜 검색 -->
+    <sql id="orderCancelSearchCondition">
+        WHERE O.CANCEL_REQUEST_DATE IS NOT NULL
+        <if test="startYear != null and startYear != ''
+               and startMonth != null and startMonth != ''
+               and startDay != null and startDay != ''">
+            AND O.CANCEL_REQUEST_DATE <![CDATA[>=]]>
+            TO_DATE(#{startYear} || '-' || #{startMonth} || '-' || #{startDay}, 'YYYY-MM-DD')
+        </if>
+
+        <if test="endYear != null and endYear != ''
+               and endMonth != null and endMonth != ''
+               and endDay != null and endDay != ''">
+            AND O.CANCEL_REQUEST_DATE <![CDATA[<]]>
+            TO_DATE(#{endYear} || '-' || #{endMonth} || '-' || #{endDay}, 'YYYY-MM-DD') + 1
+        </if>
+    </sql>
+
+    <!-- 주문관리 개수 -->
+    <select id="selectOrderListCount"
+            parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch"
+            resultType="_int">
+        SELECT COUNT(*)
+          FROM ORDERS O
+          JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
+          JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
+          LEFT JOIN DELIVERY D ON O.ORDER_ID = D.ORDER_ID
+          LEFT JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID
+          LEFT JOIN COMPANY C ON P.COMPANY_CODE = C.COMPANY_CODE
+        <include refid="orderDateSearchCondition"/>
     </select>
 
-    <!-- 목록 -->
-    <select id="selectOrderList" parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch" resultMap="adminOrderResultMap">
+    <!-- 주문관리 목록 -->
+    <select id="selectOrderList"
+            parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch"
+            resultMap="adminOrderResultMap">
         SELECT *
-        FROM (
-            SELECT
-                   ROW_NUMBER() OVER (ORDER BY O.ORDER_ID DESC) AS ROW_NUM,
-                   O.ORDER_ID,
-                   TO_CHAR(O.ORDER_DATE, 'YYYY-MM-DD') AS ORDER_DATE_STR,
-                   O.ORDERER_NAME,
-                   O.ORDERER_PHONE,
-                   O.ORDERER_EMAIL,
-                   O.RECV_NAME,
-                   O.RECV_PHONE,
-                   O.RECV_ADDRESS,
-                   O.RECV_ADDRESS AS ORDERER_ADDRESS,
-                   O.ORDER_CANCEL_YN,
+          FROM (
+                SELECT
+                       ROW_NUMBER() OVER (ORDER BY O.ORDER_ID DESC) AS ROW_NUM,
+                       O.ORDER_ID,
+                       TO_CHAR(O.ORDER_DATE, 'YYYY-MM-DD') AS ORDER_DATE_STR,
+                       O.ORDERER_NAME,
+                       O.ORDERER_PHONE,
+                       O.ORDERER_EMAIL,
+                       O.RECV_NAME,
+                       O.RECV_PHONE,
+                       O.RECV_ADDRESS,
+                       O.RECV_ADDRESS AS ORDERER_ADDRESS,
+                       O.ORDER_CANCEL_YN,
+                       O.CANCEL_STATUS,
+                       O.CANCEL_REQUEST_DATE,
 
-                   P.PRODUCT_ID,
-                   P.PRODUCT_NAME,
-                   P.PRODUCT_PRICE,
-                   P.PRODUCT_PHOTO1,
+                       P.PRODUCT_ID,
+                       P.PRODUCT_NAME,
+                       P.PRODUCT_PRICE,
+                       P.PRODUCT_PHOTO1,
 
-                   NVL(C.COMPANY_NAME, '-') AS COMPANY_NAME,
-                   NVL(C.COMPANY_PHONE, '-') AS COMPANY_PHONE,
-                   NVL(C.ADDRESS_ADDRESS, '-') AS COMPANY_ADDRESS,
+                       NVL(C.COMPANY_NAME, '-') AS COMPANY_NAME,
+                       NVL(C.COMPANY_PHONE, '-') AS COMPANY_PHONE,
+                       NVL(C.ADDRESS_ADDRESS, '-') AS COMPANY_ADDRESS,
 
-                   TO_CHAR(D.EXPECTED_DATE, 'YYYY-MM-DD') AS EXPECTED_DATE_STR,
-                   NVL(S.DELIVERY_YN, 'N') AS DELIVERY_YN,
-                   NVL(S.DELIVERY_STATUS, '배송 준비') AS DELIVERY_STATUS,
-                   NVL(S.DNUM, '-') AS DNUM,
+                       TO_CHAR(D.EXPECTED_DATE, 'YYYY-MM-DD') AS EXPECTED_DATE_STR,
+                       NVL(S.DELIVERY_YN, 'N') AS DELIVERY_YN,
+                       NVL(S.DELIVERY_STATUS, '배송 준비') AS DELIVERY_STATUS,
+                       NVL(S.DNUM, '-') AS DNUM,
 
-                   NVL(C.ADDRESS_ADDRESS, '000시 000구 000읍') AS START_ADDRESS,
-                   O.RECV_ADDRESS AS ARRIVE_ADDRESS
-
-            FROM ORDERS O
-            JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
-            JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
-            LEFT JOIN DELIVERY D ON O.ORDER_ID = D.ORDER_ID
-            LEFT JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID
-            LEFT JOIN COMPANY C ON P.COMPANY_CODE = C.COMPANY_CODE
-            WHERE 1 = 1
-            <if test="startDate != null and endDate != null">
-                AND O.ORDER_DATE BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD')
-                                     AND TO_DATE(#{endDate}, 'YYYY-MM-DD') + 0.99999
-            </if>
-        )
-        ORDER BY ORDER_ID DESC
+                       NVL(C.ADDRESS_ADDRESS, '000시 000구 000읍') AS START_ADDRESS,
+                       O.RECV_ADDRESS AS ARRIVE_ADDRESS
+                  FROM ORDERS O
+                  JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
+                  JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
+                  LEFT JOIN DELIVERY D ON O.ORDER_ID = D.ORDER_ID
+                  LEFT JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID
+                  LEFT JOIN COMPANY C ON P.COMPANY_CODE = C.COMPANY_CODE
+                <include refid="orderDateSearchCondition"/>
+               )
+         ORDER BY ORDER_ID DESC
     </select>
 
     <!-- 배송 여부 수정 -->
@@ -115,21 +177,112 @@
                     END
          WHERE DELIVERY_ID = (
                 SELECT DELIVERY_ID
-                FROM DELIVERY
-                WHERE ORDER_ID = #{orderId}
+                  FROM DELIVERY
+                 WHERE ORDER_ID = #{orderId}
          )
+    </update>
+
+    <!-- 주문취소관리 개수 -->
+    <select id="selectOrderCancelAdminListCount"
+            parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch"
+            resultType="_int">
+        SELECT COUNT(*)
+          FROM ORDERS O
+          JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
+          JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
+        <include refid="orderCancelSearchCondition"/>
+    </select>
+
+    <!-- 주문취소관리 목록 -->
+    <select id="selectOrderCancelAdminList"
+            parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch"
+            resultMap="adminOrderCancelResultMap">
+
+        SELECT
+               ROWNUM AS RNUM,
+               A.ORDER_ID,
+               A.MEMBER_NO,
+               A.ORDER_DATE,
+               A.ORDER_TOTAL_PRICE,
+               A.ORDER_DELIVERY_FEE,
+               A.ORDERER_NAME,
+               A.ORDERER_PHONE,
+               A.ORDERER_EMAIL,
+               A.RECV_NAME,
+               A.RECV_ADDRESS,
+               A.RECV_PHONE,
+               A.ORDER_MEMO,
+               A.ORDER_CANCEL_YN,
+               A.CANCEL_REQUEST_DATE,
+               A.CANCEL_REASON,
+               A.CANCEL_STATUS,
+               A.DETAIL_ID,
+               A.PRODUCT_ID,
+               A.DETAIL_QTY,
+               A.DETAIL_PRICE,
+               A.PRODUCT_NAME
+          FROM (
+                SELECT
+                       O.ORDER_ID,
+                       O.MEMBER_NO,
+                       O.ORDER_DATE,
+                       O.ORDER_TOTAL_PRICE,
+                       O.ORDER_DELIVERY_FEE,
+                       O.ORDERER_NAME,
+                       O.ORDERER_PHONE,
+                       O.ORDERER_EMAIL,
+                       O.RECV_NAME,
+                       O.RECV_ADDRESS,
+                       O.RECV_PHONE,
+                       O.ORDER_MEMO,
+                       O.ORDER_CANCEL_YN,
+                       O.CANCEL_REQUEST_DATE,
+                       O.CANCEL_REASON,
+                       O.CANCEL_STATUS,
+                       OD.DETAIL_ID,
+                       OD.PRODUCT_ID,
+                       OD.DETAIL_QTY,
+                       OD.DETAIL_PRICE,
+                       P.PRODUCT_NAME
+                  FROM ORDERS O
+                  JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
+                  JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
+                <include refid="orderCancelSearchCondition"/>
+                 ORDER BY O.CANCEL_REQUEST_DATE DESC, O.ORDER_ID DESC
+               ) A
+    </select>
+
+    <!-- 주문취소 승인 -->
+    <update id="approveOrderCancelAdminByOrderIds" parameterType="arraylist">
+        UPDATE ORDERS
+           SET CANCEL_STATUS = '완료',
+               ORDER_CANCEL_YN = 'Y'
+         WHERE ORDER_ID IN
+         <foreach collection="list" item="orderId" open="(" separator="," close=")">
+             #{orderId}
+         </foreach>
+    </update>
+
+    <!-- 주문취소 거절 -->
+    <update id="rejectOrderCancelAdminByOrderIds" parameterType="arraylist">
+        UPDATE ORDERS
+           SET CANCEL_STATUS = '거절'
+         WHERE ORDER_ID IN
+         <foreach collection="list" item="orderId" open="(" separator="," close=")">
+             #{orderId}
+         </foreach>
     </update>
 
     <!-- STATUS 삭제 -->
     <delete id="deleteStatusByOrderIds" parameterType="arraylist">
         DELETE FROM STATUS
          WHERE DELIVERY_ID IN (
-            SELECT DELIVERY_ID
-            FROM DELIVERY
-            WHERE ORDER_ID IN
-            <foreach collection="list" item="orderId" open="(" separator="," close=")">
-                #{orderId}
-            </foreach>
+                SELECT DELIVERY_ID
+                  FROM DELIVERY
+                 WHERE ORDER_ID IN
+                 <foreach collection="list" item="orderId" open="(" separator="," close=")">
+                     #{orderId}
+                 </foreach>
          )
     </delete>
 
@@ -138,7 +291,7 @@
         DELETE FROM DELIVERY
          WHERE ORDER_ID IN
          <foreach collection="list" item="orderId" open="(" separator="," close=")">
-            #{orderId}
+             #{orderId}
          </foreach>
     </delete>
 
@@ -147,7 +300,7 @@
         DELETE FROM ORDER_DETAIL
          WHERE ORDER_ID IN
          <foreach collection="list" item="orderId" open="(" separator="," close=")">
-            #{orderId}
+             #{orderId}
          </foreach>
     </delete>
 
@@ -156,7 +309,7 @@
         DELETE FROM ORDERS
          WHERE ORDER_ID IN
          <foreach collection="list" item="orderId" open="(" separator="," close=")">
-            #{orderId}
+             #{orderId}
          </foreach>
     </delete>
 

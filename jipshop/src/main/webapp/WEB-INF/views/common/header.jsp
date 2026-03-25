@@ -45,7 +45,7 @@
                 <div class="search-area">
                     <input type="text" placeholder="검색어를 입력하세요">
                     <button type="button">
-                        <img src="${pageContext.request.contextPath}/resources/img/search_icon.png" alt="검색">
+                        <i class="bi bi-search"></i>
                     </button>
                 </div>
                 <div class="icon-area">

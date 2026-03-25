@@ -73,7 +73,6 @@
                             </select>
 
                             <select name="endDay" class="date-select">
-                                <option value="${d}" ${param.endDay == d.toString() ? 'selected' : ''}>${d}일</option>
                                 <option value="">일</option>
                                 <c:forEach var="d" begin="1" end="31">
                                     <option value="${d}" ${param.endDay == d.toString() ? 'selected' : ''}>${d}일</option>
@@ -148,6 +147,8 @@
                                                        data-expected-date="${o.expectedDateStr}"
                                                        data-delivery-yn="${o.deliveryYn}"
                                                        data-cancel-yn="${o.orderCancelYn}"
+                                                       data-cancel-status="${o.cancelStatus}"
+                                                       data-cancel-request-date="${o.cancelRequestDate}"
                                                        data-product-photo="${o.productPhoto1}">
                                                         ${o.productName}
                                                     </a>
@@ -161,7 +162,14 @@
                                                         <span class="delivery-yn-text">${o.deliveryYn}</span>
                                                     </div>
                                                 </td>
-                                                <td>${o.orderCancelYn}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${o.cancelStatus eq '대기'}">취소요청</c:when>
+                                                        <c:when test="${o.cancelStatus eq '완료'}">취소완료</c:when>
+                                                        <c:when test="${o.cancelStatus eq '거절'}">취소거절</c:when>
+                                                        <c:otherwise>정상</c:otherwise>
+                                                    </c:choose>
+                                                </td>
                                             </tr>
                                         </c:forEach>
                                     </c:otherwise>
@@ -246,6 +254,10 @@
                         <div class="detail-info-item">
                             <span class="info-label">주문번호</span>
                             <span class="info-value" id="detailOrderNumber"></span>
+                        </div>
+                        <div class="detail-info-item">
+                            <span class="info-label">구매취소 상태</span>
+                            <span class="info-value" id="detailCancelStatus"></span>
                         </div>
                     </div>
                 </div>
@@ -340,6 +352,13 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("detailStartAddress").innerText = this.dataset.startAddress || "000시 000구 000읍";
             document.getElementById("detailArriveAddress").innerText = this.dataset.arriveAddress || this.dataset.recvAddress || "";
             document.getElementById("detailExpectedDate").innerText = this.dataset.expectedDate || "";
+
+            const cancelStatus = this.dataset.cancelStatus || "";
+            let cancelText = "정상";
+            if (cancelStatus === "대기") cancelText = "취소요청";
+            else if (cancelStatus === "완료") cancelText = "취소완료";
+            else if (cancelStatus === "거절") cancelText = "취소거절";
+            document.getElementById("detailCancelStatus").innerText = cancelText;
 
             const detailDeliveryCheck = document.getElementById("detailDeliveryCheck");
             const detailDeliveryYnText = document.getElementById("detailDeliveryYnText");
