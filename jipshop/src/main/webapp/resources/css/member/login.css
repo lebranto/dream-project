@@ -1,3 +1,8 @@
+/* ===========================
+   LOGIN PAGE - login.css
+   Container: 1440px / 640px
+   =========================== */
+
 .container {
   width: 1440px;
   min-height: 640px;
@@ -26,10 +31,7 @@
 }
 
 /* ── Title ── */
-.div-wrapper {
-  width: 100%;
-  text-align: center;
-}
+.div-wrapper { width: 100%; text-align: center; }
 
 .text-wrapper {
   font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
@@ -59,15 +61,12 @@
 .frame-4 {
   width: 100%;
   box-sizing: border-box;
-  border-bottom: 1px solid #b4b4b4;
   background-color: #ffffff;
 }
 
 .frame-5 {
-  border-top: 1px solid #b4b4b4;
-  border-left: 1px solid #b4b4b4;
-  border-right: 1px solid #b4b4b4;
-  border-bottom: 1px solid #b4b4b4;
+  border: 1px solid #b4b4b4;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .frame-4 {
@@ -89,14 +88,8 @@
   box-sizing: border-box;
 }
 
-.text-wrapper-6::placeholder {
-  color: #aaaaaa;
-  font-size: 14px;
-}
-
-.text-wrapper-6:focus {
-  background-color: #ffffff;
-}
+.text-wrapper-6::placeholder { color: #aaaaaa; font-size: 14px; }
+.text-wrapper-6:focus { background-color: #ffffff; }
 
 /* ── Login Button ── */
 .frame-2 {
@@ -125,9 +118,7 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
-.frame-2 button.text-wrapper-2:active {
-  background-color: #c9a650;
-}
+.frame-2 button.text-wrapper-2:active { background-color: #c9a650; }
 
 /* ── Remember Me ── */
 .group-wrapper {

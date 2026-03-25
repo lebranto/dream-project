@@ -1,0 +1,257 @@
+/* ===========================
+   FIND ID/PWD MODAL - findModal.css
+   =========================== */
+
+/* ── 모달 오버레이 ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 9000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.active { display: flex; }
+
+/* ── 모달 박스 ── */
+.modal-box {
+  background: #fff;
+  border-radius: 12px;
+  width: 420px;
+  max-width: 95vw;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  animation: modalIn 0.25s ease;
+  font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 모달 헤더 ── */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 0;
+}
+
+.modal-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3a2e22;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #aaa;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.modal-close:hover { color: #555; }
+
+/* ── 탭 ── */
+.modal-tabs {
+  display: flex;
+  margin: 16px 22px 0;
+  border-bottom: 2px solid #eee;
+}
+
+.modal-tab {
+  flex: 1;
+  padding: 10px 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #aaa;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.modal-tab.active {
+  color: #7a5530;
+  border-bottom-color: #d4a843;
+}
+
+/* ── 모달 바디 ── */
+.modal-body { padding: 22px; }
+
+.modal-panel { display: none; }
+.modal-panel.active { display: block; }
+
+/* ── 결과 패널 ── */
+.modal-result {
+  display: none;
+  text-align: center;
+  padding: 10px 0 6px;
+}
+
+.modal-result.active { display: block; }
+
+.modal-result .result-title {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.modal-result .result-ids {
+  background: #fdf6e3;
+  border: 1px solid #e8d8a8;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #5a3e1b;
+  letter-spacing: 0.5px;
+}
+
+.modal-result.fail .result-title { color: #c0392b; }
+
+/* ── 입력 필드 ── */
+.modal-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+  border: 1.5px solid #ddd5c0;
+  border-radius: 6px;
+  outline: none;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.modal-input:focus {
+  border-color: #d4a843;
+  box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15);
+}
+
+.modal-input::placeholder { color: #bbb; }
+
+/* ── 인증 행 ── */
+.modal-phone-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.modal-phone-row .modal-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.modal-timer {
+  position: absolute;
+  right: 90px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #e05555;
+  display: none;
+  pointer-events: none;
+}
+
+/* ── 인증/확인 버튼 ── */
+.modal-btn-verify {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 14px;
+  background: #fff;
+  color: #7a5530;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  border: 1.5px solid #ddd5c0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.modal-btn-verify:hover { background: #fff8ec; border-color: #d4a843; }
+.modal-btn-verify:disabled { background: #f5f5f5; color: #aaa; cursor: default; border-color: #e0e0e0; }
+
+/* ── 제출 버튼 (골드) ── */
+.modal-btn-submit {
+  width: 100%;
+  height: 48px;
+  background: linear-gradient(135deg, #f0c84a, #d4a843);
+  color: #5a3e1b;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 6px;
+  box-shadow: 0 3px 10px rgba(212, 168, 67, 0.3);
+  transition: box-shadow 0.2s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-btn-submit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+  pointer-events: none;
+}
+
+.modal-btn-submit:hover {
+  box-shadow: 0 5px 16px rgba(212, 168, 67, 0.4);
+  transform: translateY(-1px);
+}
+
+.modal-btn-submit:active { transform: translateY(0); }
+
+/* ── 아웃라인 버튼 ── */
+.modal-btn-outline {
+  width: 100%;
+  height: 44px;
+  background: #fff;
+  color: #7a5530;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  border: 1.5px solid #d4a843;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.15s;
+}
+
+.modal-btn-outline:hover { background: #fffbf0; }
+
+/* ── 새 비밀번호 입력 영역 ── */
+.pwd-change-area {
+  display: none;
+  margin-top: 10px;
+}
+
+.pwd-change-area.active { display: block; }
+
+/* ── 힌트 텍스트 ── */
+.modal-hint {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
+  padding-left: 2px;
+}

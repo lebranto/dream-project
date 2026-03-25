@@ -1,10 +1,13 @@
 package com.kh.jipshop.member.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.jipshop.member.model.dao.MemberDao;
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -28,5 +31,29 @@ public class MemberServiceImpl implements MemberService{
 	public Member loginMember(Member m) {
 		return memberDao.loginMember(m);
 	}
+
+	@Override
+	public int insertPet(Pet pet) {
+		return memberDao.insertPet(pet);
+	}
+
+	@Override
+	public List<String> findMemberId(Member m) {
+		return memberDao.findMemberId(m);
+	}
+
+	@Override
+	public int findMemberByIdAndPhone(Member m) {
+		return memberDao.findMemberByIdAndPhone(m);
+	}
+
+	@Override
+	public int updateMemberPwd(Member m) {
+		return memberDao.updateMemberPwd(m);
+	}
+
+
+
+	
 	
 }
