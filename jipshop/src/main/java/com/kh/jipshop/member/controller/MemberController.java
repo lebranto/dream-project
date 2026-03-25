@@ -130,9 +130,6 @@ public class MemberController {
 	    }
 	    return result;
 	}
-	
-	
-}
 
     @RequestMapping("/privacy")
     public String privacy() {
