@@ -140,12 +140,7 @@ img {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-}
-
-.search-area button img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
+    font-size: 18px;
 }
 
 /* 하트 + 장바구니 아이콘 */
@@ -307,6 +302,7 @@ img {
     font-size: 17px;
     font-weight: 700;
     color: #111;
+    padding: 0 10px;
 }
 
 /* ===== 강아지/고양이 드롭다운 ===== */
