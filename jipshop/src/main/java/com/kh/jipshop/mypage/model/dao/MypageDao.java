@@ -18,8 +18,14 @@ public interface MypageDao {
 	List<RecentlyViewed> selectListrecently(Map<String, Object> paramMap);
 
 	int recentlyListCount(Map<String, Object> paramMap);
+		
+	List<MyInqury> selectListinquiry(Map<String, Object> paramMap);
+
+	int inquiryListCount(Map<String, Object> paramMap);
+
+	MyInqury inquiryDetail(Integer inquiryId);
 	
-	List<MyInqury> inquiryList(Integer memberNo);
+
 
 
 	

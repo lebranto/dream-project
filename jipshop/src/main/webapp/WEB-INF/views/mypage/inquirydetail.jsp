@@ -55,17 +55,17 @@
       <section class="detail-box">
         <div class="detail-head">
           <div class="detail-head-label">제목 :</div>
-          <div class="detail-head-title">${inquiry.title}</div>
+          <div class="detail-head-title">${myinquiry.inquiryType}</div>
           <div class="detail-head-date-label">작성일 :</div>
-          <div class="detail-head-date">${inquiry.createDate}</div>
+          <div class="detail-head-date">${myinquiry.inquiryRegDate}</div>
         </div>
 
         <div class="detail-body">
           <div class="question-area">
             <div class="photo-box">
               <c:choose>
-                <c:when test="${not empty inquiry.imagePath}">
-                  <img src="${pageContext.request.contextPath}${inquiry.imagePath}" alt="문의 첨부 사진">
+                <c:when test="${not empty myinquiry.inquiryPhoto}">
+                  <img src="${pageContext.request.contextPath}${myinquiry.inquiryPhoto}" alt="문의 첨부 사진">
                 </c:when>
                 <c:otherwise>
                   사진<br>(선택사항)
@@ -74,15 +74,15 @@
             </div>
 
             <div class="question-content-wrap">
-              <div class="question-content">${inquiry.questionContent}</div>
+              <div class="question-content">${myinquiry.inquiryContent}</div>
             </div>
           </div>
 
           <div class="answer-area">
             <div class="answer-content">
               <c:choose>
-                <c:when test="${not empty inquiry.answerContent}">
-                  ${inquiry.answerContent}
+                <c:when test="${not empty myinquiry.replyContent}">
+                  ${myinquiry.replyContent}
                 </c:when>
                 <c:otherwise>
                   아직 답변이 등록되지 않았습니다.

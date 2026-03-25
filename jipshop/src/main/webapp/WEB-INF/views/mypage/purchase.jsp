@@ -102,10 +102,10 @@
             <c:forEach var="o" items="${orderlist}">
               <div class="purchase-card">
                 <div class="product-cell">
-                  <%-- <img class="product-thumb" src="${p.productImage}" alt="${p.productName}"> --%>
+                 <%--  <img class="product-thumb" src="${p.productImage}" alt="${p.productName}"> --%>
                   <div class="product-info">
-                    <%-- <div class="product-name">${p.productName}</div> --%>
-                    <div>${o.orderTotalPrice}원</div>
+                    <div class="product-name">사료</div>
+                    <div><fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,##0원" /></div>
                   </div>
                 </div>
 
@@ -117,6 +117,7 @@
 
                 <div class="info-cell">
                   <%-- ${o.deliveryStatus} --%>
+                  <div>배송중</div>
                   <a href="#" class="status-badge">상세보기</a>
                 </div>
 

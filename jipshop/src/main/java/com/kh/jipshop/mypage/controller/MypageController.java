@@ -136,24 +136,53 @@ public class MypageController {
     }
 	
 	@GetMapping("/inquiry")
-	public String inquiryList(@RequestParam(required = false) Integer memberNo,
+	public String inquiryList(
+			@RequestParam(required = false) Integer memberNo,
+			@RequestParam(value="cpage" , defaultValue = "1") int currentPage,
+    		@RequestParam Map<String, Object> paramMap,
 			Model model) {
 		
 		memberNo = 1;		
   	
-		List<MyInqury> list = mService.inquiryList(memberNo);
-          model.addAttribute("inquiryList",list);
+		paramMap.put("memberNo", memberNo);
+		
+		
+		
+		int boardLimit = 10;
+        int pageLimit = 10;
+
+        int listCount = mService.inquiryListCount(paramMap);
+
+        PageInfo pi = Pagination
+      		  .getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+        paramMap.put("pi", pi);
+
+        List<MyInqury> list = mService.selectListinquiry(paramMap);
+		
+        model.addAttribute("inquiryList",list);
 	
 			return "mypage/inquiry";
 	}
 	
 	
 	
+	@GetMapping("/inquirydetail")
+	public String inquirydetail(
+			@RequestParam(required = false) Integer inquiryId,
+			Model model
+			) {
+
+		MyInqury mi = mService.inquiryDetail(inquiryId);
+		model.addAttribute("myinquiry",mi);	
+		
+		return "mypage/inquirydetail";
+	}
+	
 	
 	@GetMapping("/updateMemberCheck")
 	public String updateMemberCheck() {
 	
-			return "mypage/updateMemberCheck";
+	    return "mypage/updateMemberCheck";
 	}
 	
 	

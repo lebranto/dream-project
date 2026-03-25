@@ -52,15 +52,32 @@ public class MypageServiceImpl implements MypageService {
 		
 		return mDao.recentlyListCount(paramMap);
 	}
-	
 
 	// 문의 글 관련
 	
-	
 	@Override
-	public List<MyInqury> inquiryList(Integer memberNo) {
-		return mDao.inquiryList(memberNo);
+	public List<MyInqury> selectListinquiry(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return mDao.selectListinquiry(paramMap);
 	}
+
+	@Override
+	public int inquiryListCount(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return mDao.inquiryListCount(paramMap);
+	}
+
+	@Override
+	public MyInqury inquiryDetail(Integer inquiryId) {
+		
+		return mDao.inquiryDetail(inquiryId);
+	}
+	
+
+	
+	
+
+	
 
 	
 	

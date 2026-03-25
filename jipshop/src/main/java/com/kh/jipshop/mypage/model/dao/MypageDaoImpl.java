@@ -93,12 +93,32 @@ public class MypageDaoImpl implements MypageDao {
 	
 	//문의 조회 관련
 
+
 	@Override
-	public List<MyInqury> inquiryList(Integer memberNo) {
+	public List<MyInqury> selectListinquiry(Map<String, Object> paramMap) {
 		
-		return session.selectList("mypage.inquiryList",memberNo);
+		PageInfo pi = (PageInfo) paramMap.get("pi");
+		int offset = (pi.getCurrentPage() -1)*pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		paramMap.put("offset",offset+1);
+		paramMap.put("limit",limit+offset);
+		
+	
+		return session.selectList("mypage.selectListinquiry",paramMap);
 	}
 
+	@Override
+	public int inquiryListCount(Map<String, Object> paramMap) {
+		
+		return session.selectOne("mypage.inquiryListCount",paramMap);
+	}
+
+	@Override
+	public MyInqury inquiryDetail(Integer inquiryId) {
+		
+		return session.selectOne("mypage.inquiryDetail",inquiryId);
+	}
 
 
 	

@@ -91,13 +91,40 @@ WHERE RNUM BETWEEN #{offset} AND #{limit}
 
 <!-- 문의 부분  -->
 
-<select id="inquiryList" resultType="MyInqury"> 
+<select id="selectListinquiry" resultType="MyInqury">
 
-SELECT * 
-FROM INQUIRY
-WHERE MEMBER_NO =#{memberNo} 
+SELECT *
+FROM (
+    SELECT ROWNUM AS RNUM, T1.*
+    FROM (
+        SELECT *
+        FROM INQUIRY
+        WHERE MEMBER_NO = #{memberNo}
+        ORDER BY INQUIRY_REG_DATE
+        
+    ) T1
+)
+WHERE RNUM BETWEEN #{offset} AND #{limit}
+	
+
 </select>
 
+<select id="inquiryListCount" resultType="int">
+
+	SELECT COUNT(*)
+	FROM INQUIRY
+	WHERE MEMBER_NO = #{memberNo}
+
+</select>
+
+
+<select id="inquiryDetail" resultType="myinqury">
+	
+	SELECT *
+	FROM INQUIRY
+	WHERE INQUIRY_ID = #{inquiryId}
+
+</select>
 
 
 </mapper>

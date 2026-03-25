@@ -75,8 +75,8 @@
             <c:forEach var="i" items="${inquiryList}">
               <div class="inquiry-card">
                 <div class="number-cell">${i.inquiryId}</div>
-                <div class="title-cell">${i.inquiryContent}</div>
-                <div class="date-cell">${i.inquryRegDate}</div>
+                <a href="${contextPath}/mypage/inquirydetail?inquiryId=${i.inquiryId}" class="title-cell">${i.inquiryType}</a>
+                <div class="date-cell">${i.inquiryRegDate}</div>
                 <div class="status-cell">${i.replyYn}</div>
               </div>
             </c:forEach>

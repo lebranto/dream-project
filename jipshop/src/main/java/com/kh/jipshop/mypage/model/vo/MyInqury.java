@@ -11,11 +11,11 @@ public class MyInqury {
 	
 	private int inquiryId;
 	private int memeberNo;
-	private String inquirytype;
+	private String inquiryType;
 	private String inquiryContent;
 	private String inquiryPhoto;
 	private String inquiryPw;
-	private Date inquryRegDate;
+	private Date inquiryRegDate;
 	
 	
 	// 답변
