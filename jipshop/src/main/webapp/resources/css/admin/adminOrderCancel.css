@@ -422,3 +422,20 @@
 .detail-close-btn:hover {
     background: #e2e2e2;
 }
+.date-select-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.date-select {
+    width: 95px;
+    height: 34px;
+    border: 1px solid #9a9a9a;
+    border-radius: 7px;
+    padding: 0 8px;
+    background: #fff;
+    font-size: 13px;
+    color: #333;
+}

@@ -33,6 +33,7 @@ public class AdminOrderController {
         PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 
         model.addAttribute("pi", pi);
+        model.addAttribute("search", search);
         model.addAttribute("orderList", adminOrderService.selectOrderList(pi, search));
 
         return "admin/adminOrderList";

@@ -29,24 +29,70 @@
                     <h2>주문취소 관리</h2>
                     <hr>
                 </div>
-
-                <!-- 검색 영역 -->
+		<!-- 날짜조회검색 -->
                 <form action="${contextPath}/admin/orderCancel/list" method="get" class="cancel-search-form">
-                    <div class="cancel-search-row">
-                        <div class="cancel-search-label">기간 :</div>
+    <div class="cancel-search-row">
+        <div class="cancel-search-label">기간 :</div>
 
-                        <div class="cancel-search-inputs">
-                            <input type="date" name="startDate" value="${param.startDate}" class="date-input">
-                            <span class="date-tilde">~</span>
-                            <input type="date" name="endDate" value="${param.endDate}" class="date-input">
-                        </div>
+        <div class="date-select-group">
+            <!-- 시작일 -->
+            <select name="startYear" class="date-select">
+                <option value="">시작 년도</option>
+                <c:forEach var="y" begin="2020" end="2035">
+                    <option value="${y}" ${search.startYear eq y.toString() ? 'selected' : ''}>${y}</option>
+                </c:forEach>
+            </select>
 
-                        <div class="cancel-search-btns">
-                            <button type="submit" class="mini-btn search-btn">조회</button>
-                            <button type="button" class="mini-btn reset-btn" onclick="location.href='${contextPath}/admin/orderCancel/list'">초기화</button>
-                        </div>
-                    </div>
-                </form>
+            <select name="startMonth" class="date-select">
+                <option value="">월</option>
+                <c:forEach var="m" begin="1" end="12">
+                    <fmt:formatNumber value="${m}" pattern="00" var="mm"/>
+                    <option value="${mm}" ${search.startMonth eq mm ? 'selected' : ''}>${mm}</option>
+                </c:forEach>
+            </select>
+
+            <select name="startDay" class="date-select">
+                <option value="">일</option>
+                <c:forEach var="d" begin="1" end="31">
+                    <fmt:formatNumber value="${d}" pattern="00" var="dd"/>
+                    <option value="${dd}" ${search.startDay eq dd ? 'selected' : ''}>${dd}</option>
+                </c:forEach>
+            </select>
+
+            <span class="date-tilde">~</span>
+
+            <!-- 종료일 -->
+            <select name="endYear" class="date-select">
+                <option value="">끝 년도</option>
+                <c:forEach var="y" begin="2020" end="2035">
+                    <option value="${y}" ${search.endYear eq y.toString() ? 'selected' : ''}>${y}</option>
+                </c:forEach>
+            </select>
+
+            <select name="endMonth" class="date-select">
+                <option value="">월</option>
+                <c:forEach var="m" begin="1" end="12">
+                    <fmt:formatNumber value="${m}" pattern="00" var="mm"/>
+                    <option value="${mm}" ${search.endMonth eq mm ? 'selected' : ''}>${mm}</option>
+                </c:forEach>
+            </select>
+
+            <select name="endDay" class="date-select">
+                <option value="">일</option>
+                <c:forEach var="d" begin="1" end="31">
+                    <fmt:formatNumber value="${d}" pattern="00" var="dd"/>
+                    <option value="${dd}" ${search.endDay eq dd ? 'selected' : ''}>${dd}</option>
+                </c:forEach>
+            </select>
+        </div>
+
+        <div class="cancel-search-btns">
+            <button type="submit" class="mini-btn search-btn">조회</button>
+            <button type="button" class="mini-btn reset-btn"
+                    onclick="location.href='${contextPath}/admin/orderCancel/list'">초기화</button>
+        </div>
+    </div>
+</form>
 
                 <!-- 상단 액션 버튼 -->
                 <div class="cancel-top-actions">

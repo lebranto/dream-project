@@ -1,7 +1,6 @@
 package com.kh.jipshop.community.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +9,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.jipshop.community.model.service.CommunityService;
 import com.kh.jipshop.community.model.vo.Board;
 import com.kh.jipshop.community.model.vo.BoardImage;
-import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.security.model.vo.MemberExt;
 
 @Controller
 @RequestMapping("/community")
@@ -38,17 +39,19 @@ public class BoardListController {
     @PostMapping("/insertBoard")
     public String insertBoard(
             @RequestParam("boardCode") int boardCode,
-            @RequestParam("categoryCode") int categoryCode,
+            @RequestParam(value="categoryCode", required=false, defaultValue="0") int categoryCode,
             @RequestParam("boardTitle") String boardTitle,
             @RequestParam("boardContent") String boardContent,
-            @RequestParam(value = "imageFiles", required = false) List<MultipartFile> imageFiles,
+            @RequestParam(value="imageFiles", required=false) List<MultipartFile> imageFiles,
+            Authentication auth,
             HttpSession session) {
 
-        Member loginUser = (Member) session.getAttribute("loginUser");
+        System.out.println("🔥 insertBoard 들어옴");
 
-        if (loginUser == null) {
-            return "redirect:/member/login";
-        }
+        MemberExt loginUser = (MemberExt) auth.getPrincipal();
+
+        System.out.println("loginUser = " + loginUser);
+        System.out.println("memberNo = " + loginUser.getMemberNo());
 
         Board board = new Board();
         board.setMemberNo(loginUser.getMemberNo());
@@ -64,72 +67,21 @@ public class BoardListController {
         }
 
         int boardNo = board.getBoardNo();
-        System.out.println("insert result = " + result);
-        System.out.println("boardNo = " + boardNo);
+        saveBoardImages(boardNo, imageFiles, session);
 
-        if (imageFiles != null && !imageFiles.isEmpty()) {
-
-            String filePath = "/resources/uploadFiles/";
-            String savePath = session.getServletContext().getRealPath(filePath);
-
-            System.out.println("savePath = " + savePath);
-            System.out.println("imageFiles size = " + imageFiles.size());
-
-            File folder = new File(savePath);
-            if (!folder.exists()) {
-                folder.mkdirs();
-            }
-
-            int level = 1;
-
-            for (MultipartFile file : imageFiles) {
-
-                if (file == null || file.isEmpty()) {
-                    System.out.println("빈 파일이라 건너뜀");
-                    continue;
-                }
-
-                String originName = file.getOriginalFilename();
-                String changeName = System.currentTimeMillis() + "_" + originName;
-
-                System.out.println("originName = " + originName);
-                System.out.println("changeName = " + changeName);
-
-                try {
-                    File dest = new File(savePath + File.separator + changeName);
-                    System.out.println("dest 경로 = " + dest.getAbsolutePath());
-
-                    file.transferTo(dest);
-                    System.out.println("파일 저장 성공");
-
-                    BoardImage img = new BoardImage();
-                    img.setBoardNo(boardNo);
-                    img.setOriginName(originName);
-                    img.setChangeName(changeName);
-                    img.setFilePath(filePath);
-                    img.setFileLevel(level++);
-
-                    int imgResult = boardService.insertBoardImage(img);
-                    System.out.println("img insert result = " + imgResult);
-
-                } catch (Exception e) {
-                    System.out.println("이미지 저장/등록 중 오류 발생");
-                    e.printStackTrace();
-                }
-            }
-
-        }
         return "redirect:/community/main";
     }
+
     @GetMapping("/rewrite")
     public String rewriteForm(@RequestParam("boardNo") int boardNo,
                               Model model,
-                              HttpSession session) {
+                              Authentication auth) {
 
-        Member loginUser = (Member) session.getAttribute("loginUser");
-        if (loginUser == null) {
+        if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof MemberExt)) {
             return "redirect:/member/login";
         }
+
+        MemberExt loginUser = (MemberExt) auth.getPrincipal();
 
         Board board = boardService.selectBoard(boardNo);
 
@@ -151,17 +103,29 @@ public class BoardListController {
 
     @PostMapping("/rewrite")
     public String rewrite(Board board,
+                          @RequestParam(value = "categoryCode", required = false, defaultValue = "0") int categoryCode,
                           @RequestParam(value = "imageFiles", required = false) List<MultipartFile> imageFiles,
                           @RequestParam(value = "deleteImageNos", required = false) List<Integer> deleteImageNos,
+                          Authentication auth,
                           HttpSession session) {
 
-        Member loginUser = (Member) session.getAttribute("loginUser");
-
-        if (loginUser == null) {
+        if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof MemberExt)) {
             return "redirect:/member/login";
         }
 
+        MemberExt loginUser = (MemberExt) auth.getPrincipal();
+
+        Board originBoard = boardService.selectBoard(board.getBoardNo());
+        if (originBoard == null) {
+            return "redirect:/community/main";
+        }
+
+        if (originBoard.getMemberNo() != loginUser.getMemberNo()) {
+            return "redirect:/community/detail?boardNo=" + board.getBoardNo();
+        }
+
         board.setMemberNo(loginUser.getMemberNo());
+        board.setCategoryCode(categoryCode);
 
         int updateResult = boardService.updateBoard(board);
 
@@ -173,46 +137,85 @@ public class BoardListController {
             boardService.deleteBoardImageList(deleteImageNos);
         }
 
-        if (imageFiles != null && !imageFiles.isEmpty()) {
-
-            String filePath = "/resources/uploadFiles/";
-            String savePath = session.getServletContext().getRealPath(filePath);
-
-            File folder = new File(savePath);
-            if (!folder.exists()) {
-                folder.mkdirs();
-            }
-
-            int level = 1;
-
-            for (MultipartFile file : imageFiles) {
-
-                if (file == null || file.isEmpty()) {
-                    continue;
-                }
-
-                String originName = file.getOriginalFilename();
-                String changeName = System.currentTimeMillis() + "_" + originName;
-
-                try {
-                    file.transferTo(new File(savePath + File.separator + changeName));
-
-                    BoardImage img = new BoardImage();
-                    img.setBoardNo(board.getBoardNo());
-                    img.setOriginName(originName);
-                    img.setChangeName(changeName);
-                    img.setFilePath(filePath);
-                    img.setFileLevel(level++);
-
-                    boardService.insertBoardImage(img);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        saveBoardImages(board.getBoardNo(), imageFiles, session);
 
         return "redirect:/community/detail?boardNo=" + board.getBoardNo();
+    }
+    
+    @GetMapping("/delete")
+    public String deleteBoard(@RequestParam("boardNo") int boardNo,
+                              Authentication auth) {
+
+        if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof MemberExt)) {
+            return "redirect:/member/login";
+        }
+
+        MemberExt loginUser = (MemberExt) auth.getPrincipal();
+
+        Board originBoard = boardService.selectBoard(boardNo);
+        if (originBoard == null) {
+            return "redirect:/community/main";
+        }
+
+        // 작성자 본인만 삭제 가능
+        if (originBoard.getMemberNo() != loginUser.getMemberNo()) {
+            return "redirect:/community/detail?boardNo=" + boardNo;
+        }
+
+        Board board = new Board();
+        board.setBoardNo(boardNo);
+        board.setMemberNo(loginUser.getMemberNo());
+
+        int result = boardService.deleteBoard(board);
+
+        if (result <= 0) {
+            return "redirect:/community/detail?boardNo=" + boardNo;
+        }
+
+        return "redirect:/community/main";
+    }
+    private void saveBoardImages(int boardNo, List<MultipartFile> imageFiles, HttpSession session) {
+
+        if (imageFiles == null || imageFiles.isEmpty()) {
+            return;
+        }
+
+        String filePath = "/resources/uploadFiles/";
+        String savePath = session.getServletContext().getRealPath(filePath);
+
+        File folder = new File(savePath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        int level = 1;
+
+        for (MultipartFile file : imageFiles) {
+
+            if (file == null || file.isEmpty()) {
+                continue;
+            }
+
+            String originName = file.getOriginalFilename();
+            String changeName = changeFileName(originName);
+
+            try {
+                File dest = new File(savePath + File.separator + changeName);
+                file.transferTo(dest);
+
+                BoardImage img = new BoardImage();
+                img.setBoardNo(boardNo);
+                img.setOriginName(originName);
+                img.setChangeName(changeName);
+                img.setFilePath(filePath);
+                img.setFileLevel(level++);
+
+                boardService.insertBoardImage(img);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private String changeFileName(String originName) {
@@ -228,5 +231,5 @@ public class BoardListController {
 
         return currentTime + "_" + uuid + ext;
     }
-
+   
 }

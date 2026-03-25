@@ -49,7 +49,7 @@
         <div class="detail-content-text">${board.boardContent}</div>
     </div>
 
-    <!-- 이미지 영역 : 최대 3장 -->
+    <!-- 이미지 -->
     <div class="detail-media-box">
         <c:choose>
             <c:when test="${not empty imageList}">
@@ -82,32 +82,49 @@
     <!-- 좋아요 / 싫어요 -->
     <div class="reaction-area">
         <button type="button"
-                class="reaction-btn like-btn ${likeCheck > 0 ? 'active-like' : ''}"
-                id="likeBtn">👍</button>
+                id="likeBtn"
+                class="reaction-btn ${likeCheck > 0 ? 'active-like' : ''}">
+            👍
+        </button>
 
         <button type="button"
-                class="reaction-btn dislike-btn"
-                id="dislikeBtn">👎</button>
+                id="dislikeBtn"
+                class="reaction-btn">
+            👎
+        </button>
     </div>
 
-    <!-- 수정/삭제 -->
+    <!-- 수정 / 삭제 -->
     <div class="board-action-area">
-        <a href="${contextPath}/community/rewrite?boardNo=${board.boardNo}" class="action-btn edit-btn">수정</a>
-        <button type="button" class="action-btn delete-btn" id="openDeleteModalBtn">삭제</button>
+        <c:if test="${loginMemberNo ne 0 and loginMemberNo eq board.memberNo}">
+            <a class="action-btn"
+               href="${contextPath}/community/rewrite?boardNo=${board.boardNo}">
+                수정
+            </a>
+
+            <a href="javascript:void(0);"
+               class="action-btn"
+               id="openDeleteModalBtn">
+                삭제
+            </a>
+        </c:if>
     </div>
 
-    <!-- 댓글 등록 -->
+    <!-- 댓글 작성 -->
     <div class="comment-write-wrap">
-        <div class="comment-write-title">댓글</div>
+        <div class="comment-write-title">댓글 작성</div>
         <div class="comment-write-box">
-            <textarea id="commentInput" placeholder="댓글을 입력해주세요"></textarea>
-            <button type="button" id="commentSubmitBtn">등록</button>
+            <form id="commentForm" action="${contextPath}/community/insertComment" method="post">
+                <input type="hidden" name="boardNo" value="${board.boardNo}">
+                <textarea name="commentContent" id="commentInput" placeholder="댓글을 입력해주세요."></textarea>
+                <button type="submit" id="commentSubmitBtn">등록</button>
+            </form>
         </div>
     </div>
 
     <!-- 댓글 목록 -->
     <div class="comment-list-wrap">
-        <div class="comment-list-title">댓글창</div>
+        <div class="comment-list-title">댓글</div>
 
         <div id="commentList">
             <c:choose>
@@ -121,7 +138,11 @@
                             <div class="comment-content">${comment.commentContent}</div>
 
                             <div class="comment-right">
-                                <button type="button" class="report-btn">신고</button>
+                                <button type="button"
+                                        class="report-btn"
+                                        data-comment-id="${comment.commentId}">
+                                    신고
+                                </button>
                             </div>
                         </div>
                     </c:forEach>
@@ -133,159 +154,184 @@
             </c:choose>
         </div>
     </div>
+
 </div>
 
 <!-- 삭제 모달 -->
 <div class="modal-overlay" id="deleteModal">
     <div class="modal-box">
         <h3>게시글 삭제</h3>
-        <p>삭제하시겠습니까?</p>
+        <p>정말 삭제하시겠습니까?</p>
         <div class="modal-btn-area">
-            <button type="button" class="modal-btn confirm-btn" id="confirmDeleteBtn">삭제</button>
             <button type="button" class="modal-btn cancel-btn" id="cancelDeleteBtn">취소</button>
+            <button type="button" class="modal-btn confirm-btn" id="confirmDeleteBtn">삭제</button>
         </div>
     </div>
 </div>
 
 <!-- 신고 모달 -->
 <div class="modal-overlay" id="reportModal">
-    <div class="modal-box">
-        <h3>댓글 신고하기</h3>
-        <p>해당 댓글을 신고하시겠습니까?</p>
+    <div class="modal-box report-modal-box">
+        <h3>댓글 신고</h3>
+        <p class="report-main-text">이 댓글을 신고하시겠습니까?</p>
+        <p class="report-sub-text">신고된 댓글은 운영팀 확인 후 조치돼요.</p>
         <div class="modal-btn-area">
-            <button type="button" class="modal-btn confirm-btn" id="confirmReportBtn">신고하기</button>
             <button type="button" class="modal-btn cancel-btn" id="cancelReportBtn">취소</button>
+            <button type="button" class="modal-btn confirm-btn" id="confirmReportBtn">신고</button>
         </div>
     </div>
 </div>
 
+<!-- 신고 form -->
+<form id="reportForm" action="${contextPath}/community/reportComment" method="post" style="display:none;">
+    <input type="hidden" name="boardNo" value="${board.boardNo}">
+    <input type="hidden" name="commentId" id="reportCommentId">
+</form>
+
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
     const contextPath = "${contextPath}";
     const boardNo = "${board.boardNo}";
+    const loginMemberNo = "${loginMemberNo}";
 
-    /* 좋아요 / 싫어요 */
     const likeBtn = document.getElementById("likeBtn");
     const dislikeBtn = document.getElementById("dislikeBtn");
     const likeCountArea = document.getElementById("likeCountArea");
 
-    likeBtn.addEventListener("click", function() {
-
-        fetch(contextPath + "/community/like", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "boardNo=" + boardNo
-        })
-        .then(response => response.json())
-        .then(data => {
-
-            if (data.result === "loginRequired") {
-                alert("로그인 후 이용해주세요.");
-                location.href = contextPath + "/member/login";
-                return;
-            }
-
-            if (data.result === "success") {
-                likeCountArea.innerText = data.likeCount;
-
-                if (data.likeCheck == "1") {
-                    likeBtn.classList.add("active-like");
-                } else {
-                    likeBtn.classList.remove("active-like");
-                }
-            }
-        })
-        .catch(error => {
-            console.log(error);
-        });
-    });
-
-    dislikeBtn.addEventListener("click", function() {
-        alert("싫어요 기능은 아직 구현 전입니다.");
-    });
-
-    /* 삭제 모달 */
     const deleteModal = document.getElementById("deleteModal");
     const openDeleteModalBtn = document.getElementById("openDeleteModalBtn");
     const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
     const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
 
-    openDeleteModalBtn.addEventListener("click", function() {
-        deleteModal.classList.add("show");
-    });
-
-    cancelDeleteBtn.addEventListener("click", function() {
-        deleteModal.classList.remove("show");
-    });
-
-    confirmDeleteBtn.addEventListener("click", function() {
-        alert("삭제완료");
-        location.href = contextPath + "/community/main";
-    });
-
-    /* 댓글 등록 */
+    const commentForm = document.getElementById("commentForm");
     const commentInput = document.getElementById("commentInput");
-    const commentSubmitBtn = document.getElementById("commentSubmitBtn");
-    const commentList = document.getElementById("commentList");
 
-    commentSubmitBtn.addEventListener("click", function() {
-        const content = commentInput.value.trim();
-
-        if (content === "") return;
-
-        const emptyBox = document.querySelector(".comment-empty");
-        if (emptyBox) emptyBox.remove();
-
-        const newComment = document.createElement("div");
-        newComment.className = "comment-item";
-        newComment.innerHTML = `
-            <div class="comment-writer">
-                <span class="writer-badge">작성자</span>
-            </div>
-            <div class="comment-content"></div>
-            <div class="comment-right">
-                <button type="button" class="report-btn">신고</button>
-            </div>
-        `;
-
-        newComment.querySelector(".comment-content").innerText = content;
-        commentList.prepend(newComment);
-        commentInput.value = "";
-
-        bindReportButtons();
-    });
-
-    /* 신고 모달 */
     const reportModal = document.getElementById("reportModal");
     const confirmReportBtn = document.getElementById("confirmReportBtn");
     const cancelReportBtn = document.getElementById("cancelReportBtn");
+    const reportCommentId = document.getElementById("reportCommentId");
+    const reportForm = document.getElementById("reportForm");
 
-    function handleReportClick() {
-        reportModal.classList.add("show");
+    let selectedCommentId = null;
+
+    if (likeBtn) {
+        likeBtn.addEventListener("click", function () {
+
+            if (!loginMemberNo || loginMemberNo === "0") {
+                alert("로그인 후 이용 가능합니다.");
+                return;
+            }
+
+            fetch(contextPath + "/community/like", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: "boardNo=" + encodeURIComponent(boardNo)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === "loginRequired") {
+                    alert("로그인 후 이용 가능합니다.");
+                    return;
+                }
+
+                likeCountArea.innerText = data.likeCount;
+
+                if (data.likeCheck === "1" || data.likeCheck === 1) {
+                    likeBtn.classList.add("active-like");
+                } else {
+                    likeBtn.classList.remove("active-like");
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert("좋아요 처리 중 오류가 발생했습니다.");
+            });
+        });
+    }
+
+    if (dislikeBtn) {
+        dislikeBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+        });
+    }
+
+    if (openDeleteModalBtn && deleteModal) {
+        openDeleteModalBtn.addEventListener("click", function() {
+            deleteModal.classList.add("show");
+        });
+    }
+
+    if (cancelDeleteBtn && deleteModal) {
+        cancelDeleteBtn.addEventListener("click", function() {
+            deleteModal.classList.remove("show");
+        });
+    }
+
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener("click", function() {
+            alert("게시글이 삭제되었습니다.");
+            location.href = contextPath + "/community/delete?boardNo=" + boardNo;
+        });
+    }
+
+    if (commentForm && commentInput) {
+        commentForm.addEventListener("submit", function(e) {
+            const content = commentInput.value.trim();
+
+            if (content === "") {
+                e.preventDefault();
+                alert("댓글 내용을 입력해주세요.");
+                commentInput.focus();
+            }
+        });
     }
 
     function bindReportButtons() {
         const reportBtns = document.querySelectorAll(".report-btn");
 
         reportBtns.forEach(function(btn) {
-            btn.removeEventListener("click", handleReportClick);
-            btn.addEventListener("click", handleReportClick);
+            btn.addEventListener("click", function() {
+                if (!loginMemberNo || loginMemberNo === "0") {
+                    alert("로그인 후 이용 가능합니다.");
+                    return;
+                }
+
+                selectedCommentId = this.dataset.commentId;
+
+                if (!selectedCommentId) {
+                    alert("댓글 번호를 찾을 수 없습니다.");
+                    return;
+                }
+
+                reportModal.classList.add("show");
+            });
         });
     }
 
-    cancelReportBtn.addEventListener("click", function() {
-        reportModal.classList.remove("show");
-    });
+    if (cancelReportBtn && reportModal) {
+        cancelReportBtn.addEventListener("click", function() {
+            reportModal.classList.remove("show");
+            selectedCommentId = null;
+        });
+    }
 
-    confirmReportBtn.addEventListener("click", function() {
-        alert("신고되었습니다");
-        location.reload();
-    });
+    if (confirmReportBtn && reportModal && reportCommentId && reportForm) {
+        confirmReportBtn.addEventListener("click", function() {
+            if (!selectedCommentId) {
+                alert("신고할 댓글 정보가 없습니다.");
+                return;
+            }
+
+            reportCommentId.value = selectedCommentId;
+            reportForm.submit();
+        });
+    }
 
     bindReportButtons();
+
 });
 </script>
 
