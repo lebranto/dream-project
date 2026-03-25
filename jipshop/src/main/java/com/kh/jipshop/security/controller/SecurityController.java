@@ -1,13 +1,15 @@
 package com.kh.jipshop.security.controller;
 
-import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +21,16 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.jipshop.common.util.Utils;
 import com.kh.jipshop.member.model.service.MemberService;
-import com.kh.jipshop.member.model.vo.Member;
-import com.kh.jipshop.security.controller.SecurityController;
-
 import com.kh.jipshop.member.model.validator.MemberValidator;
+import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,16 +41,16 @@ public class SecurityController {
 	
 	// 필드방식 의존성 주입
 	//@Autowired
-	private  MemberService mService;
-	
-	//@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	private final MemberService mService;
+	private final BCryptPasswordEncoder passwordEncoder;
+	private final ServletContext application;
 	
 	//생성자방식 의존성 주입
 	// 단, 생성자가 여러개면 @Autowired어노테이션 필요.
-	public SecurityController(MemberService mService, BCryptPasswordEncoder passwordEncoder ) {
+	public SecurityController(MemberService mService, BCryptPasswordEncoder passwordEncoder,ServletContext application ) {
 		this.mService = mService;
 		this.passwordEncoder = passwordEncoder;
+		this.application = application;
 	}
 	
 	@RequestMapping("/accessDenied")
@@ -94,30 +99,103 @@ public class SecurityController {
 	}
 	@PostMapping("/insert")
 	public String register(
-			@Validated @ModelAttribute Member member,
-			BindingResult bindingResult,
-			// BindingResult
-			//  - 유효성검사결과를 저장하는 객체
-			//  - forward시 자동으로 jsp에게 전달되며, form태그내부에
-			//    에러내용을 바인딩하기 위해 사용된다.
-			RedirectAttributes ra
-			) {
-		
-			// 유효성 검사 실패시
-			if(bindingResult.hasErrors()) {
-				return "member/memberEnrollForm";
-			}
-			// 유효성 검사 성공시 비밀번호 암호화하여 회원가빙 진행
-			String encryptedPassword
-					= passwordEncoder.encode(member.getMemberPwd());
-			member.setMemberPwd(encryptedPassword);
-			
-			mService.insertMember(member);
-		return "redirect:/member/login";
+	        @Validated @ModelAttribute Member member,
+	        BindingResult bindingResult,
+	        @RequestParam(value = "petName",   required = false) String petName,
+	        @RequestParam(value = "petType",   required = false) String petType,
+	        @RequestParam(value = "petBirth",  required = false) String petBirth,
+	        @RequestParam(value = "petWeight", required = false) String petWeight,
+	        @RequestParam(value = "petPhoto",  required = false) MultipartFile petPhoto,
+	        HttpServletRequest request,
+	        RedirectAttributes ra
+	        ) throws Exception {
+	 
+	    // 유효성 검사 실패시
+	    if (bindingResult.hasErrors()) {
+	        return "member/memberEnrollForm";
+	    }
+	 
+	    // 비밀번호 암호화
+	    String encryptedPassword = passwordEncoder.encode(member.getMemberPwd());
+	    member.setMemberPwd(encryptedPassword);
+	 
+	    // 회원 저장
+	    int result = mService.insertMember(member);
+	 
+	    if (result > 0) {
+	        // 애완동물 정보가 있으면 저장
+	        if (petName != null && !petName.trim().isEmpty()) {
+	            Pet pet = new Pet();
+	            pet.setMemberNo(member.getMemberNo()); // insertMember 후 memberNo 세팅됨
+	            pet.setPetName(petName.trim());
+	            pet.setPetType(petType);
+	 
+	            // 생년월일 변환 (yyyy-MM-dd → Date)
+	            if (petBirth != null && !petBirth.isEmpty()) {
+	                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	                pet.setPetAge(sdf.parse(petBirth));
+	            }
+	 
+	            // 몸무게 변환
+	            if (petWeight != null && !petWeight.isEmpty()) {
+	                pet.setPetWeight(Double.parseDouble(petWeight));
+	            }
+	 
+	            // 사진 파일 업로드
+	            if (petPhoto != null && !petPhoto.isEmpty()) {
+	                // petType에 따라 저장 경로 분기 (pet/dog 또는 pet/cat)
+	                String subPath = "pet/" + petType.toLowerCase();
+	                String changeName = Utils.saveFile(petPhoto, application, subPath);
+	                pet.setPetPhoto(changeName);
+	            }
+	 
+	            mService.insertPet(pet);
+	        }
+	 
+	        ra.addFlashAttribute("alertMsg", "회원가입 성공");
+	        return "redirect:/member/login";
+	    } else {
+	        throw new RuntimeException("회원가입 실패");
+	    }
+	
 	}
 	
-	
-	
-	
+	// 비밀번호 찾기 - 아이디 + 전화번호 인증 후 변경
+	@ResponseBody
+	@PostMapping("/resetPwd")
+	public Map<String, Object> resetPwd(
+	        Member member,
+	        HttpSession session) {
+
+	    Map<String, Object> result = new HashMap<>();
+
+	    // SMS 인증 완료 여부 확인
+	    Boolean pwdVerified = (Boolean) session.getAttribute("pwdPhoneVerified");
+	    if (pwdVerified == null || !pwdVerified) {
+	        result.put("success", false);
+	        result.put("message", "전화번호 인증을 완료해주세요.");
+	        return result;
+	    }
+
+	    // 전화번호 '-' 제거
+	    if (member.getPhone() != null) {
+	        member.setPhone(member.getPhone().replaceAll("-", ""));
+	    }
+
+	    // 비밀번호 암호화
+	    String encPwd = passwordEncoder.encode(member.getMemberPwd());
+	    member.setMemberPwd(encPwd);
+
+	    int updateResult = mService.updateMemberPwd(member);
+	    if (updateResult > 0) {
+	        session.removeAttribute("pwdPhoneVerified");
+	        result.put("success", true);
+	        result.put("message", "비밀번호가 변경되었습니다.");
+	    } else {
+	        result.put("success", false);
+	        result.put("message", "비밀번호 변경에 실패했습니다.");
+	    }
+	    return result;
+	}
 	
 }
