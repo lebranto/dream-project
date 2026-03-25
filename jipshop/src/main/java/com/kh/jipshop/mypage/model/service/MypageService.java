@@ -10,19 +10,19 @@ import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
 
 public interface MypageService {
 
-	List<Orders> orderList(int memberNo);
+	List<Orders> selectListOrder(Map<String, Object> paramMap);
 	
-	List<Orders> orderListPeriod(Integer memberNo, Integer period);
+	int orderListCount(Map<String, Object> paramMap);
 
-	List<Orders> orderListDate(Integer memberNo, Date startDate, Date endDate);
+	List<RecentlyViewed> selectListrecently(Map<String, Object> paramMap);
 	
-	List<RecentlyViewed> recentlyList(Integer memberNo);
-
-	List<RecentlyViewed> recentlyListPeriod(Integer memberNo, Integer period);
-
-	List<RecentlyViewed> recentlyListDate(Integer memberNo, Date startDate, Date endDate);
-
+	int recentlyListCount(Map<String, Object> paramMap);
+	
 	List<MyInqury> inquiryList(Integer memberNo);
+
+
+
+
 
 	
 
