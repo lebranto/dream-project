@@ -1,5 +1,7 @@
 package com.kh.jipshop.member.model.dao;
 
+import java.util.List;
+
 import com.kh.jipshop.member.model.vo.Member;
 import com.kh.jipshop.member.model.vo.Pet;
 
@@ -14,6 +16,8 @@ public interface MemberDao {
 	void insertAuthority(Member m);
 
 	int insertPet(Pet pet);
+
+	List<String> findMemberId(Member m);
 
 
 

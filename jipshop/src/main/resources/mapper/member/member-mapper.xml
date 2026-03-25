@@ -69,4 +69,13 @@
 	        #{petPhoto}
 	    )
 	</insert>
+	
+	<!-- 아이디 찾기: 이름 + 전화번호로 아이디 조회 -->
+	<select id="findMemberId" parameterType="Member" resultType="String">
+	    SELECT MEMBER_ID
+	    FROM MEMBER
+	    WHERE MEMBER_NAME = #{memberName}
+	      AND PHONE = #{phone}
+	      AND MEMBER_ACTIVE_YN = 'Y'
+	</select>
 </mapper>

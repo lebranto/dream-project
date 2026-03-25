@@ -1,6 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -9,6 +9,7 @@
     <title>로그인</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/login.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member/findModal.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   </head>
   <body>
   <jsp:include page="/WEB-INF/views/common/header.jsp" />
@@ -112,10 +113,10 @@
 	          <div class="modal-phone-row">
 	            <input class="modal-input" type="tel" id="findIdPhone" placeholder="휴대폰 번호 (010-1234-5678)" />
 	            <button class="modal-btn-verify" id="btnFindIdSend" onclick="sendFindIdSms()">인증</button>
-	            <span class="modal-timer" id="findIdTimer"></span>
 	          </div>
 	          <div class="modal-phone-row">
 	            <input class="modal-input" type="text" id="findIdCode" placeholder="인증번호 6자리" />
+	            <span class="modal-timer" id="findIdTimer"></span>
 	            <button class="modal-btn-verify" id="btnFindIdVerify" onclick="verifyFindIdSms()">확인</button>
 	          </div>
 	          <button class="modal-btn-submit" onclick="findId()">아이디 찾기</button>
@@ -141,10 +142,10 @@
 	          <div class="modal-phone-row">
 	            <input class="modal-input" type="tel" id="findPwdPhone" placeholder="휴대폰 번호 (010-1234-5678)" />
 	            <button class="modal-btn-verify" id="btnFindPwdSend" onclick="sendFindPwdSms()">인증</button>
-	            <span class="modal-timer" id="findPwdTimer"></span>
 	          </div>
 	          <div class="modal-phone-row">
 	            <input class="modal-input" type="text" id="findPwdCode" placeholder="인증번호 6자리" />
+	            <span class="modal-timer" id="findPwdTimer"></span>
 	            <button class="modal-btn-verify" id="btnFindPwdVerify" onclick="verifyFindPwdSms()">확인</button>
 	          </div>
 	
@@ -175,6 +176,8 @@
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
     <script>
+      const ctx = '${pageContext.request.contextPath}';
+      
       function checkLogin() {
         const memberId  = document.getElementById('memberId').value.trim();
         const memberPwd = document.getElementById('memberPwd').value.trim();
@@ -229,6 +232,109 @@
           document.getElementById('modalTitle').textContent = '비밀번호 찾기';
         }
       }
+      
+   /* 아이디 찾기 SMS 인증 */
+   let findIdTimerInterval = null;
+
+   function sendFindIdSms() {
+     const phone = document.getElementById('findIdPhone').value.trim();
+     if (phone === '') { alert('휴대폰 번호를 입력해주세요.'); return; }
+     $.ajax({
+       url: ctx + '/sms/send', type: 'POST', data: { phone: phone },
+       success: function(res) {
+         if (res.success) {
+           alert(res.message);
+           startModalTimer('findIdTimer', function(iv) { findIdTimerInterval = iv; });
+           document.getElementById('btnFindIdSend').disabled = true;
+           setTimeout(function() { document.getElementById('btnFindIdSend').disabled = false; }, 30000);
+         } else { alert(res.message); }
+       }
+     });
+   }
+
+   function verifyFindIdSms() {
+     const code = document.getElementById('findIdCode').value.trim();
+     if (code === '') { alert('인증번호를 입력해주세요.'); return; }
+     $.ajax({
+       url: ctx + '/sms/verify', type: 'POST', data: { code: code },
+       success: function(res) {
+         if (res.success) {
+           alert(res.message);
+           clearInterval(findIdTimerInterval);
+           document.getElementById('findIdTimer').style.display   = 'none';
+           document.getElementById('btnFindIdVerify').disabled    = true;
+           document.getElementById('btnFindIdSend').disabled      = true;
+           document.getElementById('findIdCode').readOnly         = true;
+         } else { alert(res.message); }
+       }
+     });
+   }
+
+   function findId() {
+     const name  = document.getElementById('findIdName').value.trim();
+     const phone = document.getElementById('findIdPhone').value.trim();
+     if (name === '')  { alert('이름을 입력해주세요.');       return; }
+     if (phone === '') { alert('휴대폰 번호를 입력해주세요.'); return; }
+     $.ajax({
+       url: ctx + '/member/findId', type: 'POST',
+       data: { memberName: name, phone: phone, '${_csrf.parameterName}': '${_csrf.token}' },
+       success: function(res) {
+         document.getElementById('findIdForm').style.display = 'none';
+         const result = document.getElementById('findIdResult');
+         result.classList.add('active');
+         if (res.success) {
+       	    document.getElementById('findIdResultMsg').textContent = 
+       	        res.memberIds.length + '개의 아이디를 찾았어요!';
+       	    const idBox = document.getElementById('findIdResultValue');
+       	    idBox.style.display = 'block';
+       	    idBox.textContent = res.memberIds.join('\n'); // 여러 개면 줄바꿈으로 표시
+       	    result.classList.remove('fail');
+       	} else {
+           document.getElementById('findIdResultMsg').textContent    = res.message;
+           document.getElementById('findIdResultValue').style.display = 'none';
+           result.classList.add('fail');
+         }
+       }
+     });
+   }
+
+   function resetFindId() {
+     document.getElementById('findIdForm').style.display = 'block';
+     document.getElementById('findIdResult').classList.remove('active');
+     ['findIdName', 'findIdPhone', 'findIdCode'].forEach(id => document.getElementById(id).value = '');
+     document.getElementById('findIdCode').readOnly       = false;
+     document.getElementById('btnFindIdSend').disabled    = false;
+     document.getElementById('btnFindIdVerify').disabled  = false;
+     clearInterval(findIdTimerInterval);
+     document.getElementById('findIdTimer').style.display = 'none';
+   }
+   
+   function goLogin() { closeFindModal(); }
+   
+   /* ── 공통 타이머 ── */
+   function startModalTimer(timerId, setInterval_cb) {
+     const el = document.getElementById(timerId);
+     el.style.display = 'inline';
+     el.style.color   = '#e05555';
+     let remaining = 180;
+     el.textContent = formatTime(remaining);
+     const iv = setInterval(function() {
+       remaining--;
+       el.textContent = formatTime(remaining);
+       if (remaining <= 0) {
+         clearInterval(iv);
+         el.textContent = '만료';
+         el.style.color = '#aaa';
+       }
+     }, 1000);
+     setInterval_cb(iv);
+   }
+
+   function formatTime(sec) {
+     const m = String(Math.floor(sec / 60)).padStart(2, '0');
+     const s = String(sec % 60).padStart(2, '0');
+     return m + ':' + s;
+   }
     </script>
 
   </body>

@@ -1,5 +1,7 @@
 package com.kh.jipshop.member.model.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -37,6 +39,11 @@ public class MemberDaoImpl implements MemberDao{
 	@Override
 	public int insertPet(Pet pet) {
 		return session.insert("member.insertPet",pet);
+	}
+
+	@Override
+	public List<String> findMemberId(Member m) {
+		return session.selectList("member.findMemberId", m);
 	}
 
 
