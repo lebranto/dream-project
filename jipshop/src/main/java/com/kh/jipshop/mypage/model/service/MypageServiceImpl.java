@@ -23,44 +23,37 @@ public class MypageServiceImpl implements MypageService {
 	
 	// 구매 내역 조회 관련 
 	
+
 	@Override
-	public List<Orders> orderList(int memberNo) {
+	public List<Orders> selectListOrder(Map<String, Object> paramMap) {
 		
-		return mDao.orderList(memberNo);
+		return mDao.selectListOrder(paramMap);
 	}
 
 	@Override
-	public List<Orders> orderListPeriod(Integer memberNo, Integer period) {
-		
-		return mDao.orderListPeriod(memberNo,period);
-	}
+	public int orderListCount(Map<String, Object> paramMap) {
 	
-	@Override
-	public List<Orders> orderListDate(Integer memberNo, Date startDate, Date endDate) {
-		
-		return mDao.orderListDate(memberNo,startDate,endDate);
+		return mDao.orderListCount(paramMap);
 	}
+
+	
 	
 	// 최근 본 상품 조회 관련
 	
+	
 	@Override
-	public List<RecentlyViewed> recentlyList(Integer memberNo) {
-
-		return mDao.recentlyList(memberNo);
-	}
-
-	@Override
-	public List<RecentlyViewed> recentlyListPeriod(Integer memberNo, Integer period) {
-		return mDao.recentlyListPeriod(memberNo, period);
+	public List<RecentlyViewed> selectListrecently(Map<String, Object> paramMap) {
+		
+		return mDao.selectListrecently(paramMap);
 	}
 	
 	@Override
-	public List<RecentlyViewed> recentlyListDate(Integer memberNo, Date startDate, Date endDate) {
-
-		return mDao.recentlyListDate(memberNo,startDate, endDate);
+	public int recentlyListCount(Map<String, Object> paramMap) {
+		
+		return mDao.recentlyListCount(paramMap);
 	}
-
 	
+
 	// 문의 글 관련
 	
 	
@@ -69,8 +62,11 @@ public class MypageServiceImpl implements MypageService {
 		return mDao.inquiryList(memberNo);
 	}
 
+	
+	
+	
 
-	// 페이징 처리 쪽
+
 	
 
 

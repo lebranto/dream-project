@@ -1,53 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="mypage">
-<select id="orderList" resultType="orders"> 
-SELECT * 
-FROM ORDERS 
-WHERE MEMBER_NO =#{memberNo} 
-</select>
 
-<select id="orderListPeriod" resultType="orders">
+<!-- 구매내역 부분 -->
+<select id="selectListOrder" resultType="orders">
 SELECT *
-FROM ORDERS
-WHERE MEMBER_NO= #{memberNo}
-AND ORDER_DATE >= SYSDATE - #{period}
-</select>
+FROM (
+    SELECT ROWNUM AS RNUM, T1.*
+    FROM (
+        SELECT ORDER_TOTAL_PRICE,ORDER_DATE,ORDER_ID
+        FROM ORDERS
+        WHERE MEMBER_NO = #{memberNo}
 
+            <if test="period != null">
+                AND ORDER_DATE >= SYSDATE - #{period}
+            </if>
 
-<select id="orderListDate" resultType="orders">
+            <if test="startDate != null and endDate != null">
+                AND ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+            </if>
+        ORDER BY ORDER_DATE
+        
+    ) T1
+)
+WHERE RNUM BETWEEN #{offset} AND #{limit}
 
-SELECT *
-FROM ORDERS
-WHERE MEMBER_NO= #{memberNo}
-AND ORDER_DATE BETWEEN #{startDate} AND #{endDate}
-</select>
-
-
-<select id="recentlyList" resultType="recentlyviewed"> 
-SELECT * 
-FROM RECENTLY_VIEWED 
-WHERE MEMBER_NO =#{memberNo} 
-
-</select>
-
-<select id="recentlyListPeriod" resultType="recentlyviewed"> 
-SELECT * 
-FROM RECENTLY_VIEWED 
-WHERE MEMBER_NO =#{memberNo} 
-AND VIEWED_DATE >= SYSDATE - #{period}
 
 </select>
 
+<select id="orderListCount" resultType="int">
+	SELECT COUNT(*)
+	FROM ORDERS
+	WHERE MEMBER_NO = #{memberNo}
 
-<select id="recentlyListDate" resultType="recentlyviewed">
+    <if test="period != null">
+        AND ORDER_DATE >= SYSDATE - #{period}
+    </if>
 
-SELECT * 
-FROM RECENTLY_VIEWED 
-WHERE MEMBER_NO =#{memberNo} 
-AND VIEWED_DATE BETWEEN #{startDate} AND #{endDate}
+    <if test="startDate != null and endDate != null">
+        AND ORDER_DATE BETWEEN #{startDate} AND #{endDate} 
+    </if>
+	
+</select>
+
+
+<!-- 최근 본 상품 부분 -->
+
+<select id="selectListrecently" resultType="recentlyViewed">
+	SELECT *
+FROM (
+    SELECT ROWNUM AS RNUM, T1.*
+    FROM (
+        SELECT *
+        FROM RECENTLY_VIEWED
+        WHERE MEMBER_NO = #{memberNo}
+
+            <if test="period != null">
+                AND VIEWED_DATE >= SYSDATE - #{period}
+            </if>
+
+            <if test="startDate != null and endDate != null">
+                AND VIEWED_DATE BETWEEN #{startDate} AND #{endDate}
+            </if>
+        ORDER BY VIEWED_DATE
+        
+    ) T1
+)
+WHERE RNUM BETWEEN #{offset} AND #{limit}
 
 </select>
+
+
+<select id="recentlyListCount" resultType="int">
+
+	SELECT COUNT(*)
+	FROM RECENTLY_VIEWED
+	WHERE MEMBER_NO = #{memberNo}
+
+    <if test="period != null">
+        AND VIEWED_DATE >= SYSDATE - #{period}
+    </if>
+
+    <if test="startDate != null and endDate != null">
+        AND VIEWED_DATE BETWEEN #{startDate} AND #{endDate} 
+    </if>
+
+</select>
+
+
+
+<!-- 문의 부분  -->
 
 <select id="inquiryList" resultType="MyInqury"> 
 
