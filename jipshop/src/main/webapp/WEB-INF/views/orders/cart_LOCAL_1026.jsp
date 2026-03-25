@@ -142,7 +142,6 @@ body { background:#f5f5f5; }
 
 <body>
 
-<!-- ✅ 헤더 -->
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 <div class="cart-container">
