@@ -19,6 +19,4 @@ public interface MemberDao {
 
 	List<String> findMemberId(Member m);
 
-
-
 }

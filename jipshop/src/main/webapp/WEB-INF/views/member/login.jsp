@@ -309,6 +309,44 @@
      document.getElementById('findIdTimer').style.display = 'none';
    }
    
+   /* 비밀번호 찾기 SMS 인증 */
+	let findPwdTimerInterval = null;
+	
+	function sendFindPwdSms() {
+	  const phone = document.getElementById('findPwdPhone').value.trim();
+	  if (phone === '') { alert('휴대폰 번호를 입력해주세요.'); return; }
+	  $.ajax({
+	    url: ctx + '/sms/send', type: 'POST', data: { phone: phone },
+	    success: function(res) {
+	      if (res.success) {
+	        alert(res.message);
+	        startModalTimer('findPwdTimer', function(iv) { findPwdTimerInterval = iv; });
+	        document.getElementById('btnFindPwdSend').disabled = true;
+	        setTimeout(function() { document.getElementById('btnFindPwdSend').disabled = false; }, 30000);
+	      } else { alert(res.message); }
+	    }
+	  });
+	}
+	
+	function verifyFindPwdSms() {
+	  const code = document.getElementById('findPwdCode').value.trim();
+	  if (code === '') { alert('인증번호를 입력해주세요.'); return; }
+	  $.ajax({
+	    url: ctx + '/sms/verifyPwd', type: 'POST', data: { code: code },
+	    success: function(res) {
+	      if (res.success) {
+	        alert(res.message);
+	        clearInterval(findPwdTimerInterval);
+	        document.getElementById('findPwdTimer').style.display  = 'none';
+	        document.getElementById('btnFindPwdVerify').disabled   = true;
+	        document.getElementById('btnFindPwdSend').disabled     = true;
+	        document.getElementById('findPwdCode').readOnly        = true;
+	        document.getElementById('pwdChangeArea').classList.add('active');
+	      } else { alert(res.message); }
+	    }
+	  });
+	}
+   
    function goLogin() { closeFindModal(); }
    
    /* ── 공통 타이머 ── */
