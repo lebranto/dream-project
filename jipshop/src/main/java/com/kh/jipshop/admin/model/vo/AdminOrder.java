@@ -42,9 +42,9 @@ public class AdminOrder {
     private String dnum;
 
     private String orderCancelYn;
+    private String cancelStatus;
+    private Date cancelRequestDate;
 
     private String startAddress;
     private String arriveAddress;
-
-    
 }
