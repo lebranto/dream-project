@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.jipshop.common.model.vo.PageInfo;
+import com.kh.jipshop.common.template.Pagination;
 import com.kh.jipshop.community.model.service.CommunityService;
 import com.kh.jipshop.community.model.vo.Board;
 
@@ -21,31 +23,29 @@ public class TipBoardListController {
 
     @GetMapping("/community/tipFreeBoard")
     public String boardList(
+            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
             @RequestParam(value = "boardType", defaultValue = "tip") String boardType,
             @RequestParam(value = "searchType", defaultValue = "all") String searchType,
             @RequestParam(value = "keyword", defaultValue = "") String keyword,
             Model model) {
 
         int boardCode = 2; // tip
-
         if ("free".equals(boardType)) {
             boardCode = 3;
         }
 
-        List<Board> boardList;
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("boardCode", boardCode);
+        paramMap.put("searchType", searchType);
+        paramMap.put("keyword", keyword == null ? "" : keyword.trim());
 
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("boardCode", boardCode);
-            paramMap.put("searchType", searchType);
-            paramMap.put("keyword", keyword.trim());
+        int listCount = communityService.selectBoardListCount(paramMap);
+        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 
-            boardList = communityService.selectBoardListBySearch(paramMap);
-        } else {
-            boardList = communityService.selectBoardListByBoardCode(boardCode);
-        }
+        List<Board> boardList = communityService.selectBoardList(pi, paramMap);
 
         model.addAttribute("boardList", boardList);
+        model.addAttribute("pi", pi);
         model.addAttribute("boardType", boardType);
         model.addAttribute("searchType", searchType);
         model.addAttribute("keyword", keyword);

@@ -65,4 +65,8 @@ public class AdminOrderController {
         int result = adminOrderService.updateDeliveryYn(orderId, deliveryYn);
         return result > 0 ? "success" : "fail";
     }
+    @GetMapping("/cancelList")
+    public String CancelList() {
+    	return "admin/orderCancelList";
+    }
 }

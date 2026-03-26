@@ -21,5 +21,6 @@ import com.kh.jipshop.common.template.Pagination;
 @RequestMapping("/admin/orderCancel")
 public class AdminOrderCancelController {
 
+	
    
 }
