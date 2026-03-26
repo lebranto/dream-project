@@ -130,4 +130,9 @@ public class MemberController {
 	    }
 	    return result;
 	}
+	
+	@GetMapping("/enrollComplete")
+	public String enrollComplete() {
+	    return "member/enrollComplete";
+	}
 }

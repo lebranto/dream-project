@@ -38,6 +38,7 @@
 		 <security:csrf disabled="true"/>
 		 <security:intercept-url pattern="/member/findId" access="permitAll" />
 		 <security:intercept-url pattern="/security/resetPwd" access="permitAll" />
+		 <security:intercept-url pattern="/member/enrollComplete" access="permitAll" />
 		 
 		 <!-- 
 		 	form-login
