@@ -102,9 +102,9 @@
             <c:forEach var="o" items="${orderlist}">
               <div class="purchase-card">
                 <div class="product-cell">
-                 <%--  <img class="product-thumb" src="${p.productImage}" alt="${p.productName}"> --%>
+                 <img class="product-thumb" src="${o.photo1}" alt="${o.productName}">
                   <div class="product-info">
-                    <div class="product-name">사료</div>
+                    <div class="product-name">${o.productName}</div>
                     <div><fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,##0원" /></div>
                   </div>
                 </div>
@@ -116,13 +116,13 @@
                 <div class="info-cell">${o.orderId}</div>
 
                 <div class="info-cell">
-                  <%-- ${o.deliveryStatus} --%>
-                  <div>배송중</div>
+                 
+                  <div>${o.deliveryStatus}</div>
                   <a href="#" class="status-badge">상세보기</a>
                 </div>
 
                 <div class="info-cell">
-                  <button class="cancel-btn" type="button">구매 취소</button>
+                  <a href="${contextPath}/mypage/cancle" class="cancel-btn">구매 취소</a>
                 </div>
               </div>
             </c:forEach>

@@ -1,14 +1,13 @@
 package com.kh.jipshop.mypage.model.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.kh.jipshop.mypage.model.dao.MypageDao;
+import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
-import com.kh.jipshop.mypage.model.vo.Orders;
 import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,7 @@ public class MypageServiceImpl implements MypageService {
 	
 
 	@Override
-	public List<Orders> selectListOrder(Map<String, Object> paramMap) {
+	public List<OrderDetailResponse> selectListOrder(Map<String, Object> paramMap) {
 		
 		return mDao.selectListOrder(paramMap);
 	}
@@ -42,7 +41,7 @@ public class MypageServiceImpl implements MypageService {
 	
 	
 	@Override
-	public List<RecentlyViewed> selectListrecently(Map<String, Object> paramMap) {
+	public List<OrderDetailResponse> selectListrecently(Map<String, Object> paramMap) {
 		
 		return mDao.selectListrecently(paramMap);
 	}
@@ -71,6 +70,12 @@ public class MypageServiceImpl implements MypageService {
 	public MyInqury inquiryDetail(Integer inquiryId) {
 		
 		return mDao.inquiryDetail(inquiryId);
+	}
+
+	@Override
+	public int delectInquiry(MyInqury mi) {
+		
+		return mDao.delectInquiry(mi);
 	}
 	
 

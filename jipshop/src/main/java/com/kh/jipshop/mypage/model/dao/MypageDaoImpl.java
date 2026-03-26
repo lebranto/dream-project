@@ -1,7 +1,5 @@
 package com.kh.jipshop.mypage.model.dao;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,8 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.jipshop.common.model.vo.PageInfo;
+import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
-import com.kh.jipshop.mypage.model.vo.Orders;
 import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,7 @@ public class MypageDaoImpl implements MypageDao {
 	
 	
 	@Override
-	public List<Orders> selectListOrder(Map<String, Object> paramMap) {
+	public List<OrderDetailResponse> selectListOrder(Map<String, Object> paramMap) {
 		/*
 		 * 특정 페이지의 데이터를 가져오는 방법들(페이징 처리)
 		 * 1. ROWNUM, ROW_NUMBER()로 페이징 처리된 쿼리 조회하기.
@@ -72,7 +70,7 @@ public class MypageDaoImpl implements MypageDao {
 	
 
 	@Override
-	public List<RecentlyViewed> selectListrecently(Map<String, Object> paramMap) {
+	public List<OrderDetailResponse> selectListrecently(Map<String, Object> paramMap) {
 
 		PageInfo pi = (PageInfo) paramMap.get("pi");
 		int offset = (pi.getCurrentPage() -1)*pi.getBoardLimit();
@@ -118,6 +116,12 @@ public class MypageDaoImpl implements MypageDao {
 	public MyInqury inquiryDetail(Integer inquiryId) {
 		
 		return session.selectOne("mypage.inquiryDetail",inquiryId);
+	}
+
+	@Override
+	public int delectInquiry(MyInqury mi) {
+	
+		return session.delete("mypage.delectInquiry",mi);
 	}
 
 

@@ -1,0 +1,35 @@
+package com.kh.jipshop.mypage.model.dto;
+
+
+
+
+import java.util.Date;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class OrderDetailResponse {
+	
+	//주문쪽 필드
+	private int orderTotalPrice;
+	private Date orderDate;
+	private int orderId;
+	
+	// 상품쪽 필드
+	private String productName;
+	private String photo1;
+	private int productPrice;
+	
+	// 최근 본 상품 쪽 필드
+	private int viewId;
+	private Date viewedDate;
+	
+	// 배송 상태
+	private String deliveryStatus;
+	
+	
+	
+	
+}

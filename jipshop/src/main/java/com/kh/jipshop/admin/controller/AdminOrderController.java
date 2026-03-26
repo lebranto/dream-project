@@ -50,7 +50,7 @@ public class AdminOrderController {
         return result > 0 ? "success" : "fail";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/list")
     public String deleteOrders(
             @RequestParam(value="orderIds", required=false) ArrayList<Integer> orderIds) {
 

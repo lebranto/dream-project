@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -57,7 +58,9 @@
           <div class="detail-head-label">제목 :</div>
           <div class="detail-head-title">${myinquiry.inquiryType}</div>
           <div class="detail-head-date-label">작성일 :</div>
-          <div class="detail-head-date">${myinquiry.inquiryRegDate}</div>
+          <div class="detail-head-date">
+          <fmt:formatDate value="${myinquiry.inquiryRegDate}" pattern="yyyy-MM-dd"/> 
+          </div>
         </div>
 
         <div class="detail-body">
@@ -95,14 +98,20 @@
 
       <div class="bottom-actions">
         <button class="action-btn" type="button"
-                onclick="location.href='${pageContext.request.contextPath}/inquiry/edit?no=${inquiry.inquiryNo}'">
+                onclick="location.href='${contextPath}/inquiry/edit?no=${myinquiry.inquiryId}'">
           수정
         </button>
 
-        <button class="action-btn" type="button"
-                onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='${pageContext.request.contextPath}/inquiry/delete?no=${inquiry.inquiryNo}'">
+		<form action="${contextPath}/mypage/delete" method="post" style="display:inline">
+        
+         <input type="hidden" name="inquiryId" value="${myinquiry.inquiryId}">
+        <button class="action-btn" type="submit"
+                onclick="return confirm('정말 삭제하시겠습니까?');">
           삭제
         </button>
+		
+		</form>
+
       </div>
     </main>
   </div>
