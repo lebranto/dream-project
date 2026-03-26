@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지 최근 본 상품</title>
-    <link rel="stylesheet" href="${contextPath}/resources/css/mypage/recent.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/mypage/recent.css"> 
 </head>
 <body>
 
@@ -77,6 +77,8 @@
             <button class="search-btn" type="submit">조회</button>
           </div>
         </form>
+        
+        
       </div>
       
       
@@ -98,14 +100,13 @@
                         <c:forEach var="l" items="${recentlyList}">
                             <div class="recent-card">
                                 <div class="product-cell">
-                                  <%--   <img class="product-thumb"
-                                         src="${contextPath}${item.image}"
-                                         alt="${item.productName}"> --%>
-									사진
+                                   <img class="product-thumb"
+                                         src="${l.photo1}"
+                                         alt="${l.productName}"> 
                                     <div class="product-info">
-                                        <%-- <div class="product-name">${item.productName}</div> --%>
+                                        <div class="product-name">${l.productName}</div> 
                                         <div>
-                                           <%--  <fmt:formatNumber value="${item.price}" pattern="#,###" />원 --%>
+                                           <fmt:formatNumber value="${l.productPrice}" pattern="#,###" />원
                                         </div>
                                     </div>
                                 </div>

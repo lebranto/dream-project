@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -75,28 +76,38 @@
             <c:forEach var="i" items="${inquiryList}">
               <div class="inquiry-card">
                 <div class="number-cell">${i.inquiryId}</div>
-                <div class="title-cell">${i.inquiryContent}</div>
-                <div class="date-cell">${i.inquryRegDate}</div>
+                <a href="${contextPath}/mypage/inquirydetail?inquiryId=${i.inquiryId}" class="title-cell">${i.inquiryType}</a>
+                <div class="date-cell">
+                <fmt:formatDate value="${i.inquiryRegDate}" pattern="yyyy-MM-dd"/>
+                </div>
                 <div class="status-cell">${i.replyYn}</div>
               </div>
             </c:forEach>
           </div>
 
           <div class="pagination">
+          
             <c:if test="${pi.currentPage > 1}">
-              <a class="page-arrow" href="${contextPath}/mypage/inquiry?cpage=${pi.currentPage - 1}">◀</a>
+              <a class="page-arrow"
+                href="${contextPath}/mypage/inquiry?cpage=${pi.currentPage - 1}">
+                ◀
+              </a>
             </c:if>
 
             <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
               <a class="page-btn ${p == pi.currentPage ? 'active' : ''}"
                  href="${contextPath}/mypage/inquiry?cpage=${p}">
-                ${p}
-              </a>
-            </c:forEach>
+               ${p}
+             </a>
+           </c:forEach>
 
-            <c:if test="${pi.currentPage < pi.maxPage}">
-              <a class="page-arrow" href="${contextPath}/mypage/inquiry?cpage=${pi.currentPage + 1}">▶</a>
-            </c:if>
+           <c:if test="${pi.currentPage < pi.maxPage}">
+             <a class="page-arrow"
+                href="${contextPath}/mypage/inquiry?cpage=${pi.currentPage + 1}">
+             ▶
+             </a>
+           </c:if>
+           
           </div>
         </c:otherwise>
       </c:choose>

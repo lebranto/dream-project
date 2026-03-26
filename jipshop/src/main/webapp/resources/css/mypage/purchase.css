@@ -291,8 +291,6 @@
   flex-wrap: wrap;
 }
 
-    
-
     @media (max-width: 900px) {
       .sidebar {
         position: static;

@@ -122,14 +122,13 @@
     .date-group {
       display: flex;
       align-items: center;
-      padding-left: 270px;
       gap: 8px;
       margin-left: 10px;
     }
 
     .date-input {
       width: 120px;
-      padding: 0 10px;
+      padding: 10px;
       outline: none;
     }
 
@@ -325,10 +324,8 @@
       .empty-box {
         font-size: 20px;
       }
-
- }
-      
- .period-form,
+  
+.period-form,
 .date-form {
   margin: 0;
 }
