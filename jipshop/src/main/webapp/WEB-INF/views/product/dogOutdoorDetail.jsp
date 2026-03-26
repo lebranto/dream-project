@@ -1,74 +1,239 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>컬러 웨빙 목줄 라지 상세페이지</title>
+<title>강아지 외출용품 상세페이지</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product/dogOutdoorDetail.css">
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-<div class="detail-container">
+<c:set var="product" value="${param.product}" />
+<c:set var="loginUser" value="${sessionScope.loginUser}" />
 
-    <div class="product-top">
-        <div class="product-image-area">
-            <img src="${pageContext.request.contextPath}/resources/img/목줄라지.png" alt="컬러 웨빙 목줄 라지">
+<div class="outdoor-detail-page">
+
+    <!-- 상품 상단 -->
+    <div class="outdoor-detail-top">
+
+        <div class="outdoor-image-box">
+            <c:choose>
+                <c:when test="${product eq '1'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/목줄라지.png" alt="컬러 웨빙 목줄 라지" class="outdoor-detail-image">
+                </c:when>
+                <c:when test="${product eq '2'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/목줄미디움.png" alt="컬러 웨빙 목줄 미디움" class="outdoor-detail-image">
+                </c:when>
+                <c:when test="${product eq '3'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/목줄스몰.png" alt="컬러 웨빙 목줄 스몰" class="outdoor-detail-image">
+                </c:when>
+                <c:when test="${product eq '4'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/led.png" alt="젤리곰 LED 블링커" class="outdoor-detail-image">
+                </c:when>
+                <c:otherwise>
+                    <img src="${pageContext.request.contextPath}/resources/img/목줄라지.png" alt="강아지 외출용품" class="outdoor-detail-image">
+                </c:otherwise>
+            </c:choose>
         </div>
 
-        <div class="product-info-area">
-            <h1 class="product-title">컬러 웨빙 목줄 라지</h1>
-            <div class="product-price">25,000원</div>
+        <div class="outdoor-info-box">
+            <c:choose>
+                <c:when test="${product eq '1'}">
+                    <h2 class="outdoor-title">컬러 웨빙 목줄 라지</h2>
+                    <p class="outdoor-price">25,000원</p>
+                    <p class="outdoor-desc">
+                        대형견에게 편안한 착용감을 제공하는 외출용 웨빙 목줄입니다.<br>
+                        산책 시 안정감 있게 사용할 수 있도록 제작된 제품입니다.
+                    </p>
+                </c:when>
 
-            <p class="product-desc">
-                대형견에게 편안한 착용감을 제공하는 외출용 웨빙 목줄입니다.<br>
-                산책 시 안정감 있게 사용할 수 있는 제품입니다.
-            </p>
+                <c:when test="${product eq '2'}">
+                    <h2 class="outdoor-title">컬러 웨빙 목줄 미디움</h2>
+                    <p class="outdoor-price">25,000원</p>
+                    <p class="outdoor-desc">
+                        중형견에게 안정적인 착용감을 제공하는 외출용 웨빙 목줄입니다.<br>
+                        편안하고 실용적인 산책용 제품입니다.
+                    </p>
+                </c:when>
 
-            <div class="product-button-group">
-                <button type="button" class="cart-btn">장바구니</button>
-                <button type="button" class="buy-btn">구매하기</button>
+                <c:when test="${product eq '3'}">
+                    <h2 class="outdoor-title">컬러 웨빙 목줄 스몰</h2>
+                    <p class="outdoor-price">25,000원</p>
+                    <p class="outdoor-desc">
+                        소형견에게 가볍고 편안한 착용감을 주는 외출용 목줄입니다.<br>
+                        일상 산책에 부담 없이 사용할 수 있습니다.
+                    </p>
+                </c:when>
+
+                <c:when test="${product eq '4'}">
+                    <h2 class="outdoor-title">젤리곰 LED 블링커</h2>
+                    <p class="outdoor-price">25,000원</p>
+                    <p class="outdoor-desc">
+                        야간 산책 시 시인성을 높여주는 LED 안전 외출용품입니다.<br>
+                        어두운 길에서도 반려견의 위치를 쉽게 확인할 수 있습니다.
+                    </p>
+                </c:when>
+
+                <c:otherwise>
+                    <h2 class="outdoor-title">강아지 외출용품</h2>
+                    <p class="outdoor-price">25,000원</p>
+                    <p class="outdoor-desc">강아지를 위한 실용적인 외출용품입니다.</p>
+                </c:otherwise>
+            </c:choose>
+
+            <div class="outdoor-btn-group">
+                <button type="button" class="main-action-btn">장바구니</button>
+                <button type="button" class="main-action-btn">구매하기</button>
             </div>
         </div>
     </div>
 
-    <div class="detail-tab-wrap">
-        <a href="#detailInfo" class="detail-tab-btn">상세정보</a>
-        <a href="#deliveryInfo" class="detail-tab-btn">배송안내</a>
+    <!-- 탭 버튼 -->
+    <div class="outdoor-tab-wrap">
+        <button type="button" class="outdoor-tab-btn active" onclick="toggleSection('detailInfo', this)">상세보기</button>
+        <button type="button" class="outdoor-tab-btn" onclick="toggleSection('reviewInfo', this)">리뷰작성</button>
     </div>
 
-    <div class="detail-view-wrap">
-        <div id="detailInfo" class="detail-content-box">
-            <h2>상세정보</h2>
-            <img src="${pageContext.request.contextPath}/resources/img/목줄라지디테일.png" alt="컬러 웨빙 목줄 라지 상세정보">
+    <!-- 상세보기 -->
+    <div id="detailInfo" class="outdoor-content-box" style="display:block;">
+        <div class="outdoor-detail-content-image-wrap">
+            <c:choose>
+                <c:when test="${product eq '1'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/목줄라지디테일.png" alt="컬러 웨빙 목줄 라지 상세정보" class="outdoor-detail-content-image">
+                </c:when>
+                <c:when test="${product eq '2'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/목줄미디움디테일.png" alt="컬러 웨빙 목줄 미디움 상세정보" class="outdoor-detail-content-image">
+                </c:when>
+                <c:when test="${product eq '3'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/목줄스몰디테일.png" alt="컬러 웨빙 목줄 스몰 상세정보" class="outdoor-detail-content-image">
+                </c:when>
+                <c:when test="${product eq '4'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/led디테일.png" alt="젤리곰 LED 블링커 상세정보" class="outdoor-detail-content-image">
+                </c:when>
+                <c:otherwise>
+                    <p>상품 상세 이미지가 준비 중입니다.</p>
+                </c:otherwise>
+            </c:choose>
         </div>
+    </div>
 
-        <div id="deliveryInfo" class="detail-content-box">
-            <h2>배송안내</h2>
+    <!-- 리뷰작성 -->
+    <div id="reviewInfo" class="outdoor-content-box">
+        <div class="review-area-box">
 
-            <div class="delivery-section">
-                <h3>배송비</h3>
-                <p>기본배송료는 <span class="point-text">3,000원</span> 입니다.</p>
-                <p>(제주 4,000원 / 도서산간 7,000원 추가 배송비가 부과됩니다.)</p>
+            <div class="review-list-wrap">
+
+                <div class="review-item review-bg-1">
+                    <div class="review-main-text">▶ 배송이 아주 빨랐습니다!</div>
+                    <div class="review-meta">강진솔 | 2026-03-24</div>
+
+                    <div class="review-help-area">
+                        <button type="button" class="review-help-btn" onclick="checkLoginAndLike(this)">도움돼요</button>
+                        <button type="button" class="review-like-btn" onclick="checkLoginAndLike(this)">👍</button>
+                        <span class="review-like-count">0</span>
+                    </div>
+                </div>
+
+                <div class="review-item review-bg-2">
+                    <div class="review-main-text">▶ 산책할 때 쓰기 좋아요!</div>
+                    <div class="review-meta">강진솔 | 2026-03-24</div>
+
+                    <div class="review-help-area">
+                        <button type="button" class="review-help-btn" onclick="checkLoginAndLike(this)">도움돼요</button>
+                        <button type="button" class="review-like-btn" onclick="checkLoginAndLike(this)">👍</button>
+                        <span class="review-like-count">0</span>
+                    </div>
+                </div>
+
+                <div class="review-page-num">1</div>
             </div>
 
-            <div class="delivery-section">
-                <h3>평균 배송일</h3>
-                <p>본 상품의 평균 배송일은 <span class="point-text">2일</span>입니다.</p>
-                <p>[배송예정일은 주문시점에 따라 차이가 발생할 수 있습니다.]</p>
+            <div class="review-write-wrap">
+                <form action="${pageContext.request.contextPath}/dog/review/insert" method="post" onsubmit="return checkLoginAndSubmit();">
+                    <input type="hidden" name="product" value="${product}">
+
+                    <div class="review-input-box">
+                        <textarea name="reviewContent" class="review-textarea" placeholder="리뷰를 작성해주세요."></textarea>
+                    </div>
+
+                    <div class="review-submit-area">
+                        <button type="submit" class="review-submit-btn">리뷰등록</button>
+                    </div>
+                </form>
             </div>
 
-            <div class="delivery-section">
-                <h3>교환 / 반품 안내</h3>
-                <p>단순 변심에 의한 교환/반품은 수령 후 7일 이내 가능합니다.</p>
-                <p>상품 훼손 및 사용 흔적이 있는 경우 교환/반품이 제한될 수 있습니다.</p>
-            </div>
         </div>
     </div>
 
 </div>
+
+<script>
+    const isLogin = ${loginUser != null ? 'true' : 'false'};
+
+    function toggleSection(sectionId, clickedBtn) {
+        const detailBox = document.getElementById("detailInfo");
+        const reviewBox = document.getElementById("reviewInfo");
+        const buttons = document.querySelectorAll(".outdoor-tab-btn");
+
+        buttons.forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+        detailBox.style.display = "none";
+        reviewBox.style.display = "none";
+
+        if (sectionId === "detailInfo") {
+            detailBox.style.display = "block";
+            clickedBtn.classList.add("active");
+        }
+
+        if (sectionId === "reviewInfo") {
+            reviewBox.style.display = "block";
+            clickedBtn.classList.add("active");
+        }
+    }
+
+    function checkLoginAndSubmit() {
+        if (!isLogin) {
+            alert("로그인 후 리뷰를 작성할 수 있습니다.");
+            return false;
+        }
+
+        const reviewText = document.querySelector(".review-textarea").value.trim();
+
+        if (reviewText === "") {
+            alert("리뷰 내용을 입력해주세요.");
+            return false;
+        }
+
+        return true;
+    }
+
+    function checkLoginAndLike(clickedElement) {
+        if (!isLogin) {
+            alert("로그인 후 좋아요를 누를 수 있습니다.");
+            return;
+        }
+
+        const reviewItem = clickedElement.closest(".review-item");
+        const likeCount = reviewItem.querySelector(".review-like-count");
+        let currentCount = parseInt(likeCount.innerText);
+
+        if (reviewItem.classList.contains("liked")) {
+            reviewItem.classList.remove("liked");
+            likeCount.innerText = currentCount - 1;
+        } else {
+            reviewItem.classList.add("liked");
+            likeCount.innerText = currentCount + 1;
+        }
+    }
+</script>
 
 </body>
 </html>

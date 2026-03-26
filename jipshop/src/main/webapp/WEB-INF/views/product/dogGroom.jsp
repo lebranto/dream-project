@@ -40,7 +40,6 @@
 
     <section class="product-list">
 
-        <!-- 상품 1 -->
         <div class="product-card">
             <button type="button" class="wish-btn" aria-label="찜하기">
                 <span class="heart-outline">♡</span>
@@ -57,13 +56,12 @@
                 <p class="product-price">25,000 원</p>
 
                 <div class="product-bottom">
-                    <a href="${pageContext.request.contextPath}/dog/groom/detail" class="cart-btn">바로가기</a>
+                    <a href="${pageContext.request.contextPath}/dog/groom/detail?product=1" class="cart-btn">바로가기</a>
                     <span class="cart-icon">🛒</span>
                 </div>
             </div>
         </div>
 
-        <!-- 상품 2 -->
         <div class="product-card">
             <button type="button" class="wish-btn" aria-label="찜하기">
                 <span class="heart-outline">♡</span>
@@ -80,13 +78,12 @@
                 <p class="product-price">25,000 원</p>
 
                 <div class="product-bottom">
-                    <a href="${pageContext.request.contextPath}/dog/groom/detail2" class="cart-btn">바로가기</a>
+                    <a href="${pageContext.request.contextPath}/dog/groom/detail?product=2" class="cart-btn">바로가기</a>
                     <span class="cart-icon">🛒</span>
                 </div>
             </div>
         </div>
 
-        <!-- 상품 3 -->
         <div class="product-card">
             <button type="button" class="wish-btn" aria-label="찜하기">
                 <span class="heart-outline">♡</span>
@@ -103,13 +100,12 @@
                 <p class="product-price">25,000 원</p>
 
                 <div class="product-bottom">
-                    <a href="${pageContext.request.contextPath}/dog/groom/detail3" class="cart-btn">바로가기</a>
+                    <a href="${pageContext.request.contextPath}/dog/groom/detail?product=3" class="cart-btn">바로가기</a>
                     <span class="cart-icon">🛒</span>
                 </div>
             </div>
         </div>
 
-        <!-- 상품 4 -->
         <div class="product-card">
             <button type="button" class="wish-btn" aria-label="찜하기">
                 <span class="heart-outline">♡</span>
@@ -126,7 +122,7 @@
                 <p class="product-price">25,000 원</p>
 
                 <div class="product-bottom">
-                    <a href="${pageContext.request.contextPath}/dog/groom/detail4" class="cart-btn">바로가기</a>
+                    <a href="${pageContext.request.contextPath}/dog/groom/detail?product=4" class="cart-btn">바로가기</a>
                     <span class="cart-icon">🛒</span>
                 </div>
             </div>
