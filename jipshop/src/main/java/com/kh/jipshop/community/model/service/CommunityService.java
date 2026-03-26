@@ -1,8 +1,10 @@
 package com.kh.jipshop.community.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.community.model.vo.Board;
 import com.kh.jipshop.community.model.vo.BoardComment;
 import com.kh.jipshop.community.model.vo.BoardImage;
@@ -51,6 +53,9 @@ public interface CommunityService {
 
 		int insertCommentReport(int memberNo, int commentId);
 
+		int selectBoardListCount(Map<String, Object> paramMap);
+
+		List <Board> selectBoardList(PageInfo pi, Map<String, Object> paramMap);
 		
 	
 }

@@ -44,7 +44,7 @@
         <a href="#" class="community-write-btn" id="openWriteModal">게시글 작성</a>
     </form>
 
-    <h2 class="section-title">인기게시글 top 6</h2>
+    <h2 class="section-title">인기게시글 top 5</h2>
     <table class="board-table">
         <thead>
             <tr>

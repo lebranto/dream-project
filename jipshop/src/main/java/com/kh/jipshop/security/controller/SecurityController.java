@@ -153,7 +153,7 @@ public class SecurityController {
 	        }
 	 
 	        ra.addFlashAttribute("alertMsg", "회원가입 성공");
-	        return "redirect:/member/login";
+	        return "redirect:/member/enrollComplete";
 	    } else {
 	        throw new RuntimeException("회원가입 실패");
 	    }

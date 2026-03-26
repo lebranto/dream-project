@@ -6,15 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class AdminOrderSearch {
+public class AdminOrderCancelSearch {
 
-    private String startDate;   // YYYY-MM-DD
-    private String endDate;     // YYYY-MM-DD
-
+    private String startDate;
+    private String endDate;
+    private String cancelStatus;
     private String keyword;
-    private String cancelDate;
-
 }
