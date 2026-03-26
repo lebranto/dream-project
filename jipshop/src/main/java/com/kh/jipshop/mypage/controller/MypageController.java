@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import com.kh.jipshop.common.template.Pagination;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.service.MypageService;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
-import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
+import com.kh.jipshop.security.model.vo.MemberExt;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,11 +30,12 @@ public class MypageController {
 	private final MypageService mService;
 
 	@GetMapping("/purchase")
-	public String orderList(@RequestParam(required = false) Integer memberNo,
+	public String orderList(
 			@RequestParam(required = false) Integer period,
 			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
 			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
-			@RequestParam(value = "cpas", defaultValue = "1") int currentPage,
+			@RequestParam(value = "cpage", defaultValue = "1") int currentPage,
+			Authentication auth,
 			@RequestParam Map<String, Object> paramMap, Model model) {
 
 		/*
@@ -60,7 +62,7 @@ public class MypageController {
 		 */
 
 		// 테스트용
-		memberNo = 1;
+		Integer memberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
 		// 실제로는 로그인 유저 번호 사용 권장
 		// memberNo = loginUser.getMemberNo();
 
@@ -93,11 +95,12 @@ public class MypageController {
 			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
 			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
 			@RequestParam(value = "cpage", defaultValue = "1") int currentPage,
+			Authentication auth,
 			@RequestParam Map<String, Object> paramMap, Model model) {
 
-		memberNo = 1;
+		Integer memberNo2 = ((MemberExt)auth.getPrincipal()).getMemberNo();
 
-		paramMap.put("memberNo", memberNo);
+		paramMap.put("memberNo", memberNo2);
 		paramMap.put("period", period);
 		paramMap.put("startDate", startDate);
 		paramMap.put("endDate", endDate);
@@ -121,11 +124,13 @@ public class MypageController {
 	@GetMapping("/inquiry")
 	public String inquiryList(@RequestParam(required = false) Integer memberNo,
 			@RequestParam(value = "cpage", defaultValue = "1") int currentPage,
-			@RequestParam Map<String, Object> paramMap, Model model) {
+			@RequestParam Map<String, Object> paramMap, 
+			Authentication auth,
+			Model model) {
 
-		memberNo = 1;
+		Integer memberNo3 = ((MemberExt)auth.getPrincipal()).getMemberNo();
 
-		paramMap.put("memberNo", memberNo);
+		paramMap.put("memberNo", memberNo3);
 
 		int boardLimit = 6;
 		int pageLimit = 10;
