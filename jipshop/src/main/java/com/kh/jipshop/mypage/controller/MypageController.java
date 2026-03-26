@@ -177,8 +177,10 @@ public class MypageController {
 	}
 		
 	@GetMapping("/cancle")
-	public String cancle() {
-		
+	public String cancle(
+			Authentication auth
+			) {
+		String password = ((MemberExt)auth.getPrincipal()).getPassword();
 				
 		
 		return "mypage/cancle";
@@ -186,7 +188,9 @@ public class MypageController {
 	
 
 	@GetMapping("/updateMemberCheck")
-	public String updateMemberCheck() {
+	public String updateMemberCheck(
+			Authentication auth
+			) {
 
 		return "mypage/updateMemberCheck";
 	}
