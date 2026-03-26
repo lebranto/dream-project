@@ -230,4 +230,117 @@
         )
     </insert>
 
+<!-- 주문취소 검색 조건 -->
+<sql id="orderCancelWhere">
+    <where>
+        AND O.ORDER_CANCEL_YN = 'Y'
+
+        <if test="startDate != null and startDate != ''">
+            AND O.CANCEL_REQUEST_DATE <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
+        </if>
+
+        <if test="endDate != null and endDate != ''">
+            AND O.CANCEL_REQUEST_DATE <![CDATA[<]]> TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+        </if>
+
+        <if test="cancelStatus != null and cancelStatus != ''">
+            <choose>
+                <when test='cancelStatus == "PENDING"'>
+                    AND NVL(O.CANCEL_STATUS, 'PENDING') = 'PENDING'
+                </when>
+                <otherwise>
+                    AND O.CANCEL_STATUS = #{cancelStatus}
+                </otherwise>
+            </choose>
+        </if>
+
+        <if test="keyword != null and keyword != ''">
+            AND (
+                O.ORDERER_NAME LIKE '%' || #{keyword} || '%'
+                OR TO_CHAR(O.ORDER_ID) LIKE '%' || #{keyword} || '%'
+                OR P.PRODUCT_NAME LIKE '%' || #{keyword} || '%'
+            )
+        </if>
+    </where>
+</sql>
+
+<select id="selectOrderCancelListCount"
+        parameterType="com.kh.jipshop.admin.model.vo.AdminOrderCancelSearch"
+        resultType="_int">
+    SELECT COUNT(DISTINCT O.ORDER_ID)
+    FROM ORDERS O
+    LEFT JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
+    LEFT JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
+    <include refid="orderCancelWhere"/>
+</select>
+
+<select id="selectOrderCancelList"
+        parameterType="com.kh.jipshop.admin.model.vo.AdminOrderCancelSearch"
+        resultType="com.kh.jipshop.admin.model.vo.AdminOrderCancel">
+    SELECT *
+    FROM (
+        SELECT
+            O.ORDER_ID,
+            O.ORDERER_NAME,
+            NVL(P.PRODUCT_NAME, '상품 정보 없음') AS PRODUCT_NAME,
+            NVL(O.CANCEL_REASON, '-') AS CANCEL_REASON,
+            TO_CHAR(O.CANCEL_REQUEST_DATE, 'YYYY-MM-DD') AS CANCEL_REQUEST_DATE_STR,
+            O.ORDER_CANCEL_YN,
+            NVL(O.CANCEL_STATUS, 'PENDING') AS CANCEL_STATUS,
+            CASE
+                WHEN NVL(O.CANCEL_STATUS, 'PENDING') = 'APPROVED' THEN '취소 승인'
+                WHEN NVL(O.CANCEL_STATUS, 'PENDING') = 'REJECTED' THEN '취소 반려'
+                ELSE '승인 대기'
+            END AS CANCEL_STATUS_LABEL,
+            CASE
+                WHEN NVL(O.CANCEL_STATUS, 'PENDING') = 'APPROVED' THEN '복구 완료'
+                ELSE '미복구'
+            END AS STOCK_RESTORE_LABEL,
+            ROW_NUMBER() OVER (PARTITION BY O.ORDER_ID ORDER BY OD.DETAIL_ID) AS RN
+        FROM ORDERS O
+        LEFT JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
+        LEFT JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
+        <include refid="orderCancelWhere"/>
+    )
+    WHERE RN = 1
+    ORDER BY ORDER_ID DESC
+</select>
+
+<select id="selectPendingCancelCount" resultType="_int">
+    SELECT COUNT(*)
+    FROM ORDERS
+    WHERE ORDER_CANCEL_YN = 'Y'
+      AND NVL(CANCEL_STATUS, 'PENDING') = 'PENDING'
+</select>
+
+<update id="updateCancelStatusApproved" parameterType="_int">
+    UPDATE ORDERS
+    SET CANCEL_STATUS = 'APPROVED'
+    WHERE ORDER_ID = #{orderId}
+      AND ORDER_CANCEL_YN = 'Y'
+      AND NVL(CANCEL_STATUS, 'PENDING') = 'PENDING'
+</update>
+
+<update id="updateCancelStatusRejected" parameterType="_int">
+    UPDATE ORDERS
+    SET CANCEL_STATUS = 'REJECTED'
+    WHERE ORDER_ID = #{orderId}
+      AND ORDER_CANCEL_YN = 'Y'
+      AND NVL(CANCEL_STATUS, 'PENDING') = 'PENDING'
+</update>
+
+<update id="restoreProductStock" parameterType="_int">
+    UPDATE PRODUCT P
+    SET P.PRODUCT_STOCK = P.PRODUCT_STOCK + (
+        SELECT NVL(SUM(OD.DETAIL_QTY), 0)
+        FROM ORDER_DETAIL OD
+        WHERE OD.ORDER_ID = #{orderId}
+          AND OD.PRODUCT_ID = P.PRODUCT_ID
+    )
+    WHERE P.PRODUCT_ID IN (
+        SELECT OD.PRODUCT_ID
+        FROM ORDER_DETAIL OD
+        WHERE OD.ORDER_ID = #{orderId}
+    )
+</update>
 </mapper>

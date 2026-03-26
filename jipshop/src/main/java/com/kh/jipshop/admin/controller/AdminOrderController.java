@@ -37,7 +37,7 @@ public class AdminOrderController {
         model.addAttribute("orderList", adminOrderService.selectOrderList(pi, search));
         model.addAttribute("search", search);
 
-        return "admin/adminOrderList";
+        return "admin/orderList";
     }
 
     @PostMapping("/delete")
@@ -64,9 +64,5 @@ public class AdminOrderController {
 
         int result = adminOrderService.updateDeliveryYn(orderId, deliveryYn);
         return result > 0 ? "success" : "fail";
-    }
-    @GetMapping("/cancelList")
-    public String CancelList() {
-    	return "admin/orderCancelList";
     }
 }
