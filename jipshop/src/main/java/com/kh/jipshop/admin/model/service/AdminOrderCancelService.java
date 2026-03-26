@@ -8,15 +8,7 @@ import com.kh.jipshop.common.model.vo.PageInfo;
 
 public interface AdminOrderCancelService {
 
-	int selectOrderCancelListCount(AdminOrderSearch search);
-
-	ArrayList<AdminOrderCancel> selectOrderCancelList(PageInfo pi, AdminOrderSearch search);
-
-	int approveOrderCancel(String orderIds);
-
-	int rejectOrderCancel(String orderIds);
-
-	int deleteOrderCancel(String orderIds);
+	
 
 	
 }

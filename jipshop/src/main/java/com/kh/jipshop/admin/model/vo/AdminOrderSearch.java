@@ -13,13 +13,15 @@ import lombok.ToString;
 @ToString
 public class AdminOrderSearch {
 
-    private String startYear;
+	private String startYear;
     private String startMonth;
     private String startDay;
 
     private String endYear;
     private String endMonth;
     private String endDay;
+
+    private String keyword;
 
  
 }

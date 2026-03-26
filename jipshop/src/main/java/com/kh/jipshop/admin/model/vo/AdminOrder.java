@@ -13,38 +13,34 @@ import lombok.ToString;
 @ToString
 public class AdminOrder {
 
-    private int rowNum;
-    private int orderId;
+	 private int rowNum;
 
-    private String orderDateStr;
+	    private int orderId;
+	    private String ordererName;
+	    private String ordererPhone;
+	    private int orderTotalPrice;
+	    private String orderDateStr;
 
-    private String ordererName;
-    private String ordererPhone;
-    private String ordererEmail;
-    private String ordererAddress;
+	    private String orderCancelYn;
+	    private String cancelStatus;
+	    private String cancelStatusLabel;
+	    private String orderStatusLabel;
 
-    private String recvName;
-    private String recvPhone;
-    private String recvAddress;
+	    private String deliveryYn;
+	    private String deliveryStatus;
 
-    private int productId;
-    private String productName;
-    private int productPrice;
-    private String productPhoto1;
+	    private int deliveryId;
+	    private String expectedDateStr;
 
-    private String companyName;
-    private String companyPhone;
-    private String companyAddress;
+	    private String recvName;
+	    private String recvPhone;
+	    private String recvAddress;
 
-    private String expectedDateStr;
-    private String deliveryYn;
-    private String deliveryStatus;
-    private String dnum;
+	    private String productName;
+	    private int productPrice;
+	    private String productPhoto1;
 
-    private String orderCancelYn;
-    private String cancelStatus;
-    private Date cancelRequestDate;
-
-    private String startAddress;
-    private String arriveAddress;
+	    private String companyName;
+	    private String companyPhone;
+	    private String companyAddress;
 }
