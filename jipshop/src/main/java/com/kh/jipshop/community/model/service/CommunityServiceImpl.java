@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.community.model.dao.CommunityDao;
 import com.kh.jipshop.community.model.vo.Board;
 import com.kh.jipshop.community.model.vo.BoardComment;
@@ -125,5 +126,14 @@ public class CommunityServiceImpl implements CommunityService {
 	    @Override
 	    public int insertCommentReport(int reporterMemberNo, int commentId) {
 	        return communityDao.insertCommentReport(sqlSession, reporterMemberNo, commentId);
+	    }
+	    @Override
+	    public int selectBoardListCount(Map<String, Object> paramMap) {
+	        return communityDao.selectBoardListCount(sqlSession, paramMap);
+	    }
+
+	    @Override
+	    public List<Board> selectBoardList(PageInfo pi, Map<String, Object> paramMap) {
+	        return communityDao.selectBoardList(sqlSession, pi, paramMap);
 	    }
 }

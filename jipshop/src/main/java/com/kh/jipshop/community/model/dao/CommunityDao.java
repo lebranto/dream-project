@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.community.model.vo.Board;
 import com.kh.jipshop.community.model.vo.BoardComment;
 import com.kh.jipshop.community.model.vo.BoardImage;
@@ -52,4 +53,8 @@ public interface CommunityDao {
 	int insertComment(SqlSessionTemplate sqlSession, BoardComment comment);
 
 	int insertCommentReport(SqlSessionTemplate sqlSession, int reporterMemberNo, int commentId);
+
+	int selectBoardListCount(SqlSessionTemplate sqlSession, Map<String, Object> paramMap);
+
+	List<Board> selectBoardList(SqlSessionTemplate sqlSession, PageInfo pi, Map<String, Object> paramMap);
 }

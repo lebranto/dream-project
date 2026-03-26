@@ -5,24 +5,24 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.kh.jipshop.admin.model.vo.AdminOrderCancel;
+import com.kh.jipshop.admin.model.vo.AdminOrderCancelSearch;
 import com.kh.jipshop.admin.model.vo.AdminOrderSearch;
 import com.kh.jipshop.common.model.vo.PageInfo;
 
 public interface AdminOrderCancelDao {
 
-    int selectOrderCancelListCount(SqlSessionTemplate sqlSession, AdminOrderSearch search);
+	int selectOrderCancelListCount(SqlSessionTemplate sqlSession, AdminOrderCancelSearch search);
 
-    ArrayList<AdminOrderCancel> selectOrderCancelList(SqlSessionTemplate sqlSession, PageInfo pi, AdminOrderSearch search);
+	ArrayList<AdminOrderCancel> selectOrderCancelList(SqlSessionTemplate sqlSession, PageInfo pi,
+			AdminOrderCancelSearch search);
 
-    int approveOrderCancel(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList);
+	int selectPendingCancelCount(SqlSessionTemplate sqlSession);
 
-    int rejectOrderCancel(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList);
+	int updateCancelStatusApproved(SqlSessionTemplate sqlSession, int orderId);
 
-    int deleteStatusByOrderIds(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList);
+	int restoreProductStock(SqlSessionTemplate sqlSession, int orderId);
 
-    int deleteDeliveryByOrderIds(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList);
+	int updateCancelStatusRejected(SqlSessionTemplate sqlSession, int orderId);
 
-    int deleteOrderDetailByOrderIds(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList);
-
-    int deleteOrdersByOrderIds(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList);
+  
 }

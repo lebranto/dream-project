@@ -133,7 +133,7 @@
                                     <td><strong>${order.ordererName}</strong></td>
                                     <td class="font-mono" style="color:var(--text-sub)">${order.ordererPhone}</td>
                                     <td class="font-mono">${order.orderId}</td>
-                                    <td>${order.orderTotalPrice}</td>
+                                    <td>${order.productName}</td>
                                     <td class="font-bold">
                                         <fmt:formatNumber value="${order.orderTotalPrice}" pattern="#,###"/>원
                                     </td>
@@ -149,7 +149,7 @@
                                     </td>
                                     <td class="center">
                                         <c:choose>
-                                            <c:when test="${order.cancelYn == 'Y'}">
+                                            <c:when test="${order.orderCancelYn == 'Y'}">
                                                 <span class="badge badge-cancel">요청</span>
                                             </c:when>
                                             <c:otherwise>
@@ -159,20 +159,26 @@
                                     </td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${order.orderStatus == 'DONE'}">
+                                            <c:when test="${order.orderStatusLabel == '배송완료'}">
                                                 <span class="badge badge-done">배송완료</span>
                                             </c:when>
-                                            <c:when test="${order.orderStatus == 'SHIP'}">
+                                            <c:when test="${order.orderStatusLabel == '배송 중'}">
                                                 <span class="badge badge-shipping">배송 중</span>
                                             </c:when>
-                                            <c:when test="${order.orderStatus == 'PAY'}">
+                                            <c:when test="${order.orderStatusLabel == '결제 완료'}">
                                                 <span class="badge badge-waiting">결제 완료</span>
                                             </c:when>
-                                            <c:when test="${order.orderStatus == 'REQ_CANCEL'}">
+                                            <c:when test="${order.orderStatusLabel == '취소 요청'}">
                                                 <span class="badge badge-cancel">취소 요청</span>
                                             </c:when>
+                                            <c:when test="${order.orderStatusLabel == '취소 완료'}">
+                                                <span class="badge badge-cancel">취소 완료</span>
+                                            </c:when>
+                                            <c:when test="${order.orderStatusLabel == '취소 반려'}">
+                                                <span class="badge badge-waiting">취소 반려</span>
+                                            </c:when>
                                             <c:otherwise>
-                                                <span class="badge badge-waiting">${order.orderStatus}</span>
+                                                <span class="badge badge-waiting">${order.orderStatusLabel}</span>
                                             </c:otherwise>
                                         </c:choose>
                                     </td>

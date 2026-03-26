@@ -1,0 +1,15 @@
+/* reportDetail.css — admin.css 와 함께 로드하세요 */
+/* 상세 카드 */
+.detail-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 18px; }
+.detail-card-header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 12px 18px; font-size: 13px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+.detail-card-body { padding: 18px 20px; }
+.detail-grid { display: grid; grid-template-columns: 110px 1fr; gap: 0; }
+.detail-grid dt, .detail-grid dd { padding: 9px 12px; font-size: 13px; border-bottom: 1px solid #f0ebe2; }
+.detail-grid dt { background: var(--bg); font-weight: 600; color: var(--text-sub); font-size: 12px; }
+.detail-grid dd { color: var(--text-main); }
+.detail-grid dt:last-of-type, .detail-grid dd:last-of-type { border-bottom: none; }
+/* 섹션 레이블 */
+.section-label { font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; padding-left: 8px; border-left: 3px solid var(--accent2); }
+/* 콘텐츠 박스 */
+.content-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; font-size: 13px; line-height: 1.7; color: var(--text-main); min-height: 100px; }
+.content-box.reply { background: #fffbf3; border-color: var(--accent2); }
