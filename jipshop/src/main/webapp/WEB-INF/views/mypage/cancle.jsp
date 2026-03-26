@@ -64,7 +64,7 @@
           </div>
 
           <div class="top-text">
-            상품명을 구매 취소하시겠습니까?
+            ${orderList.productName}을 구매 취소하시겠습니까?
           </div>
         </div>
 
@@ -75,12 +75,15 @@
 취소를 원하시면 비밀번호 입력과 확인을 눌러주십시오
         </div>
       </div>
+       <form action="${contextPath}/mypage/cancle" method="post" onsubmit="return validateForm();">
+       <input type="hidden" name="orderId" value="${orderList.orderId}">
 
       <div class="bottom-area">
         <button class="label-box" type="button">비밀번호</button>
-        <input type="password" id="passwordInput" class="password-input" placeholder="비밀번호 입력칸">
-        <button class="confirm-btn" type="button" onclick="checkPassword()">확인</button>
+        <input type="password" name="inputPassword" id="passwordInput" class="password-input" placeholder="비밀번호 입력칸">
+        <button class="confirm-btn" type="submit">확인</button>
       </div>
+    </form>
     </main>
   </div>
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />

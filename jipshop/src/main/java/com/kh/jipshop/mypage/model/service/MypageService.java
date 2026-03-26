@@ -27,6 +27,8 @@ public interface MypageService {
 
 	int delectInquiry(MyInqury mi);
 
+	OrderDetailResponse canclePage(Integer orderId);
+
 
 
 

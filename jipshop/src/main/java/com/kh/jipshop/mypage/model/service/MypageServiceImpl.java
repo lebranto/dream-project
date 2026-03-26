@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kh.jipshop.mypage.model.dao.MypageDao;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
+import com.kh.jipshop.mypage.model.vo.Orders;
 import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
 
 import lombok.RequiredArgsConstructor;
@@ -76,6 +77,12 @@ public class MypageServiceImpl implements MypageService {
 	public int delectInquiry(MyInqury mi) {
 		
 		return mDao.delectInquiry(mi);
+	}
+
+	@Override
+	public OrderDetailResponse canclePage(Integer orderId) {
+		
+		return mDao.canclePage(orderId);
 	}
 	
 

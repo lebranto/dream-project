@@ -18,6 +18,7 @@ import com.kh.jipshop.common.template.Pagination;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.service.MypageService;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
+import com.kh.jipshop.mypage.model.vo.Orders;
 import com.kh.jipshop.security.model.vo.MemberExt;
 
 import lombok.RequiredArgsConstructor;
@@ -177,14 +178,29 @@ public class MypageController {
 	}
 		
 	@GetMapping("/cancle")
-	public String cancle(
-			Authentication auth
-			) {
-		String password = ((MemberExt)auth.getPrincipal()).getPassword();
-				
+	public String canclePage(
+			@RequestParam Integer orderId,
+			Model model
+			) {	
+			
+		
+		OrderDetailResponse od = mService.canclePage(orderId);
+		
+		model.addAttribute("orderList",od);
 		
 		return "mypage/cancle";
 	}
+	
+	/*
+	 * @PostMapping("/cancle") public String canclePage( Authentication auth ) {
+	 * 
+	 * String password = ((MemberExt)auth.getPrincipal()).getPassword();
+	 * 
+	 * 
+	 * return "redirect:/mypage/purcash";
+	 * 
+	 * }
+	 */
 	
 
 	@GetMapping("/updateMemberCheck")

@@ -140,6 +140,16 @@
 		DELETE INQUIRY
 		WHERE INQUIRY_ID = #{inquiryId}
 	</delete>
+	
+	
+	<select id="canclePage" resultType="OrderDetailResponse">
+
+		SELECT O.ORDER_ID , P.PRODUCT_NAME
+		FROM ORDERS O
+		JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
+		JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID 
+		WHERE O.ORDER_ID = #{orderId}
+	</select>
 
 
 </mapper>

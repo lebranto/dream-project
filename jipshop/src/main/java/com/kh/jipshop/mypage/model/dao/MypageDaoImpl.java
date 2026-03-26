@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
+import com.kh.jipshop.mypage.model.vo.Orders;
 import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
 
 import lombok.RequiredArgsConstructor;
@@ -122,6 +123,12 @@ public class MypageDaoImpl implements MypageDao {
 	public int delectInquiry(MyInqury mi) {
 	
 		return session.delete("mypage.delectInquiry",mi);
+	}
+
+	@Override
+	public OrderDetailResponse canclePage(Integer orderId) {
+		
+		return session.selectOne("mypage.canclePage",orderId);
 	}
 
 
