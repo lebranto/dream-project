@@ -10,7 +10,7 @@
     </div>
 
     <div class="sidebar-section">회원</div>
-    <a href="/admin/memberList.do" class="sidebar-item <%= "member".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/memberList" class="sidebar-item <%= "member".equals(currentMenu) ? "active" : "" %>">
         👤 회원 관리
     </a>
 
@@ -43,6 +43,6 @@
         💬 문의 조회
     </a>
     <a href="/admin/newUser.do" class="sidebar-item <%= "newUser".equals(currentMenu) ? "active" : "" %>">
-        🔔 신규 사용
+        🔔 신고 조회
     </a>
 </nav>

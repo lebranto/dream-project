@@ -59,7 +59,7 @@
                 <p class="product-price">25,000 원</p>
 
                 <div class="product-bottom">
-                    <a href="${pageContext.request.contextPath}/cat/toy/detail" class="cart-btn">바로가기</a>
+                    <a href="${pageContext.request.contextPath}/cat/toy/detail?product=1" class="cart-btn">바로가기</a>
                     <span class="cart-icon">🛒</span>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                 <p class="product-price">25,000 원</p>
 
                 <div class="product-bottom">
-                    <a href="${pageContext.request.contextPath}/cat/toy/detail2" class="cart-btn">바로가기</a>
+                    <a href="${pageContext.request.contextPath}/cat/toy/detail?product=2" class="cart-btn">바로가기</a>
                     <span class="cart-icon">🛒</span>
                 </div>
             </div>

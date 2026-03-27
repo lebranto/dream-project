@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>집사상점 관리자 - 신고 사항 상세</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
     
     <style>
         /* 상세 페이지 레이아웃 구조 */

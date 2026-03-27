@@ -5,16 +5,13 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8">    
     <title>주문 상세 - 집사상권</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/orderDetail.css">
 </head>
   
-</head>
 <body>
 <jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>
 <jsp:include page="/WEB-INF/views/admin/common/header.jsp"/>
