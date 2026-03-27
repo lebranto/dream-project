@@ -72,7 +72,7 @@ public class AdminMemberController {
         return "admin/member/memberDetail";
     }
     
- // 3. 회원 정보 수정
+    // 3. 회원 정보 수정
     @PostMapping("/memberUpdate")
     public String memberUpdate(Member member, RedirectAttributes ra) {
  
@@ -84,6 +84,17 @@ public class AdminMemberController {
             ra.addFlashAttribute("errorMsg", "수정에 실패했습니다. 다시 시도해주세요.");
         }
         return "redirect:/admin/memberDetail?memberNo=" + member.getMemberNo();
+    }
+    // 4.  탈퇴 처리 화면
+
+    @GetMapping("/memberStop")
+    public String memberStopPage(@RequestParam int memberNo, Model model) {
+ 
+        Member member = adminMemberService.getMemberByNo(memberNo);
+        if (member == null) return "redirect:/admin/memberList";
+ 
+        model.addAttribute("member", member);
+        return "admin/member/memberStop";
     }
 
 
