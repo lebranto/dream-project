@@ -18,6 +18,8 @@ public interface AdminMemberService {
     
     /** 회원 상세 조회*/
 	Member getMemberByNo(int memberNo);
+	/** 회원 정보 수정*/
+	int updateMember(Member member);
 
 
 }

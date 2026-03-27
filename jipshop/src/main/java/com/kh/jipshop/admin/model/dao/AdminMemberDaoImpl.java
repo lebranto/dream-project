@@ -42,4 +42,9 @@ public class AdminMemberDaoImpl implements AdminMemberDao{
 		return session.selectOne(am+"getMemberByNo", memberNo);
 	}
 
+	@Override
+	public int updateMember(Member member) {
+		return session.update(am+"updateMember", member);
+	}
+
 }

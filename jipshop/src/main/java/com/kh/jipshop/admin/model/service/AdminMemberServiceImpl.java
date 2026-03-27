@@ -39,5 +39,10 @@ public class AdminMemberServiceImpl implements AdminMemberService{
 		return adminMemberDao.getMemberByNo(memberNo);
 	}
 
+	@Override
+	public int updateMember(Member member) {
+		return adminMemberDao.updateMember(member);
+	}
+
 	
 }

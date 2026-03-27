@@ -7,8 +7,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.jipshop.admin.model.service.AdminMemberService;
 import com.kh.jipshop.common.model.vo.PageInfo;
@@ -69,6 +71,21 @@ public class AdminMemberController {
  
         return "admin/member/memberDetail";
     }
+    
+ // 3. 회원 정보 수정
+    @PostMapping("/memberUpdate")
+    public String memberUpdate(Member member, RedirectAttributes ra) {
+ 
+        int result = adminMemberService.updateMember(member);
+ 
+        if (result > 0) {
+            ra.addFlashAttribute("successMsg", "회원 정보가 수정되었습니다.");
+        } else {
+            ra.addFlashAttribute("errorMsg", "수정에 실패했습니다. 다시 시도해주세요.");
+        }
+        return "redirect:/admin/memberDetail?memberNo=" + member.getMemberNo();
+    }
+
 
 
 }

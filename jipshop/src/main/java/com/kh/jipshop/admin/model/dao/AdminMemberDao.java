@@ -17,4 +17,6 @@ public interface AdminMemberDao {
 
 	Member getMemberByNo(int memberNo);
 
+	int updateMember(Member member);
+
 }

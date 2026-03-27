@@ -103,5 +103,16 @@
         FROM MEMBER M
         WHERE M.MEMBER_NO = #{memberNo}
     </select>
+	
+	<!-- 정보 수정 -->
+    <update id="updateMember" parameterType="Member">
+        UPDATE MEMBER
+        SET
+            MEMBER_NAME    = #{memberName},
+            MEMBER_ADDRESS = #{address},
+            PHONE          = #{phone},
+            EMAIL          = #{email}
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
 
 </mapper>

@@ -60,10 +60,11 @@
     </div>
 
     <%-- 정보 수정 폼 --%>
+    
     <div class="detail-card">
         <div class="detail-card-header">✏️ 정보 수정</div>
         <div class="detail-card-body">
-            <form action="/admin/memberUpdate" method="post" id="editForm">
+            <form action="${contextPath}/admin/memberUpdate" method="post" id="editForm" onsubmit="return confirmEdit()">
                 <input type="hidden" name="memberNo" value="${member.memberNo}">
 
                 <div class="form-row">
@@ -92,13 +93,12 @@
 
                 <div class="btn-group">
                     <button type="button" class="btn btn-outline"
-                            onclick="location.href='/admin/memberList'">목록</button>
+                            onclick="llocation.href='${contextPath}/admin/memberList'">목록</button>
                     <button type="button" class="btn btn-danger"
                             onclick="location.href='${contextPath}/admin/memberStop?memberNo=${member.memberNo}'">
                         이용 정지 / 탈퇴 처리
                     </button>
-                    <button type="submit" class="btn btn-primary"
-                            onclick="return confirmEdit()">수정 완료</button>
+                    <button type="submit" class="btn btn-primary">수정 완료</button>
                 </div>
             </form>
         </div>
@@ -198,5 +198,46 @@
 </main>
 
 <div class="toast" id="toast"></div>
+
+<script>
+	function confirmEdit() {
+	    const name    = document.querySelector('input[name="memberName"]').value.trim();
+	    const phone   = document.querySelector('input[name="phone"]').value.trim();
+	    const address = document.querySelector('input[name="address"]').value.trim();
+	
+	    if (!name) {
+	        alert('이름을 입력해주세요.');
+	        document.querySelector('input[name="memberName"]').focus();
+	        return false;
+	    }
+	    if (!phone) {
+	        alert('연락처를 입력해주세요.');
+	        document.querySelector('input[name="phone"]').focus();
+	        return false;
+	    }
+	    if (!address) {
+	        alert('주소를 입력해주세요.');
+	        document.querySelector('input[name="address"]').focus();
+	        return false;
+	    }
+	
+	    return confirm('회원 정보를 수정하시겠습니까?');
+	}
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2400);
+    }
+
+    <c:if test="${not empty successMsg}">
+        window.onload = () => showToast('✅ ${successMsg}');
+    </c:if>
+    <c:if test="${not empty errorMsg}">
+        window.onload = () => showToast('⚠️ ${errorMsg}');
+    </c:if>
+</script>
+
 </body>
 </html>
