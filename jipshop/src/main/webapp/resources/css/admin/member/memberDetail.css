@@ -1,0 +1,73 @@
+/* memberDetail.css — admin.css 와 함께 로드 */
+/* 회원 상태 배지 */
+.badge-active   { background: #d1e7dd; color: #0f5132; }
+.badge-inactive { background: #e2e3e5; color: #41464b; }
+.badge-banned   { background: #f8d7da; color: #842029; }
+
+/* 상세 카드 */
+.detail-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 18px; }
+.detail-card-header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 12px 18px; font-size: 13px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+.detail-card-body { padding: 18px 20px; }
+.detail-grid { display: grid; grid-template-columns: 110px 1fr; gap: 0; }
+.detail-grid dt, .detail-grid dd { padding: 9px 12px; font-size: 13px; border-bottom: 1px solid #f0ebe2; }
+.detail-grid dt { background: var(--bg); font-weight: 600; color: var(--text-sub); font-size: 12px; }
+.detail-grid dd { color: var(--text-main); }
+.detail-grid dt:last-of-type, .detail-grid dd:last-of-type { border-bottom: none; }
+
+/* 폼 */
+.form-wrap { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; margin-bottom: 20px; }
+.form-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.form-row:last-child { margin-bottom: 0; }
+.form-row.top { align-items: flex-start; }
+.form-label { font-size: 12px; font-weight: 700; color: var(--text-sub); min-width: 90px; }
+.form-label.required::after { content: ' *'; color: var(--red); }
+.form-input, .form-select, .form-textarea { border: 1px solid var(--border); border-radius: 6px; padding: 7px 11px; font-size: 13px; font-family: inherit; color: var(--text-main); background: #fff; outline: none; transition: border 0.15s; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent2); }
+.form-input { flex: 1; }
+.form-input.w-sm { width: 120px; flex: none; }
+.form-input.w-md { width: 200px; flex: none; }
+.form-input.w-lg { width: 320px; flex: none; }
+.form-textarea { width: 100%; resize: vertical; min-height: 90px; line-height: 1.6; }
+.form-select { cursor: pointer; }
+.form-hint { font-size: 12px; color: var(--text-sub); }
+.form-divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+.btn-group { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
+.btn-group.center { justify-content: center; }
+
+/* 모달 */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: #fff; border-radius: 12px; width: 440px; max-width: 95vw; padding: 28px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); animation: modalIn 0.2s ease; }
+@keyframes modalIn { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
+.modal-desc  { font-size: 13px; color: var(--text-sub); margin-bottom: 18px; line-height: 1.5; }
+.modal-field { margin-bottom: 14px; }
+.modal-field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 5px; }
+.modal-field textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 9px 12px; font-size: 13px; font-family: inherit; resize: vertical; min-height: 80px; color: var(--text-main); outline: none; }
+.modal-field textarea:focus { border-color: var(--accent2); }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
+
+/* 테이블 */
+.table-wrap { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: #f9f7f3; border-bottom: 1px solid var(--border); }
+th { padding: 11px 12px; text-align: left; font-size: 12px; font-weight: 600; color: var(--text-sub); white-space: nowrap; }
+th.center, td.center { text-align: center; }
+td { padding: 11px 12px; border-bottom: 1px solid #f0ebe2; color: var(--text-main); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--row-hover); }
+input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--accent2); cursor: pointer; }
+.td-num { text-align: right; font-variant-numeric: tabular-nums; }
+.empty-row td { padding: 36px !important; text-align: center; color: var(--text-sub); font-size: 13px; }
+
+.td-num { text-align:right; font-variant-numeric:tabular-nums; }
+.empty-section { padding:24px; text-align:center; font-size:13px; color:var(--text-sub); }
+
+/* 회원 상세 전용 */
+.member-top { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 18px; }
+.member-status-card { width: 180px; flex-shrink: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.status-card-body { padding: 20px 12px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.member-avatar { width: 56px; height: 56px; background: var(--accent2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: #fff; }
+.member-card-name { font-size: 15px; font-weight: 700; color: var(--text-main); }
+.member-card-join { font-size: 11px; color: var(--text-sub); }
+.td-ellipsis { max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-sub); }
