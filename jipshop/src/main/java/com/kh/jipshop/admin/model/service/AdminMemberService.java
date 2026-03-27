@@ -15,6 +15,9 @@ public interface AdminMemberService {
  
     /** 회원 목록 (페이징 + 검색) */
     List<Member> getMemberList(Map<String, Object> paramMap);
+    
+    /** 회원 상세 조회*/
+	Member getMemberByNo(int memberNo);
 
 
 }

@@ -15,4 +15,6 @@ public interface AdminMemberDao {
 
 	List<Member> getMemberList(Map<String, Object> paramMap);
 
+	Member getMemberByNo(int memberNo);
+
 }

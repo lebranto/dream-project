@@ -37,4 +37,9 @@ public class AdminMemberDaoImpl implements AdminMemberDao{
         return session.selectList(am + "getMemberList", paramMap);
     }
 
+	@Override
+	public Member getMemberByNo(int memberNo) {
+		return session.selectOne(am+"getMemberByNo", memberNo);
+	}
+
 }

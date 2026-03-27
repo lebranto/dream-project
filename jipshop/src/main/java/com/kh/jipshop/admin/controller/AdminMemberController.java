@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.jipshop.admin.model.service.AdminMemberService;
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
+import com.kh.jipshop.member.model.vo.Member;
 
 
 //import com.kh.jipshop.admin.model.service.AdminMemberService;
@@ -52,5 +53,22 @@ public class AdminMemberController {
  
         return "admin/member/memberList";
     }
+    
+    // 2. 회원 상세
+    @GetMapping("/memberDetail")
+    public String memberDetail(@RequestParam int memberNo, Model model) {
+ 
+        Member member = adminMemberService.getMemberByNo(memberNo);
+        if (member == null) return "redirect:/admin/memberList";
+ 
+        model.addAttribute("member", member);
+ 
+        // 반려동물 목록 — PetService 주입 후 연동
+        // model.addAttribute("petList",      petService.getPetListByMemberNo(memberNo));
+ 
+ 
+        return "admin/member/memberDetail";
+    }
+
 
 }

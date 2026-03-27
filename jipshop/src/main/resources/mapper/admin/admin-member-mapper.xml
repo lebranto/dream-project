@@ -88,5 +88,20 @@
         )
         WHERE RNUM &gt; #{pi.pageLimit} * (#{pi.currentPage} - 1)
     </select>
+	
+	<!-- 상세 조회 -->
+    <select id="getMemberByNo" parameterType="int" resultMap="memberRM">
+        SELECT
+            M.MEMBER_NO,
+            M.MEMBER_ID,
+            M.MEMBER_NAME,
+            M.MEMBER_ADDRESS,
+            M.PHONE,
+            M.EMAIL,
+            M.MEMBER_JOIN_DATE,
+            M.MEMBER_ACTIVE_YN
+        FROM MEMBER M
+        WHERE M.MEMBER_NO = #{memberNo}
+    </select>
 
 </mapper>

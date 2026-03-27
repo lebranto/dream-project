@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <title>회원 관리 - 집사상점</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/admin/memberList.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/admin/member/memberList.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>
@@ -43,7 +43,7 @@
     </div>
 
     <%-- 검색 필터 --%>
-    <form action="/admin/memberList.do" method="get" id="searchForm">
+    <form action="/admin/memberList" method="get" id="searchForm">
         <div class="filter-bar">
             <span class="filter-label">가입일</span>
             <input type="date" name="startDate" class="filter-input" value="${param.startDate}">
@@ -59,7 +59,7 @@
                    value="${param.keyword}" style="flex:1; min-width:180px;">
             <button type="submit" class="btn btn-primary">조회</button>
             <button type="button" class="btn btn-outline"
-                    onclick="location.href='/admin/memberList.do'">초기화</button>
+                    onclick="location.href='/admin/memberList'">초기화</button>
         </div>
     </form>
 
@@ -75,9 +75,9 @@
     </div>
 
     <%-- 일괄 처리 폼 --%>
-    <form id="bulkForm" action="/admin/memberBulkAction.do" method="post">
+    <form id="bulkForm" action="/admin/memberBulkAction" method="post">
         <input type="hidden" name="action"    id="bulkActionInput">
-        <input type="hidden" name="returnUrl" value="/admin/memberList.do?startDate=${param.startDate}&endDate=${param.endDate}&memberStatus=${param.memberStatus}&keyword=${param.keyword}&page=${currentPage}">
+        <input type="hidden" name="returnUrl" value="/admin/memberList?startDate=${param.startDate}&endDate=${param.endDate}&memberStatus=${param.memberStatus}&keyword=${param.keyword}&page=${currentPage}">
 
         <div class="table-wrap">
             <table>
@@ -129,7 +129,7 @@
                                     </td>
                                     <td class="center">
                                         <button type="button" class="btn btn-outline btn-sm"
-                                                onclick="location.href='/admin/memberDetail.do?memberNo=${m.memberNo}'">
+                                                onclick="location.href='${contextPath}/admin/memberDetail?memberNo=${m.memberNo}'">
                                             상세
                                         </button>
                                     </td>

@@ -34,5 +34,10 @@ public class AdminMemberServiceImpl implements AdminMemberService{
         return adminMemberDao.getMemberList(paramMap);
     }
 
+	@Override
+	public Member getMemberByNo(int memberNo) {
+		return adminMemberDao.getMemberByNo(memberNo);
+	}
+
 	
 }
