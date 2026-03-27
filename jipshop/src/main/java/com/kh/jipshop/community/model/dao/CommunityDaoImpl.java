@@ -1,13 +1,16 @@
 package com.kh.jipshop.community.model.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.community.model.vo.Board;
 import com.kh.jipshop.community.model.vo.BoardComment;
 import com.kh.jipshop.community.model.vo.BoardImage;
@@ -116,5 +119,20 @@ import com.kh.jipshop.community.model.vo.BoardLike;
 		        param.put("commentId", commentId);
 
 		        return sqlSession.insert("communityMapper.insertCommentReport", param);
+		    }
+		    @Override
+		    public int selectBoardListCount(SqlSessionTemplate sqlSession, Map<String, Object> paramMap) {
+		        return sqlSession.selectOne("communityMapper.selectBoardListCount", paramMap);
+		    }
+
+		    @Override
+		    public ArrayList<Board> selectBoardList(SqlSessionTemplate sqlSession, PageInfo pi, Map<String, Object> paramMap) {
+
+		        int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		        int limit = pi.getBoardLimit();
+
+		        RowBounds rowBounds = new RowBounds(offset, limit);
+
+		        return (ArrayList)sqlSession.selectList("communityMapper.selectBoardList", paramMap, rowBounds);
 		    }
 }

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -55,17 +56,19 @@
       <section class="detail-box">
         <div class="detail-head">
           <div class="detail-head-label">제목 :</div>
-          <div class="detail-head-title">${inquiry.title}</div>
+          <div class="detail-head-title">${myinquiry.inquiryType}</div>
           <div class="detail-head-date-label">작성일 :</div>
-          <div class="detail-head-date">${inquiry.createDate}</div>
+          <div class="detail-head-date">
+          <fmt:formatDate value="${myinquiry.inquiryRegDate}" pattern="yyyy-MM-dd"/> 
+          </div>
         </div>
 
         <div class="detail-body">
           <div class="question-area">
             <div class="photo-box">
               <c:choose>
-                <c:when test="${not empty inquiry.imagePath}">
-                  <img src="${pageContext.request.contextPath}${inquiry.imagePath}" alt="문의 첨부 사진">
+                <c:when test="${not empty myinquiry.inquiryPhoto}">
+                  <img src="${pageContext.request.contextPath}${myinquiry.inquiryPhoto}" alt="문의 첨부 사진">
                 </c:when>
                 <c:otherwise>
                   사진<br>(선택사항)
@@ -74,15 +77,15 @@
             </div>
 
             <div class="question-content-wrap">
-              <div class="question-content">${inquiry.questionContent}</div>
+              <div class="question-content">${myinquiry.inquiryContent}</div>
             </div>
           </div>
 
           <div class="answer-area">
             <div class="answer-content">
               <c:choose>
-                <c:when test="${not empty inquiry.answerContent}">
-                  ${inquiry.answerContent}
+                <c:when test="${not empty myinquiry.replyContent}">
+                  ${myinquiry.replyContent}
                 </c:when>
                 <c:otherwise>
                   아직 답변이 등록되지 않았습니다.
@@ -95,14 +98,20 @@
 
       <div class="bottom-actions">
         <button class="action-btn" type="button"
-                onclick="location.href='${pageContext.request.contextPath}/inquiry/edit?no=${inquiry.inquiryNo}'">
+                onclick="location.href='${contextPath}/inquiry/edit?no=${myinquiry.inquiryId}'">
           수정
         </button>
 
-        <button class="action-btn" type="button"
-                onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='${pageContext.request.contextPath}/inquiry/delete?no=${inquiry.inquiryNo}'">
+		<form action="${contextPath}/mypage/delete" method="post" style="display:inline">
+        
+         <input type="hidden" name="inquiryId" value="${myinquiry.inquiryId}">
+        <button class="action-btn" type="submit"
+                onclick="return confirm('정말 삭제하시겠습니까?');">
           삭제
         </button>
+		
+		</form>
+
       </div>
     </main>
   </div>

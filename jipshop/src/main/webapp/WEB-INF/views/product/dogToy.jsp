@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>강아지 장난감</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product/dogToy.css">
 </head>
 <body>
@@ -18,7 +19,7 @@
     <h1 class="page-title">강아지</h1>
 
     <div class="category-box">
-        <a href="#" class="category-item">사료</a>
+        <a href="${pageContext.request.contextPath}/dog/feed" class="category-item">사료</a>
         <a href="${pageContext.request.contextPath}/dog/toy" class="category-item active">장난감</a>
         <a href="${pageContext.request.contextPath}/dog/outdoor" class="category-item">외출용품</a>
         <a href="${pageContext.request.contextPath}/dog/groom" class="category-item">미용용품</a>
@@ -48,7 +49,7 @@
                 <p class="product-desc">반려견의 흥미를 유도하며 즐겁게 놀 수 있는 공 장난감</p>
                 <div class="product-price">25,000 원</div>
 
-                <a href="${pageContext.request.contextPath}/dog/toy/detail" class="detail-btn">바로가기</a>
+                <a href="${pageContext.request.contextPath}/dog/toy/detail?product=1" class="detail-btn">바로가기</a>
             </div>
         </div>
 
@@ -65,7 +66,7 @@
                 <p class="product-desc">던지고 물어오며 활동적으로 놀 수 있는 반려견 장난감</p>
                 <div class="product-price">25,000 원</div>
 
-                <a href="${pageContext.request.contextPath}/dog/toy/detail2" class="detail-btn">바로가기</a>
+                <a href="${pageContext.request.contextPath}/dog/toy/detail?product=2" class="detail-btn">바로가기</a>
             </div>
         </div>
 

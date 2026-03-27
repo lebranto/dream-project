@@ -1,217 +1,574 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="communityMapper">
 
-	<!-- 게시글 검색 -->
-	<select id="selectBoardListBySearch" parameterType="map" resultType="board">
-    SELECT
-        B.BOARD_NO,
-        B.BOARD_TITLE,
-        B.BOARD_CONTENT,
-        B.MEMBER_NO,
-        M.MEMBER_ID,
-        B.READ_COUNT,
-        B.CREATE_DATE,
-        NVL(L.LIKE_COUNT, 0) AS LIKE_COUNT,
-        BC.CATEGORY_NAME
-    FROM BOARD B
-    JOIN MEMBER M
-        ON B.MEMBER_NO = M.MEMBER_NO
-    LEFT JOIN BOARD_CATEGORY BC
-        ON B.CATEGORY_CODE = BC.CATEGORY_CODE
-    LEFT JOIN (
-        SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
-        FROM BOARD_LIKE
-        WHERE LIKE_TYPE = 'L'
-        GROUP BY BOARD_NO
-    ) L
-        ON B.BOARD_NO = L.BOARD_NO
-    WHERE B.BOARD_CODE = #{boardCode}
-
-    <choose>
-        <when test="searchType == 'title'">
-            AND B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
-        </when>
-        <when test="searchType == 'writer'">
-            AND M.MEMBER_ID LIKE '%' || #{keyword} || '%'
-        </when>
-        <when test="searchType == 'content'">
-            AND B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
-        </when>
-        <otherwise>
-            AND (
-                B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
-                OR M.MEMBER_ID LIKE '%' || #{keyword} || '%'
-                OR B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
-            )
-        </otherwise>
-    </choose>
-
-    ORDER BY B.CREATE_DATE DESC
-</select>
+    <!-- ========================= -->
     <!-- 게시글 등록 -->
- <insert id="insertBoard" parameterType="Board" useGeneratedKeys="false">
-    <selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
-        SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
-    </selectKey>
+    <!-- BoardListController.insertBoard -->
+    <!-- CommunityDaoImpl.insertBoard -->
+    <!-- ========================= -->
+    <insert id="insertBoard" parameterType="com.kh.jipshop.community.model.vo.Board">
+        <selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+            SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
+        </selectKey>
 
-    INSERT INTO BOARD (
-        BOARD_NO,
-        MEMBER_NO,
-        BOARD_CODE,
-        CATEGORY_CODE,
-        BOARD_TITLE,
-        BOARD_CONTENT,
-        READ_COUNT,
-        CREATE_DATE,
-        BOARD_ACTIVE
-    ) VALUES (
-        #{boardNo},
-        #{memberNo},
-        #{boardCode},
-        NULLIF(#{categoryCode}, 0),
-        #{boardTitle},
-        #{boardContent},
-        0,
-        SYSDATE,
-        'Y'
-    )
-</insert>
+        INSERT INTO BOARD (
+            BOARD_NO,
+            MEMBER_NO,
+            BOARD_CODE,
+            CATEGORY_CODE,
+            BOARD_TITLE,
+            BOARD_CONTENT,
+            READ_COUNT,
+            CREATE_DATE,
+            BOARD_ACTIVE
+        ) VALUES (
+            #{boardNo},
+            #{memberNo},
+            #{boardCode},
+            NULLIF(#{categoryCode}, 0),
+            #{boardTitle},
+            #{boardContent},
+            0,
+            SYSDATE,
+            'Y'
+        )
+    </insert>
 
- <!-- 메인 인기글 -->
-<select id="selectPopularBoardList" parameterType="map"
-        resultType="com.kh.jipshop.community.model.vo.Board">
-    SELECT *
-    FROM (
-        SELECT
-            B.BOARD_NO            AS boardNo,
-            B.MEMBER_NO           AS memberNo,
-            B.BOARD_CODE          AS boardCode,
-            B.CATEGORY_CODE       AS categoryCode,
-            BC.CATEGORY_NAME      AS categoryName,
-            B.BOARD_TITLE         AS boardTitle,
-            B.BOARD_CONTENT       AS boardContent,
-            B.READ_COUNT          AS readCount,
-            B.CREATE_DATE         AS createDate,
-            B.BOARD_ACTIVE        AS boardActive,
-            M.MEMBER_ID           AS memberId,
-            NVL(L.LIKE_COUNT, 0)  AS likeCount
-        FROM BOARD B
-        JOIN MEMBER M
-          ON B.MEMBER_NO = M.MEMBER_NO
-        LEFT JOIN BOARD_CATEGORY BC
-          ON B.CATEGORY_CODE = BC.CATEGORY_CODE
-         AND B.BOARD_CODE = BC.BOARD_CODE
-        LEFT JOIN (
-            SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
-            FROM BOARD_LIKE
-            WHERE LIKE_TYPE = 'L'
-            GROUP BY BOARD_NO
-        ) L
-          ON B.BOARD_NO = L.BOARD_NO
-        WHERE B.BOARD_ACTIVE = 'Y'
-        <if test="keyword != null and keyword != ''">
-            <choose>
-                <when test="searchType == 'title'">
-                    AND B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
-                </when>
-                <when test="searchType == 'writer'">
-                    AND M.MEMBER_ID LIKE '%' || #{keyword} || '%'
-                </when>
-                <when test="searchType == 'content'">
-                    AND B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
-                </when>
-                <otherwise>
-                    AND (
-                        B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
-                        OR M.MEMBER_ID LIKE '%' || #{keyword} || '%'
-                        OR B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
-                    )
-                </otherwise>
-            </choose>
-        </if>
-        ORDER BY NVL(L.LIKE_COUNT, 0) DESC, B.READ_COUNT DESC, B.CREATE_DATE DESC, B.BOARD_NO DESC
-    )
-    WHERE ROWNUM &lt;= 6
-</select>
+    <!-- ========================= -->
+    <!-- 메인 인기글 -->
+    <!-- CommunityDaoImpl.selectPopularBoardList -->
+    <!-- ========================= -->
+    <select id="selectPopularBoardList" parameterType="map" resultType="com.kh.jipshop.community.model.vo.Board">
+        SELECT *
+        FROM (
+            SELECT
+                B.BOARD_NO        AS boardNo,
+                B.MEMBER_NO       AS memberNo,
+                B.BOARD_CODE      AS boardCode,
+                B.CATEGORY_CODE   AS categoryCode,
+                BC.CATEGORY_NAME  AS categoryName,
+                B.BOARD_TITLE     AS boardTitle,
+                B.BOARD_CONTENT   AS boardContent,
+                B.READ_COUNT      AS readCount,
+                B.CREATE_DATE     AS createDate,
+                B.BOARD_ACTIVE    AS boardActive,
+                M.MEMBER_ID       AS memberId,
+                NVL(L.LIKE_COUNT, 0) AS likeCount
+            FROM BOARD B
+            JOIN MEMBER M
+              ON B.MEMBER_NO = M.MEMBER_NO
+            LEFT JOIN BOARD_CATEGORY BC
+              ON B.CATEGORY_CODE = BC.CATEGORY_CODE
+             AND B.BOARD_CODE = BC.BOARD_CODE
+            LEFT JOIN (
+                SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
+                FROM BOARD_LIKE
+                WHERE LIKE_TYPE = 'L'
+                GROUP BY BOARD_NO
+            ) L
+              ON B.BOARD_NO = L.BOARD_NO
+            WHERE B.BOARD_ACTIVE = 'Y'
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="searchType == 'title'">
+                        AND B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <when test="searchType == 'writer'">
+                        AND M.MEMBER_ID LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <when test="searchType == 'content'">
+                        AND B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <otherwise>
+                        AND (
+                            B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
+                            OR M.MEMBER_ID LIKE '%' || #{keyword} || '%'
+                            OR B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            ORDER BY NVL(L.LIKE_COUNT, 0) DESC,
+                     B.READ_COUNT DESC,
+                     B.CREATE_DATE DESC,
+                     B.BOARD_NO DESC
+        )
+        WHERE ROWNUM &lt; 6
+    </select>
 
-<!-- 메인 최신글 -->
-<select id="selectLatestBoardList" parameterType="map"
-        resultType="com.kh.jipshop.community.model.vo.Board">
-    SELECT *
-    FROM (
-        SELECT
-            B.BOARD_NO            AS boardNo,
-            B.MEMBER_NO           AS memberNo,
-            B.BOARD_CODE          AS boardCode,
-            B.CATEGORY_CODE       AS categoryCode,
-            BC.CATEGORY_NAME      AS categoryName,
-            B.BOARD_TITLE         AS boardTitle,
-            B.BOARD_CONTENT       AS boardContent,
-            B.READ_COUNT          AS readCount,
-            B.CREATE_DATE         AS createDate,
-            B.BOARD_ACTIVE        AS boardActive,
-            M.MEMBER_ID           AS memberId,
-            NVL(L.LIKE_COUNT, 0)  AS likeCount
-        FROM BOARD B
-        JOIN MEMBER M
-          ON B.MEMBER_NO = M.MEMBER_NO
-        LEFT JOIN BOARD_CATEGORY BC
-          ON B.CATEGORY_CODE = BC.CATEGORY_CODE
-         AND B.BOARD_CODE = BC.BOARD_CODE
-        LEFT JOIN (
-            SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
-            FROM BOARD_LIKE
-            WHERE LIKE_TYPE = 'L'
-            GROUP BY BOARD_NO
-        ) L
-          ON B.BOARD_NO = L.BOARD_NO
-        WHERE B.BOARD_ACTIVE = 'Y'
-        <if test="keyword != null and keyword != ''">
-            <choose>
-                <when test="searchType == 'title'">
-                    AND B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
-                </when>
-                <when test="searchType == 'writer'">
-                    AND M.MEMBER_ID LIKE '%' || #{keyword} || '%'
-                </when>
-                <when test="searchType == 'content'">
-                    AND B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
-                </when>
-                <otherwise>
-                    AND (
-                        B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
-                        OR M.MEMBER_ID LIKE '%' || #{keyword} || '%'
-                        OR B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
-                    )
-                </otherwise>
-            </choose>
-        </if>
-        ORDER BY B.CREATE_DATE DESC, B.BOARD_NO DESC
-    )
-    WHERE ROWNUM &lt;= 6
-</select>
+    <!-- ========================= -->
+    <!-- 메인 최신글 -->
+    <!-- CommunityDaoImpl.selectLatestBoardList -->
+    <!-- ========================= -->
+    <select id="selectLatestBoardList" parameterType="map" resultType="com.kh.jipshop.community.model.vo.Board">
+        SELECT *
+        FROM (
+            SELECT
+                B.BOARD_NO        AS boardNo,
+                B.MEMBER_NO       AS memberNo,
+                B.BOARD_CODE      AS boardCode,
+                B.CATEGORY_CODE   AS categoryCode,
+                BC.CATEGORY_NAME  AS categoryName,
+                B.BOARD_TITLE     AS boardTitle,
+                B.BOARD_CONTENT   AS boardContent,
+                B.READ_COUNT      AS readCount,
+                B.CREATE_DATE     AS createDate,
+                B.BOARD_ACTIVE    AS boardActive,
+                M.MEMBER_ID       AS memberId,
+                NVL(L.LIKE_COUNT, 0) AS likeCount
+            FROM BOARD B
+            JOIN MEMBER M
+              ON B.MEMBER_NO = M.MEMBER_NO
+            LEFT JOIN BOARD_CATEGORY BC
+              ON B.CATEGORY_CODE = BC.CATEGORY_CODE
+             AND B.BOARD_CODE = BC.BOARD_CODE
+            LEFT JOIN (
+                SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
+                FROM BOARD_LIKE
+                WHERE LIKE_TYPE = 'L'
+                GROUP BY BOARD_NO
+            ) L
+              ON B.BOARD_NO = L.BOARD_NO
+            WHERE B.BOARD_ACTIVE = 'Y'
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="searchType == 'title'">
+                        AND B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <when test="searchType == 'writer'">
+                        AND M.MEMBER_ID LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <when test="searchType == 'content'">
+                        AND B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
+                    </when>
+                    <otherwise>
+                        AND (
+                            B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
+                            OR M.MEMBER_ID LIKE '%' || #{keyword} || '%'
+                            OR B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            ORDER BY B.CREATE_DATE DESC, B.BOARD_NO DESC
+        )
+        WHERE ROWNUM &lt; 6
+    </select>
 
+    <!-- ========================= -->
     <!-- 게시판별 목록 -->
-   <select id="selectBoardListByBoardCode" parameterType="int"
-        resultType="com.kh.jipshop.community.model.vo.Board">
+    <!-- CommunityDaoImpl.selectBoardListByBoardCode -->
+    <!-- ========================= -->
+    <select id="selectBoardListByBoardCode" parameterType="int" resultType="com.kh.jipshop.community.model.vo.Board">
+        SELECT
+            B.BOARD_NO        AS boardNo,
+            B.MEMBER_NO       AS memberNo,
+            B.BOARD_CODE      AS boardCode,
+            B.CATEGORY_CODE   AS categoryCode,
+            B.BOARD_TITLE     AS boardTitle,
+            B.BOARD_CONTENT   AS boardContent,
+            B.READ_COUNT      AS readCount,
+            B.CREATE_DATE     AS createDate,
+            B.BOARD_ACTIVE    AS boardActive,
+            M.MEMBER_ID       AS memberId,
+            BC.CATEGORY_NAME  AS categoryName,
+            NVL(L.LIKE_COUNT, 0) AS likeCount,
+            I.THUMBNAIL_PATH  AS thumbnailPath
+        FROM BOARD B
+        JOIN MEMBER M
+          ON B.MEMBER_NO = M.MEMBER_NO
+        LEFT JOIN BOARD_CATEGORY BC
+          ON B.CATEGORY_CODE = BC.CATEGORY_CODE
+         AND B.BOARD_CODE = BC.BOARD_CODE
+        LEFT JOIN (
+            SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
+            FROM BOARD_LIKE
+            WHERE LIKE_TYPE = 'L'
+            GROUP BY BOARD_NO
+        ) L
+          ON B.BOARD_NO = L.BOARD_NO
+        LEFT JOIN (
+            SELECT BOARD_NO, MIN(FILE_PATH || CHANGE_NAME) AS THUMBNAIL_PATH
+            FROM BOARD_IMG
+            WHERE FILE_LEVEL = 1
+            GROUP BY BOARD_NO
+        ) I
+          ON B.BOARD_NO = I.BOARD_NO
+        WHERE B.BOARD_ACTIVE = 'Y'
+          AND B.BOARD_CODE = #{boardCode}
+        ORDER BY B.BOARD_NO DESC
+    </select>
+
+    <!-- ========================= -->
+    <!-- 게시글 검색 -->
+    <!-- CommunityDaoImpl.selectBoardListBySearch -->
+    <!-- ========================= -->
+    <select id="selectBoardListBySearch" parameterType="map" resultType="com.kh.jipshop.community.model.vo.Board">
+        SELECT
+            B.BOARD_NO        AS boardNo,
+            B.BOARD_TITLE     AS boardTitle,
+            B.BOARD_CONTENT   AS boardContent,
+            B.MEMBER_NO       AS memberNo,
+            M.MEMBER_ID       AS memberId,
+            B.READ_COUNT      AS readCount,
+            B.CREATE_DATE     AS createDate,
+            B.BOARD_ACTIVE    AS boardActive,
+            B.BOARD_CODE      AS boardCode,
+            B.CATEGORY_CODE   AS categoryCode,
+            BC.CATEGORY_NAME  AS categoryName,
+            NVL(L.LIKE_COUNT, 0) AS likeCount
+        FROM BOARD B
+        JOIN MEMBER M
+          ON B.MEMBER_NO = M.MEMBER_NO
+        LEFT JOIN BOARD_CATEGORY BC
+          ON B.CATEGORY_CODE = BC.CATEGORY_CODE
+         AND B.BOARD_CODE = BC.BOARD_CODE
+        LEFT JOIN (
+            SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
+            FROM BOARD_LIKE
+            WHERE LIKE_TYPE = 'L'
+            GROUP BY BOARD_NO
+        ) L
+          ON B.BOARD_NO = L.BOARD_NO
+        WHERE B.BOARD_CODE = #{boardCode}
+          AND B.BOARD_ACTIVE = 'Y'
+        <choose>
+            <when test="searchType == 'title'">
+                AND B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
+            </when>
+            <when test="searchType == 'writer'">
+                AND M.MEMBER_ID LIKE '%' || #{keyword} || '%'
+            </when>
+            <when test="searchType == 'content'">
+                AND B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
+            </when>
+            <otherwise>
+                AND (
+                    B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
+                    OR M.MEMBER_ID LIKE '%' || #{keyword} || '%'
+                    OR B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
+                )
+            </otherwise>
+        </choose>
+        ORDER BY B.CREATE_DATE DESC, B.BOARD_NO DESC
+    </select>
+
+    <!-- ========================= -->
+    <!-- 게시글 상세 -->
+    <!-- CommunityMainController.detail -->
+    <!-- CommunityDaoImpl.selectBoard -->
+    <!-- ========================= -->
+    <select id="selectBoard" parameterType="int" resultType="com.kh.jipshop.community.model.vo.Board">
+        SELECT
+            B.BOARD_NO        AS boardNo,
+            B.MEMBER_NO       AS memberNo,
+            B.BOARD_CODE      AS boardCode,
+            B.CATEGORY_CODE   AS categoryCode,
+            B.BOARD_TITLE     AS boardTitle,
+            B.BOARD_CONTENT   AS boardContent,
+            B.READ_COUNT      AS readCount,
+            B.CREATE_DATE     AS createDate,
+            B.BOARD_ACTIVE    AS boardActive,
+            M.MEMBER_ID       AS memberId,
+            BC.CATEGORY_NAME  AS categoryName,
+            NVL(L.LIKE_COUNT, 0) AS likeCount
+        FROM BOARD B
+        JOIN MEMBER M
+          ON B.MEMBER_NO = M.MEMBER_NO
+        LEFT JOIN BOARD_CATEGORY BC
+          ON B.CATEGORY_CODE = BC.CATEGORY_CODE
+         AND B.BOARD_CODE = BC.BOARD_CODE
+        LEFT JOIN (
+            SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
+            FROM BOARD_LIKE
+            WHERE LIKE_TYPE = 'L'
+            GROUP BY BOARD_NO
+        ) L
+          ON B.BOARD_NO = L.BOARD_NO
+        WHERE B.BOARD_NO = #{boardNo}
+          AND B.BOARD_ACTIVE = 'Y'
+    </select>
+
+    <!-- ========================= -->
+    <!-- 게시글 이미지 목록 -->
+    <!-- CommunityDaoImpl.selectBoardImageList -->
+    <!-- ========================= -->
+    <select id="selectBoardImageList" parameterType="int" resultType="com.kh.jipshop.community.model.vo.BoardImage">
+        SELECT
+            IMG_NO      AS imgNo,
+            BOARD_NO    AS boardNo,
+            ORIGIN_NAME AS originName,
+            CHANGE_NAME AS changeName,
+            FILE_PATH   AS filePath,
+            FILE_LEVEL  AS fileLevel,
+            UPLOAD_DATE AS uploadDate
+        FROM BOARD_IMG
+        WHERE BOARD_NO = #{boardNo}
+        ORDER BY FILE_LEVEL ASC, IMG_NO ASC
+    </select>
+
+    <!-- ========================= -->
+    <!-- 게시글 수정 -->
+    <!-- BoardListController.rewrite -->
+    <!-- CommunityDaoImpl.updateBoard -->
+    <!-- ========================= -->
+    <update id="updateBoard" parameterType="com.kh.jipshop.community.model.vo.Board">
+        UPDATE BOARD
+           SET CATEGORY_CODE = NULLIF(#{categoryCode}, 0),
+               BOARD_TITLE = #{boardTitle},
+               BOARD_CONTENT = #{boardContent}
+         WHERE BOARD_NO = #{boardNo}
+           AND MEMBER_NO = #{memberNo}
+    </update>
+
+    <!-- ========================= -->
+    <!-- 게시글 삭제 -->
+    <!-- BoardListController.deleteBoard -->
+    <!-- CommunityDaoImpl.deleteBoard -->
+    <!-- ========================= -->
+    <update id="deleteBoard" parameterType="com.kh.jipshop.community.model.vo.Board">
+        UPDATE BOARD
+           SET BOARD_ACTIVE = 'N'
+         WHERE BOARD_NO = #{boardNo}
+           AND MEMBER_NO = #{memberNo}
+    </update>
+
+    <!-- ========================= -->
+    <!-- 삭제할 기존 이미지들 삭제 -->
+    <!-- CommunityDaoImpl.deleteBoardImageList -->
+    <!-- ========================= -->
+    <delete id="deleteBoardImageList" parameterType="list">
+        DELETE FROM BOARD_IMG
+        WHERE IMG_NO IN
+        <foreach collection="list" item="imgNo" open="(" separator="," close=")">
+            #{imgNo}
+        </foreach>
+    </delete>
+
+    <!-- ========================= -->
+    <!-- 게시글의 현재 이미지 개수 조회 -->
+    <!-- CommunityDaoImpl.selectBoardImageCount -->
+    <!-- ========================= -->
+    <select id="selectBoardImageCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOARD_IMG
+        WHERE BOARD_NO = #{boardNo}
+    </select>
+
+    <!-- ========================= -->
+    <!-- 게시글 이미지 등록 -->
+    <!-- BoardListController.saveBoardImages -->
+    <!-- CommunityDaoImpl.insertBoardImage -->
+    <!-- ========================= -->
+    <insert id="insertBoardImage" parameterType="com.kh.jipshop.community.model.vo.BoardImage">
+        INSERT INTO BOARD_IMG (
+            IMG_NO,
+            BOARD_NO,
+            ORIGIN_NAME,
+            CHANGE_NAME,
+            FILE_PATH,
+            FILE_LEVEL,
+            UPLOAD_DATE
+        ) VALUES (
+            SEQ_BOARD_IMG_NO.NEXTVAL,
+            #{boardNo},
+            #{originName},
+            #{changeName},
+            #{filePath},
+            #{fileLevel},
+            SYSDATE
+        )
+    </insert>
+
+    <!-- ========================= -->
+    <!-- 조회수 증가 -->
+    <!-- CommunityMainController.detail -->
+    <!-- CommunityDaoImpl.increaseReadCount -->
+    <!-- ========================= -->
+    <update id="increaseReadCount" parameterType="int">
+        UPDATE BOARD
+           SET READ_COUNT = READ_COUNT + 1
+         WHERE BOARD_NO = #{boardNo}
+           AND BOARD_ACTIVE = 'Y'
+    </update>
+
+    <!-- ========================= -->
+    <!-- 좋아요 눌렀는지 체크 -->
+    <!-- CommunityMainController.detail / like -->
+    <!-- CommunityDaoImpl.checkBoardLike -->
+    <!-- ========================= -->
+    <select id="checkBoardLike" parameterType="com.kh.jipshop.community.model.vo.BoardLike" resultType="int">
+        SELECT COUNT(*)
+        FROM BOARD_LIKE
+        WHERE BOARD_NO = #{boardNo}
+          AND MEMBER_NO = #{memberNo}
+          AND LIKE_TYPE = #{likeType}
+    </select>
+
+    <!-- ========================= -->
+    <!-- 좋아요 추가 -->
+    <!-- CommunityMainController.like -->
+    <!-- CommunityDaoImpl.insertBoardLike -->
+    <!-- ========================= -->
+    <insert id="insertBoardLike" parameterType="com.kh.jipshop.community.model.vo.BoardLike">
+        INSERT INTO BOARD_LIKE (
+            BOARD_NO,
+            MEMBER_NO,
+            LIKE_TYPE
+        ) VALUES (
+            #{boardNo},
+            #{memberNo},
+            #{likeType}
+        )
+    </insert>
+
+    <!-- ========================= -->
+    <!-- 좋아요 취소 -->
+    <!-- CommunityMainController.like -->
+    <!-- CommunityDaoImpl.deleteBoardLike -->
+    <!-- ========================= -->
+    <delete id="deleteBoardLike" parameterType="com.kh.jipshop.community.model.vo.BoardLike">
+        DELETE FROM BOARD_LIKE
+        WHERE BOARD_NO = #{boardNo}
+          AND MEMBER_NO = #{memberNo}
+          AND LIKE_TYPE = #{likeType}
+    </delete>
+
+    <!-- ========================= -->
+    <!-- 좋아요 수 -->
+    <!-- CommunityMainController.detail / like -->
+    <!-- CommunityDaoImpl.selectLikeCount -->
+    <!-- ========================= -->
+    <select id="selectLikeCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOARD_LIKE
+        WHERE BOARD_NO = #{boardNo}
+          AND LIKE_TYPE = 'L'
+    </select>
+
+    <!-- ========================= -->
+    <!-- 댓글 목록 -->
+    <!-- CommunityMainController.detail -->
+    <!-- CommunityDaoImpl.selectCommentList -->
+    <!-- ========================= -->
+    <select id="selectCommentList" parameterType="int" resultType="com.kh.jipshop.community.model.vo.BoardComment">
+        SELECT
+            C.COMMENT_ID         AS commentId,
+            C.BOARD_NO           AS boardNo,
+            C.MEMBER_NO          AS memberNo,
+            M.MEMBER_ID          AS memberId,
+            C.COMMENT_CONTENT    AS commentContent,
+            C.COMMENT_REG_DATE   AS commentRegDate,
+            C.COMMENT_ACTIVE_YN  AS commentActiveYn
+        FROM BOARD_COMMENT C
+        JOIN MEMBER M
+          ON C.MEMBER_NO = M.MEMBER_NO
+        WHERE C.BOARD_NO = #{boardNo}
+          AND C.COMMENT_ACTIVE_YN = 'Y'
+        ORDER BY C.COMMENT_ID DESC
+    </select>
+
+    <!-- ========================= -->
+    <!-- 댓글등록 -->
+    <!-- CommunityMainController.insertComment -->
+    <!-- CommunityDaoImpl.insertComment -->
+    <!-- ========================= -->
+    <insert id="insertComment" parameterType="com.kh.jipshop.community.model.vo.BoardComment">
+        INSERT INTO BOARD_COMMENT (
+            COMMENT_ID,
+            BOARD_NO,
+            MEMBER_NO,
+            COMMENT_CONTENT,
+            COMMENT_REG_DATE,
+            COMMENT_ACTIVE_YN
+        ) VALUES (
+            SEQ_BOARD_COMMENT.NEXTVAL,
+            #{boardNo},
+            #{memberNo},
+            #{commentContent},
+            SYSDATE,
+            'Y'
+        )
+    </insert>
+
+    <!-- ========================= -->
+    <!-- 댓글 신고 -->
+    <!-- CommunityMainController.reportComment -->
+    <!-- CommunityDaoImpl.insertCommentReport -->
+    <!-- ========================= -->
+    <insert id="insertCommentReport" parameterType="map">
+        INSERT INTO COMMENT_REPORT (
+            REPORT_ID,
+            REPORTER_MEMBER_NO,
+            COMMENT_ID,
+            REPORT_TYPE_ID,
+            REPORT_REASON,
+            REPORT_DATE,
+            REPORT_PROCESS_YN
+        ) VALUES (
+            SEQ_COMMENT_REPORT_ID.NEXTVAL,
+            #{reporterMemberNo},
+            #{commentId},
+            1,
+            '댓글 신고',
+            SYSDATE,
+            'N'
+        )
+    </insert>
+<!-- 개시글 개수 -->
+<select id="selectBoardListCount" resultType="int">
+    SELECT COUNT(*)
+    FROM BOARD B
+    WHERE B.BOARD_ACTIVE = 'Y'
+      AND B.BOARD_CODE = #{boardCode}
+    <if test="keyword != null and keyword != ''">
+        <choose>
+            <when test="searchType == 'title'">
+                AND B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
+            </when>
+            <when test="searchType == 'content'">
+                AND B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
+            </when>
+            <when test="searchType == 'writer'">
+                AND B.MEMBER_NO IN (
+                    SELECT MEMBER_NO
+                    FROM MEMBER
+                    WHERE MEMBER_ID LIKE '%' || #{keyword} || '%'
+                )
+            </when>
+            <otherwise>
+                AND (
+                    B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
+                    OR B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
+                    OR B.MEMBER_NO IN (
+                        SELECT MEMBER_NO
+                        FROM MEMBER
+                        WHERE MEMBER_ID LIKE '%' || #{keyword} || '%'
+                    )
+                )
+            </otherwise>
+        </choose>
+    </if>
+</select>
+<!-- 페이징 -->
+<select id="selectBoardList" resultType="board">
     SELECT
-        B.BOARD_NO            AS boardNo,
-        B.MEMBER_NO           AS memberNo,
-        B.BOARD_CODE          AS boardCode,
-        B.CATEGORY_CODE       AS categoryCode,
-        B.BOARD_TITLE         AS boardTitle,
-        B.BOARD_CONTENT       AS boardContent,
-        B.READ_COUNT          AS readCount,
-        B.CREATE_DATE         AS createDate,
-        B.BOARD_ACTIVE        AS boardActive,
-        M.MEMBER_ID           AS memberId,
-        BC.CATEGORY_NAME      AS categoryName,
-        NVL(L.LIKE_COUNT, 0)  AS likeCount,
-        I.THUMBNAIL_PATH      AS thumbnailPath
+        B.BOARD_NO        AS boardNo,
+        B.MEMBER_NO       AS memberNo,
+        B.BOARD_CODE      AS boardCode,
+        B.CATEGORY_CODE   AS categoryCode,
+        B.BOARD_TITLE     AS boardTitle,
+        B.BOARD_CONTENT   AS boardContent,
+        B.READ_COUNT      AS readCount,
+        B.CREATE_DATE     AS createDate,
+        B.BOARD_ACTIVE    AS boardActive,
+        M.MEMBER_ID       AS memberId,
+        BC.CATEGORY_NAME  AS categoryName,
+        NVL(L.LIKE_COUNT, 0) AS likeCount,
+        I.THUMBNAIL_PATH  AS thumbnailPath
     FROM BOARD B
     JOIN MEMBER M
       ON B.MEMBER_NO = M.MEMBER_NO
@@ -234,213 +591,26 @@
       ON B.BOARD_NO = I.BOARD_NO
     WHERE B.BOARD_ACTIVE = 'Y'
       AND B.BOARD_CODE = #{boardCode}
+    <if test="keyword != null and keyword != ''">
+        <choose>
+            <when test="searchType == 'title'">
+                AND B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
+            </when>
+            <when test="searchType == 'content'">
+                AND B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
+            </when>
+            <when test="searchType == 'writer'">
+                AND M.MEMBER_ID LIKE '%' || #{keyword} || '%'
+            </when>
+            <otherwise>
+                AND (
+                    B.BOARD_TITLE LIKE '%' || #{keyword} || '%'
+                    OR B.BOARD_CONTENT LIKE '%' || #{keyword} || '%'
+                    OR M.MEMBER_ID LIKE '%' || #{keyword} || '%'
+                )
+            </otherwise>
+        </choose>
+    </if>
     ORDER BY B.BOARD_NO DESC
 </select>
-
-    <!-- 게시글 상세 -->
-     <select id="selectBoard" parameterType="int"
-        resultType="com.kh.jipshop.community.model.vo.Board">
-    SELECT
-        B.BOARD_NO            AS boardNo,
-        B.MEMBER_NO           AS memberNo,
-        B.BOARD_CODE          AS boardCode,
-        B.CATEGORY_CODE       AS categoryCode,
-        B.BOARD_TITLE         AS boardTitle,
-        B.BOARD_CONTENT       AS boardContent,
-        B.READ_COUNT          AS readCount,
-        B.CREATE_DATE         AS createDate,
-        B.BOARD_ACTIVE        AS boardActive,
-        M.MEMBER_ID           AS memberId,
-        BC.CATEGORY_NAME      AS categoryName,
-        NVL(L.LIKE_COUNT, 0)  AS likeCount
-    FROM BOARD B
-    JOIN MEMBER M
-      ON B.MEMBER_NO = M.MEMBER_NO
-    LEFT JOIN BOARD_CATEGORY BC
-      ON B.CATEGORY_CODE = BC.CATEGORY_CODE
-     AND B.BOARD_CODE = BC.BOARD_CODE
-    LEFT JOIN (
-        SELECT BOARD_NO, COUNT(*) AS LIKE_COUNT
-        FROM BOARD_LIKE
-        WHERE LIKE_TYPE = 'L'
-        GROUP BY BOARD_NO
-    ) L
-      ON B.BOARD_NO = L.BOARD_NO
-    WHERE B.BOARD_NO = #{boardNo}
-</select>
-    <!-- 게시글 이미지 목록 -->
-    <select id="selectBoardImageList" parameterType="int"
-            resultType="com.kh.jipshop.community.model.vo.BoardImage">
-        SELECT
-            IMG_NO       AS imgNo,
-            BOARD_NO     AS boardNo,
-            ORIGIN_NAME  AS originName,
-            CHANGE_NAME  AS changeName,
-            FILE_PATH    AS filePath,
-            FILE_LEVEL   AS fileLevel,
-            UPLOAD_DATE  AS uploadDate
-        FROM BOARD_IMG
-        WHERE BOARD_NO = #{boardNo}
-        ORDER BY FILE_LEVEL ASC, IMG_NO ASC
-    </select>
-
-    <!-- 댓글 목록 -->
-   <select id="selectCommentList" parameterType="int"
-        resultType="com.kh.jipshop.community.model.vo.BoardComment">
-    SELECT
-        C.COMMENT_ID         AS commentId,
-        C.BOARD_NO           AS boardNo,
-        C.MEMBER_NO          AS memberNo,
-        M.MEMBER_ID          AS memberId,
-        C.COMMENT_CONTENT    AS commentContent,
-        C.COMMENT_REG_DATE   AS commentRegDate,
-        C.COMMENT_ACTIVE_YN  AS commentActiveYn
-    FROM BOARD_COMMENT C
-    JOIN MEMBER M
-      ON C.MEMBER_NO = M.MEMBER_NO
-    WHERE C.BOARD_NO = #{boardNo}
-      AND C.COMMENT_ACTIVE_YN = 'Y'
-    ORDER BY C.COMMENT_ID DESC
-</select>
-    <!-- 게시글 수정 -->
-    <update id="updateBoard" parameterType="com.kh.jipshop.community.model.vo.Board">
-        UPDATE BOARD
-           SET CATEGORY_CODE = #{categoryCode},
-               BOARD_TITLE = #{boardTitle},
-               BOARD_CONTENT = #{boardContent}
-         WHERE BOARD_NO = #{boardNo}
-           AND MEMBER_NO = #{memberNo}
-    </update>
-<!-- 게시글 삭제 -->
-<update id="deleteBoard" parameterType="com.kh.jipshop.community.model.vo.Board">
-    UPDATE BOARD
-       SET BOARD_ACTIVE = 'N'
-     WHERE BOARD_NO = #{boardNo}
-       AND MEMBER_NO = #{memberNo}
-</update>
-    <!-- 삭제할 기존 이미지들 삭제 -->
-    <delete id="deleteBoardImageList" parameterType="list">
-        DELETE FROM BOARD_IMG
-        WHERE IMG_NO IN
-        <foreach collection="list" item="imgNo" open="(" separator="," close=")">
-            #{imgNo}
-        </foreach>
-    </delete>
-
-    <!-- 게시글의 현재 이미지 개수 조회 -->
-    <select id="selectBoardImageCount" parameterType="int" resultType="int">
-        SELECT COUNT(*)
-        FROM BOARD_IMG
-        WHERE BOARD_NO = #{boardNo}
-    </select>
-
-    <!-- 게시글 이미지 등록 -->
-    <insert id="insertBoardImage" parameterType="com.kh.jipshop.community.model.vo.BoardImage">
-  INSERT INTO BOARD_IMG (
-        IMG_NO,
-        BOARD_NO,
-        ORIGIN_NAME,
-        CHANGE_NAME,
-        FILE_PATH,
-        FILE_LEVEL,
-        UPLOAD_DATE
-    ) VALUES (
-        SEQ_BOARD_IMG_NO.NEXTVAL,
-        #{boardNo},
-        #{originName},
-        #{changeName},
-        #{filePath},
-        #{fileLevel},
-        SYSDATE
-    )    </insert>
-    <!-- 조회수 증가 -->
-<update id="increaseReadCount" parameterType="int">
-    UPDATE BOARD
-       SET READ_COUNT = READ_COUNT + 1
-     WHERE BOARD_NO = #{boardNo}
-       AND BOARD_ACTIVE = 'Y'
-</update>
-
-<!-- 좋아요 눌렀는지 체크 -->
-<select id="checkBoardLike"
-        parameterType="com.kh.jipshop.community.model.vo.BoardLike"
-        resultType="int">
-    SELECT COUNT(*)
-      FROM BOARD_LIKE
-     WHERE BOARD_NO = #{boardNo}
-       AND MEMBER_NO = #{memberNo}
-       AND LIKE_TYPE = #{likeType}
-</select>
-
-<!-- 좋아요 추가 -->
-<insert id="insertBoardLike"
-        parameterType="com.kh.jipshop.community.model.vo.BoardLike">
-    INSERT INTO BOARD_LIKE (
-        BOARD_NO,
-        MEMBER_NO,
-        LIKE_TYPE
-    ) VALUES (
-        #{boardNo},
-        #{memberNo},
-        #{likeType}
-    )
-</insert>
-
-<!-- 좋아요 취소 -->
-<delete id="deleteBoardLike"
-        parameterType="com.kh.jipshop.community.model.vo.BoardLike">
-    DELETE FROM BOARD_LIKE
-     WHERE BOARD_NO = #{boardNo}
-       AND MEMBER_NO = #{memberNo}
-       AND LIKE_TYPE = #{likeType}
-</delete>
-
-<!-- 좋아요 수 -->
-<select id="selectLikeCount" parameterType="int" resultType="int">
-    SELECT COUNT(*)
-      FROM BOARD_LIKE
-     WHERE BOARD_NO = #{boardNo}
-       AND LIKE_TYPE = 'L'
-</select>
-<!-- 댓글등록 -->
-<insert id="insertComment" parameterType="com.kh.jipshop.community.model.vo.BoardComment">
-    INSERT INTO BOARD_COMMENT (
-        C.COMMENT_ID       AS commentId
-M.MEMBER_ID        AS memberId
-C.COMMENT_CONTENT  AS commentContent
-C.COMMENT_REG_DATE AS commentRegDate
-C.COMMENT_ACTIVE_YN AS commentActiveYn
-    )
-    VALUES (
-        SEQ_BOARD_COMMENT.NEXTVAL,
-        #{boardNo},
-        #{memberNo},
-        #{commentContent},
-        SYSDATE,
-        'Y'
-    )
-</insert>
-
-<!-- 댓글 신고 -->
-<insert id="insertCommentReport" parameterType="map">
-    INSERT INTO COMMENT_REPORT (
-          REPORT_ID
-        , REPORTER_MEMBER_NO
-        , COMMENT_ID
-        , REPORT_TYPE_ID
-        , REPORT_REASON
-        , REPORT_DATE
-        , REPORT_PROCESS_YN
-    )
-    VALUES (
-          SEQ_COMMENT_REPORT_ID.NEXTVAL
-        , #{reporterMemberNo}
-        , #{commentId}
-        , 1
-        , '댓글 신고'
-        , SYSDATE
-        , 'N'
-    )
-</insert>
-
 </mapper>

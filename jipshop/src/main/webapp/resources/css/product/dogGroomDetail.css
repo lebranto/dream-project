@@ -84,50 +84,43 @@ body {
     color: #111;
 }
 
+.cart-btn:hover,
+.buy-btn:hover {
+    background-color: #d2aa47;
+}
+
 .detail-tab-wrap {
     display: flex;
     justify-content: center;
-    gap: 28px;
-    margin-bottom: 35px;
+    gap: 26px;
+    margin-bottom: 32px;
 }
 
 .detail-tab-btn {
-    display: inline-block;
     width: 150px;
-    text-align: center;
-    padding: 18px 0;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: 700;
-    color: #1f2d4d;
-    background-color: #c9d2ea;
-    border: 1px solid #a7b3d4;
+    height: 62px;
+    border: 1px solid #9ba9cc;
     border-radius: 6px;
+    background-color: #b9c4df;
+    color: #14345f;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-.detail-view-wrap {
-    width: 1000px;
-    margin: 0 auto;
+.detail-tab-btn.active {
+    background-color: #aebadb;
 }
 
 .detail-content-box {
     display: none;
-    background: #fff;
-    border: 1px solid #ddd;
-    padding: 50px 50px 60px;
+    width: 1120px;
+    margin: 0 auto 40px;
     box-sizing: border-box;
-    margin-bottom: 40px;
-}
-
-.detail-content-box:target {
-    display: block;
 }
 
 .detail-content-box h2 {
-    text-align: center;
-    font-size: 34px;
-    color: #0f2647;
-    margin: 0 0 50px;
+    display: none;
 }
 
 .detail-content-box img {
@@ -136,32 +129,146 @@ body {
     margin: 0 auto;
 }
 
-.delivery-section {
-    margin-bottom: 45px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid #e5e5e5;
+/* 상세정보 */
+#detailInfo {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 50px;
 }
 
-.delivery-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
+/* 리뷰영역 */
+#reviewInfo {
+    background: transparent;
+    border: none;
+    padding: 0;
 }
 
-.delivery-section h3 {
-    font-size: 22px;
-    color: #111;
-    margin-bottom: 18px;
+.review-area-box {
+    width: 1120px;
+    margin: 0 auto;
 }
 
-.delivery-section p {
-    font-size: 17px;
-    color: #555;
-    line-height: 1.9;
-    margin: 8px 0;
+.review-list-wrap {
+    margin-bottom: 26px;
 }
 
-.point-text {
-    color: #f07c27;
+.review-item {
+    background-color: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 18px;
+    padding: 22px 24px 18px;
+    margin-bottom: 22px;
+    box-sizing: border-box;
+}
+
+.review-main-text {
+    font-size: 19px;
+    color: #222;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.review-meta {
+    font-size: 15px;
+    color: #8b8b8b;
+    margin-bottom: 14px;
+}
+
+.review-help-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.review-help-btn {
+    min-width: 82px;
+    height: 32px;
+    border: none;
+    border-radius: 14px;
+    background-color: #e8ebf3;
+    color: #576b8d;
+    font-size: 14px;
     font-weight: 700;
+    cursor: pointer;
+}
+
+.review-like-btn {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+
+.review-like-count {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #eef1f7;
+    color: #66789b;
+    font-size: 20px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.review-item.liked .review-like-count {
+    background-color: #dfe6f5;
+    color: #39588d;
+}
+
+.review-page-num {
+    text-align: center;
+    font-size: 34px;
+    color: #63492b;
+    margin: 24px 0 28px;
+    font-weight: 500;
+}
+
+.review-write-wrap {
+    margin-top: 8px;
+}
+
+.review-input-box {
+    margin-bottom: 26px;
+}
+
+.review-textarea {
+    width: 100%;
+    height: 150px;
+    resize: none;
+    border: 1px solid #d6d6d6;
+    border-radius: 14px;
+    background-color: #fff;
+    padding: 24px;
+    box-sizing: border-box;
+    font-size: 17px;
+    color: #333;
+    outline: none;
+}
+
+.review-textarea::placeholder {
+    color: #777;
+}
+
+.review-submit-area {
+    text-align: center;
+}
+
+.review-submit-btn {
+    width: 145px;
+    height: 54px;
+    border: none;
+    border-radius: 16px;
+    background-color: #d9b44c;
+    color: #111b34;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.review-submit-btn:hover {
+    background-color: #cfa73b;
 }

@@ -96,12 +96,12 @@
 
     <!-- 탭 버튼 -->
     <div class="feed-tab-wrap">
-        <button type="button" class="feed-tab-btn" onclick="toggleSection('detailInfo', this)">상세보기</button>
+        <button type="button" class="feed-tab-btn active" onclick="toggleSection('detailInfo', this)">상세보기</button>
         <button type="button" class="feed-tab-btn" onclick="toggleSection('reviewInfo', this)">리뷰작성</button>
     </div>
 
-    <!-- 상세보기 -->
-    <div id="detailInfo" class="feed-content-box">
+    <!-- 상세보기 : 처음부터 보이게 수정 -->
+    <div id="detailInfo" class="feed-content-box" style="display:block;">
         <div class="feed-detail-content-image-wrap">
             <c:choose>
                 <c:when test="${product eq '1'}">
@@ -222,7 +222,6 @@
         }
 
         const reviewItem = clickedElement.closest(".review-item");
-        const likeBtn = reviewItem.querySelector(".review-like-btn");
         const likeCount = reviewItem.querySelector(".review-like-count");
 
         let currentCount = parseInt(likeCount.innerText);

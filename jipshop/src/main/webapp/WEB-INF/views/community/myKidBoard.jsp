@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="boardType" value="myKidBoard" />
 
 <!DOCTYPE html>
 <html>
@@ -10,6 +11,7 @@
 <meta charset="UTF-8">
 <title>우리아이 자랑 게시판</title>
 <link rel="stylesheet" href="${contextPath}/resources/css/community/myKidBoard.css">
+<link rel="stylesheet" href="${contextPath}/resources/css/common/paging.css">
 </head>
 <body>
 
@@ -21,11 +23,10 @@
         <h1>우리 아이 자랑 게시판</h1>
     </div>
 
-    <!-- 검색 -->
     <form class="pet-board-search-area" action="${contextPath}/community/myKidBoard" method="get">
         <div class="pet-board-search-select-wrap">
             <select name="searchType" class="pet-board-search-select">
-                <option value="all">제목 / 작성자 / 내용</option>
+                <option value="all" ${empty param.searchType || param.searchType == 'all' ? 'selected' : ''}>제목 / 작성자 / 내용</option>
                 <option value="title" ${param.searchType == 'title' ? 'selected' : ''}>제목</option>
                 <option value="writer" ${param.searchType == 'writer' ? 'selected' : ''}>작성자</option>
                 <option value="content" ${param.searchType == 'content' ? 'selected' : ''}>내용</option>
@@ -33,8 +34,11 @@
         </div>
 
         <div class="pet-board-search-input-wrap">
-            <input type="text" name="keyword" class="pet-board-search-input"
-                   placeholder="검색어를 입력해주세요" value="${param.keyword}">
+            <input type="text"
+                   name="keyword"
+                   class="pet-board-search-input"
+                   placeholder="검색어를 입력해주세요"
+                   value="${param.keyword}">
             <button type="submit" class="pet-board-search-btn">🔍</button>
         </div>
 
@@ -61,7 +65,7 @@
                     <div class="board-list-row"
                          onclick="location.href='${contextPath}/community/detail?boardNo=${board.boardNo}'">
 
-                        <div class="col-no">${status.count}</div>
+                        <div class="col-no">${(pi.currentPage - 1) * pi.boardLimit + status.count}</div>
                         <div class="col-title title-ellipsis">${board.boardTitle}</div>
                         <div class="col-writer">${board.memberId}</div>
                         <div class="col-view">${board.readCount}</div>
@@ -91,6 +95,9 @@
         </c:choose>
 
     </div>
+
+    <c:set var="pageUrl" value="/community/myKidBoard" />
+    <jsp:include page="/WEB-INF/views/common/paging.jsp" />
 
 </div>
 

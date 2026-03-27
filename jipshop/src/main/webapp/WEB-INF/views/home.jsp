@@ -8,10 +8,10 @@
 <head>
 <meta charset="UTF-8">
 <title>메인 페이지슬라이드</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainslide.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main3.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sidebar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/mainslide.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/footer.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/main3.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/sidebar.css">
 </head>
 <body>
 

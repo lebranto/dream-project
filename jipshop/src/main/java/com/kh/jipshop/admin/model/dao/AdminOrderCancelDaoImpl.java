@@ -7,55 +7,49 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.jipshop.admin.model.vo.AdminOrderCancel;
-import com.kh.jipshop.admin.model.vo.AdminOrderSearch;
+import com.kh.jipshop.admin.model.vo.AdminOrderCancelSearch;
 import com.kh.jipshop.common.model.vo.PageInfo;
 
 @Repository
 public class AdminOrderCancelDaoImpl implements AdminOrderCancelDao {
 
     @Override
-    public int selectOrderCancelListCount(SqlSessionTemplate sqlSession, AdminOrderSearch search) {
-        return sqlSession.selectOne("adminOrderMapper.selectOrderCancelAdminListCount", search);
+    public int selectOrderCancelListCount(SqlSessionTemplate sqlSession, AdminOrderCancelSearch search) {
+        return sqlSession.selectOne("adminOrderMapper.selectOrderCancelListCount", search);
     }
 
     @Override
-    public ArrayList<AdminOrderCancel> selectOrderCancelList(SqlSessionTemplate sqlSession, PageInfo pi, AdminOrderSearch search) {
+    public ArrayList<AdminOrderCancel> selectOrderCancelList(SqlSessionTemplate sqlSession, PageInfo pi, AdminOrderCancelSearch search) {
 
         int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
         int limit = pi.getBoardLimit();
 
         RowBounds rowBounds = new RowBounds(offset, limit);
 
-        return (ArrayList)sqlSession.selectList("adminOrderMapper.selectOrderCancelAdminList", search, rowBounds);
+        return (ArrayList)sqlSession.selectList(
+                "adminOrderMapper.selectOrderCancelList",
+                search,
+                rowBounds
+        );
     }
 
     @Override
-    public int approveOrderCancel(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList) {
-        return sqlSession.update("adminOrderMapper.approveOrderCancelAdminByOrderIds", orderIdList);
+    public int selectPendingCancelCount(SqlSessionTemplate sqlSession) {
+        return sqlSession.selectOne("adminOrderMapper.selectPendingCancelCount");
     }
 
     @Override
-    public int rejectOrderCancel(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList) {
-        return sqlSession.update("adminOrderMapper.rejectOrderCancelAdminByOrderIds", orderIdList);
+    public int updateCancelStatusApproved(SqlSessionTemplate sqlSession, int orderId) {
+        return sqlSession.update("adminOrderMapper.updateCancelStatusApproved", orderId);
     }
 
     @Override
-    public int deleteStatusByOrderIds(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList) {
-        return sqlSession.delete("adminOrderMapper.deleteStatusByOrderIds", orderIdList);
+    public int updateCancelStatusRejected(SqlSessionTemplate sqlSession, int orderId) {
+        return sqlSession.update("adminOrderMapper.updateCancelStatusRejected", orderId);
     }
 
     @Override
-    public int deleteDeliveryByOrderIds(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList) {
-        return sqlSession.delete("adminOrderMapper.deleteDeliveryByOrderIds", orderIdList);
-    }
-
-    @Override
-    public int deleteOrderDetailByOrderIds(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList) {
-        return sqlSession.delete("adminOrderMapper.deleteOrderDetailByOrderIds", orderIdList);
-    }
-
-    @Override
-    public int deleteOrdersByOrderIds(SqlSessionTemplate sqlSession, ArrayList<Integer> orderIdList) {
-        return sqlSession.delete("adminOrderMapper.deleteOrdersByOrderIds", orderIdList);
+    public int restoreProductStock(SqlSessionTemplate sqlSession, int orderId) {
+        return sqlSession.update("adminOrderMapper.restoreProductStock", orderId);
     }
 }
