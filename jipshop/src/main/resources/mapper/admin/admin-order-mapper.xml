@@ -28,25 +28,52 @@
         <result property="companyName" column="COMPANY_NAME"/>
         <result property="companyPhone" column="COMPANY_PHONE"/>
         <result property="companyAddress" column="COMPANY_ADDRESS"/>
+        <result property="ordererEmail" column="ORDERER_EMAIL"/>
+<result property="orderMemo" column="ORDER_MEMO"/>
+<result property="orderStatus" column="ORDER_STATUS"/>
     </resultMap>
 
-    <sql id="orderSearchWhere">
-        <where>
-            <if test="startDate != null and startDate != ''">
-                AND O.ORDER_DATE <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
-            </if>
-            <if test="endDate != null and endDate != ''">
-                AND O.ORDER_DATE <![CDATA[<]]> TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
-            </if>
-            <if test="keyword != null and keyword != ''">
-                AND (
-                    O.ORDERER_NAME LIKE '%' || #{keyword} || '%'
-                    OR TO_CHAR(O.ORDER_ID) LIKE '%' || #{keyword} || '%'
-                    OR PD.PRODUCT_NAME LIKE '%' || #{keyword} || '%'
-                )
-            </if>
-        </where>
-    </sql>
+   <sql id="orderSearchWhere">
+    <where>
+        <if test="startDate != null and startDate.trim() != ''">
+            AND O.ORDER_DATE <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
+        </if>
+
+        <if test="endDate != null and endDate.trim() != ''">
+            AND O.ORDER_DATE <![CDATA[<]]> TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+        </if>
+
+        <if test="orderStatus != null and orderStatus.trim() != ''">
+            <choose>
+                <when test='orderStatus == "PAY"'>
+                    AND O.ORDER_CANCEL_YN = 'N'
+                    AND NVL(ST.DELIVERY_YN, 'N') = 'N'
+                    AND NVL(ST.DELIVERY_STATUS, '준비중') != '배송중'
+                </when>
+                <when test='orderStatus == "SHIP"'>
+                    AND O.ORDER_CANCEL_YN = 'N'
+                    AND NVL(ST.DELIVERY_STATUS, '준비중') = '배송중'
+                </when>
+                <when test='orderStatus == "DONE"'>
+                    AND O.ORDER_CANCEL_YN = 'N'
+                    AND NVL(ST.DELIVERY_YN, 'N') = 'Y'
+                </when>
+                <when test='orderStatus == "REQ_CANCEL"'>
+                    AND O.ORDER_CANCEL_YN = 'Y'
+                    AND NVL(O.CANCEL_STATUS, 'PENDING') = 'PENDING'
+                </when>
+            </choose>
+        </if>
+
+        <if test="keyword != null and keyword.trim() != ''">
+            AND (
+                O.ORDERER_NAME LIKE '%' || #{keyword} || '%'
+                OR TO_CHAR(O.ORDER_ID) LIKE '%' || #{keyword} || '%'
+                OR PD.PRODUCT_NAME LIKE '%' || #{keyword} || '%'
+            )
+        </if>
+    </where>
+</sql>
 
     <sql id="orderBaseFrom">
         FROM ORDERS O
@@ -84,19 +111,43 @@
                     ON OD.PRODUCT_ID = P.PRODUCT_ID
                 LEFT JOIN COMPANY C
                     ON P.COMPANY_CODE = C.COMPANY_CODE
-            ) X
+            ) x
             WHERE X.RN = 1
         ) PD
             ON O.ORDER_ID = PD.ORDER_ID
     </sql>
 
-    <select id="selectOrderListCount" parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch" resultType="_int">
-        SELECT COUNT(*)
-        <include refid="orderBaseFrom"/>
-        <include refid="orderSearchWhere"/>
-    </select>
+   <select id="selectOrderListCount" parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch" resultType="_int">
+    SELECT COUNT(DISTINCT O.ORDER_ID)
+    <include refid="orderBaseFrom"/>
+    <include refid="orderSearchWhere"/>
+</select>
 
     <select id="selectOrderList" parameterType="com.kh.jipshop.admin.model.vo.AdminOrderSearch" resultMap="adminOrderResultMap">
+    SELECT
+        ORDER_ID,
+        ORDERER_NAME,
+        ORDERER_PHONE,
+        ORDER_TOTAL_PRICE,
+        ORDER_DATE_STR,
+        ORDER_CANCEL_YN,
+        CANCEL_STATUS,
+        CANCEL_STATUS_LABEL,
+        DELIVERY_YN,
+        DELIVERY_STATUS,
+        ORDER_STATUS_LABEL,
+        DELIVERY_ID,
+        EXPECTED_DATE_STR,
+        RECV_NAME,
+        RECV_PHONE,
+        RECV_ADDRESS,
+        PRODUCT_NAME,
+        PRODUCT_PRICE,
+        PRODUCT_PHOTO1,
+        COMPANY_NAME,
+        COMPANY_PHONE,
+        COMPANY_ADDRESS
+    FROM (
         SELECT
             O.ORDER_ID,
             O.ORDERER_NAME,
@@ -131,11 +182,17 @@
             PD.PRODUCT_PHOTO1,
             PD.COMPANY_NAME,
             PD.COMPANY_PHONE,
-            PD.COMPANY_ADDRESS
+            PD.COMPANY_ADDRESS,
+            ROW_NUMBER() OVER (
+                PARTITION BY O.ORDER_ID
+                ORDER BY O.ORDER_DATE DESC, NVL(D.DELIVERY_ID, 0) DESC
+            ) AS RN
         <include refid="orderBaseFrom"/>
         <include refid="orderSearchWhere"/>
-        ORDER BY O.ORDER_DATE DESC
-    </select>
+    )
+    WHERE RN = 1
+    ORDER BY ORDER_ID DESC
+</select>
 
     <delete id="deleteStatusByOrderIds" parameterType="list">
         DELETE FROM STATUS
@@ -343,4 +400,63 @@
         WHERE OD.ORDER_ID = #{orderId}
     )
 </update>
+<!-- 주문상세페이지  -->
+<!-- 주문상세페이지  -->
+<select id="selectOrderDetail" parameterType="_int" resultMap="adminOrderResultMap">
+    SELECT
+        O.ORDER_ID,
+        O.ORDERER_NAME,
+        O.ORDERER_PHONE,
+        O.ORDERER_EMAIL,
+        O.ORDER_MEMO,
+        CASE
+            WHEN O.ORDER_CANCEL_YN = 'Y' AND O.CANCEL_STATUS = 'PENDING' THEN 'REQ_CANCEL'
+            WHEN NVL(ST.DELIVERY_STATUS, '준비중') = '배송완료' THEN 'DONE'
+            WHEN NVL(ST.DELIVERY_STATUS, '준비중') = '배송중' THEN 'SHIP'
+            ELSE 'PAY'
+        END AS ORDER_STATUS,
+        O.ORDER_TOTAL_PRICE,
+        TO_CHAR(O.ORDER_DATE, 'YYYY-MM-DD') AS ORDER_DATE_STR,
+        O.ORDER_CANCEL_YN,
+        NVL(O.CANCEL_STATUS, '') AS CANCEL_STATUS,
+        CASE
+            WHEN O.ORDER_CANCEL_YN = 'Y' AND O.CANCEL_STATUS = 'PENDING' THEN '취소요청'
+            WHEN O.ORDER_CANCEL_YN = 'Y' AND O.CANCEL_STATUS = 'APPROVED' THEN '취소완료'
+            WHEN O.ORDER_CANCEL_YN = 'Y' AND O.CANCEL_STATUS = 'REJECTED' THEN '취소거절'
+            ELSE '정상'
+        END AS CANCEL_STATUS_LABEL,
+        CASE
+            WHEN O.ORDER_CANCEL_YN = 'Y' AND O.CANCEL_STATUS = 'PENDING' THEN '취소 요청'
+            WHEN O.ORDER_CANCEL_YN = 'Y' AND O.CANCEL_STATUS = 'APPROVED' THEN '취소 완료'
+            WHEN O.ORDER_CANCEL_YN = 'Y' AND O.CANCEL_STATUS = 'REJECTED' THEN '취소 반려'
+            WHEN NVL(ST.DELIVERY_STATUS, '준비중') = '배송완료' THEN '배송완료'
+            WHEN NVL(ST.DELIVERY_STATUS, '준비중') = '배송중' THEN '배송 중'
+            ELSE '결제 완료'
+        END AS ORDER_STATUS_LABEL,
+        CASE
+            WHEN NVL(ST.DELIVERY_STATUS, '준비중') = '배송완료' THEN 'Y'
+            ELSE 'N'
+        END AS DELIVERY_YN,
+        NVL(ST.DELIVERY_STATUS, '준비중') AS DELIVERY_STATUS,
+        NVL(D.DELIVERY_ID, 0) AS DELIVERY_ID,
+        TO_CHAR(D.EXPECTED_DATE, 'YYYY-MM-DD') AS EXPECTED_DATE_STR,
+        O.RECV_NAME,
+        O.RECV_PHONE,
+        O.RECV_ADDRESS,
+        NVL(PD.PRODUCT_NAME, '상품 정보 없음') AS PRODUCT_NAME,
+        NVL(PD.PRODUCT_PRICE, 0) AS PRODUCT_PRICE,
+        PD.PRODUCT_PHOTO1,
+        PD.COMPANY_NAME,
+        PD.COMPANY_PHONE,
+        PD.COMPANY_ADDRESS
+    <include refid="orderBaseFrom"/>
+    WHERE O.ORDER_ID = #{orderId}
+</select>
+<update id="clearCancelStatus" parameterType="_int">
+    UPDATE ORDERS
+       SET ORDER_CANCEL_YN = 'N',
+           CANCEL_STATUS   = NULL
+     WHERE ORDER_ID = #{orderId}
+</update>
+
 </mapper>
