@@ -26,6 +26,9 @@
                     <button type="submit" class="border-0 bg-transparent text-secondary p-0 ml-2">로그아웃</button>
                 </form:form>
              </sec:authorize>
+             <sec:authorize access="hasRole('ROLE_ADMIN')">
+					<a href="${contextPath}/admin/memberList">관리자페이지</a>
+				</sec:authorize>
             </div>
         </div>
     </div>
