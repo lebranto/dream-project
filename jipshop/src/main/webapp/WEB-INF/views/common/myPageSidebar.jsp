@@ -72,7 +72,7 @@ body {
     <ul class="menu-list">
         <li><a href="#">구매 내역 보기</a></li>
         <li><a href="#">최근 본 상품</a></li>
-        <li><a href="#">찜리스트</a></li>
+        <li><a href="${pageContext.request.contextPath}/orders/favorites">찜리스트</a></li>
     </ul>
 
     <!-- 문의 -->
@@ -93,7 +93,7 @@ body {
     <div class="menu-box">고객센터</div>
     <ul class="menu-list">
         <li><a href="#" class="active">1:1 문의</a></li>
-        <li><a href="#">FAQ</a></li>
+        <li><a href="${pageContext.request.contextPath}/orders/FAQ">FAQ</a></li>
     </ul>
 
 </aside>

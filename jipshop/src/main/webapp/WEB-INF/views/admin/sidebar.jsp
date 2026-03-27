@@ -5,7 +5,7 @@
 %>
 <nav class="sidebar">
     <div class="sidebar-logo">
-        <div class="logo-icon">🏠</div>
+        <a href="${contextPath}/jipshop/admin/dashboard"><div class="logo-icon">🏠</div></a>
         <span>집사상점</span>
     </div>
 
@@ -31,10 +31,10 @@
     </a>
 
     <div class="sidebar-section">주문</div>
-    <a href="${contextPath}/jipshop/admin/orderList.do" class="sidebar-item <%= "orderList".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath}/jipshop/admin/adminOrderList" class="sidebar-item <%= "orderList".equals(currentMenu) ? "active" : "" %>">
         🧾 주문 관리
     </a>
-    <a href="${contextPath}/jipshop/admin/orderCancelList.do" class="sidebar-item <%= "orderCancelList".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath}/jipshop/admin/adminOrderCancel" class="sidebar-item <%= "orderCancelList".equals(currentMenu) ? "active" : "" %>">
         ❌ 취소 관리
     </a>
 
