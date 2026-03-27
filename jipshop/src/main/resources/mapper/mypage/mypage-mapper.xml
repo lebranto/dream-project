@@ -16,6 +16,7 @@
 				JOIN DELIVERY D  ON O.ORDER_ID = D.ORDER_ID
 		        JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID	  
 				WHERE MEMBER_NO =#{memberNo}
+				AND ORDER_CANCEL_YN = 'N'
 				<if test="period != null">
 					AND ORDER_DATE >= SYSDATE - #{period}
 				</if>
@@ -36,6 +37,7 @@
 		JOIN DELIVERY D ON O.ORDER_ID = D.ORDER_ID
 		JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID	
 		WHERE MEMBER_NO = #{memberNo}
+		AND ORDER_CANCEL_YN = 'N'
 
 		<if test="period != null">
 			AND ORDER_DATE >= SYSDATE - #{period}
@@ -59,6 +61,7 @@
 		FROM RECENTLY_VIEWED R
 		JOIN PRODUCT P ON P.PRODUCT_ID = R.PRODUCT_ID
 		WHERE MEMBER_NO = #{memberNo}
+		
 
 		<if test="period != null">
 			AND VIEWED_DATE >= SYSDATE - #{period}
@@ -142,6 +145,8 @@
 	</delete>
 	
 	
+	<!-- 구매 취소 부분 -->
+	
 	<select id="canclePage" resultType="OrderDetailResponse">
 
 		SELECT O.ORDER_ID , P.PRODUCT_NAME
@@ -154,9 +159,31 @@
 
 	<update id="canclePurchase">
 		UPDATE ORDERS 
-		SET ORDER_CANCEL_YN = 'Y'
+		SET ORDER_CANCEL_YN = 'Y', CANCEL_REQUEST_DATE = SYSDATE
 		WHERE MEMBER_NO = #{memberNo}
 		AND ORDER_ID = #{orderId}
 	</update>
+	
+	
+	<!-- 회원 탈퇴 부분 -->
+	
+	<update id="memberDeleteOk">
+		UPDATE MEMBER 
+		SET MEMBER_ACTIVE_YN = 'N'
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	
+	<!-- 정보 수정 부분 -->
+	
+	<update id="updateMember">
+		UPDATE MEMBER
+		SET MEMBER_EMAIL = '${email}', 
+		MEMBER_NAME= '${memberName}' , 
+		MEMBER_ADDRESS =  '${address}',
+		MEMBER_PHONE = '${phone}'
+		WHERE MEMBER_NO = ${memberNo} 
+	</update>
+	
 
 </mapper>

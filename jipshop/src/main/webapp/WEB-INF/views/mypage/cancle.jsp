@@ -19,37 +19,7 @@
   <div class="page">
     <!-- 왼쪽 메뉴 -->
   <aside class="sidebar">
-   <div class="menu-group">
-      <div class="menu-title">my 쇼핑</div>
-      <ul class="menu-list">
-        <a href="${contextPath}/mypage/purchase">구매 내역 보기</a><br>
-        <a href="${contextPath}/mypage/recent">최근 본 상품</a>
-      </ul>
-    </div>
-
-    <div class="menu-group">
-      <div class="menu-title">문의</div>
-      <ul class="menu-list">
-        <a href="${contextPath}/mypage/inquiry">문의 내역</a>
-      </ul>
-    </div>
-
-    <div class="menu-group">
-      <div class="menu-title">회원 정보</div>
-      <ul class="menu-list">
-        <a href="${contextPath}/mypage/updateMemberCheck">회원 정보 수정</a><br>
-        <a href="${contextPath}/mypage/updateMemberCheck">반려동물 정보 수정</a><br>
-        <a href="${contextPath}/mypage/memberDelete">회원 탈퇴</a>
-      </ul>
-    </div>
-    
-     <div class="menu-group">
-      <div class="menu-title">고객 센터</div>
-      <ul class="menu-list">
-        <a href="${contextPath}/mypage/purchase">1:1문의</a><br>
-        <a href="${contextPath}/mypage/recent">FAQ</a><br>
-      </ul>
-    </div>
+    <jsp:include page="/WEB-INF/views/common/myPageSidebar.jsp" />
   </aside>
 
 
@@ -88,7 +58,7 @@
   </div>
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
-  <script>
+  <<!-- script>
     function checkPassword() {
       const password = document.getElementById("passwordInput").value.trim();
 
@@ -99,6 +69,6 @@
 
       alert("취소가 완료되었습니다.");
     }
-  </script>
+  </script> -->
 </body>
 </html>

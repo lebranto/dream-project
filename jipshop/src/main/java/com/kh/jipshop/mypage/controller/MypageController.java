@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
+import com.kh.jipshop.member.model.vo.Member;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.service.MypageService;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
@@ -177,6 +180,9 @@ public class MypageController {
 
 	}
 		
+	
+// 구매 취소 관련	
+	
 	@GetMapping("/cancle")
 	public String canclePage(
 			@RequestParam Integer orderId,
@@ -195,8 +201,7 @@ public class MypageController {
 	 @PostMapping("/cancle") public String canclePurchase(
 			 @RequestParam("userPwd") String check,
 			 Orders orders,
-			 Authentication auth,
-			 Model model
+			 Authentication auth
 			 ) {
 	
 		 
@@ -219,17 +224,11 @@ public class MypageController {
     	 int result = mService.canclePurchase(orders);
     	 
     	 if(result!=0) {
-    		 System.out.println("변경성공"); 
-    		 
     		 return "redirect:/mypage/purchase";
-    		 
     	 }else{
-    		 System.out.println("변경실패");
     		 return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
     	 }
-    	 
      } else {
-    	 System.out.println("변경실패");
     	 return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
    	 
      	} 
@@ -238,18 +237,143 @@ public class MypageController {
 
 	 
 	 
-	@GetMapping("/checkMember")
-	public String updateMemberCheck(
-			Authentication auth
+// 회원 정보 수정	 
+	 
+	 @GetMapping("/checkMember") 
+	 public String checkMember() {
+		 
+		 return "mypage/checkMember";
+	 }
+	 
+	 
+	@PostMapping("/checkMember")
+	public String checkMember(
+			@RequestParam("userPwd") String check,
+			Authentication auth,
+			Model model
 			) {
 		
-		return "mypage/checkMember";
+		String password = ((MemberExt)auth.getPrincipal()).getPassword();
+	     
+	     
+	     
+	     // 암호화된 코드를 비교해 일치하는지 보는 코드
+	     PasswordEncoder pe = new BCryptPasswordEncoder();
+	     
+	     boolean ch = pe.matches(check, password);
+	     
+	     
+	     // memberName 가져오기
+	     model.addAttribute("memberName",((MemberExt)auth.getPrincipal()).getMemberName());
+	     model.addAttribute("memberEmail",((MemberExt)auth.getPrincipal()).getEmail());
+	   
+	     // 주소 나누기
+
+	     model.addAttribute("phone",((MemberExt)auth.getPrincipal()).getPhone());
+	     
+	     
+	     if(ch) {
+	    	return "mypage/updateMember"; 
+	     }else{
+	    
+	      model.addAttribute("errorMsg", "비밀번호가 틀렸습니다.");
+    	  return "mypage/checkMember";
+	    	 
+	     }
+	       	
 	}
 
+	@PostMapping("/updateMember")
+	public String updateMember(
+			Model model,
+			Authentication auth,
+		    Member m
+			) {
+
+			int result = mService.updateMember(m);
+			
+			if(result!=0) {
+				
+				return "redirect:/";
+			}else {
+			
+			model.addAttribute("errorMsg","정보를 다시 입력해주세요");
+			return "mypage/updateMember"; 
+			}
+			
+		
+		
+	}
+	
+	
+	
+// 반려동물 정보 수정	
+	
 	@GetMapping("/checkPet")
-	public String memberDelete() {
+	public String checkPet() {
 
 		return "mypage/checkPet";
+	}
+
+
+	
+	
+// memberDelete 관련	
+	
+	@GetMapping("/memberDelete")
+     public String memberDelete() {
+		
+		return "mypage/memberDelete";
+	}
+	
+	@PostMapping("/memberDelete")
+	public String memberDeleteOk(
+			@RequestParam("userPwd") String check,
+			Member m,
+			Authentication auth,
+			Model model,
+		    HttpSession session
+			) {
+		 
+		
+		String password = ((MemberExt)auth.getPrincipal()).getPassword();
+	     
+	     
+	     // post 형식 때문에 numberNo 를 받지 않았기 때문에 memberNo를 추가하는 코드
+	     int numberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
+	     m.setMemberNo(numberNo);
+	     
+	     
+	     // 암호화된 코드를 비교해 일치하는지 보는 코드
+	     PasswordEncoder pe = new BCryptPasswordEncoder();
+	     
+	     boolean ch = pe.matches(check, password);
+	     
+	   
+	     
+	     if(ch) {
+	    	 int result = mService.memberDeleteOk(m);
+	    	 
+	    	 if(result!=0) {
+	    		 
+	    		 // 로그아웃후 홈으로
+	    		 session.invalidate();
+	    		 return "redirect:/";
+	    		 
+	    	 }else{
+	    		
+	 
+	    		 model.addAttribute("errorMsg", "비밀번호가 틀렸습니다.");
+	    		 return "mypage/memberDelete";
+	    	 }
+	    	 
+	     } else {
+	    	
+	    	 model.addAttribute("errorMsg", "비밀번호가 틀렸습니다.");
+	    	 return "mypage/memberDelete";
+	   	 
+	     	} 
+		
 	}
 
 }

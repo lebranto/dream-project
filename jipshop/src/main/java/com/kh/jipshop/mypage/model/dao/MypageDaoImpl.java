@@ -7,10 +7,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.jipshop.common.model.vo.PageInfo;
+import com.kh.jipshop.member.model.vo.Member;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
 import com.kh.jipshop.mypage.model.vo.Orders;
-import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
 
 import lombok.RequiredArgsConstructor;
 
@@ -138,6 +138,16 @@ public class MypageDaoImpl implements MypageDao {
 	@Override
 	public int canclePurchase(Orders orders) {
 		return session.update("mypage.canclePurchase", orders);
+	}
+
+	@Override
+	public int memberDeleteOk(Member m) {
+		return session.update("mypage.memberDeleteOk", m);
+	}
+
+	@Override
+	public int updateMember(Member m) {
+		return session.update("mypage.updateMember",m);
 	}
 
 

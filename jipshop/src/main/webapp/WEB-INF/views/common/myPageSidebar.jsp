@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -7,96 +8,43 @@
 <meta charset="UTF-8">
 <title>마이페이지 사이드바</title>
 
-<style>
-
-/* ===== 전체 배경 ===== */
-body {
-    background:#0;
-}
-
-/* ===== 사이드바 ===== */
-.mypage-sidebar {
-    width:220px;
-    background:#ddd;
-    padding:20px 10px;
-}
-
-/* 타이틀 박스 */
-.menu-box {
-    background:#E3C08D;
-    text-align:center;
-    padding:10px;
-    margin:20px 0 10px;
-    font-weight:bold;
-    border-radius:3px;
-}
-
-/* 메뉴 리스트 */
-.menu-list {
-    text-align:center;
-}
-
-.menu-list li {
-    margin:8px 0;
-}
-
-/* 링크 */
-.menu-list a {
-    display:block;
-    padding:5px 0;
-    font-size:14px;
-    transition:0.2s;
-}
-
-/* hover 효과 */
-.menu-list a:hover {
-    color:#ff8c00;
-    font-weight:bold;
-}
-
-/* 선택된 메뉴 */
-.active {
-    color:#ff8c00;
-    font-weight:bold;
-}
-
-</style>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" />
+<link rel="stylesheet" href="${contextPath}/resources/css/mypage/purchase.css">
 </head>
 
 <body>
 
-<aside class="mypage-sidebar">
+<div class="menu-group">
+      <div class="menu-title">my 쇼핑</div>
+      <ul class="menu-list">
+        <a href="${contextPath}/mypage/purchase">구매 내역 보기</a><br>
+        <a href="${contextPath}/mypage/recent">최근 본 상품</a>
+      </ul>
+    </div>
 
-    <!-- MY 쇼핑 -->
-    <div class="menu-box">my 쇼핑</div>
-    <ul class="menu-list">
-        <li><a href="#">구매 내역 보기</a></li>
-        <li><a href="#">최근 본 상품</a></li>
-        <li><a href="#">찜리스트</a></li>
-    </ul>
+    <div class="menu-group">
+      <div class="menu-title">문의</div>
+      <ul class="menu-list">
+        <a href="${contextPath}/mypage/inquiry">문의 내역</a>
+      </ul>
+    </div>
 
-    <!-- 문의 -->
-    <div class="menu-box">문의</div>
-    <ul class="menu-list">
-        <li><a href="#">문의 내역</a></li>
-    </ul>
-
-    <!-- 회원 정보 -->
-    <div class="menu-box">회원 정보</div>
-    <ul class="menu-list">
-        <li><a href="#">회원 정보 수정</a></li>
-        <li><a href="#">반려동물 정보 수정</a></li>
-        <li><a href="#">회원 탈퇴</a></li>
-    </ul>
-
-    <!-- 고객센터 -->
-    <div class="menu-box">고객센터</div>
-    <ul class="menu-list">
-        <li><a href="#" class="active">1:1 문의</a></li>
-        <li><a href="#">FAQ</a></li>
-    </ul>
-
-</aside>
+    <div class="menu-group">
+      <div class="menu-title">회원 정보</div>
+      <ul class="menu-list">
+        <a href="${contextPath}/mypage/checkMember">회원 정보 수정</a><br>
+        <a href="${contextPath}/mypage/checkPet">반려동물 정보 수정</a><br>
+        <a href="${contextPath}/mypage/memberDelete">회원 탈퇴</a>
+      </ul>
+    </div>
+    
+     <div class="menu-group">
+      <div class="menu-title">고객 센터</div>
+      <ul class="menu-list">
+        <a href="${contextPath}/mypage/purchase">1:1문의</a><br>
+        <a href="${contextPath}/mypage/recent">FAQ</a><br>
+      </ul>
+    </div>
 
 </body>
 </html>

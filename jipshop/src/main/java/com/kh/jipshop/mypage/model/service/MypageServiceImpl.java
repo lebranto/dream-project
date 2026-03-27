@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.kh.jipshop.member.model.vo.Member;
 import com.kh.jipshop.mypage.model.dao.MypageDao;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
 import com.kh.jipshop.mypage.model.vo.Orders;
-import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
 
 import lombok.RequiredArgsConstructor;
 
@@ -91,6 +91,16 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public int canclePurchase(Orders orders) {
 		return mDao.canclePurchase(orders);
+	}
+
+	@Override
+	public int memberDeleteOk(Member m) {
+		return mDao.memberDeleteOk(m);
+	}
+
+	@Override
+	public int updateMember(Member m) {
+		return mDao.updateMember(m);
 	}
 	
 
