@@ -93,10 +93,10 @@
 
                 <div class="btn-group">
                     <button type="button" class="btn btn-outline"
-                            onclick="llocation.href='${contextPath}/admin/memberList'">목록</button>
+                            onclick="location.href='${contextPath}/admin/memberList'">목록</button>
                     <button type="button" class="btn btn-danger"
                             onclick="location.href='${contextPath}/admin/memberStop?memberNo=${member.memberNo}'">
-                        이용 정지 / 탈퇴 처리
+                         탈퇴 처리
                     </button>
                     <button type="submit" class="btn btn-primary">수정 완료</button>
                 </div>
@@ -133,59 +133,6 @@
                                     <td><strong>${pet.petName}</strong></td>
                                     <td style="color:var(--text-sub)">${pet.petAge}</td>
                                     <td class="td-num">${pet.petWeight}</td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </div>
-
-    <%-- 최근 주문 이력 --%>
-    <div class="detail-card">
-        <div class="detail-card-header">🧾 최근 주문 이력 (최근 5건)</div>
-        <c:choose>
-            <c:when test="${empty recentOrders}">
-                <div class="empty-section">주문 내역이 없습니다.</div>
-            </c:when>
-            <c:otherwise>
-                <div class="table-wrap no-border">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>주문번호</th>
-                                <th>상품명 (외)</th>
-                                <th class="td-num">주문금액</th>
-                                <th>주문일</th>
-                                <th>상태</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="ord" items="${recentOrders}">
-                                <tr>
-                                    <td class="font-mono">${ord.orderId}</td>
-                                    <td>${ord.productSummary}</td>
-                                    <td class="td-num font-bold">
-                                        <fmt:formatNumber value="${ord.orderTotalPrice}" pattern="#,###"/>원
-                                    </td>
-                                    <td style="color:var(--text-sub)">${ord.orderDate}</td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${ord.orderStatusLabel == '배송완료'}">
-                                                <span class="badge badge-done">배송완료</span>
-                                            </c:when>
-                                            <c:when test="${ord.orderStatusLabel == '배송 중'}">
-                                                <span class="badge badge-shipping">배송 중</span>
-                                            </c:when>
-                                            <c:when test="${ord.orderStatusLabel == '취소 요청'}">
-                                                <span class="badge badge-cancel">취소 요청</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="badge badge-waiting">${ord.orderStatusLabel}</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>

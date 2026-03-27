@@ -44,5 +44,11 @@ public class AdminMemberServiceImpl implements AdminMemberService{
 		return adminMemberDao.updateMember(member);
 	}
 
+	@Override
+	public void updateMemberActiveYn(int memberNo) {
+		adminMemberDao.updateMemberActiveYn(memberNo);
+		
+	}
+
 	
 }

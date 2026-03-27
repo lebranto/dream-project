@@ -96,7 +96,25 @@ public class AdminMemberController {
         model.addAttribute("member", member);
         return "admin/member/memberStop";
     }
-
+    
+    // 5. 탈퇴 처리
+    @PostMapping("/memberWithdraw")
+    public String memberWithdraw(@RequestParam int    memberNo,
+                                  RedirectAttributes ra) {
+ 
+        Member member = adminMemberService.getMemberByNo(memberNo);
+ 
+        // 이미 탈퇴된 회원 체크
+        if (member == null || "N".equals(member.getActiveYn())) {
+            ra.addFlashAttribute("errorMsg", "이미 탈퇴된 회원입니다.");
+            return "redirect:/admin/memberStop?memberNo=" + memberNo;
+        }
+ 
+        adminMemberService.updateMemberActiveYn(memberNo);
+ 
+        ra.addFlashAttribute("successMsg", "탈퇴 처리가 완료되었습니다.");
+        return "redirect:/admin/memberList";
+    }
 
 
 }

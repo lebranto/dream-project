@@ -47,4 +47,10 @@ public class AdminMemberDaoImpl implements AdminMemberDao{
 		return session.update(am+"updateMember", member);
 	}
 
+	@Override
+	public void updateMemberActiveYn(int memberNo) {
+		session.update(am+"updateMemberActiveYn", memberNo);
+		
+	}
+
 }

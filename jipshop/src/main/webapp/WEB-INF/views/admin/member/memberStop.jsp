@@ -49,16 +49,18 @@
     <div class="detail-card">
         <div class="detail-card-header">⚠️ 회원 탈퇴 처리</div>
         <div class="detail-card-body">
+
+            <%-- 이미 탈퇴된 회원 안내 --%>
+            <c:if test="${member.activeYn == 'N'}">
+                <div class="danger-box" style="margin-bottom:16px">
+                    🚫 이미 탈퇴 처리된 회원입니다. 추가 처리가 불가합니다.
+                </div>
+            </c:if>
+
             <form action="${contextPath}/admin/memberWithdraw" method="post"
                   id="withdrawForm" onsubmit="return confirmWithdraw()">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="hidden" name="memberNo" value="${member.memberNo}">
-
-                <div class="form-row">
-                    <label class="form-label required">탈퇴 사유</label>
-                    <input type="text" name="withdrawReason" id="withdrawReason"
-                           class="form-input" placeholder="탈퇴 처리 사유를 입력하세요." required>
-                </div>
 
                 <div class="danger-box">
                     <strong>⚠️ 탈퇴 처리 전 반드시 확인하세요</strong>
@@ -72,7 +74,8 @@
                 <div class="form-row">
                     <label class="form-label">확인 입력</label>
                     <input type="text" id="withdrawConfirmInput" class="form-input w-md"
-                           placeholder="'탈퇴처리' 입력 후 처리 가능">
+                           placeholder="'탈퇴처리' 입력 후 처리 가능"
+                           <c:if test="${member.activeYn == 'N'}">disabled</c:if>>
                     <span class="form-hint" style="color:var(--red)">'탈퇴처리' 를 입력해야 처리됩니다.</span>
                 </div>
 
@@ -81,7 +84,10 @@
                             onclick="location.href='${contextPath}/admin/memberDetail?memberNo=${member.memberNo}'">
                         취소
                     </button>
-                    <button type="submit" class="btn btn-danger">⚠️ 탈퇴 처리</button>
+                    <button type="submit" class="btn btn-danger"
+                            <c:if test="${member.activeYn == 'N'}">disabled style="opacity:0.5;cursor:not-allowed"</c:if>>
+                        ⚠️ 탈퇴 처리
+                    </button>
                 </div>
             </form>
         </div>
@@ -93,14 +99,8 @@
 
 <script>
     function confirmWithdraw() {
-        const reason = document.getElementById('withdrawReason').value.trim();
         const confirmInput = document.getElementById('withdrawConfirmInput').value.trim();
 
-        if (!reason) {
-            alert('탈퇴 사유를 입력해주세요.');
-            document.getElementById('withdrawReason').focus();
-            return false;
-        }
         if (confirmInput !== '탈퇴처리') {
             alert("'탈퇴처리' 를 정확히 입력해주세요.");
             document.getElementById('withdrawConfirmInput').focus();

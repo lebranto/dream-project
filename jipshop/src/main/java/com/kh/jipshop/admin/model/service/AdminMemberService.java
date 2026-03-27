@@ -20,6 +20,8 @@ public interface AdminMemberService {
 	Member getMemberByNo(int memberNo);
 	/** 회원 정보 수정*/
 	int updateMember(Member member);
+	/** 회원 탈퇴*/
+	void updateMemberActiveYn(int memberNo);
 
 
 }

@@ -19,4 +19,6 @@ public interface AdminMemberDao {
 
 	int updateMember(Member member);
 
+	void updateMemberActiveYn(int memberNo);
+
 }
