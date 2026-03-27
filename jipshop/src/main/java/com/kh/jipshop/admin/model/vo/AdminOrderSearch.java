@@ -16,5 +16,8 @@ public class AdminOrderSearch {
 
     private String keyword;
     private String cancelDate;
+    
+    private String orderStatus;   // 추가
+    private String cancelStatus; 
 
 }

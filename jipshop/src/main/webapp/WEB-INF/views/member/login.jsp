@@ -27,7 +27,11 @@
           <c:if test="${not empty alertMsg}">
             <script>alert('${alertMsg}');</script>
           </c:if>
-
+          <!-- 로그인 실패 후 메시지 -->
+		  <c:if test="${param.error != null}">
+		    <script>alert('아이디 또는 비밀번호가 올바르지 않습니다.');</script>
+		  </c:if>
+		  
           <!-- Login Form Card -->
           <form:form id="loginForm" cssClass="div"
                      action="${pageContext.request.contextPath}/member/loginProcess"

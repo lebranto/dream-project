@@ -38,26 +38,30 @@ public class AdminMemberController {
             @RequestParam Map<String, Object> paramMap,
             Model model) {
     	
-    	// paramMap에서 currentPage 제거 (pi.currentPage로 관리)
-        paramMap.remove("currentPage");
-        
+        paramMap.remove("page");
         paramMap.entrySet().removeIf(e ->
 	        e.getValue() == null || e.getValue().toString().trim().isEmpty()
 	    );
         // 통계
         model.addAttribute("activeCount", adminMemberService.getActiveCount());
         model.addAttribute("bannedCount", adminMemberService.getBannedCount());
- 
+        
+        // 전체 회원 수 (검색 조건 무관하게 항상 고정)
+        int allCount = adminMemberService.getMemberCount(new java.util.HashMap<>());
+        model.addAttribute("totalCount", allCount);  // ← 고정값
+        
+        // 검색 결과 수 (페이징에 사용)
+        int totalCount = adminMemberService.getMemberCount(paramMap);
+        
         // 페이징 정보 생성
         int boardLimit = 5;  // 페이지당 행 수
         int pageLimit  = 10;  // 페이지네이션 블록 크기
-        int totalCount = adminMemberService.getMemberCount(paramMap);
+     
  
         PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, pageLimit, boardLimit);
         paramMap.put("pi", pi);
  
         model.addAttribute("memberList",  adminMemberService.getMemberList(paramMap));
-        model.addAttribute("totalCount",  totalCount);
         model.addAttribute("pi",          pi);
         model.addAttribute("param",       paramMap);
  

@@ -16,4 +16,8 @@ public interface AdminOrderService {
     int deleteOrders(List<Integer> orderIds);
 
     int updateDeliveryYn(int orderId, String deliveryYn);
+
+    AdminOrder selectOrderDetail(int orderId);
+
+    int updateOrderStatus(int orderId, String orderStatus);
 }

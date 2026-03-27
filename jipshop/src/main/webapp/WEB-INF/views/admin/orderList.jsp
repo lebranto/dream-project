@@ -6,34 +6,30 @@
 %>
 <!DOCTYPE html>
 <html lang="ko">
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" />
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 관리 - 집사상권</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/admin/orderDetail.css">
 </head>
 <body>
 
-<%-- 사이드바 --%>
 <jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>
-
-<%-- 헤더 --%>
 <jsp:include page="/WEB-INF/views/admin/common/header.jsp"/>
 
 <main class="main">
 
-    <%-- 페이지 제목 --%>
     <div class="page-title">
         주문 관리
-        <span class="page-title-badge">총 ${totalCount}건</span>
+        <span class="page-title-badge">총 ${pi.listCount}건</span>
     </div>
 
-    <%-- 통계 카드 --%>
     <div class="stats-bar">
         <div class="stat-card">
             <div class="stat-label">전체 주문</div>
-            <div class="stat-value">${totalCount}</div>
+            <div class="stat-value">${pi.listCount}</div>
             <div class="stat-sub">조회 기간 기준</div>
         </div>
         <div class="stat-card">
@@ -53,13 +49,17 @@
         </div>
     </div>
 
-    <%-- 검색 필터 --%>
-    <form id="searchForm" action="/admin/orderList.do" method="get">
+    <form id="searchForm" action="${contextPath}/admin/order/list" method="get">
+        <input type="hidden" name="currentPage" value="1">
+
         <div class="filter-bar">
             <span class="filter-label">기간</span>
-            <input type="date" name="startDate" class="filter-input" value="${param.startDate}">
+            <input type="date" name="startDate" class="filter-input"
+                   value="${empty param.startDate ? '' : param.startDate}">
             <span class="filter-sep">~</span>
-            <input type="date" name="endDate" class="filter-input" value="${param.endDate}">
+            <input type="date" name="endDate" class="filter-input"
+                   value="${empty param.endDate ? '' : param.endDate}">
+
             <select name="orderStatus" class="filter-select">
                 <option value="">전체 상태</option>
                 <option value="PAY" <c:if test="${param.orderStatus == 'PAY'}">selected</c:if>>결제 완료</option>
@@ -67,32 +67,28 @@
                 <option value="DONE" <c:if test="${param.orderStatus == 'DONE'}">selected</c:if>>배송 완료</option>
                 <option value="REQ_CANCEL" <c:if test="${param.orderStatus == 'REQ_CANCEL'}">selected</c:if>>취소 요청</option>
             </select>
+
             <input type="text" name="keyword" class="filter-input"
-                   placeholder="구매자명 또는 주문번호" value="${param.keyword}" style="flex:1; min-width:160px;">
+                   placeholder="구매자명 또는 주문번호"
+                   value="${empty param.keyword ? '' : param.keyword}"
+                   style="flex:1; min-width:160px;">
+
             <button type="submit" class="btn btn-primary">조회</button>
             <button type="button" class="btn btn-outline" onclick="resetSearch()">초기화</button>
         </div>
     </form>
 
-    <%-- 툴바 --%>
-    <form id="bulkForm" action="/admin/orderBulkAction.do" method="post">
+    <form id="bulkForm" action="${contextPath}/admin/orderBulkAction.do" method="post">
         <input type="hidden" name="action" id="bulkAction">
 
         <div class="toolbar">
             <div class="toolbar-left">
                 <span class="bulk-info" id="bulkInfo">0건 선택됨</span>
-                <button type="button" class="btn btn-outline btn-sm" id="btnBulkConfirm"
-                        style="display:none" onclick="submitBulk('confirm')">✅ 일괄 확인</button>
                 <button type="button" class="btn btn-danger btn-sm" id="btnBulkCancel"
-                        style="display:none" onclick="submitBulk('cancel')">❌ 일괄 취소</button>
-            </div>
-            <div class="toolbar-right">
-                <button type="button" class="btn btn-outline btn-sm"
-                        onclick="location.href='/admin/orderExcel.do'">📥 엑셀 다운로드</button>
+                        style="display:none" onclick="submitBulk('cancel')">❌ 일괄 삭제</button>
             </div>
         </div>
 
-        <%-- 테이블 --%>
         <div class="table-wrap">
             <table>
                 <thead>
@@ -129,7 +125,7 @@
                                                value="${order.orderId}"
                                                class="rowCheck" onchange="updateBulk()">
                                     </td>
-                                    <td>${totalCount - (currentPage - 1) * pageSize - status.index}</td>
+                                    <td>${(pi.currentPage - 1) * pi.boardLimit + status.count}</td>
                                     <td><strong>${order.ordererName}</strong></td>
                                     <td class="font-mono" style="color:var(--text-sub)">${order.ordererPhone}</td>
                                     <td class="font-mono">${order.orderId}</td>
@@ -184,7 +180,7 @@
                                     </td>
                                     <td class="center">
                                         <button type="button" class="btn btn-outline btn-sm"
-                                                onclick="location.href='/admin/orderDetail.do?orderId=${order.orderId}'">
+                                                onclick="location.href='${contextPath}/admin/order/orderDetail?orderId=${order.orderId}'">
                                             상세
                                         </button>
                                     </td>
@@ -195,19 +191,26 @@
                 </tbody>
             </table>
 
-            <%-- 페이지네이션 --%>
             <div class="pagination">
-                <c:if test="${currentPage > 1}">
-                    <a class="page-num" href="/admin/orderList.do?page=${currentPage-1}&startDate=${param.startDate}&endDate=${param.endDate}&orderStatus=${param.orderStatus}&keyword=${param.keyword}">◀</a>
+                <c:if test="${pi.currentPage > 1}">
+                    <a class="page-num"
+                       href="${contextPath}/admin/order/list?currentPage=${pi.currentPage - 1}&startDate=${empty param.startDate ? '' : param.startDate}&endDate=${empty param.endDate ? '' : param.endDate}&orderStatus=${empty param.orderStatus ? '' : param.orderStatus}&keyword=${empty param.keyword ? '' : param.keyword}">
+                        ◀
+                    </a>
                 </c:if>
-                <c:forEach begin="${startPage}" end="${endPage}" var="p">
-                    <a class="page-num ${p == currentPage ? 'active' : ''}"
-                       href="/admin/orderList.do?page=${p}&startDate=${param.startDate}&endDate=${param.endDate}&orderStatus=${param.orderStatus}&keyword=${param.keyword}">
+
+                <c:forEach begin="${pi.startPage}" end="${pi.endPage}" var="p">
+                    <a class="page-num ${p == pi.currentPage ? 'active' : ''}"
+                       href="${contextPath}/admin/order/list?currentPage=${p}&startDate=${empty param.startDate ? '' : param.startDate}&endDate=${empty param.endDate ? '' : param.endDate}&orderStatus=${empty param.orderStatus ? '' : param.orderStatus}&keyword=${empty param.keyword ? '' : param.keyword}">
                         ${p}
                     </a>
                 </c:forEach>
-                <c:if test="${currentPage < totalPages}">
-                    <a class="page-num" href="/admin/orderList.do?page=${currentPage+1}&startDate=${param.startDate}&endDate=${param.endDate}&orderStatus=${param.orderStatus}&keyword=${param.keyword}">▶</a>
+
+                <c:if test="${pi.currentPage < pi.maxPage}">
+                    <a class="page-num"
+                       href="${contextPath}/admin/order/list?currentPage=${pi.currentPage + 1}&startDate=${empty param.startDate ? '' : param.startDate}&endDate=${empty param.endDate ? '' : param.endDate}&orderStatus=${empty param.orderStatus ? '' : param.orderStatus}&keyword=${empty param.keyword ? '' : param.keyword}">
+                        ▶
+                    </a>
                 </c:if>
             </div>
         </div>
@@ -215,45 +218,44 @@
 
 </main>
 
-<%-- 토스트 --%>
 <div class="toast" id="toast"></div>
 
 <script>
-    /* 전체 선택 */
     function toggleAll() {
         const master = document.getElementById('checkAll');
         document.querySelectorAll('.rowCheck').forEach(c => c.checked = master.checked);
         updateBulk();
     }
 
-    /* 선택 카운트 업데이트 */
     function updateBulk() {
         const checked = document.querySelectorAll('.rowCheck:checked');
         const count = checked.length;
         const bulkInfo = document.getElementById('bulkInfo');
+        const btnBulkCancel = document.getElementById('btnBulkCancel');
 
         bulkInfo.textContent = count + '건 선택됨';
         bulkInfo.classList.toggle('visible', count > 0);
-        document.getElementById('btnBulkConfirm').style.display = count > 0 ? '' : 'none';
-        document.getElementById('btnBulkCancel').style.display  = count > 0 ? '' : 'none';
+
+        if (btnBulkCancel) {
+            btnBulkCancel.style.display = count > 0 ? '' : 'none';
+        }
     }
 
-    /* 일괄 처리 */
     function submitBulk(action) {
         const checked = document.querySelectorAll('.rowCheck:checked');
         if (checked.length === 0) return;
-        const msg = action === 'confirm' ? '확인 처리' : '취소 처리';
-        if (!confirm(checked.length + '건을 ' + msg + ' 하시겠습니까?')) return;
+
+        const msg = '삭제';
+        if (!confirm(checked.length + '건을 일괄 ' + msg + '하시겠습니까?')) return;
+
         document.getElementById('bulkAction').value = action;
         document.getElementById('bulkForm').submit();
     }
 
-    /* 검색 초기화 */
     function resetSearch() {
-        location.href = '/admin/orderList.do';
+        location.href = '${contextPath}/admin/order/list';
     }
 
-    /* 토스트 */
     function showToast(msg) {
         const t = document.getElementById('toast');
         t.textContent = msg;
@@ -261,9 +263,10 @@
         setTimeout(() => t.classList.remove('show'), 2400);
     }
 
-    /* 서버에서 전달된 메시지 표시 */
     <c:if test="${not empty successMsg}">
-        window.onload = () => showToast('✅ ${successMsg}');
+        window.onload = function() {
+            showToast('✅ ${successMsg}');
+        };
     </c:if>
 </script>
 </body>

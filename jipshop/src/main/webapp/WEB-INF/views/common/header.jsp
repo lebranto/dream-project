@@ -52,8 +52,8 @@
                     </button>
                 </div>
                 <div class="icon-area">
-                    <a href="#"><i class="bi bi-heart"></i></a>
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/orders/favorites"><i class="bi bi-heart"></i></a>
+                    <a href="${pageContext.request.contextPath}/orders/cart">
                         <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
                     </a>
                 </div>
