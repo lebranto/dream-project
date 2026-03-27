@@ -347,28 +347,22 @@ public class MypageController {
 	}
 	
 	
-	@PostMapping("/updatePet")
-	public String updatePet(
-			Model model,
-			Authentication auth,
-		    Pet p
-			) {
-		
-		p.setMemberNo(((MemberExt)auth.getPrincipal()).getMemberNo());
-		int result = mService.updatePet(p);
-		
-		if(result!=0) {
-			model.addAttribute("msg", "회원 정보가 수정되었습니다.");
-			return "redirect:/";
-		}else {
-		
-		model.addAttribute("errorMsg","정보를 다시 입력해주세요");
-		return "mypage/updateMember"; 
-		}
-		
-		
-	}
-	
+	/*
+	 * @PostMapping("/updatePet") public String updatePet( Model model,
+	 * Authentication auth, Pet p ) {
+	 * 
+	 * p.setMemberNo(((MemberExt)auth.getPrincipal()).getMemberNo()); int result =
+	 * mService.updatePet(p);
+	 * 
+	 * if(result!=0) { model.addAttribute("msg", "회원 정보가 수정되었습니다."); return
+	 * "redirect:/"; }else {
+	 * 
+	 * model.addAttribute("errorMsg","정보를 다시 입력해주세요"); return "mypage/updateMember";
+	 * }
+	 * 
+	 * 
+	 * }
+	 */
 
 	
 	
