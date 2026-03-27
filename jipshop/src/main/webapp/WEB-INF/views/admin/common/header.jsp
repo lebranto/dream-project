@@ -4,7 +4,7 @@
     if (adminName == null) adminName = "관리자";
 %>
 <header class="header">
-    <a href="/index.do" class="header-link">홈페이지</a>
+    <a href="${pageContext.request.contextPath}/" class="header-link">홈페이지</a>
     <div class="header-user">
         <div class="avatar">관</div>
         <span><sec:authentication property="principal.memberName"/> <strong>님</strong></span>
