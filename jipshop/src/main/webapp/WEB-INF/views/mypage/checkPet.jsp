@@ -22,7 +22,7 @@
             <div class="page-title">마이페이지</div>
             <div class="sub-title">반려동물 정보 수정</div>
 
-            <form action="${contextPath}/mypage/checkPwd" method="post">
+            <form action="${contextPath}/mypage/checkPet" method="post">
                 <input type="hidden" name="target" value="${param.target}">
 
                 <div class="pwd-check-wrap">
@@ -32,10 +32,10 @@
                 </div>
             </form>
 
-     <%--       <c:if test="${not empty errorMsg}">
+           <c:if test="${not empty errorMsg}">
     			<div class="error-msg">${errorMsg}</div>
 		   </c:if>
-			 --%>
+			
         </main>
     </div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

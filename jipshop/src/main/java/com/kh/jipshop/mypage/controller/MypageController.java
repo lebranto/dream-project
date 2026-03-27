@@ -289,7 +289,8 @@ public class MypageController {
 			Authentication auth,
 		    Member m
 			) {
-
+			
+			m.setMemberNo(((MemberExt)auth.getPrincipal()).getMemberNo());
 			int result = mService.updateMember(m);
 			
 			if(result!=0) {
@@ -300,8 +301,6 @@ public class MypageController {
 			model.addAttribute("errorMsg","정보를 다시 입력해주세요");
 			return "mypage/updateMember"; 
 			}
-			
-		
 		
 	}
 	
@@ -315,6 +314,31 @@ public class MypageController {
 		return "mypage/checkPet";
 	}
 
+	
+	
+	@PostMapping("/checkPet")
+	public String checkPet(
+			@RequestParam("userPwd") String check,
+			Authentication auth,
+			Model model) {
+			
+		String password = ((MemberExt)auth.getPrincipal()).getPassword();
+	     
+		
+	     // 암호화된 코드를 비교해 일치하는지 보는 코드
+	     PasswordEncoder pe = new BCryptPasswordEncoder();
+	     
+	     boolean ch = pe.matches(check, password);
+	     
+	     if(ch) {
+	    	 return "mypage/updatePet";
+	     }else {
+	    	 model.addAttribute("errorMsg","비밀번호를 다시 입력해주세요");
+			return "mypage/checkPet"; 
+	     }
+	     
+	     
+	}
 
 	
 	

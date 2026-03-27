@@ -178,10 +178,10 @@
 	
 	<update id="updateMember">
 		UPDATE MEMBER
-		SET MEMBER_EMAIL = '${email}', 
+		SET EMAIL = '${email}', 
 		MEMBER_NAME= '${memberName}' , 
 		MEMBER_ADDRESS =  '${address}',
-		MEMBER_PHONE = '${phone}'
+		PHONE = '${phone}'
 		WHERE MEMBER_NO = ${memberNo} 
 	</update>
 	

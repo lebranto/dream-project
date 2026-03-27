@@ -26,50 +26,47 @@
     <div class="content-wrap">
         <main class="content">
         
-        <form action="${contextPath}/mypage/updateMember" method="post">
+        <form action="${contextPath}/mypage/updatePet" method="post">
         
-         <div class="reg-field-group">
-            <div class="reg-field-label">이메일 <span class="reg-required-dot"></span></div>
-            <input class="reg-input" type="email" id="email" placeholder="이메일을 입력하세요." name="email" autocomplete="email" value="${memberEmail}" />
-          </div>
+              <div class="reg-pet-card">
+                <div class="reg-pet-form-title">애완동물 정보</div>
 
-          <!-- 이름 -->
-          <div class="reg-field-group">
-            <div class="reg-field-label">이름 <span class="reg-required-dot"></span></div>
-            <input class="reg-input" type="text" id="memberName" placeholder="이름을(를) 입력하세요." name="memberName" value="${memberName}" />
-          </div>
+                <!-- 사진 등록 -->
+				<label class="reg-file-label" for="petPhoto" id="fileLabel">
+				  📁&nbsp; <span id="fileNameText">사진 파일 올리기</span>
+				  <input id="petPhoto" type="file" accept="image/*" style="display:none;" name="petPhoto" 
+				         onchange="updateFileName(this)" />
+				</label>
 
-          <!-- 주소 (다음 주소 API) -->
-          <div class="reg-field-group">
-            <div class="reg-field-label">주소 <span class="reg-required-dot"></span></div>
-            <!-- 우편번호 + 검색 버튼 -->
-            <div class="reg-id-row" style="margin-bottom:8px;">
-              <input class="reg-input" type="text" id="zipCode" name="zipCode"
-                     placeholder="우편번호" readonly style="margin-bottom:0; cursor:pointer;"
-                     onclick="sample4_execDaumPostcode()" />
-              <button type="button" class="reg-btn-check" style="white-space:nowrap; line-height:1.6;"
-                      onclick="sample4_execDaumPostcode()">주소 검색</button>
-            </div>
-            <!-- 도로명 주소 -->
-            <input class="reg-input" type="text" id="streetAdr" name="streetAdr"
-                   placeholder="도로명 주소" readonly style="margin-bottom:8px; cursor:default;" />
-            <!-- 상세 주소 -->
-            <input class="reg-input" type="text" id="detailAdr" name="detailAdr"
-                   placeholder="상세 주소를 입력하세요." style="margin-bottom:0;"
-                   onclick="addrCheck()" />
-            <!-- 최종 합산 주소 (VO의 address 필드로 전송) -->
-            <input type="hidden" id="address" name="address" />
-          </div>
+                <!-- 동물 종류 -->
+                <div class="reg-pet-type-row">
+                  <span class="reg-row-label">동물 종류</span>
+                  <div class="reg-radio-group">
+                    <label><input type="radio" name="petType" value="dog" checked /> 개</label>
+                    <label><input type="radio" name="petType" value="cat" /> 고양이</label>
+                  </div>
+                </div>
 
-          <!-- 전화번호 -->
-          <div class="reg-field-group">
-            <div class="reg-field-label">전화번호 <span class="reg-required-dot"></span></div>
-            <div class="reg-phone-row">
-              <input class="reg-input" type="tel" id="phone" placeholder="전화번호를 입력하세요 (010-1234-5678)" name="phone" value="${phone}"/>
-            </div>
-            <input type="hidden" id="phoneVerified" name="phoneVerified" value="N" />
-          </div>
-           <button type="submit" class=updateBtn onclick="checkUpdate()">수정하기</button>
+                <!-- 이름 -->
+                <div class="reg-pet-input-row">
+                  <span class="reg-row-label">이름</span>
+                  <input class="reg-input" type="text" name="petName" placeholder="이름" />
+                </div>
+
+                <!-- 생년월일 (DB: DATE → yyyy-MM-dd) -->
+                <div class="reg-pet-input-row">
+                  <span class="reg-row-label">생년월일</span>
+                  <input class="reg-input" type="date" name="petBirth" />
+                </div>
+
+                <!-- 몸무게 -->
+                <div class="reg-pet-input-row">
+                  <span class="reg-row-label">몸무게</span>
+                  <input class="reg-input" type="number" name="petWeight" step="0.1" min="0" placeholder="kg" />
+                </div>
+              </div>
+         	 <button type="submit" class=updateBtn onclick="checkUpdate()">수정하기</button>
+        
         </form>
         
           <c:if test="${not empty errorMsg}">
@@ -84,6 +81,16 @@
 </body>
 
 <script>
+
+/* ── 애완동물 토글 ── */
+const toggleBtn = document.getElementById('petToggleBtn');
+const petPanel  = document.getElementById('petPanel');
+
+toggleBtn.addEventListener('click', () => {
+  const isOpen = petPanel.classList.toggle('open');
+  toggleBtn.classList.toggle('open', isOpen);
+});
+
 
 
 /* ── 다음 주소 API ── */
