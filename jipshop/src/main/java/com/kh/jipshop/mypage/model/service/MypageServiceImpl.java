@@ -79,10 +79,18 @@ public class MypageServiceImpl implements MypageService {
 		return mDao.delectInquiry(mi);
 	}
 
+	
+	// 구매 취소페이지
+	
 	@Override
 	public OrderDetailResponse canclePage(Integer orderId) {
 		
 		return mDao.canclePage(orderId);
+	}
+
+	@Override
+	public int canclePurchase(Orders orders) {
+		return mDao.canclePurchase(orders);
 	}
 	
 

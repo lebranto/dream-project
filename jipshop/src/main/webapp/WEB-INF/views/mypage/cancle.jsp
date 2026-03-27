@@ -80,7 +80,7 @@
 
       <div class="bottom-area">
         <button class="label-box" type="button">비밀번호</button>
-        <input type="password" name="inputPassword" id="passwordInput" class="password-input" placeholder="비밀번호 입력칸">
+        <input type="password" name="userPwd" id="passwordInput" class="password-input" placeholder="비밀번호 입력칸">
         <button class="confirm-btn" type="submit">확인</button>
       </div>
     </form>

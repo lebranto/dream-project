@@ -152,4 +152,11 @@
 	</select>
 
 
+	<update id="canclePurchase">
+		UPDATE ORDERS 
+		SET ORDER_CANCEL_YN = 'Y'
+		WHERE MEMBER_NO = #{memberNo}
+		AND ORDER_ID = #{orderId}
+	</update>
+
 </mapper>

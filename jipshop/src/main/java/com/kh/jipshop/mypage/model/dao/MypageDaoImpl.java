@@ -90,7 +90,7 @@ public class MypageDaoImpl implements MypageDao {
 	}
 
 	
-	//문의 조회 관련
+	//문의 관련
 
 
 	@Override
@@ -125,10 +125,19 @@ public class MypageDaoImpl implements MypageDao {
 		return session.delete("mypage.delectInquiry",mi);
 	}
 
+	
+	
+	// 구매 취소 관련
+	
 	@Override
 	public OrderDetailResponse canclePage(Integer orderId) {
 		
 		return session.selectOne("mypage.canclePage",orderId);
+	}
+
+	@Override
+	public int canclePurchase(Orders orders) {
+		return session.update("mypage.canclePurchase", orders);
 	}
 
 

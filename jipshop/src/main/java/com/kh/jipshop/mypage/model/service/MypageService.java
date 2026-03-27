@@ -29,6 +29,8 @@ public interface MypageService {
 
 	OrderDetailResponse canclePage(Integer orderId);
 
+	int canclePurchase(Orders orders);
+
 
 
 

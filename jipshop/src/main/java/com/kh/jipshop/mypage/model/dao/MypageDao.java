@@ -28,6 +28,8 @@ public interface MypageDao {
 	int delectInquiry(MyInqury mi);
 
 	OrderDetailResponse canclePage(Integer orderId);
+
+	int canclePurchase(Orders orders);
 	
 
 

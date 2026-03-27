@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -173,8 +175,6 @@ public class MypageController {
 
 		return "redirect:/mypage/inquiry";
 
-		
-		
 	}
 		
 	@GetMapping("/cancle")
@@ -191,16 +191,53 @@ public class MypageController {
 		return "mypage/cancle";
 	}
 	
-	/*
-	 * @PostMapping("/cancle") public String canclePage( Authentication auth ) {
-	 * 
-	 * String password = ((MemberExt)auth.getPrincipal()).getPassword();
-	 * 
-	 * 
-	 * return "redirect:/mypage/purcash";
-	 * 
-	 * }
-	 */
+
+	 @PostMapping("/cancle") public String canclePurchase(
+			 @RequestParam("userPwd") String check,
+			 Orders orders,
+			 Authentication auth,
+			 Model model
+			 ) {
+	
+		 
+     String password = ((MemberExt)auth.getPrincipal()).getPassword();
+     
+     
+     // post 형식 때문에 numberNo 를 받지 않았기 때문에 memberNo를 추가하는 코드
+     int numberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
+     orders.setMemberNo(numberNo);
+     
+     
+     // 암호화된 코드를 비교해 일치하는지 보는 코드
+     PasswordEncoder pe = new BCryptPasswordEncoder();
+     
+     boolean ch = pe.matches(check, password);
+     
+   
+     
+     if(ch) {
+    	 int result = mService.canclePurchase(orders);
+    	 
+    	 if(result!=0) {
+    		 System.out.println("변경성공"); 
+    		 
+    		 return "redirect:/mypage/purchase";
+    		 
+    	 }else{
+    		 System.out.println("변경실패");
+    		 return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
+    	 }
+    	 
+     } else {
+    	 System.out.println("변경실패");
+    	 return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
+   	 
+     	} 
+    
+    
+	 
+	}
+	
 	
 
 	@GetMapping("/updateMemberCheck")
