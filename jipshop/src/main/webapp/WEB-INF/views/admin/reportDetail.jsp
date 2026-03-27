@@ -5,13 +5,13 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>신고 상세 - 집사상권</title>
-    <link rel="stylesheet" href="/resources/css/admin.css">
-    <link rel="stylesheet" href="/resources/css/reportDetail.css">
+    <title>신고 상세 - 집사상점</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/reportDetail.css">
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>
-<jsp:include page="/WEB-INF/views/admin/common/header.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/sidebar.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/header.jsp"/>
 
 <main class="main">
     <div class="page-title">신고 사항</div>

@@ -44,7 +44,6 @@ public class ProductController {
 	       return "product/dogOutdoorDetail";
 	   }
 	   
-
 	   // 강아지 장난감
 	   @RequestMapping("/dog/toy")
 	   public String dogToyPage() {
@@ -55,8 +54,8 @@ public class ProductController {
 	   public String dogToyDetailPage() {
 	       return "product/dogToyDetail";
 	   }
-
-	   // ����� �峭��
+	   
+	    // 고양이 장난감
 	   @RequestMapping("/cat/toy")
 	   public String catToyPage() {
 	       return "product/catToy";
@@ -66,64 +65,39 @@ public class ProductController {
 	   public String catToyDetailPage() {
 	       return "product/catToyDetail";
 	   }
-
-	   @RequestMapping("/cat/toy/detail2")
-	   public String catToyDetail2Page() {
-	       return "product/catToyDetail2";
-	   }
-
-	   // ����� �̿��ǰ
-	   @RequestMapping("/cat/groom")
-	   public String catGroomPage() {
-	       return "product/catGroom";
-	   }
-
-	   @RequestMapping("/cat/groom/detail")
-	   public String catGroomDetailPage() {
-	       return "product/catGroomDetail";
-	   }
-
-	   @RequestMapping("/cat/groom/detail2")
-	   public String catGroomDetail2Page() {
-	       return "product/catGroomDetail2";
-	   }
-
-	   @RequestMapping("/cat/groom/detail3")
-	   public String catGroomDetail3Page() {
-	       return "product/catGroomDetail3";
-	   }
-
-	   @RequestMapping("/cat/groom/detail4")
-	   public String catGroomDetail4Page() {
-	       return "product/catGroomDetail4";
-	   }
-
-	   // ����� �����ǰ
-	   @RequestMapping("/cat/outdoor")
-	   public String catOutdoorPage() {
-	       return "product/catOutdoor";
-	   }
-
-	   @RequestMapping("/cat/outdoor/detail")
-	   public String catOutdoorDetailPage() {
-	       return "product/catOutdoorDetail";
-	   }
-
-	   @RequestMapping("/cat/outdoor/detail2")
-	   public String catOutdoorDetail2Page() {
-	       return "product/catOutdoorDetail2";
-	   }
 	   
-	   // ����� ���
-	   @RequestMapping("/cat/feed/detail")
-	   public String catFeedDetailPage() {
-	       return "product/catFeedDetail";
-	   }
+	    // 고양이 미용용품
+	    @RequestMapping("/cat/groom")
+	    public String catGroomPage() {
+	        return "product/catGroom";
+	    }
+
+	    @RequestMapping("/cat/groom/detail")
+	    public String catGroomDetailPage() {
+	        return "product/catGroomDetail";
+	    }
+	    
+	   // 고양이 외출용품
+	    @RequestMapping("/cat/outdoor")
+	    public String catOutdoorPage() {
+	        return "product/catOutdoor";
+	    }
+
+	    @RequestMapping("/cat/outdoor/detail")
+	    public String catOutdoorDetailPage() {
+	        return "product/catOutdoorDetail";
+	    }
 	   
+	    // 고양이 사료
 	   @RequestMapping("/cat/feed")
-	   public String catFeedPage() {
-	       return "product/catFeed";
-	   }
+	    public String catFeedPage() {
+	        return "product/catFeed";
+	    }
+
+	    @RequestMapping("/cat/feed/detail")
+	    public String catFeedDetailPage() {
+	        return "product/catFeedDetail";
+	    }
 	   
 	   // ������ ���
 	   @RequestMapping("/dog/feed")

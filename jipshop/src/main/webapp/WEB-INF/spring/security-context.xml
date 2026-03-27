@@ -28,17 +28,19 @@
 		 -->
 		  <!-- 커뮤니티 작성 및 수정삭제 권한  -->
 		 <security:intercept-url pattern="/community/**" access="isAuthenticated()" />
-		 <security:intercept-url pattern="/mypage/**" access="isAuthenticated()" />
+		 
 		 
 		 <security:intercept-url pattern="/" access="permitAll" />
 		 <security:intercept-url pattern="/security/insert" access="permitAll" />
 		 <security:intercept-url pattern="/member/login" access="permitAll" />
 		 <security:intercept-url pattern="/member/idCheck" access="permitAll" />
-		 <security:intercept-url pattern="/sms/**" access="permitAll" />  <!-- ← 추가 -->
+		 <security:intercept-url pattern="/sms/**" access="permitAll" />
 		 <security:csrf disabled="true"/>
 		 <security:intercept-url pattern="/member/findId" access="permitAll" />
 		 <security:intercept-url pattern="/security/resetPwd" access="permitAll" />
 		 <security:intercept-url pattern="/member/enrollComplete" access="permitAll" />
+		 
+		 <security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
 		 
 		 <!-- 
 		 	form-login
@@ -56,6 +58,8 @@
 		 	login-processing-url="/member/loginProcess"
 		 	username-parameter="memberId"
 		 	password-parameter="memberPwd"
+		 	default-target-url="/"
+    		authentication-failure-url="/member/login?error=true"
 		 />
 		 
 		 <security:logout

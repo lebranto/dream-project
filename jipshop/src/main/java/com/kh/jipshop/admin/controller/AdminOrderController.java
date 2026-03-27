@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.jipshop.admin.model.service.AdminOrderService;
+
+import com.kh.jipshop.admin.model.vo.AdminOrder;
+import com.kh.jipshop.admin.model.vo.AdminOrderDetailItem;
 import com.kh.jipshop.admin.model.vo.AdminOrderSearch;
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
@@ -27,7 +30,7 @@ public class AdminOrderController {
 
     @GetMapping("/list")
     public String selectOrderList(
-            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+            @RequestParam(value="currentPage", defaultValue="1") int currentPage,
             AdminOrderSearch search,
             Model model) {
 
@@ -36,7 +39,6 @@ public class AdminOrderController {
 
         model.addAttribute("pi", pi);
         model.addAttribute("orderList", adminOrderService.selectOrderList(pi, search));
-        model.addAttribute("search", search);
 
         return "admin/orderList";
     }
@@ -76,6 +78,36 @@ public class AdminOrderController {
         }
 
         return "redirect:/admin/order/list";
+    }
+
+    @GetMapping("/orderDetail")
+    public String selectOrderDetail(@RequestParam("orderId") int orderId, Model model) {
+
+        AdminOrder order = adminOrderService.selectOrderDetail(orderId);
+
+        if(order == null) {
+            model.addAttribute("errorMsg", "주문 상세 조회 실패");
+            return "common/errorPage";
+        }
+
+        model.addAttribute("order", order);
+        return "admin/orderDetail";
+    }
+    @PostMapping("/orderStatusUpdate")
+    public String updateOrderStatus(
+            @RequestParam("orderId") int orderId,
+            @RequestParam("orderStatus") String orderStatus,
+            RedirectAttributes ra) {
+
+        int result = adminOrderService.updateOrderStatus(orderId, orderStatus);
+
+        if(result > 0) {
+            ra.addFlashAttribute("successMsg", "상태 변경이 완료되었습니다.");
+        } else {
+            ra.addFlashAttribute("successMsg", "상태 변경에 실패했습니다.");
+        }
+
+        return "redirect:/admin/order/orderDetail?orderId=" + orderId;
     }
     
 }

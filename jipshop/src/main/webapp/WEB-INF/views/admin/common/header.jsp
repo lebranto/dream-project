@@ -7,7 +7,7 @@
     <a href="/index.do" class="header-link">홈페이지</a>
     <div class="header-user">
         <div class="avatar">관</div>
-        <span><%= adminName %> <strong>님</strong></span>
+        <span><sec:authentication property="principal.memberName"/> <strong>님</strong></span>
     </div>
-    <a href="/admin/logout.do" class="header-link">로그아웃</a>
+    <a href="${pageContext.request.contextPath}/member/logout" class="header-link">로그아웃</a>
 </header>

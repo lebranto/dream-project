@@ -35,4 +35,10 @@ public interface AdminOrderDao {
     int updateLatestStatus(SqlSessionTemplate sqlSession, HashMap<String, Object> map);
 
     int insertStatus(SqlSessionTemplate sqlSession, HashMap<String, Object> map);
+
+    AdminOrder selectOrderDetail(SqlSessionTemplate sqlSession, int orderId);
+
+    int updateCancelStatus(SqlSessionTemplate sqlSession, int orderId);
+
+    int clearCancelStatus(SqlSessionTemplate sqlSession, int orderId);
 }

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>관리자 - 문의 상세 보기</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
     
     <style>
         /* 상세 페이지 전용 레이아웃 */

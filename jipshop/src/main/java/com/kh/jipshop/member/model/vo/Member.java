@@ -20,6 +20,6 @@ public class Member {
     private String phone;
     private String email;
     private Date joinDate;
-    private String action;
+    private String activeYn;
 }
 

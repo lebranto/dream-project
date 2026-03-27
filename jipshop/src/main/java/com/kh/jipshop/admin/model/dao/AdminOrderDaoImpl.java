@@ -79,4 +79,19 @@ public class AdminOrderDaoImpl implements AdminOrderDao {
     public int insertStatus(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
         return sqlSession.insert("adminOrderMapper.insertStatus", map);
     }
+
+    @Override
+    public AdminOrder selectOrderDetail(SqlSessionTemplate sqlSession, int orderId) {
+        return sqlSession.selectOne("adminOrderMapper.selectOrderDetail", orderId);
+    }
+
+    @Override
+    public int updateCancelStatus(SqlSessionTemplate sqlSession, int orderId) {
+        return sqlSession.update("adminOrderMapper.updateCancelStatus", orderId);
+    }
+
+    @Override
+    public int clearCancelStatus(SqlSessionTemplate sqlSession, int orderId) {
+        return sqlSession.update("adminOrderMapper.clearCancelStatus", orderId);
+    }
 }

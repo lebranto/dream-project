@@ -26,6 +26,9 @@
                     <button type="submit" class="border-0 bg-transparent text-secondary p-0 ml-2">로그아웃</button>
                 </form:form>
              </sec:authorize>
+             <sec:authorize access="hasRole('ROLE_ADMIN')">
+					<a href="${contextPath}/admin/memberList">관리자페이지</a>
+				</sec:authorize>
             </div>
         </div>
     </div>
@@ -49,8 +52,8 @@
                     </button>
                 </div>
                 <div class="icon-area">
-                    <a href="#"><i class="bi bi-heart"></i></a>
-                    <a href="#">
+                    <a href="${pageContext.request.contextPath}/orders/favorites"><i class="bi bi-heart"></i></a>
+                    <a href="${pageContext.request.contextPath}/orders/cart">
                         <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
                     </a>
                 </div>
