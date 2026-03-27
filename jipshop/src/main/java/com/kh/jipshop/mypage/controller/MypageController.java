@@ -233,25 +233,23 @@ public class MypageController {
     	 return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
    	 
      	} 
-    
-    
 	 
 	}
-	
-	
 
-	@GetMapping("/updateMemberCheck")
+	 
+	 
+	@GetMapping("/checkMember")
 	public String updateMemberCheck(
 			Authentication auth
 			) {
-
-		return "mypage/updateMemberCheck";
+		
+		return "mypage/checkMember";
 	}
 
-	@GetMapping("/memberDelete")
+	@GetMapping("/checkPet")
 	public String memberDelete() {
 
-		return "mypage/memberDelete";
+		return "mypage/checkPet";
 	}
 
 }

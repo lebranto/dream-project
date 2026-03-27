@@ -2,11 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%
-    String errorMsg = (String)request.getAttribute("errorMsg");
-%>
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -69,9 +64,9 @@
                 <button type="submit" class="confirm-btn">확인</button>
             </form>
 
-            <% if(errorMsg != null) { %>
-                <div class="error-msg"><%= errorMsg %></div>
-            <% } %>
+           <c:if test="${not empty errorMsg}">
+                <div class="error-msg">${errorMsg}</div>
+           </c:if>
         </main>
     </div>
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
