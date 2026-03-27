@@ -1,5 +1,6 @@
 package com.kh.jipshop.admin.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.kh.jipshop.admin.model.service.AdminMemberService;
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 
 
 //import com.kh.jipshop.admin.model.service.AdminMemberService;
@@ -32,16 +34,22 @@ public class AdminMemberController {
     // 1. 회원 목록
     @GetMapping("/memberList")
     public String memberList(
-            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+    		@RequestParam(value = "page", defaultValue = "1") int currentPage,
             @RequestParam Map<String, Object> paramMap,
             Model model) {
- 
+    	
+    	// paramMap에서 currentPage 제거 (pi.currentPage로 관리)
+        paramMap.remove("currentPage");
+        
+        paramMap.entrySet().removeIf(e ->
+	        e.getValue() == null || e.getValue().toString().trim().isEmpty()
+	    );
         // 통계
         model.addAttribute("activeCount", adminMemberService.getActiveCount());
         model.addAttribute("bannedCount", adminMemberService.getBannedCount());
  
         // 페이징 정보 생성
-        int boardLimit = 10;  // 페이지당 행 수
+        int boardLimit = 5;  // 페이지당 행 수
         int pageLimit  = 10;  // 페이지네이션 블록 크기
         int totalCount = adminMemberService.getMemberCount(paramMap);
  
@@ -65,8 +73,9 @@ public class AdminMemberController {
  
         model.addAttribute("member", member);
  
-        // 반려동물 목록 — PetService 주입 후 연동
-        // model.addAttribute("petList",      petService.getPetListByMemberNo(memberNo));
+     // 반려동물 목록
+        List<Pet> petList = adminMemberService.getPetListByMemberNo(memberNo);
+        model.addAttribute("petList",  petList);
  
  
         return "admin/member/memberDetail";

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.jipshop.admin.model.dao.AdminMemberDao;
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 
 @Service
 public class AdminMemberServiceImpl implements AdminMemberService{
@@ -48,6 +49,11 @@ public class AdminMemberServiceImpl implements AdminMemberService{
 	public void updateMemberActiveYn(int memberNo) {
 		adminMemberDao.updateMemberActiveYn(memberNo);
 		
+	}
+
+	@Override
+	public List<Pet> getPetListByMemberNo(int memberNo) {
+		return adminMemberDao.getPetListByMemberNo(memberNo);
 	}
 
 	

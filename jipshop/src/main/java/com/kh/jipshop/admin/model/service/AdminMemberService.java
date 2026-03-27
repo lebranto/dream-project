@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 
 public interface AdminMemberService {
 	
@@ -22,6 +23,8 @@ public interface AdminMemberService {
 	int updateMember(Member member);
 	/** 회원 탈퇴*/
 	void updateMemberActiveYn(int memberNo);
+	/** 애완동물 조회*/
+	List<Pet> getPetListByMemberNo(int memberNo);
 
 
 }

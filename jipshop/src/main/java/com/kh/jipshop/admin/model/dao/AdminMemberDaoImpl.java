@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 
 @Repository
 public class AdminMemberDaoImpl implements AdminMemberDao{
@@ -51,6 +52,11 @@ public class AdminMemberDaoImpl implements AdminMemberDao{
 	public void updateMemberActiveYn(int memberNo) {
 		session.update(am+"updateMemberActiveYn", memberNo);
 		
+	}
+
+	@Override
+	public List<Pet> getPetListByMemberNo(int memberNo) {
+		return session.selectList(am+"getPetListByMemberNo",memberNo);
 	}
 
 }

@@ -89,7 +89,7 @@
                     <c:otherwise>
                         <c:forEach var="m" items="${memberList}" varStatus="s">
                             <tr>
-                                <td>${totalCount - (pi.currentPage-1)*pi.pageLimit - s.index}</td>
+                                <td>${totalCount - (pi.currentPage-1)*pi.boardLimit - s.index}</td>
                                 <td class="font-mono">${m.memberId}</td>
                                 <td><strong>${m.memberName}</strong></td>
                                 <td class="font-mono" style="color:var(--text-sub)">${m.phone}</td>
@@ -132,9 +132,9 @@
                    href="?page=${p}&startDate=${param.startDate}&endDate=${param.endDate}&memberStatus=${param.memberStatus}&keyword=${param.keyword}">${p}</a>
             </c:forEach>
             <c:if test="${pi.currentPage < pi.maxPage}">
-                <a class="page-num"
-                   href="?page=${pi.currentPage+1}&startDate=${param.startDate}&endDate=${param.endDate}&memberStatus=${param.memberStatus}&keyword=${param.keyword}">▶</a>
-            </c:if>
+			    <a class="page-num"
+			       href="?page=<c:out value="${pi.currentPage + 1}"/>&startDate=${param.startDate}&endDate=${param.endDate}&memberStatus=${param.memberStatus}&keyword=${param.keyword}">▶</a>
+			</c:if>
         </div>
     </div>
 

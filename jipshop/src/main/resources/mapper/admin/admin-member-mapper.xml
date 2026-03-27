@@ -84,9 +84,9 @@
                 <include refid="searchWhere"/>
                 ORDER BY M.MEMBER_JOIN_DATE DESC
             ) T
-            WHERE ROWNUM &lt;= #{pi.pageLimit} * #{pi.currentPage}
+            WHERE ROWNUM &lt;= #{pi.boardLimit} * #{pi.currentPage}
         )
-        WHERE RNUM &gt; #{pi.pageLimit} * (#{pi.currentPage} - 1)
+        WHERE RNUM &gt; #{pi.boardLimit} * (#{pi.currentPage} - 1)
     </select>
 	
 	<!-- 상세 조회 -->
@@ -121,4 +121,18 @@
 		SET MEMBER_ACTIVE_YN = 'N'
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
+	
+	<!-- 반려동물 목록 조회 -->
+    <select id="getPetListByMemberNo" parameterType="int" resultType="Pet">
+        SELECT
+            PET_NO      AS petNo,
+            MEMBER_NO   AS memberNo,
+            PET_TYPE    AS petType,
+            PET_NAME    AS petName,
+            PET_AGE     AS petAge,
+            PET_WEIGHT  AS petWeight,
+            PET_PHOTO   AS petPhoto
+        FROM PET
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
 </mapper>
