@@ -46,7 +46,7 @@
                 <p class="product-desc">피부와 털 관리를 도와주는 순한 고양이 미용용품 샴푸</p>
                 <div class="product-price">25,000 원</div>
 
-                <a href="${pageContext.request.contextPath}/cat/groom/detail" class="detail-btn">바로가기</a>
+                <a href="${pageContext.request.contextPath}/cat/groom/detail?product=1" class="detail-btn">바로가기</a>
             </div>
         </div>
 
@@ -63,7 +63,7 @@
                 <p class="product-desc">풍성한 거품으로 깔끔한 세정을 도와주는 고양이 샴푸</p>
                 <div class="product-price">25,000 원</div>
 
-                <a href="${pageContext.request.contextPath}/cat/groom/detail2" class="detail-btn">바로가기</a>
+                <a href="${pageContext.request.contextPath}/cat/groom/detail?product=2" class="detail-btn">바로가기</a>
             </div>
         </div>
 
@@ -80,7 +80,7 @@
                 <p class="product-desc">반려묘 구강 관리를 도와주는 맞춤형 양치 솔루션 치약</p>
                 <div class="product-price">25,000 원</div>
 
-                <a href="${pageContext.request.contextPath}/cat/groom/detail3" class="detail-btn">바로가기</a>
+                <a href="${pageContext.request.contextPath}/cat/groom/detail?product=3" class="detail-btn">바로가기</a>
             </div>
         </div>
 
@@ -97,7 +97,7 @@
                 <p class="product-desc">세밀한 구강 케어를 도와주는 고양이 전용 미용용품 칫솔</p>
                 <div class="product-price">25,000 원</div>
 
-                <a href="${pageContext.request.contextPath}/cat/groom/detail4" class="detail-btn">바로가기</a>
+                <a href="${pageContext.request.contextPath}/cat/groom/detail?product=4" class="detail-btn">바로가기</a>
             </div>
         </div>
 

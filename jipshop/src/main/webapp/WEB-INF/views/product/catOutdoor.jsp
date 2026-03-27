@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>고양이 외출용품</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product/catOutdoor.css">
 </head>
 <body>
@@ -18,8 +19,8 @@
     <h1 class="page-title">고양이</h1>
 
     <div class="category-box">
-        <a href="#" class="category-item">사료</a>
-        <a href="#" class="category-item">장난감</a>
+        <a href="${pageContext.request.contextPath}/cat/feed" class="category-item">사료</a>
+        <a href="${pageContext.request.contextPath}/cat/toy" class="category-item">장난감</a>
         <a href="${pageContext.request.contextPath}/cat/outdoor" class="category-item active">외출용품</a>
         <a href="${pageContext.request.contextPath}/cat/groom" class="category-item">미용용품</a>
     </div>
@@ -48,7 +49,7 @@
                 <p class="product-desc">편안하고 안정감 있는 이동을 도와주는 고양이 외출용 켄넬</p>
                 <div class="product-price">25,000 원</div>
 
-                <a href="${pageContext.request.contextPath}/cat/outdoor/detail" class="detail-btn">바로가기</a>
+                <a href="${pageContext.request.contextPath}/cat/outdoor/detail?product=1" class="detail-btn">바로가기</a>
             </div>
         </div>
 
@@ -57,7 +58,7 @@
             <div class="wish-icon">♡</div>
 
             <div class="product-image-box">
-                <img src="${pageContext.request.contextPath}/resources/img/catkennel2.png" alt="패리스독 얼반원형돔 캐리어">
+                <img src="${pageContext.request.contextPath}/resources/img/catkennel2.png" alt="패리스독 얼반 원형 돔캐리어">
             </div>
 
             <div class="product-info">
@@ -65,7 +66,7 @@
                 <p class="product-desc">외출 시 반려묘를 안전하고 편안하게 이동할 수 있는 캐리어</p>
                 <div class="product-price">25,000 원</div>
 
-                <a href="${pageContext.request.contextPath}/cat/outdoor/detail2" class="detail-btn">바로가기</a>
+                <a href="${pageContext.request.contextPath}/cat/outdoor/detail?product=2" class="detail-btn">바로가기</a>
             </div>
         </div>
 

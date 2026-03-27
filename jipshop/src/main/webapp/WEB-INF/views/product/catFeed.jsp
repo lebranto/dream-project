@@ -24,27 +24,26 @@
         <div class="sub-category-box">
             <a href="${pageContext.request.contextPath}/cat/feed" class="sub-category active">사료</a>
             <a href="${pageContext.request.contextPath}/cat/toy" class="sub-category">장난감</a>
-            <a href="${pageContext.request.contextPath}/cat/outdoor" class="sub-category">외출용품</a>
+            <a href="${pageContext.request.contextPath}/cat/snack" class="sub-category">간식</a>
             <a href="${pageContext.request.contextPath}/cat/groom" class="sub-category">미용용품</a>
         </div>
     </section>
 
-    <section class="product-top">
-        <p class="product-count">상품 4개</p>
-
+    <div class="product-top">
+        <div class="product-count">총 4개 상품</div>
         <div class="sort-wrap">
-            <button type="button" class="sort-btn">낮은가격</button>
-            <button type="button" class="sort-btn">높은 가격</button>
-            <button type="button" class="sort-btn">조회순</button>
+            <button type="button" class="sort-btn">인기순</button>
             <button type="button" class="sort-btn">최신순</button>
+            <button type="button" class="sort-btn">낮은가격순</button>
+            <button type="button" class="sort-btn">높은가격순</button>
         </div>
-    </section>
+    </div>
 
-    <section class="product-list">
+    <div class="product-list">
 
         <!-- 상품 1 -->
         <div class="product-card">
-            <button type="button" class="wish-btn" aria-label="찜하기">
+            <button type="button" class="wish-btn">
                 <span class="heart-outline">♡</span>
                 <span class="heart-fill">♥</span>
             </button>
@@ -54,20 +53,22 @@
             </div>
 
             <div class="product-info">
-                <p class="product-name">보양대첩 파우치</p>
-                <p class="product-desc">촉촉한 식감과 영양 밸런스를 담은 고양이용 파우치 사료</p>
-                <p class="product-price">25,000 원</p>
-
-                <div class="product-bottom">
-                    <a href="${pageContext.request.contextPath}/cat/feed/detail?product=1" class="cart-btn">바로가기</a>
-                    <span class="cart-icon">🛒</span>
+                <div class="product-name">보양대첩 파우치</div>
+                <div class="product-desc">
+                    영양 밸런스를 고려한 촉촉한 파우치 타입 고양이 사료입니다.
                 </div>
+                <div class="product-price">25,000원</div>
+            </div>
+
+            <div class="product-bottom">
+                <a href="${pageContext.request.contextPath}/cat/feed/detail?product=1" class="cart-btn">상세보기</a>
+                <span class="cart-icon">🛒</span>
             </div>
         </div>
 
         <!-- 상품 2 -->
         <div class="product-card">
-            <button type="button" class="wish-btn" aria-label="찜하기">
+            <button type="button" class="wish-btn">
                 <span class="heart-outline">♡</span>
                 <span class="heart-fill">♥</span>
             </button>
@@ -77,20 +78,22 @@
             </div>
 
             <div class="product-info">
-                <p class="product-name">보양대첩 캔</p>
-                <p class="product-desc">부드러운 캔 타입으로 맛있게 급여할 수 있는 고양이용 습식 사료</p>
-                <p class="product-price">25,000 원</p>
-
-                <div class="product-bottom">
-                    <a href="${pageContext.request.contextPath}/cat/feed/detail?product=2" class="cart-btn">바로가기</a>
-                    <span class="cart-icon">🛒</span>
+                <div class="product-name">보양대첩 캔</div>
+                <div class="product-desc">
+                    부드러운 캔 타입으로 맛있게 급여할 수 있는 고양이용 습식 사료입니다.
                 </div>
+                <div class="product-price">25,000원</div>
+            </div>
+
+            <div class="product-bottom">
+                <a href="${pageContext.request.contextPath}/cat/feed/detail?product=2" class="cart-btn">상세보기</a>
+                <span class="cart-icon">🛒</span>
             </div>
         </div>
 
         <!-- 상품 3 -->
         <div class="product-card">
-            <button type="button" class="wish-btn" aria-label="찜하기">
+            <button type="button" class="wish-btn">
                 <span class="heart-outline">♡</span>
                 <span class="heart-fill">♥</span>
             </button>
@@ -100,20 +103,22 @@
             </div>
 
             <div class="product-info">
-                <p class="product-name">캣츠랑 비타플러스</p>
-                <p class="product-desc">영양 설계를 더한 데일리 고양이 건식 사료</p>
-                <p class="product-price">25,000 원</p>
-
-                <div class="product-bottom">
-                    <a href="${pageContext.request.contextPath}/cat/feed/detail?product=3" class="cart-btn">바로가기</a>
-                    <span class="cart-icon">🛒</span>
+                <div class="product-name">캣츠랑 비타플러스</div>
+                <div class="product-desc">
+                    건강한 일상 식사를 위해 영양 설계를 더한 고양이 건식 사료입니다.
                 </div>
+                <div class="product-price">25,000원</div>
+            </div>
+
+            <div class="product-bottom">
+                <a href="${pageContext.request.contextPath}/cat/feed/detail?product=3" class="cart-btn">상세보기</a>
+                <span class="cart-icon">🛒</span>
             </div>
         </div>
 
         <!-- 상품 4 -->
         <div class="product-card">
-            <button type="button" class="wish-btn" aria-label="찜하기">
+            <button type="button" class="wish-btn">
                 <span class="heart-outline">♡</span>
                 <span class="heart-fill">♥</span>
             </button>
@@ -123,42 +128,22 @@
             </div>
 
             <div class="product-info">
-                <p class="product-name">캣츠랑 리브레</p>
-                <p class="product-desc">부드러운 밸런스와 풍부한 영양을 담은 고양이 사료</p>
-                <p class="product-price">25,000 원</p>
-
-                <div class="product-bottom">
-                    <a href="${pageContext.request.contextPath}/cat/feed/detail?product=4" class="cart-btn">바로가기</a>
-                    <span class="cart-icon">🛒</span>
+                <div class="product-name">캣츠랑 리브레</div>
+                <div class="product-desc">
+                    부드러운 밸런스와 풍부한 영양을 담은 고양이 건식 사료입니다.
                 </div>
+                <div class="product-price">25,000원</div>
+            </div>
+
+            <div class="product-bottom">
+                <a href="${pageContext.request.contextPath}/cat/feed/detail?product=4" class="cart-btn">상세보기</a>
+                <span class="cart-icon">🛒</span>
             </div>
         </div>
 
-    </section>
-
-    <section class="pagination">
-        <button class="page-arrow">&lt;</button>
-        <a href="#" class="page-num active">1</a>
-        <a href="#" class="page-num">2</a>
-        <a href="#" class="page-num">3</a>
-        <a href="#" class="page-num">4</a>
-        <a href="#" class="page-num">5</a>
-        <button class="page-arrow">&gt;</button>
-    </section>
+    </div>
 
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const wishButtons = document.querySelectorAll(".wish-btn");
-
-        wishButtons.forEach(function (button) {
-            button.addEventListener("click", function () {
-                button.classList.toggle("active");
-            });
-        });
-    });
-</script>
 
 </body>
 </html>
