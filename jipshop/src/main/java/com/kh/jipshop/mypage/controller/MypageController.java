@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.service.MypageService;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
@@ -69,6 +70,7 @@ public class MypageController {
 
 		// 테스트용
 		Integer memberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
+		String memberName = ((MemberExt)auth.getPrincipal()).getMemberName();
 		// 실제로는 로그인 유저 번호 사용 권장
 		// memberNo = loginUser.getMemberNo();
 
@@ -91,6 +93,7 @@ public class MypageController {
 
 		model.addAttribute("orderlist", list);
 		model.addAttribute("pi", pi);
+		model.addAttribute("memberName", memberName);
 
 		return "mypage/purchase";
 	}
@@ -105,7 +108,9 @@ public class MypageController {
 			@RequestParam Map<String, Object> paramMap, Model model) {
 
 		Integer memberNo2 = ((MemberExt)auth.getPrincipal()).getMemberNo();
-
+		String memberName = ((MemberExt)auth.getPrincipal()).getMemberName();
+		
+		
 		paramMap.put("memberNo", memberNo2);
 		paramMap.put("period", period);
 		paramMap.put("startDate", startDate);
@@ -123,7 +128,8 @@ public class MypageController {
 
 		model.addAttribute("recentlyList", list);
 		model.addAttribute("pi", pi);
-
+		model.addAttribute("memberName", memberName);
+		
 		return "mypage/recent";
 	}
 
@@ -135,6 +141,7 @@ public class MypageController {
 			Model model) {
 
 		Integer memberNo3 = ((MemberExt)auth.getPrincipal()).getMemberNo();
+		String memberName = ((MemberExt)auth.getPrincipal()).getMemberName();
 
 		paramMap.put("memberNo", memberNo3);
 
@@ -150,7 +157,8 @@ public class MypageController {
 
 		model.addAttribute("inquiryList", list);
 		model.addAttribute("pi", pi);
-
+		model.addAttribute("memberName", memberName);
+		
 		return "mypage/inquiry";
 	}
 
@@ -294,7 +302,7 @@ public class MypageController {
 			int result = mService.updateMember(m);
 			
 			if(result!=0) {
-				
+				model.addAttribute("msg", "회원 정보가 수정되었습니다.");
 				return "redirect:/";
 			}else {
 			
@@ -336,9 +344,31 @@ public class MypageController {
 	    	 model.addAttribute("errorMsg","비밀번호를 다시 입력해주세요");
 			return "mypage/checkPet"; 
 	     }
-	     
-	     
 	}
+	
+	
+	@PostMapping("/updatePet")
+	public String updatePet(
+			Model model,
+			Authentication auth,
+		    Pet p
+			) {
+		
+		p.setMemberNo(((MemberExt)auth.getPrincipal()).getMemberNo());
+		int result = mService.updatePet(p);
+		
+		if(result!=0) {
+			model.addAttribute("msg", "회원 정보가 수정되었습니다.");
+			return "redirect:/";
+		}else {
+		
+		model.addAttribute("errorMsg","정보를 다시 입력해주세요");
+		return "mypage/updateMember"; 
+		}
+		
+		
+	}
+	
 
 	
 	

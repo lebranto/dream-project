@@ -31,7 +31,7 @@
       <div class="page-title">마이페이지</div>
 
       <div class="purchase-summary">
-        ${loginUser.userName} 님의 구매 내역
+        ${memberName} 님의 구매 내역
       </div>
 
       <div class="filter-row">

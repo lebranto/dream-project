@@ -26,7 +26,7 @@
       <div class="page-title">마이페이지</div>
 
       <div class="inquiry-summary">
-        ${loginUser.userName} 님의 문의 내역
+        ${memberName} 님의 문의 내역
       </div>
 
       <div class="table-header">

@@ -26,7 +26,7 @@
             <div class="page-title">마이페이지</div>
 
             <div class="recent-summary">
-                ${loginUser.userName} 님의 조회 내역
+                ${memberName} 님의 조회 내역
             </div>
     <div class="filter-row">
 

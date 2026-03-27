@@ -76,7 +76,11 @@
     			<div class="error-msg">${errorMsg}</div>
 		  </c:if>
 			
-        
+        	<c:if test="${not empty msg}">
+  				<script>
+    				alert("${msg}");
+  				</script>
+			</c:if>
           
         </main>
     </div>
