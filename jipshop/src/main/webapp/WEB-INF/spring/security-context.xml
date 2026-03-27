@@ -58,6 +58,8 @@
 		 	login-processing-url="/member/loginProcess"
 		 	username-parameter="memberId"
 		 	password-parameter="memberPwd"
+		 	default-target-url="/"
+    		authentication-failure-url="/member/login?error=true"
 		 />
 		 
 		 <security:logout
