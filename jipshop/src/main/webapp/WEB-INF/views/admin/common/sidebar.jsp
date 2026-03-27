@@ -31,10 +31,10 @@
     </a>
 
     <div class="sidebar-section">주문</div>
-    <a href="${contextPath }/admin/order/list2" class="sidebar-item <%= "orderList".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/order/list" class="sidebar-item <%= "orderList".equals(currentMenu) ? "active" : "" %>">
         🧾 주문 관리
     </a>
-    <a href="${contextPath }/admin/order/cancelList" class="sidebar-item <%= "orderCancelList".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/orderCancel/list" class="sidebar-item <%= "orderCancelList".equals(currentMenu) ? "active" : "" %>">
         ❌ 취소 관리
     </a>
 

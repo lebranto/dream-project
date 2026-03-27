@@ -43,4 +43,19 @@ public class AdminOrder {
 	    private String companyName;
 	    private String companyPhone;
 	    private String companyAddress;
+	    
+	    private String orderStatus; 
+	    
+	    private String ordererEmail;
+	    private String orderMemo;
+	    
+
+	    
+	   
+	    
+	   
+
+	    
+	   
+	
 }

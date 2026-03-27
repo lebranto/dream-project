@@ -200,5 +200,6 @@ public class MypageController {
 
 		return "mypage/memberDelete";
 	}
+	
 
 }
