@@ -1,74 +1,210 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>고양이 깃털 장난감 상세페이지</title>
+<title>고양이 장난감 상세페이지</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product/catToyDetail.css">
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-<div class="detail-container">
+<c:set var="product" value="${param.product}" />
+<c:set var="loginUser" value="${sessionScope.loginUser}" />
 
-    <div class="product-top">
-        <div class="product-image-area">
-            <img src="${pageContext.request.contextPath}/resources/img/cattoy1.png" alt="고양이 깃털 장난감">
+<div class="toy-detail-page">
+
+    <!-- 상품 상단 -->
+    <div class="toy-detail-top">
+
+        <div class="toy-image-box">
+            <c:choose>
+                <c:when test="${product eq '1'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/cattoy1.png" alt="고양이 깃털 장난감" class="toy-detail-image">
+                </c:when>
+                <c:when test="${product eq '2'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/cattoy2.png" alt="아보카도 캣닢볼" class="toy-detail-image">
+                </c:when>
+                <c:otherwise>
+                    <img src="${pageContext.request.contextPath}/resources/img/cattoy1.png" alt="고양이 장난감" class="toy-detail-image">
+                </c:otherwise>
+            </c:choose>
         </div>
 
-        <div class="product-info-area">
-            <h1 class="product-title">고양이 깃털 장난감</h1>
-            <div class="product-price">25,000원</div>
+        <div class="toy-info-box">
+            <c:choose>
+                <c:when test="${product eq '1'}">
+                    <h2 class="toy-title">고양이 깃털 장난감</h2>
+                    <p class="toy-price">25,000원</p>
+                    <p class="toy-desc">
+                        고양이의 본능적인 사냥놀이를 자극하는 장난감입니다.<br>
+                        활발한 움직임과 호기심을 유도해 즐거운 놀이 시간을 만들어 줍니다.
+                    </p>
+                </c:when>
 
-            <p class="product-desc">
-                고양이의 본능적인 사냥놀이를 자극하는 장난감입니다.<br>
-                활발한 움직임과 호기심을 유도해 즐거운 놀이 시간을 만들어 줍니다.
-            </p>
+                <c:when test="${product eq '2'}">
+                    <h2 class="toy-title">아보카도 캣닢볼</h2>
+                    <p class="toy-price">25,000원</p>
+                    <p class="toy-desc">
+                        캣닢의 향으로 고양이의 관심을 끌어주는 놀이용 장난감입니다.<br>
+                        혼자 있는 시간에도 재미있게 사용할 수 있는 제품입니다.
+                    </p>
+                </c:when>
 
-            <div class="product-button-group">
-                <button type="button" class="cart-btn">장바구니</button>
-                <button type="button" class="buy-btn">구매하기</button>
+                <c:otherwise>
+                    <h2 class="toy-title">고양이 장난감</h2>
+                    <p class="toy-price">25,000원</p>
+                    <p class="toy-desc">고양이를 위한 장난감 상세페이지입니다.</p>
+                </c:otherwise>
+            </c:choose>
+
+            <div class="toy-btn-group">
+                <button type="button" class="main-action-btn">장바구니</button>
+                <button type="button" class="main-action-btn">구매하기</button>
             </div>
         </div>
     </div>
 
-    <div class="detail-tab-wrap">
-        <a href="#detailInfo" class="detail-tab-btn">상세정보</a>
-        <a href="#deliveryInfo" class="detail-tab-btn">배송안내</a>
+    <!-- 탭 버튼 -->
+    <div class="toy-tab-wrap">
+        <button type="button" class="toy-tab-btn active" onclick="toggleSection('detailInfo', this)">상세보기</button>
+        <button type="button" class="toy-tab-btn" onclick="toggleSection('reviewInfo', this)">리뷰작성</button>
     </div>
 
-    <div class="detail-view-wrap">
-        <div id="detailInfo" class="detail-content-box">
-            <h2>상세정보</h2>
-            <img src="${pageContext.request.contextPath}/resources/img/cattoyDetail1.png" alt="고양이 깃털 장난감 상세정보">
+    <!-- 상세보기 -->
+    <div id="detailInfo" class="toy-content-box" style="display:block;">
+        <div class="toy-detail-content-image-wrap">
+            <c:choose>
+                <c:when test="${product eq '1'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/cattoyDetail1.png" alt="고양이 깃털 장난감 상세정보" class="toy-detail-content-image">
+                </c:when>
+                <c:when test="${product eq '2'}">
+                    <img src="${pageContext.request.contextPath}/resources/img/cattoyDetail2.png" alt="아보카도 캣닢볼 상세정보" class="toy-detail-content-image">
+                </c:when>
+                <c:otherwise>
+                    <p>상세정보가 준비 중입니다.</p>
+                </c:otherwise>
+            </c:choose>
         </div>
+    </div>
 
-        <div id="deliveryInfo" class="detail-content-box">
-            <h2>배송안내</h2>
+    <!-- 리뷰작성 -->
+    <div id="reviewInfo" class="toy-content-box">
+        <div class="review-area-box">
 
-            <div class="delivery-section">
-                <h3>배송비</h3>
-                <p>기본배송료는 <span class="point-text">3,000원</span> 입니다.</p>
-                <p>(제주 4,000원 / 도서산간 7,000원 추가 배송비가 부과됩니다.)</p>
+            <div class="review-list-wrap">
+
+                <div class="review-item review-bg-1">
+                    <div class="review-main-text">▶ 배송이 아주 빨랐습니다!</div>
+                    <div class="review-meta">강진솔 | 2026-03-24</div>
+
+                    <div class="review-help-area">
+                        <button type="button" class="review-help-btn" onclick="checkLoginAndLike(this)">도움돼요</button>
+                        <button type="button" class="review-like-btn" onclick="checkLoginAndLike(this)">👍</button>
+                        <span class="review-like-count">0</span>
+                    </div>
+                </div>
+
+                <div class="review-item review-bg-2">
+                    <div class="review-main-text">▶ 우리 아이가 좋아해요!</div>
+                    <div class="review-meta">강진솔 | 2026-03-24</div>
+
+                    <div class="review-help-area">
+                        <button type="button" class="review-help-btn" onclick="checkLoginAndLike(this)">도움돼요</button>
+                        <button type="button" class="review-like-btn" onclick="checkLoginAndLike(this)">👍</button>
+                        <span class="review-like-count">0</span>
+                    </div>
+                </div>
+
+                <div class="review-page-num">1</div>
             </div>
 
-            <div class="delivery-section">
-                <h3>평균 배송일</h3>
-                <p>본 상품의 평균 배송일은 <span class="point-text">2일</span>입니다.</p>
-                <p>[배송예정일은 주문시점에 따라 차이가 발생할 수 있습니다.]</p>
+            <div class="review-write-wrap">
+                <form action="${pageContext.request.contextPath}/cat/toy/review/insert" method="post" onsubmit="return checkLoginAndSubmit();">
+                    <input type="hidden" name="product" value="${product}">
+
+                    <div class="review-input-box">
+                        <textarea name="reviewContent" class="review-textarea" placeholder="리뷰를 작성해주세요."></textarea>
+                    </div>
+
+                    <div class="review-submit-area">
+                        <button type="submit" class="review-submit-btn">리뷰등록</button>
+                    </div>
+                </form>
             </div>
 
-            <div class="delivery-section">
-                <h3>교환 / 반품 안내</h3>
-                <p>단순 변심에 의한 교환/반품은 수령 후 7일 이내 가능합니다.</p>
-                <p>상품 훼손 및 사용 흔적이 있는 경우 교환/반품이 제한될 수 있습니다.</p>
-            </div>
         </div>
     </div>
 
 </div>
+
+<script>
+    const isLogin = ${loginUser != null ? 'true' : 'false'};
+
+    function toggleSection(sectionId, clickedBtn) {
+        const detailBox = document.getElementById("detailInfo");
+        const reviewBox = document.getElementById("reviewInfo");
+        const buttons = document.querySelectorAll(".toy-tab-btn");
+
+        buttons.forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+        detailBox.style.display = "none";
+        reviewBox.style.display = "none";
+
+        if (sectionId === "detailInfo") {
+            detailBox.style.display = "block";
+            clickedBtn.classList.add("active");
+        }
+
+        if (sectionId === "reviewInfo") {
+            reviewBox.style.display = "block";
+            clickedBtn.classList.add("active");
+        }
+    }
+
+    function checkLoginAndSubmit() {
+        if (!isLogin) {
+            alert("로그인 후 리뷰를 작성할 수 있습니다.");
+            return false;
+        }
+
+        const reviewText = document.querySelector(".review-textarea").value.trim();
+
+        if (reviewText === "") {
+            alert("리뷰 내용을 입력해주세요.");
+            return false;
+        }
+
+        return true;
+    }
+
+    function checkLoginAndLike(clickedElement) {
+        if (!isLogin) {
+            alert("로그인 후 좋아요를 누를 수 있습니다.");
+            return;
+        }
+
+        const reviewItem = clickedElement.closest(".review-item");
+        const likeCount = reviewItem.querySelector(".review-like-count");
+
+        let currentCount = parseInt(likeCount.innerText);
+
+        if (reviewItem.classList.contains("liked")) {
+            reviewItem.classList.remove("liked");
+            likeCount.innerText = currentCount - 1;
+        } else {
+            reviewItem.classList.add("liked");
+            likeCount.innerText = currentCount + 1;
+        }
+    }
+</script>
 
 </body>
 </html>
