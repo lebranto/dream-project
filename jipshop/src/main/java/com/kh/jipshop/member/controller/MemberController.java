@@ -22,90 +22,23 @@ import com.kh.jipshop.member.model.vo.Member;
 @SessionAttributes({"loginUser"})
 public class MemberController {
   
-	@Autowired 
 	private MemberService mService;
 	
   @RequestMapping("/")
   public String home() {
       return "home";
   }
+  
   @RequestMapping("/terms")
 	public String terms() {
 		return "terms";
 	}
-
-	@RequestMapping("/completed")
-	public String completed() {
-		return "common/completed";
-	}
-	
-	@RequestMapping("/order")
-	public String order() {
-		return "common/order";
-	}
-	
-	@RequestMapping("/cart")
-	public String cart() {
-		return "common/cart";
-	}
-	
-	@RequestMapping("/adminSidebar")
-	public String adminSidebar() {
-		return "common/adminSidebar";
-	}
-	
-	@RequestMapping("/adminHeader")
-	public String adminHeader() {
-		return "common/adminHeader";
-	}
-	
-	@RequestMapping("/inquiryList")
-	public String inquiryList() {
-		return "common/inquiryList";
-	}
-	
-	@RequestMapping("/inquiryList_view")
-	public String inquiryList_view() {
-		return "common/inquiryList_view";
-	}
-	
-	@RequestMapping("/reportList")
-	public String reportList() {
-		return "common/reportList";
-	}
-	
-	@RequestMapping("/reportList_view")
-	public String reportList_view() {
-		return "common/reportList_view";
-	}
-	
-	@RequestMapping("/product_reg")
-	public String product_reg() {
-		return "common/product_reg";
-	}
-	
-	@RequestMapping("/favorites")
-	public String favorites() {
-		return "common/favorites";
-	}
-	
-	@RequestMapping("/myPageSidebar")
-	public String myPageSidebar() {
-		return "common/myPageSidebar";
-	}
-	
-	@RequestMapping("/FAQ")
-	public String FAQ() {
-		return "common/FAQ";
-	}
-  
-    @GetMapping("/login")
-    public String loginMember() {
+ 
+  @GetMapping("/login")
+  public String loginMember() {
 		return "member/login";
 	}
 	
-	
-	@ResponseBody 
 	@GetMapping("/idCheck")
 	public int idCheck(String memberId) {
 		int result = mService.idCheck(memberId);
@@ -130,7 +63,7 @@ public class MemberController {
 	    }
 	    return result;
 	}
-	
+  
 	@GetMapping("/enrollComplete")
 	public String enrollComplete() {
 	    return "member/enrollComplete";

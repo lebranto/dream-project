@@ -1,0 +1,9 @@
+diff a/jipshop/src/main/java/com/kh/jipshop/member/controller/MemberController.java b/jipshop/src/main/java/com/kh/jipshop/member/controller/MemberController.java	(rejected hunks)
+@@ -132,7 +132,6 @@
+ 	}
+ 	
+ 	
+-}
+ 
+     @RequestMapping("/privacy")
+     public String privacy() {

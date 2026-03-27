@@ -55,7 +55,6 @@ body {
     align-items: center;
     gap: 10px;
 }
-
 .sidebar-logo .logo-icon {
     width: 32px; height: 32px;
     background: var(--accent2);
