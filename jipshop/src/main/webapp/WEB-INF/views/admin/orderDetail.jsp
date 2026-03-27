@@ -5,13 +5,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">    
+    <meta charset="UTF-8">
     <title>주문 상세 - 집사상권</title>
-
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/orderDetail.css">
+    <link rel="stylesheet" href="/resources/css/admin.css">
+    <link rel="stylesheet" href="/resources/css/orderDetail.css">
 </head>
-  
 <body>
 <jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>
 <jsp:include page="/WEB-INF/views/admin/common/header.jsp"/>
@@ -56,35 +54,35 @@
     </div>
 
     <%-- 배송 정보 --%>
-<div class="detail-card">
-    <div class="detail-card-header">🚚 배송 정보</div>
-    <dl class="detail-grid">
-        <dt>받는 분</dt>
-        <dd>${order.recvName}</dd>
-        <dt>연락처</dt>
-        <dd>${order.recvPhone}</dd>
-        <dt>배송지</dt>
-        <dd>${order.recvAddress}</dd>
-        <dt>배송 메모</dt>
-        <dd>${order.orderMemo}</dd>
-        <dt>택배사</dt>
-        <dd>${order.deliveryStatus}</dd>
-        <dt>도착 예정일</dt>
-        <dd>${order.expectedDateStr}</dd>
-        <dt>배송 여부</dt>
-        <dd>
-            <span class="badge ${order.deliveryYn=='Y'?'badge-done':'badge-waiting'}">
-                ${order.deliveryYn=='Y'?'배송 완료':'배송 중'}
-            </span>
-        </dd>
-    </dl>
-</div>
+    <div class="detail-card">
+        <div class="detail-card-header">🚚 배송 정보</div>
+        <dl class="detail-grid">
+            <dt>받는 분</dt>
+            <dd>${order.recvName}</dd>
+            <dt>연락처</dt>
+            <dd>${order.recvPhone}</dd>
+            <dt>배송지</dt>
+            <dd>${order.recvAddress}</dd>
+            <dt>배송 메모</dt>
+            <dd>${order.orderMemo}</dd>
+            <dt>택배사</dt>
+            <dd>${delivery.courier}</dd>
+            <dt>도착 예정일</dt>
+            <dd>${delivery.expectedDate}</dd>
+            <dt>배송 여부</dt>
+            <dd>
+                <span class="badge ${delivery.deliveryYn=='Y'?'badge-done':'badge-waiting'}">
+                    ${delivery.deliveryYn=='Y'?'배송 완료':'배송 중'}
+                </span>
+            </dd>
+        </dl>
+    </div>
 
     <%-- 배송 상태 변경 --%>
     <div class="detail-card">
         <div class="detail-card-header">⚙️ 배송 상태 변경</div>
         <div class="detail-card-body">
-           <form action="${pageContext.request.contextPath}/admin/order/orderStatusUpdate" method="post" style="display:flex;gap:10px;align-items:center">
+            <form action="/admin/orderStatusUpdate.do" method="post" style="display:flex;gap:10px;align-items:center">
                 <input type="hidden" name="orderId" value="${order.orderId}">
                 <select name="orderStatus" class="form-select" style="width:160px">
                     <option value="PAY"        ${order.orderStatus=='PAY'       ?'selected':''}>결제 완료</option>
@@ -98,7 +96,7 @@
     </div>
 
     <div class="btn-group">
-        <button class="btn btn-outline" onclick="location.href='${pageContext.request.contextPath}/admin/order/list'">목록</button>
+        <button class="btn btn-outline" onclick="location.href='/admin/orderList.do'">목록</button>
     </div>
 </main>
 <div class="toast" id="toast"></div>

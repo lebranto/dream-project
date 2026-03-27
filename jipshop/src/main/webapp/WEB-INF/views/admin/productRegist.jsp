@@ -5,13 +5,13 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>상품 등록 - 집사상점</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/productRegist.css">
+    <title>상품 등록 - 집사상권</title>
+    <link rel="stylesheet" href="/resources/css/admin.css">
+    <link rel="stylesheet" href="/resources/css/productRegist.css">
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/admin/sidebar.jsp"/>
-<jsp:include page="/WEB-INF/views/admin/header.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/common/header.jsp"/>
 
 <main class="main">
     <div class="page-title">상품 등록</div>
@@ -19,36 +19,19 @@
     <form action="/admin/productRegist.do" method="post" enctype="multipart/form-data" id="registForm">
         <div class="form-wrap">
 
-            <!-- ✅ 카테고리 2개 -->
             <div class="form-row">
                 <label class="form-label required">카테고리</label>
-
-                <!-- 반려동물 종류 -->
-                <select name="petType" class="form-select" style="width:160px" required>
-                    <option value="">반려동물 종류 선택</option>
-                    <option value="DOG">강아지</option>
-                    <option value="CAT">고양이</option>
-                </select>
-
-                <!-- ✅ 상품 카테고리 (고정값으로 변경) -->
                 <select name="categoryId" class="form-select" style="width:160px" required>
-                    <option value="">상품 카테고리 선택</option>
-                    <option value="FOOD">사료</option>
-                    <option value="TOY">장난감</option>
-                    <option value="OUTING">외출용품</option>
-                    <option value="GROOMING">미용용품</option>
+                    <option value="">카테고리 선택</option>
+                    <c:forEach var="cat" items="${categoryList}">
+                        <option value="${cat.categoryId}">${cat.categoryName}</option>
+                    </c:forEach>
                 </select>
             </div>
 
             <div class="form-row">
                 <label class="form-label required">상품명</label>
                 <input type="text" name="productName" class="form-input" placeholder="상품명 입력" required>
-            </div>
-
-            <!-- ✅ 업체명 (필수 제거) -->
-            <div class="form-row">
-                <label class="form-label">업체명</label>
-                <input type="text" name="companyName" class="form-input" placeholder="업체명 입력 (선택)">
             </div>
 
             <div class="form-row">
@@ -112,15 +95,8 @@
         };
         reader.readAsDataURL(file);
     }
-    function showToast(msg){
-        const t=document.getElementById('toast');
-        t.textContent=msg;
-        t.classList.add('show');
-        setTimeout(()=>t.classList.remove('show'),2400);
-    }
-    <c:if test="${not empty errorMsg}">
-        window.onload=()=>showToast('⚠️ ${errorMsg}');
-    </c:if>
+    function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+    <c:if test="${not empty errorMsg}">window.onload=()=>showToast('⚠️ ${errorMsg}');</c:if>
 </script>
 </body>
 </html>

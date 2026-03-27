@@ -5,13 +5,13 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>문의 내역 - 집사상점</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/inquiryList.css">
+    <title>문의 내역 - 집사상권</title>
+    <link rel="stylesheet" href="/resources/css/admin.css">
+    <link rel="stylesheet" href="/resources/css/inquiryList.css">
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/admin/sidebar.jsp"/>
-<jsp:include page="/WEB-INF/views/admin/header.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/common/header.jsp"/>
 
 <main class="main">
     <div class="page-title">
