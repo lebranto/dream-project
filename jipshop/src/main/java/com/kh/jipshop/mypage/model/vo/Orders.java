@@ -27,7 +27,7 @@ public class Orders {
     private String recvPhone;
     
     // 구매 취소 관련
-    private char orderCancleYn;
+    private char orderCancelYn;
     private Date cancelRequestDate;
     private String cancelReason;
     private String cancelStatus;

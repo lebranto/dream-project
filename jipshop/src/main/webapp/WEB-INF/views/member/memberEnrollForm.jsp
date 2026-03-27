@@ -465,6 +465,17 @@
     document.getElementById('fileNameText').textContent = fileName;
   }
   
+ <!-- 검색버튼 클릭시 API 띄움 -->
+  function sample4_execDaumPostcode() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        document.getElementById("zipCode").value = data.zonecode;
+        document.getElementById("address").value = data.roadAddress || data.jibunAddress;
+        document.getElementById("detailAddress").focus();
+      }
+    }).open();
+  }
+
 </script>
 </body>
 </html>

@@ -62,12 +62,13 @@ public class AdminOrderController {
     @ResponseBody
     @PostMapping(value = "/updateDeliveryYn", produces = "text/plain; charset=UTF-8")
     public String updateDeliveryYn(
-            @RequestParam("orderId") int orderId,
+    		@RequestParam("orderId") int orderId,
             @RequestParam("deliveryYn") String deliveryYn) {
 
         int result = adminOrderService.updateDeliveryYn(orderId, deliveryYn);
         return result > 0 ? "success" : "fail";
     }
+    
     @PostMapping("/list")
     public String deleteOrders(
             @RequestParam(value="orderIds", required=false) ArrayList<Integer> orderIds) {
