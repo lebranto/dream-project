@@ -13,12 +13,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
+import com.kh.jipshop.community.model.vo.Board;
 import com.kh.jipshop.member.model.vo.Member;
 import com.kh.jipshop.member.model.vo.Pet;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
@@ -347,22 +349,29 @@ public class MypageController {
 	}
 	
 	
-	/*
-	 * @PostMapping("/updatePet") public String updatePet( Model model,
-	 * Authentication auth, Pet p ) {
-	 * 
-	 * p.setMemberNo(((MemberExt)auth.getPrincipal()).getMemberNo()); int result =
-	 * mService.updatePet(p);
-	 * 
-	 * if(result!=0) { model.addAttribute("msg", "회원 정보가 수정되었습니다."); return
-	 * "redirect:/"; }else {
-	 * 
-	 * model.addAttribute("errorMsg","정보를 다시 입력해주세요"); return "mypage/updateMember";
-	 * }
-	 * 
-	 * 
-	 * }
-	 */
+	
+	  @PostMapping("/updatePet") public String updatePet( 
+			  Model model,
+	          Authentication auth, 
+	          @ModelAttribute Pet p ) {
+		  
+		
+		 
+		  
+	  
+	   p.setMemberNo(((MemberExt)auth.getPrincipal()).getMemberNo()); 
+	   int result =
+	   mService.updatePet(p);
+	  
+	   if(result!=0) { model.addAttribute("msg", "회원 정보가 수정되었습니다."); 
+	   
+	   return"redirect:/"; }
+	   else { model.addAttribute("errorMsg","정보를 다시 입력해주세요"); 
+	   return "mypage/updateMember";
+	  }
+	  
+	 }
+	
 
 	
 	
