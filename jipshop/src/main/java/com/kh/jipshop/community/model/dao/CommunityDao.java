@@ -1,5 +1,6 @@
 package com.kh.jipshop.community.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,4 +58,6 @@ public interface CommunityDao {
 	int selectBoardListCount(SqlSessionTemplate sqlSession, Map<String, Object> paramMap);
 
 	List<Board> selectBoardList(SqlSessionTemplate sqlSession, PageInfo pi, Map<String, Object> paramMap);
+
+	int insertCommentReport(SqlSessionTemplate sqlSession, HashMap<String, Object> paramMap);
 }

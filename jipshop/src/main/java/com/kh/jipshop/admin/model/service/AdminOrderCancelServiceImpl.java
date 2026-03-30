@@ -39,27 +39,12 @@ public class AdminOrderCancelServiceImpl implements AdminOrderCancelService {
     @Override
     @Transactional
     public int approveCancel(int orderId) {
-
-        int result1 = adminOrderCancelDao.updateCancelStatusApproved(sqlSession, orderId);
-        int result2 = adminOrderCancelDao.restoreProductStock(sqlSession, orderId);
-
-        if(result1 > 0 && result2 >= 0) {
-            return 1;
-        }
-
-        throw new RuntimeException("취소 승인 처리 실패");
+        return adminOrderCancelDao.updateCancelStatusApproved(sqlSession, orderId);
     }
 
     @Override
     @Transactional
     public int rejectCancel(int orderId) {
-
-        int result = adminOrderCancelDao.updateCancelStatusRejected(sqlSession, orderId);
-
-        if(result > 0) {
-            return 1;
-        }
-
-        throw new RuntimeException("취소 반려 처리 실패");
+        return adminOrderCancelDao.updateCancelStatusRejected(sqlSession, orderId);
     }
 }

@@ -1,6 +1,7 @@
 package com.kh.jipshop.community.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,8 @@ public interface CommunityService {
 		int selectBoardListCount(Map<String, Object> paramMap);
 
 		List <Board> selectBoardList(PageInfo pi, Map<String, Object> paramMap);
+
+		int insertCommentReport(HashMap<String, Object> paramMap);
 		
 	
 }

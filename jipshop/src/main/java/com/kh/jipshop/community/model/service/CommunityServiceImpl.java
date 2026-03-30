@@ -2,6 +2,7 @@ package com.kh.jipshop.community.model.service;
 
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -135,5 +136,9 @@ public class CommunityServiceImpl implements CommunityService {
 	    @Override
 	    public List<Board> selectBoardList(PageInfo pi, Map<String, Object> paramMap) {
 	        return communityDao.selectBoardList(sqlSession, pi, paramMap);
+	    }
+	    @Override
+	    public int insertCommentReport(HashMap<String, Object> paramMap) {
+	        return communityDao.insertCommentReport(sqlSession, paramMap);
 	    }
 }
