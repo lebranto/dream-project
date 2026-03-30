@@ -5,8 +5,10 @@
 %>
 <nav class="sidebar">
     <div class="sidebar-logo">
-        <div class="logo-icon">🏠</div>
-        <span>집사상권</span>
+    	<a href="${contextPath }/admin/dashboard">
+        	<div class="logo-icon">🏠</div>
+        </a>
+        <span>집사상점</span>
     </div>
 
     <div class="sidebar-section">회원</div>
@@ -42,7 +44,7 @@
     <a href="/admin/inquiryList.do" class="sidebar-item <%= "inquiryList".equals(currentMenu) ? "active" : "" %>">
         💬 문의 조회
     </a>
-    <a href="/admin/newUser.do" class="sidebar-item <%= "newUser".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/report/comment/list" class="sidebar-item <%= "newUser".equals(currentMenu) ? "active" : "" %>">
         🔔 신고 조회
     </a>
 </nav>

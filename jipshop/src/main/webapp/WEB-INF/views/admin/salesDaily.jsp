@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/salesDaily.css">
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/admin/sidebar.jsp"/>
-<jsp:include page="/WEB-INF/views/admin/header.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/common/header.jsp"/>
 
 <main class="main">
     <div class="page-title">매출 일별 조회</div>

@@ -52,10 +52,10 @@ public class adminController {
 	
 	/* 아래 부터 새로 추가한 관리자 파일 */
 	
-	@RequestMapping("/dashboard")
-	public String dashboard() {
-		return "admin/dashboard";
-	}
+//	@RequestMapping("/dashboard")
+//	public String dashboard() {
+//		return "admin/dashboard";
+//	}
 	
 	@RequestMapping("/productRegist")
 	public String productRegist() {

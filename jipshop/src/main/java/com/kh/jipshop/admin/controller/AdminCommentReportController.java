@@ -25,7 +25,7 @@ public class AdminCommentReportController {
 
         model.addAttribute("list", list);
 
-        return "admin/adminCommentReport";
+        return "admin/reportList";
     }
 
     // 🔥 2. 신고 상세
