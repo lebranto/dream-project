@@ -1,5 +1,6 @@
 package com.kh.jipshop.admin.controller;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.jipshop.admin.model.service.AdminDateSaleService;
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
-import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
+import com.kh.jipshop.mypage.model.vo.Orders;
 import com.kh.jipshop.security.model.vo.MemberExt;
 
 import lombok.RequiredArgsConstructor;
@@ -27,48 +28,115 @@ public class AdminDateSaleController {
 	
 	public final AdminDateSaleService aService;
 	
+	//월별 조회
 	
 	@GetMapping("/salesDaily")
 	public String salesDaily(
-			@RequestParam(required = false) Integer period,
-			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+			@RequestParam(required = false) Integer searchYear,
+	        @RequestParam(required = false) Integer searchMonth,
 			@RequestParam(value = "cpage", defaultValue = "1") int currentPage,
 			Authentication auth,
 			@RequestParam Map<String, Object> paramMap, 
 			Model model
 			) {
-		    // 테스트용
-				Integer memberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
-				String memberName = ((MemberExt)auth.getPrincipal()).getMemberName();
-				// 실제로는 로그인 유저 번호 사용 권장
-				// memberNo = loginUser.getMemberNo();
+				
+		   // 기본값: 현재 연/월
+        LocalDate now = LocalDate.now();
+        if (searchYear == null) {
+            searchYear = now.getYear();
+        }
+        if (searchMonth == null) {
+            searchMonth = now.getMonthValue();
+        }
 
-				paramMap.put("memberNo", memberNo);
-				paramMap.put("period", period);
-				paramMap.put("startDate", startDate);
-				paramMap.put("endDate", endDate);
+        // 월 시작일 / 다음달 시작일
+        LocalDate startDate = LocalDate.of(searchYear, searchMonth, 1);
+        LocalDate nextMonthStartDate = startDate.plusMonths(1);
 
-				int boardLimit = 10;
-				int pageLimit = 10;
+        int boardLimit = 10;
+        int pageLimit = 10;
 
-				// 이걸 해주는 이유는 전체 행의 수를 파악하여 페이지 처리를 해주기 위함
-				// 10행이 카운트 됐으면 1페이지 11행이 카운트 됐으면 1,2 페이지 나누는 경우
-				int listCount = aService.salesListCount(paramMap);
+        int offset = (currentPage - 1) * boardLimit + 1;
+        int limit = currentPage * boardLimit;
 
-				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-				paramMap.put("pi", pi);
+        Integer memberNo = ((MemberExt) auth.getPrincipal()).getMemberNo();
 
-				List<OrderDetailResponse> list = aService.selectListSales(paramMap);
+        // mapper 실행 전에 전부 넣어야 함
+        paramMap.put("memberNo", memberNo);
+        paramMap.put("startDate", java.sql.Date.valueOf(startDate));
+        paramMap.put("nextMonthStartDate", java.sql.Date.valueOf(nextMonthStartDate));
+        paramMap.put("offset", offset);
+        paramMap.put("limit", limit);
 
-				model.addAttribute("orderlist", list);
-				model.addAttribute("pi", pi);
-				model.addAttribute("memberName", memberName);
+        int listCount = aService.monthListCount(paramMap);
 
-				return "admin/salesDaily/salesDaily";
+        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+        List<Orders> list = aService.selectListMonth(paramMap);
+        
+        int totalSales = aService.selectTotalMonth(paramMap);
+        int totalOrderCount = aService.selectTotalCountMonth(paramMap);
+        
+        model.addAttribute("orderlist", list);
+        model.addAttribute("pi", pi);
+        model.addAttribute("searchYear", searchYear);
+        model.addAttribute("searchMonth", searchMonth);
+        model.addAttribute("totalSales", totalSales);
+        model.addAttribute("totalOrderCount", totalOrderCount);
+
+        return "admin/salesDaily";
+    }
+		
+	    
+	
+	
+	
+	// 일별 조회
+	
+	@GetMapping("/salesMonthly")
+	public String salesMonthly(
+			  @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+	            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+			@RequestParam(value = "cpage", defaultValue = "1") int currentPage,
+			Authentication auth,
+			@RequestParam Map<String, Object> paramMap, 
+			Model model
+			) {
+				
+
+        int boardLimit = 10;
+        int pageLimit = 10;
+
+        int offset = (currentPage - 1) * boardLimit + 1;
+        int limit = currentPage * boardLimit;
+
+        paramMap.put("startDate", startDate);
+        paramMap.put("endDate", endDate);
+        paramMap.put("offset", offset);
+        paramMap.put("limit", limit);
+        	
+
+        int listCount = aService.dateListCount(paramMap);
+
+        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+        List<Orders> list = aService.selectListDate(paramMap);
+        
+        int totalSales = aService.selectTotalDate(paramMap);
+        int totalOrderCount = aService.selectTotalCountDate(paramMap);
+
+        model.addAttribute("orderlist", list);
+        model.addAttribute("pi", pi);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("totalSales", totalSales);
+        model.addAttribute("totalOrderCount", totalOrderCount);
+
+		return "admin/salesMonthly";
 		
 		
 	     }
+	
 	
 
 }

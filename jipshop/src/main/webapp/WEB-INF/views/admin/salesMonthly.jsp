@@ -6,18 +6,19 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>매출 월별조회 - 집사상점</title>
+    <title>매출 일별조회 - 집사상점</title>
+    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/salesMonthly.css">
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/admin/sidebar.jsp"/>
-<jsp:include page="/WEB-INF/views/admin/header.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/common/header.jsp"/>
 
 <main class="main">
-    <div class="page-title">매출 월별 조회</div>
+    <div class="page-title">매출 일별 조회</div>
 
-    <form action="/admin/salesMonthly.do" method="get">
+    <form action="${contextPath}/admin/salesMonthly" method="get">
         <div class="filter-bar">
             <span class="filter-label">기간</span>
             <input type="date" name="startDate" class="filter-input" value="${param.startDate}">
@@ -46,14 +47,14 @@
         <div class="stat-card">
             <div class="stat-label">현금 수수료</div>
             <div class="stat-value text-blue">
-                <fmt:formatNumber value="${totalCashFee}" pattern="#,###"/>원
+                <fmt:formatNumber value="${totalSales}" pattern="#,###"/>원
             </div>
             <div class="stat-sub">현금 결제 수수료 합계</div>
         </div>
         <div class="stat-card">
             <div class="stat-label">지급 예정액</div>
             <div class="stat-value text-red">
-                <fmt:formatNumber value="${totalPayable}" pattern="#,###"/>원
+                <fmt:formatNumber value="${totalSales}" pattern="#,###"/>원
             </div>
             <div class="stat-sub">판매자 지급 예정</div>
         </div>
@@ -73,49 +74,57 @@
             </thead>
             <tbody>
                 <c:choose>
-                    <c:when test="${empty salesList}">
+                    <c:when test="${empty orderlist}">
                         <tr class="empty-row"><td colspan="6">조회된 매출 데이터가 없습니다.</td></tr>
                     </c:when>
                     <c:otherwise>
-                        <c:forEach var="s" items="${salesList}">
+                        <c:forEach var="o" items="${orderlist}">
                             <tr>
-                                <td style="color:var(--text-sub)">${s.saleMonth}</td>
-                                <td><strong>${s.sellerName}</strong></td>
+                                <td style="color:var(--text-sub)">${o.orderDate}</td>
+                                <td><strong>${o.ordererName}</strong></td>
                                 <td class="td-num font-bold">
-                                    <fmt:formatNumber value="${s.salesAmount}" pattern="#,###"/>
+                                <fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,###"/>
                                 </td>
                                 <td class="td-num" style="color:var(--text-sub)">
-                                    <fmt:formatNumber value="${s.totalFee}" pattern="#,###"/>
+                                    <fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,###"/>
                                 </td>
                                 <td class="td-num">
-                                    <fmt:formatNumber value="${s.depositAmount}" pattern="#,###"/>
+                                    <fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,###"/>
                                 </td>
                                 <td class="td-num" style="color:var(--accent)">
-                                    <fmt:formatNumber value="${s.payableAmount}" pattern="#,###"/>
+                                    <fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,###"/>
                                 </td>
                             </tr>
                         </c:forEach>
                         <tr class="sum-row">
                             <td colspan="2" class="center">합 계</td>
-                            <td class="td-num"><fmt:formatNumber value="${totalSales}"   pattern="#,###"/></td>
-                            <td class="td-num"><fmt:formatNumber value="${totalFee}"     pattern="#,###"/></td>
-                            <td class="td-num"><fmt:formatNumber value="${totalDeposit}" pattern="#,###"/></td>
-                            <td class="td-num"><fmt:formatNumber value="${totalPayable}" pattern="#,###"/></td>
+                            <td class="td-num">
+                            <fmt:formatNumber value="${totalSales}"   pattern="#,###"/>
+                            </td>
+                            <td class="td-num">
+                            <fmt:formatNumber value="${totalSales}"     pattern="#,###"/>
+                            </td>
+                            <td class="td-num">
+                            <fmt:formatNumber value="${totalSales}" pattern="#,###"/>
+                            </td>
+                            <td class="td-num">
+                            <fmt:formatNumber value="${totalSales}" pattern="#,###"/>
+                            </td>
                         </tr>
                     </c:otherwise>
                 </c:choose>
             </tbody>
         </table>
         <div class="pagination">
-            <c:if test="${currentPage > 1}">
-                <a class="page-num" href="?page=${currentPage-1}&startDate=${param.startDate}&endDate=${param.endDate}">◀</a>
+            <c:if test="${pi.currentPage > 1}">
+                <a class="page-num" href="?cpage=${pi.currentPage-1}&startDate=${param.startDate}&endDate=${param.endDate}">◀</a>
             </c:if>
-            <c:forEach begin="${startPage}" end="${endPage}" var="p">
-                <a class="page-num ${p==currentPage?'active':''}"
-                   href="?page=${p}&startDate=${param.startDate}&endDate=${param.endDate}">${p}</a>
+            <c:forEach begin="${pi.startPage}" end="${pi.endPage}" var="p">
+                <a class="page-num ${p==pi.currentPage?'active':''}"
+                   href="?cpage=${p}&startDate=${param.startDate}&endDate=${param.endDate}">${p}</a>
             </c:forEach>
-            <c:if test="${currentPage < totalPages}">
-                <a class="page-num" href="?page=${currentPage+1}&startDate=${param.startDate}&endDate=${param.endDate}">▶</a>
+            <c:if test="${pi.currentPage < pi.maxPage}">
+                <a class="page-num" href="?cpage=${pi.currentPage+1}&startDate=${param.startDate}&endDate=${param.endDate}">▶</a>
             </c:if>
         </div>
     </div>
