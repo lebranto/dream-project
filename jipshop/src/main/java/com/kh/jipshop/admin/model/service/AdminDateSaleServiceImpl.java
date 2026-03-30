@@ -49,6 +49,24 @@ public class AdminDateSaleServiceImpl implements AdminDateSaleService{
 		return aDao.selectTotalCountMonth(paramMap);
 	}
 	
+	@Override
+	public int totalFeeMonth(Map<String, Object> paramMap) {
+	
+		return aDao.totalFeeMonth(paramMap);
+	}
+
+	@Override
+	public int totalDepositMonth(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int totalPayableMonth(Map<String, Object> paramMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 	
 	
 	
@@ -79,6 +97,8 @@ public class AdminDateSaleServiceImpl implements AdminDateSaleService{
 		// TODO Auto-generated method stub
 		return aDao.selectTotalCountDate(paramMap);
 	}
+
+	
 
 	
 

@@ -35,8 +35,6 @@
         FROM ORDERS
         WHERE ORDER_DATE >= #{startDate}
           AND ORDER_DATE &lt; #{nextMonthStartDate}
-
-
 </select>
 
 
