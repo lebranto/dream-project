@@ -19,37 +19,7 @@
   <div class="page">
     <!-- 왼쪽 메뉴 -->
   <aside class="sidebar">
-   <div class="menu-group">
-      <div class="menu-title">my 쇼핑</div>
-      <ul class="menu-list">
-        <a href="${contextPath}/mypage/purchase">구매 내역 보기</a><br>
-        <a href="${contextPath}/mypage/recent">최근 본 상품</a>
-      </ul>
-    </div>
-
-    <div class="menu-group">
-      <div class="menu-title">문의</div>
-      <ul class="menu-list">
-        <a href="${contextPath}/mypage/inquiry">문의 내역</a>
-      </ul>
-    </div>
-
-    <div class="menu-group">
-      <div class="menu-title">회원 정보</div>
-      <ul class="menu-list">
-        <a href="${contextPath}/mypage/updateMemberCheck">회원 정보 수정</a><br>
-        <a href="${contextPath}/mypage/updateMemberCheck">반려동물 정보 수정</a><br>
-        <a href="${contextPath}/mypage/memberDelete">회원 탈퇴</a>
-      </ul>
-    </div>
-    
-     <div class="menu-group">
-      <div class="menu-title">고객 센터</div>
-      <ul class="menu-list">
-        <a href="${contextPath}/mypage/purchase">1:1문의</a><br>
-        <a href="${contextPath}/mypage/recent">FAQ</a><br>
-      </ul>
-    </div>
+    <jsp:include page="/WEB-INF/views/common/myPageSidebar.jsp" />
   </aside>
 
 
@@ -64,7 +34,7 @@
           </div>
 
           <div class="top-text">
-            상품명을 구매 취소하시겠습니까?
+            ${orderList.productName}을 구매 취소하시겠습니까?
           </div>
         </div>
 
@@ -72,30 +42,58 @@
 제작사의 사정에 따라 취소 금액이 늦게 들어올 수 있으며
 한번 취소된 상품은 다시 되돌릴 수 없습니다.
 
-취소를 원하시면 비밀번호 입력과 확인을 눌러주십시오
-        </div>
+취소를 원하시면 비밀번호 입력과 취소 사유를 적으시고 확인을 눌러주세요.
+        </div>     
       </div>
+       <form action="${contextPath}/mypage/cancle" method="post" onsubmit="return validateForm();">
+       <input type="hidden" name="orderId" value="${orderList.orderId}">
+      
+      
+     <div class="form-area">
+  <div class="form-row">
+    <button class="label-box" type="button">비밀번호</button>
+    <input type="password"
+           name="userPwd"
+           id="passwordInput"
+           class="password-input"
+           placeholder="비밀번호를 입력해주세요">
+  </div>
 
-      <div class="bottom-area">
-        <button class="label-box" type="button">비밀번호</button>
-        <input type="password" id="passwordInput" class="password-input" placeholder="비밀번호 입력칸">
-        <button class="confirm-btn" type="button" onclick="checkPassword()">확인</button>
-      </div>
+  <div class="form-row">
+    <button class="label-box" type="button">취소 사유</button>
+    <textarea name="cancelReason"
+              id="cancelReason"
+              class="reason-input"
+              placeholder="취소 사유를 입력해주세요"></textarea>
+  </div>
+
+  <div class="btn-row">
+    <button class="confirm-btn" type="submit">확인</button>
+  </div>
+</div>
+    </form>
     </main>
   </div>
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+<script>
+function validateForm() {
+  const pwd = document.getElementById("passwordInput").value.trim();
+  const reason = document.getElementById("cancelReason").value.trim();
 
-  <script>
-    function checkPassword() {
-      const password = document.getElementById("passwordInput").value.trim();
+  if (pwd === "") {
+    alert("비밀번호를 입력해주세요.");
+    return false;
+  }
 
-      if (password === "") {
-        alert("비밀번호를 입력해주세요.");
-        return;
-      }
+  if (reason === "") {
+    alert("취소 사유를 입력해주세요.");
+    return false;
+  }
 
-      alert("취소가 완료되었습니다.");
-    }
-  </script>
+  return true;
+}
+</script>
+
+
 </body>
 </html>

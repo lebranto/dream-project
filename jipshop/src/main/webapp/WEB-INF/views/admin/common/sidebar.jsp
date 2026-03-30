@@ -42,7 +42,7 @@
     <a href="${contextPath }/admin/inquiryList.do" class="sidebar-item <%= "inquiryList".equals(currentMenu) ? "active" : "" %>">
         💬 문의 조회
     </a>
-    <a href="${contextPath }/admin/newUser.do" class="sidebar-item <%= "newUser".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/reportList.do" class="sidebar-item <%= "reportList".equals(currentMenu) ? "active" : "" %>">
         🔔 신고 조회
     </a>
 </nav>

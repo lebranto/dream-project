@@ -464,7 +464,7 @@
     const fileName = input.files[0] ? input.files[0].name : '사진 파일 올리기';
     document.getElementById('fileNameText').textContent = fileName;
   }
-  
+
 </script>
 </body>
 </html>

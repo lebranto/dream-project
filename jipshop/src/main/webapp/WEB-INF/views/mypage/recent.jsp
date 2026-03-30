@@ -17,37 +17,7 @@
     <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
     <aside class="sidebar">
-        <div class="menu-group">
-            <div class="menu-title">my 쇼핑</div>
-            <ul class="menu-list">
-                <li><a href="${contextPath}/mypage/purchase">구매 내역 보기</a></li>
-                <li><a href="${contextPath}/mypage/recent">최근 본 상품</a></li>
-            </ul>
-        </div>
-
-        <div class="menu-group">
-            <div class="menu-title">문의</div>
-            <ul class="menu-list">
-                <li><a href="${contextPath}/mypage/inquiry">문의 내역</a></li>
-            </ul>
-        </div>
-
-        <div class="menu-group">
-            <div class="menu-title">회원 정보</div>
-            <ul class="menu-list">
-                <li><a href="${contextPath}/mypage/updateMemberCheck">회원 정보 수정</a></li>
-                <li><a href="${contextPath}/mypage/updateMemberCheck">반려동물 정보 수정</a></li>
-                <li><a href="${contextPath}/mypage/memberDelete">회원 탈퇴</a></li>
-            </ul>
-        </div>
-
-        <div class="menu-group">
-            <div class="menu-title">고객 센터</div>
-            <ul class="menu-list">
-                <li><a href="${contextPath}/mypage/purchase">1:1문의</a></li>
-                <li><a href="${contextPath}/mypage/recent">FAQ</a></li>
-            </ul>
-        </div>
+        <jsp:include page="/WEB-INF/views/common/myPageSidebar.jsp" />
     </aside>
 
 
@@ -56,9 +26,9 @@
             <div class="page-title">마이페이지</div>
 
             <div class="recent-summary">
-                ${loginUser.userName} 님의 조회 내역
+                ${memberName} 님의 조회 내역
             </div>
-<div class="filter-row">
+    <div class="filter-row">
 
         <!-- 빠른 기간 조회 -->
         <form action="${contextPath}/mypage/recent" method="get" class="period-form">

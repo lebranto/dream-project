@@ -21,7 +21,8 @@ import com.kh.jipshop.member.model.vo.Member;
 @RequestMapping("/member")
 @SessionAttributes({"loginUser"})
 public class MemberController {
-  
+	
+	@Autowired
 	private MemberService mService;
 	
   @RequestMapping("/")
@@ -39,6 +40,7 @@ public class MemberController {
 		return "member/login";
 	}
 	
+  	@ResponseBody
 	@GetMapping("/idCheck")
 	public int idCheck(String memberId) {
 		int result = mService.idCheck(memberId);

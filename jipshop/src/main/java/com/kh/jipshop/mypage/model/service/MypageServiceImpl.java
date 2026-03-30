@@ -5,10 +5,12 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 import com.kh.jipshop.mypage.model.dao.MypageDao;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
-import com.kh.jipshop.mypage.model.vo.RecentlyViewed;
+import com.kh.jipshop.mypage.model.vo.Orders;
 
 import lombok.RequiredArgsConstructor;
 
@@ -76,6 +78,36 @@ public class MypageServiceImpl implements MypageService {
 	public int delectInquiry(MyInqury mi) {
 		
 		return mDao.delectInquiry(mi);
+	}
+
+	
+	// 구매 취소페이지
+	
+	@Override
+	public OrderDetailResponse canclePage(Integer orderId) {
+		
+		return mDao.canclePage(orderId);
+	}
+
+	@Override
+	public int canclePurchase(Orders orders) {
+		return mDao.canclePurchase(orders);
+	}
+
+	@Override
+	public int memberDeleteOk(Member m) {
+		return mDao.memberDeleteOk(m);
+	}
+
+	@Override
+	public int updateMember(Member m) {
+		return mDao.updateMember(m);
+	}
+
+	@Override
+	public int updatePet(Pet p) {
+		
+		return mDao.updatePet(p);
 	}
 	
 
