@@ -519,5 +519,29 @@
                CANCEL_STATUS   = NULL
          WHERE ORDER_ID = #{orderId}
     </update>
-
+    
+  <!-- ㅡㅡㅡㅡㅡㅡㅡ Dashboard ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
+	<!-- 오늘 주문 수 -->
+    <select id="getTodayOrderCount" resultType="int">
+        SELECT COUNT(*)
+        FROM ORDERS
+        WHERE TRUNC(ORDER_DATE) = TRUNC(SYSDATE)
+    </select>
+  
+    <!-- 최근 주문 5건 -->
+    <select id="getRecentOrderList" resultType="map">
+        SELECT *
+        FROM (
+            SELECT
+                O.ORDER_ID            AS orderId,
+                O.ORDERER_NAME        AS ordererName,
+                O.ORDER_TOTAL_PRICE   AS orderTotalPrice,
+                O.ORDER_DATE          AS orderDate,
+                O.ORDER_CANCEL_YN     AS orderCancelYn
+            FROM ORDERS O
+            ORDER BY O.ORDER_DATE DESC
+        )
+        WHERE ROWNUM &lt;= 5
+    </select>
+    <!-- ㅡㅡㅡㅡㅡㅡㅡ Dashboard ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ-->
 </mapper>

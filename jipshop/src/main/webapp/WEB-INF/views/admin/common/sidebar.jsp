@@ -5,8 +5,10 @@
 %>
 <nav class="sidebar">
     <div class="sidebar-logo">
-        <div class="logo-icon">🏠</div>
-        <span>집사상권</span>
+    	<a href="${contextPath }/admin/dashboard">
+        	<div class="logo-icon">🏠</div>
+        </a>
+        <span>집사상점</span>
     </div>
 
     <div class="sidebar-section">회원</div>

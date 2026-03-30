@@ -1,0 +1,12 @@
+package com.kh.jipshop.admin.model.service;
+
+import java.util.List;
+import java.util.Map;
+
+public interface AdminDashboardService {
+
+	int getTodayOrderCount();
+
+	List<Map<String, Object>> getRecentOrderList();
+
+}
