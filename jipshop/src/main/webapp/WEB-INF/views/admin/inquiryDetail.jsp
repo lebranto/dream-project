@@ -6,8 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <title>문의 상세 - 집사상점</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/inquiryDetail.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin/admin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin/inquiryDetail.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>

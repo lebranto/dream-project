@@ -385,3 +385,32 @@ button {
     color: #666;
     margin-bottom: 28px;
 }
+.report-type-area {
+    margin: 20px 0 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.report-type-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.report-reason-area {
+    margin-top: 10px;
+}
+
+.report-reason-area textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: none;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    box-sizing: border-box;
+}

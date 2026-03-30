@@ -140,7 +140,7 @@
                             <div class="comment-right">
                                 <button type="button"
                                         class="report-btn"
-                                        data-comment-id="${comment.commentId}">
+                                        onclick="openReportModal('${comment.commentId}')">
                                     신고
                                 </button>
                             </div>
@@ -173,20 +173,43 @@
 <div class="modal-overlay" id="reportModal">
     <div class="modal-box report-modal-box">
         <h3>댓글 신고</h3>
-        <p class="report-main-text">이 댓글을 신고하시겠습니까?</p>
-        <p class="report-sub-text">신고된 댓글은 운영팀 확인 후 조치돼요.</p>
-        <div class="modal-btn-area">
-            <button type="button" class="modal-btn cancel-btn" id="cancelReportBtn">취소</button>
-            <button type="button" class="modal-btn confirm-btn" id="confirmReportBtn">신고</button>
-        </div>
+        <p class="report-main-text">신고 유형을 선택해주세요.</p>
+        <p class="report-sub-text">신고된 댓글은 운영팀 확인 후 조치됩니다.</p>
+
+        <form id="reportForm" action="${contextPath}/community/reportComment" method="post">
+            <input type="hidden" name="boardNo" value="${board.boardNo}">
+            <input type="hidden" name="commentId" id="reportCommentId">
+
+            <div class="report-type-area">
+                <label class="report-type-label">
+                    <input type="radio" name="reportTypeId" value="1">
+                    욕설
+                </label>
+
+                <label class="report-type-label">
+                    <input type="radio" name="reportTypeId" value="2">
+                    광고
+                </label>
+
+                <label class="report-type-label">
+                    <input type="radio" name="reportTypeId" value="3">
+                    기타
+                </label>
+            </div>
+
+            <div class="report-reason-area">
+                <textarea name="reportReason"
+                          id="reportReason"
+                          placeholder="신고 사유를 입력해주세요. (선택)"></textarea>
+            </div>
+
+            <div class="modal-btn-area">
+                <button type="button" class="modal-btn cancel-btn" id="cancelReportBtn">취소</button>
+                <button type="submit" class="modal-btn confirm-btn" id="confirmReportBtn">신고</button>
+            </div>
+        </form>
     </div>
 </div>
-
-<!-- 신고 form -->
-<form id="reportForm" action="${contextPath}/community/reportComment" method="post" style="display:none;">
-    <input type="hidden" name="boardNo" value="${board.boardNo}">
-    <input type="hidden" name="commentId" id="reportCommentId">
-</form>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -208,12 +231,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const commentInput = document.getElementById("commentInput");
 
     const reportModal = document.getElementById("reportModal");
-    const confirmReportBtn = document.getElementById("confirmReportBtn");
     const cancelReportBtn = document.getElementById("cancelReportBtn");
     const reportCommentId = document.getElementById("reportCommentId");
+    const reportReason = document.getElementById("reportReason");
     const reportForm = document.getElementById("reportForm");
-
-    let selectedCommentId = null;
 
     if (likeBtn) {
         likeBtn.addEventListener("click", function () {
@@ -289,48 +310,70 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function bindReportButtons() {
-        const reportBtns = document.querySelectorAll(".report-btn");
+    window.openReportModal = function(commentId) {
+        if (!loginMemberNo || loginMemberNo === "0") {
+            alert("로그인 후 이용 가능합니다.");
+            return;
+        }
 
-        reportBtns.forEach(function(btn) {
-            btn.addEventListener("click", function() {
-                if (!loginMemberNo || loginMemberNo === "0") {
-                    alert("로그인 후 이용 가능합니다.");
-                    return;
-                }
+        if (!commentId) {
+            alert("신고할 댓글 정보가 없습니다.");
+            return;
+        }
 
-                selectedCommentId = this.dataset.commentId;
+        reportCommentId.value = commentId;
+        reportReason.value = "";
 
-                if (!selectedCommentId) {
-                    alert("댓글 번호를 찾을 수 없습니다.");
-                    return;
-                }
-
-                reportModal.classList.add("show");
-            });
+        document.querySelectorAll('input[name="reportTypeId"]').forEach(function(radio) {
+            radio.checked = false;
         });
-    }
+
+        reportModal.classList.add("show");
+    };
 
     if (cancelReportBtn && reportModal) {
         cancelReportBtn.addEventListener("click", function() {
             reportModal.classList.remove("show");
-            selectedCommentId = null;
+            reportCommentId.value = "";
+            reportReason.value = "";
+
+            document.querySelectorAll('input[name="reportTypeId"]').forEach(function(radio) {
+                radio.checked = false;
+            });
         });
     }
 
-    if (confirmReportBtn && reportModal && reportCommentId && reportForm) {
-        confirmReportBtn.addEventListener("click", function() {
-            if (!selectedCommentId) {
-                alert("신고할 댓글 정보가 없습니다.");
+    if (reportModal) {
+        reportModal.addEventListener("click", function(e) {
+            if (e.target === reportModal) {
+                reportModal.classList.remove("show");
+                reportCommentId.value = "";
+                reportReason.value = "";
+
+                document.querySelectorAll('input[name="reportTypeId"]').forEach(function(radio) {
+                    radio.checked = false;
+                });
+            }
+        });
+    }
+
+    if (reportForm) {
+        reportForm.addEventListener("submit", function(e) {
+            const selectedType = document.querySelector('input[name="reportTypeId"]:checked');
+
+            if (!reportCommentId.value) {
+                e.preventDefault();
+                alert("신고 대상 댓글 정보가 없습니다.");
                 return;
             }
 
-            reportCommentId.value = selectedCommentId;
-            reportForm.submit();
+            if (!selectedType) {
+                e.preventDefault();
+                alert("신고 유형을 선택해주세요.");
+                return;
+            }
         });
     }
-
-    bindReportButtons();
 
 });
 </script>

@@ -54,7 +54,7 @@ public class AdminOrderCancelController {
         int result = adminOrderCancelService.approveCancel(orderId);
 
         if(result > 0) {
-            ra.addFlashAttribute("alertMsg", "취소 승인 및 재고 복구가 완료되었습니다.");
+            ra.addFlashAttribute("alertMsg", "취소 승인 처리가 완료되었습니다.");
         } else {
             ra.addFlashAttribute("alertMsg", "취소 승인 처리에 실패했습니다.");
         }

@@ -135,4 +135,8 @@ import com.kh.jipshop.community.model.vo.BoardLike;
 
 		        return (ArrayList)sqlSession.selectList("communityMapper.selectBoardList", paramMap, rowBounds);
 		    }
+		    @Override
+		    public int insertCommentReport(SqlSessionTemplate sqlSession, HashMap<String, Object> paramMap) {
+		        return sqlSession.insert("communityMapper.insertCommentReport", paramMap);
+		    }
 }

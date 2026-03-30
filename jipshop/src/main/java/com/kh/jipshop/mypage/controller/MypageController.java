@@ -1,9 +1,12 @@
 package com.kh.jipshop.mypage.controller;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
@@ -35,6 +39,7 @@ import lombok.RequiredArgsConstructor;
 public class MypageController {
 
 	private final MypageService mService;
+	
 
 	@GetMapping("/purchase")
 	public String orderList(
@@ -347,22 +352,52 @@ public class MypageController {
 	}
 	
 	
-	/*
-	 * @PostMapping("/updatePet") public String updatePet( Model model,
-	 * Authentication auth, Pet p ) {
-	 * 
-	 * p.setMemberNo(((MemberExt)auth.getPrincipal()).getMemberNo()); int result =
-	 * mService.updatePet(p);
-	 * 
-	 * if(result!=0) { model.addAttribute("msg", "회원 정보가 수정되었습니다."); return
-	 * "redirect:/"; }else {
-	 * 
-	 * model.addAttribute("errorMsg","정보를 다시 입력해주세요"); return "mypage/updateMember";
-	 * }
-	 * 
-	 * 
-	 * }
-	 */
+	
+	@PostMapping("/mypage/updatePet")
+	public String updatePet(
+	        Pet p,
+	        @RequestParam(value="petPhotoFile", required=false) MultipartFile file,
+	        HttpSession session,
+	        Model model) {
+
+	    if (file != null && !file.isEmpty()) {
+
+	        String savePath = session.getServletContext()
+	                .getRealPath("/resources/upload/pet/");
+
+	        File folder = new File(savePath);
+	        if (!folder.exists()) {
+	            folder.mkdirs();
+	        }
+
+	        String originName = file.getOriginalFilename();
+	        String ext = originName.substring(originName.lastIndexOf("."));
+
+	        String time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+	        int random = (int)(Math.random() * 90000 + 10000);
+
+	        String changeName = time + random + ext;
+
+	        try {
+	            file.transferTo(new File(savePath, changeName));
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+
+	        p.setPetPhoto("/resources/upload/pet/" + changeName);
+	    }
+
+	    int result = mService.updatePet(p);
+
+	    if (result > 0) {
+	        return "redirect:/";
+	    } else {
+	        model.addAttribute("errorMsg", "수정 실패");
+	        return "mypage/updatePet";
+	    }
+	}
+
+	
 
 	
 	

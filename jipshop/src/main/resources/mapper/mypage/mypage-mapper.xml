@@ -13,17 +13,17 @@
 				FROM ORDERS O
 				JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
 				JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
-				JOIN DELIVERY D  ON O.ORDER_ID = D.ORDER_ID
-		        JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID	  
-				WHERE MEMBER_NO =#{memberNo}
-				AND ORDER_CANCEL_YN = 'N'
+				LEFT JOIN DELIVERY D  ON O.ORDER_ID = D.ORDER_ID
+		        LEFT JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID	  
+				WHERE O.MEMBER_NO =#{memberNo}
+				AND O.ORDER_CANCEL_YN = 'N'
 				<if test="period != null">
-					AND ORDER_DATE >= SYSDATE - #{period}
+					AND O.ORDER_DATE >= SYSDATE - #{period}
 				</if>
 				<if test="startDate != null and endDate != null">
-					AND ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+					AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
 				</if>
-				ORDER BY ORDER_DATE
+				ORDER BY O.ORDER_DATE
 				) T1
 		)
 		WHERE RNUM BETWEEN #{offset} AND #{limit}
@@ -159,7 +159,9 @@
 
 	<update id="canclePurchase">
 		UPDATE ORDERS 
-		SET ORDER_CANCEL_YN = 'Y', CANCEL_REQUEST_DATE = SYSDATE
+		SET ORDER_CANCEL_YN = 'Y', 
+		CANCEL_REQUEST_DATE = SYSDATE,
+		CANCEL_REASON = #{cancelReason}
 		WHERE MEMBER_NO = #{memberNo}
 		AND ORDER_ID = #{orderId}
 	</update>
@@ -184,6 +186,21 @@
 		PHONE = '${phone}'
 		WHERE MEMBER_NO = ${memberNo} 
 	</update>
+	
+	<update id="updatePet" parameterType="pet">
+    UPDATE PET
+    <set>
+        PET_TYPE = #{petType},
+        PET_NAME = #{petName},
+        PET_AGE = #{petBirth},
+        PET_WEIGHT = #{petWeight}
+
+        <if test="petPhoto != null and petPhoto != ''">
+            , PET_PHOTO = #{petPhoto}
+        </if>
+    </set>
+    WHERE PET_NO = #{petNo}
+</update>
 	
 
 </mapper>

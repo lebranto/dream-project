@@ -6,8 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <title>문의 내역 - 집사상권</title>
-    <link rel="stylesheet" href="/resources/css/admin.css">
-    <link rel="stylesheet" href="/resources/css/inquiryList.css">
+    <link rel="stylesheet" href="/resources/css/admin/admin.css">
+    <link rel="stylesheet" href="/resources/css/admin/inquiryList.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>

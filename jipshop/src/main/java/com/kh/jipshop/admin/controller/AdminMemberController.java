@@ -29,7 +29,7 @@ public class AdminMemberController {
 	
 	
 	@Autowired private AdminMemberService adminMemberService;
-    @Autowired private PasswordEncoder    passwordEncoder;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     // 1. 회원 목록
     @GetMapping("/memberList")
