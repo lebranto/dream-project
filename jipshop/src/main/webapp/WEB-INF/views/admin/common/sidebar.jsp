@@ -15,10 +15,10 @@
     </a>
 
     <div class="sidebar-section">상품</div>
-    <a href="/admin/productRegist.do" class="sidebar-item <%= "productRegist".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/productRegist.do" class="sidebar-item <%= "productRegist".equals(currentMenu) ? "active" : "" %>">
         📦 상품 등록
     </a>
-    <a href="/admin/productList.do" class="sidebar-item <%= "productList".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/productList.do" class="sidebar-item <%= "productList".equals(currentMenu) ? "active" : "" %>">
         📋 상품목록
     </a>
 
@@ -39,10 +39,10 @@
     </a>
 
     <div class="sidebar-section">고객센터</div>
-    <a href="/admin/inquiryList.do" class="sidebar-item <%= "inquiryList".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/inquiryList.do" class="sidebar-item <%= "inquiryList".equals(currentMenu) ? "active" : "" %>">
         💬 문의 조회
     </a>
-    <a href="/admin/newUser.do" class="sidebar-item <%= "newUser".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/newUser.do" class="sidebar-item <%= "newUser".equals(currentMenu) ? "active" : "" %>">
         🔔 신고 조회
     </a>
 </nav>
