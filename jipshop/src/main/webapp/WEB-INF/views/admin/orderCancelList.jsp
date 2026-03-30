@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
@@ -43,159 +44,153 @@
 
 <main class="main">
 
-    <!-- 검색 -->
-    <form action="${contextPath}/admin/orderCancel/list" method="get">
-        <div class="filter-bar">
+<%-- 페이지 제목 --%>
+    <!-- 헤더 유지 -->
+<div class="page-title">
+    주문취소 관리
+    <span class="page-title-badge">취소 요청 ${pendingCount}건</span>
+</div>
 
-            <span class="filter-label">기간</span>
-            <input type="date" name="startDate" class="filter-input" value="${search.startDate}">
-            <span class="filter-sep">~</span>
-            <input type="date" name="endDate" class="filter-input" value="${search.endDate}">
+<!-- 검색 -->
+<form action="${contextPath}/admin/orderCancel/list" method="get">
+    <div class="filter-bar">
 
-            <select name="cancelStatus" class="filter-select">
-                <option value="">전체</option>
-                <option value="PENDING" ${search.cancelStatus eq 'PENDING' ? 'selected' : ''}>승인대기</option>
-                <option value="APPROVED" ${search.cancelStatus eq 'APPROVED' ? 'selected' : ''}>승인</option>
-                <option value="REJECTED" ${search.cancelStatus eq 'REJECTED' ? 'selected' : ''}>반려</option>
-            </select>
+        <span class="filter-label">기간</span>
+        <input type="date" name="startDate" class="filter-input" value="${search.startDate}">
+        <span class="filter-sep">~</span>
+        <input type="date" name="endDate" class="filter-input" value="${search.endDate}">
 
-            <input type="text" name="keyword" class="filter-input"
-                   placeholder="구매자명 / 주문번호"
-                   value="${search.keyword}">
+        <select name="cancelStatus" class="filter-select">
+            <option value="">전체</option>
+            <option value="PENDING" ${search.cancelStatus eq 'PENDING' ? 'selected' : ''}>승인대기</option>
+            <option value="APPROVED" ${search.cancelStatus eq 'APPROVED' ? 'selected' : ''}>승인</option>
+            <option value="REJECTED" ${search.cancelStatus eq 'REJECTED' ? 'selected' : ''}>반려</option>
+        </select>
 
-            <button type="submit" class="btn btn-primary">조회</button>
-            <button type="button" class="btn btn-outline"
-                    onclick="location.href='${contextPath}/admin/orderCancel/list'">초기화</button>
+        <input type="text" name="keyword" class="filter-input"
+               placeholder="구매자명 / 주문번호"
+               value="${search.keyword}">
 
-        </div>
-    </form>
-
-    <!-- 테이블 -->
-    <div class="table-wrap">
-
-        <table>
-            <thead>
-                <tr>
-                    <th class="center"><input type="checkbox" id="checkAll"></th>
-                    <th>번호</th>
-                    <th>구매자</th>
-                    <th>주문번호</th>
-                    <th>상품명</th>
-                    <th>취소사유</th>
-                    <th class="center">귀책s</th>
-                    <th class="center">배송</th>
-                    <th class="center">배송비</th>
-                    <th>신청일</th>
-                    <th class="center">상태</th>
-                    <th class="center">액션</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <c:choose>
-
-                    <c:when test="${empty list}">
-                        <tr class="empty-row">
-                            <td colspan="12">데이터 없음</td>
-                        </tr>
-                    </c:when>
-
-                    <c:otherwise>
-                        <c:forEach var="c" items="${list}" varStatus="status">
-
-                            <tr>
-                                <td class="center">
-                                    <input type="checkbox">
-                                </td>
-
-                                <td class="td-num">${status.index + 1}</td>
-                                <td>${c.ordererName}</td>
-                                <td class="td-num">${c.orderId}</td>
-                                <td>${c.productName}</td>
-
-                                <td class="reason-cell">${c.cancelReason}</td>
-
-                                <!-- 귀책 -->
-                                <td class="center">
-                                    <c:choose>
-                                        <c:when test="${c.responsibilityType == '사용자 귀책'}">
-                                            <span class="badge badge-user">사용자</span>
-                                        </c:when>
-                                        <c:when test="${c.responsibilityType == '판매자 귀책'}">
-                                            <span class="badge badge-admin">판매자s</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span class="badge badge-wait">확인</span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-
-                                <!-- 배송 -->
-                                <td class="center">
-                                    <c:choose>
-                                        <c:when test="${c.deliveryStatus == '배송완료'}">
-                                            <span class="badge badge-done">완료</span>
-                                        </c:when>
-                                        <c:when test="${c.deliveryStatus == '배송중'}">
-                                            <span class="badge badge-ship">배송중</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${c.deliveryStatus}
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-
-                                <!-- 배송비 -->
-                                <td class="center">${c.shippingFeePolicy}</td>
-
-                                <td>${c.cancelRequestDateStr}</td>
-
-                                <!-- 상태 -->
-                                <td class="center">${c.cancelStatusLabel}</td>
-
-                                <!-- 액션 -->
-                                <td class="center">
-                                    <c:choose>
-                                        <c:when test="${c.cancelStatus eq 'PENDING'}">
-
-                                            <form action="${contextPath}/admin/orderCancel/approve" method="post" style="display:inline;">
-                                                <input type="hidden" name="orderId" value="${c.orderId}">
-                                                <button type="submit" class="btn btn-success btn-sm">승인</button>
-                                            </form>
-
-                                            <form action="${contextPath}/admin/orderCancel/reject" method="post" style="display:inline;">
-                                                <input type="hidden" name="orderId" value="${c.orderId}">
-                                                <button type="submit" class="btn btn-danger btn-sm">반려</button>
-                                            </form>
-
-                                        </c:when>
-
-                                        <c:otherwise>
-                                            완료
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-
-                            </tr>
-
-                        </c:forEach>
-                    </c:otherwise>
-
-                </c:choose>
-            </tbody>
-        </table>
-
-        <!-- 페이징 -->
-        <div class="pagination">
-            <c:forEach begin="${pi.startPage}" end="${pi.endPage}" var="p">
-                <a class="page-num ${p == pi.currentPage ? 'active' : ''}"
-                   href="${contextPath}/admin/orderCancel/list?currentPage=${p}">
-                    ${p}
-                </a>
-            </c:forEach>
-        </div>
+        <button type="submit" class="btn btn-primary">조회</button>
+        <button type="button" class="btn btn-outline"
+                onclick="location.href='${contextPath}/admin/orderCancel/list'">초기화</button>
 
     </div>
+</form>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+    <th class="center"><input type="checkbox"></th>
+    <th class="center">번호</th>
+    <th>구매자</th>
+    <th class="center">주문번호</th>
+    <th>상품명</th>
+    <th style="width:180px;">취소사유</th>
+    <th class="center">귀책</th>
+    <th class="center">배송</th>
+    <th class="center">배송비</th>
+    <th class="center">신청일</th>
+    <th class="center">상태</th>
+    <th class="center">액션</th>
+</tr>
+</thead>
+
+<tbody>
+<c:choose>
+
+<c:when test="${empty list}">
+<tr class="empty-row">
+    <td colspan="12">데이터 없음</td>
+</tr>
+</c:when>
+
+<c:otherwise>
+<c:forEach var="c" items="${list}" varStatus="status">
+
+<tr>
+    <td class="center"><input type="checkbox"></td>
+
+    <td class="center">${status.index + 1}</td>
+    <td>${c.ordererName}</td>
+    <td class="center">${c.orderId}</td>
+    <td>${c.productName}</td>
+
+    <!-- 취소사유 (앞부분만 표시) -->
+    <td class="reason-cell">
+        ${fn:split(c.cancelReason, '|')[0]}
+    </td>
+
+    <!-- 귀책 -->
+    <td class="center">
+        <c:choose>
+            <c:when test="${c.responsibilityType == '사용자 귀책'}">
+                <span class="badge badge-user">사용자</span>
+            </c:when>
+            <c:when test="${c.responsibilityType == '판매자 귀책'}">
+                <span class="badge badge-admin">판매자</span>
+            </c:when>
+            <c:otherwise>
+                <span class="badge badge-wait">확인</span>
+            </c:otherwise>
+        </c:choose>
+    </td>
+
+    <!-- 배송 -->
+    <td class="center">
+        ${c.deliveryStatus}
+    </td>
+
+    <!-- 배송비 -->
+    <td class="center">${c.shippingFeePolicy}</td>
+
+    <td class="center">${c.cancelRequestDateStr}</td>
+
+    <!-- 상태 -->
+    <td class="center">${c.cancelStatusLabel}</td>
+
+    <!-- 액션 -->
+    <td class="center">
+        <c:choose>
+            <c:when test="${c.cancelStatus eq 'PENDING'}">
+
+                <form action="${contextPath}/admin/orderCancel/approve" method="post" style="display:inline;">
+                    <input type="hidden" name="orderId" value="${c.orderId}">
+                    <button type="submit" class="btn btn-success btn-sm">승인</button>
+                </form>
+
+                <form action="${contextPath}/admin/orderCancel/reject" method="post" style="display:inline;">
+                    <input type="hidden" name="orderId" value="${c.orderId}">
+                    <button type="submit" class="btn btn-danger btn-sm">반려</button>
+                </form>
+
+            </c:when>
+
+            <c:otherwise>
+                완료
+            </c:otherwise>
+        </c:choose>
+    </td>
+
+</tr>
+
+</c:forEach>
+</c:otherwise>
+</c:choose>
+</tbody>
+</table>
+
+<div class="pagination">
+<c:forEach begin="${pi.startPage}" end="${pi.endPage}" var="p">
+<a class="page-num ${p == pi.currentPage ? 'active' : ''}"
+   href="${contextPath}/admin/orderCancel/list?currentPage=${p}">
+    ${p}
+</a>
+</c:forEach>
+</div>
+
+</div>
 
 </main>
 

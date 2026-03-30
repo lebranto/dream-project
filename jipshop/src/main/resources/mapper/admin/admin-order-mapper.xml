@@ -340,93 +340,85 @@
     </select>
 
     <select id="selectOrderCancelList"
-            parameterType="com.kh.jipshop.admin.model.vo.AdminOrderCancelSearch"
-            resultType="com.kh.jipshop.admin.model.vo.AdminOrderCancel">
-        SELECT *
-          FROM (
-                SELECT
-                       O.ORDER_ID,
-                       O.ORDERER_NAME,
-                       NVL(P.PRODUCT_NAME, '상품 정보 없음') AS PRODUCT_NAME,
-                       NVL(O.CANCEL_REASON, '-') AS CANCEL_REASON,
-                       TO_CHAR(O.CANCEL_REQUEST_DATE, 'YYYY-MM-DD') AS CANCEL_REQUEST_DATE_STR,
-                       O.ORDER_CANCEL_YN,
-                       NVL(O.CANCEL_STATUS, 'PENDING') AS CANCEL_STATUS,
+        parameterType="com.kh.jipshop.admin.model.vo.AdminOrderCancelSearch"
+        resultType="com.kh.jipshop.admin.model.vo.AdminOrderCancel">
 
-                       CASE
-                           WHEN NVL(O.CANCEL_STATUS, 'PENDING') = 'APPROVED' THEN '취소 승인'
-                           WHEN NVL(O.CANCEL_STATUS, 'PENDING') = 'REJECTED' THEN '취소 반려'
-                           ELSE '승인 대기'
-                       END AS CANCEL_STATUS_LABEL,
+    SELECT *
+    FROM (
+        SELECT
+            O.ORDER_ID,
+            O.ORDERER_NAME,
+            NVL(P.PRODUCT_NAME, '상품 정보 없음') AS PRODUCT_NAME,
+            NVL(O.CANCEL_REASON, '-') AS CANCEL_REASON,
+            TO_CHAR(O.CANCEL_REQUEST_DATE, 'YYYY-MM-DD') AS CANCEL_REQUEST_DATE_STR,
+            O.ORDER_CANCEL_YN,
+            NVL(O.CANCEL_STATUS, 'PENDING') AS CANCEL_STATUS,
 
-                       NVL(ST.DELIVERY_STATUS, '준비중') AS DELIVERY_STATUS,
+          
+            CASE
+                WHEN NVL(O.CANCEL_STATUS, 'PENDING') = 'APPROVED' THEN '취소 승인'
+                WHEN NVL(O.CANCEL_STATUS, 'PENDING') = 'REJECTED' THEN '취소 반려'
+                ELSE '승인 대기'
+            END AS CANCEL_STATUS_LABEL,
 
-                       CASE
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%단순%' THEN '사용자 귀책'
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%변심%' THEN '사용자 귀책'
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%중복%' THEN '사용자 귀책'
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%잘못%' THEN '사용자 귀책'
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%오선택%' THEN '사용자 귀책'
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%주소%' THEN '사용자 귀책'
+            NVL(ST.DELIVERY_STATUS, '준비중') AS DELIVERY_STATUS,
 
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%불량%' THEN '판매자 귀책'
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%오배송%' THEN '판매자 귀책'
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%누락%' THEN '판매자 귀책'
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%지연%' THEN '판매자 귀책'
-                           WHEN NVL(O.CANCEL_REASON, '-') LIKE '%파손%' THEN '판매자 귀책'
+            CASE
+                WHEN O.CANCEL_REASON LIKE '단순변심|%' THEN '사용자 귀책'
+                WHEN O.CANCEL_REASON LIKE '주문실수|%' THEN '사용자 귀책'
 
-                           ELSE '확인 필요'
-                       END AS RESPONSIBILITY_TYPE,
+                WHEN O.CANCEL_REASON LIKE '상품불량|%' THEN '판매자 귀책'
+                WHEN O.CANCEL_REASON LIKE '오배송|%' THEN '판매자 귀책'
+                WHEN O.CANCEL_REASON LIKE '배송지연|%' THEN '판매자 귀책'
 
-                       CASE
-                           WHEN (
-                                  NVL(O.CANCEL_REASON, '-') LIKE '%단순%'
-                               OR NVL(O.CANCEL_REASON, '-') LIKE '%변심%'
-                               OR NVL(O.CANCEL_REASON, '-') LIKE '%중복%'
-                               OR NVL(O.CANCEL_REASON, '-') LIKE '%잘못%'
-                               OR NVL(O.CANCEL_REASON, '-') LIKE '%오선택%'
-                               OR NVL(O.CANCEL_REASON, '-') LIKE '%주소%'
-                           ) THEN '배송비 부과'
+                ELSE '확인 필요'
+            END AS RESPONSIBILITY_TYPE,
 
-                           WHEN (
-                                  NVL(O.CANCEL_REASON, '-') LIKE '%불량%'
-                               OR NVL(O.CANCEL_REASON, '-') LIKE '%오배송%'
-                               OR NVL(O.CANCEL_REASON, '-') LIKE '%누락%'
-                               OR NVL(O.CANCEL_REASON, '-') LIKE '%지연%'
-                               OR NVL(O.CANCEL_REASON, '-') LIKE '%파손%'
-                           ) THEN '배송비 면제'
+            
+            CASE
+                WHEN O.CANCEL_REASON LIKE '단순변심|%' THEN '배송비 부과'
+                WHEN O.CANCEL_REASON LIKE '주문실수|%' THEN '배송비 부과'
 
-                           WHEN NVL(ST.DELIVERY_STATUS, '준비중') IN ('준비중', '결제완료', '상품준비중')
-                                THEN '배송비 없음'
+                WHEN O.CANCEL_REASON LIKE '상품불량|%' THEN '배송비 면제'
+                WHEN O.CANCEL_REASON LIKE '오배송|%' THEN '배송비 면제'
+                WHEN O.CANCEL_REASON LIKE '배송지연|%' THEN '배송비 면제'
 
-                           ELSE '확인 필요'
-                       END AS SHIPPING_FEE_POLICY,
+                /* 배송 전이면 기본 없음 */
+                WHEN NVL(ST.DELIVERY_STATUS, '준비중') IN ('준비중', '결제완료', '상품준비중')
+                    THEN '배송비 없음'
 
-                       ROW_NUMBER() OVER (PARTITION BY O.ORDER_ID ORDER BY OD.DETAIL_ID) AS RN
-                  FROM ORDERS O
-                  LEFT JOIN ORDER_DETAIL OD
-                    ON O.ORDER_ID = OD.ORDER_ID
-                  LEFT JOIN PRODUCT P
-                    ON OD.PRODUCT_ID = P.PRODUCT_ID
-                  LEFT JOIN DELIVERY D
-                    ON O.ORDER_ID = D.ORDER_ID
-                  LEFT JOIN (
-                        SELECT S.DELIVERY_ID,
-                               S.DELIVERY_YN,
-                               S.DELIVERY_STATUS
-                          FROM STATUS S
-                         WHERE S.DNUM = (
-                                SELECT MAX(S2.DNUM)
-                                  FROM STATUS S2
-                                 WHERE S2.DELIVERY_ID = S.DELIVERY_ID
-                         )
-                  ) ST
-                    ON D.DELIVERY_ID = ST.DELIVERY_ID
-                <include refid="orderCancelWhere"/>
-               )
-         WHERE RN = 1
-         ORDER BY ORDER_ID DESC
-    </select>
+                ELSE '확인 필요'
+            END AS SHIPPING_FEE_POLICY,
+
+            ROW_NUMBER() OVER (PARTITION BY O.ORDER_ID ORDER BY OD.DETAIL_ID) AS RN
+
+        FROM ORDERS O
+        LEFT JOIN ORDER_DETAIL OD
+            ON O.ORDER_ID = OD.ORDER_ID
+        LEFT JOIN PRODUCT P
+            ON OD.PRODUCT_ID = P.PRODUCT_ID
+        LEFT JOIN DELIVERY D
+            ON O.ORDER_ID = D.ORDER_ID
+        LEFT JOIN (
+            SELECT S.DELIVERY_ID,
+                   S.DELIVERY_YN,
+                   S.DELIVERY_STATUS
+            FROM STATUS S
+            WHERE S.DNUM = (
+                SELECT MAX(S2.DNUM)
+                FROM STATUS S2
+                WHERE S2.DELIVERY_ID = S.DELIVERY_ID
+            )
+        ) ST
+            ON D.DELIVERY_ID = ST.DELIVERY_ID
+
+        <include refid="orderCancelWhere"/>
+
+    )
+    WHERE RN = 1
+    ORDER BY O.CANCEL_REQUEST_DATE DESC
+
+</select>
 
     <select id="selectPendingCancelCount" resultType="_int">
         SELECT COUNT(*)
