@@ -42,33 +42,58 @@
 제작사의 사정에 따라 취소 금액이 늦게 들어올 수 있으며
 한번 취소된 상품은 다시 되돌릴 수 없습니다.
 
-취소를 원하시면 비밀번호 입력과 확인을 눌러주십시오
-        </div>
+취소를 원하시면 비밀번호 입력과 취소 사유를 적으시고 확인을 눌러주세요.
+        </div>     
       </div>
        <form action="${contextPath}/mypage/cancle" method="post" onsubmit="return validateForm();">
        <input type="hidden" name="orderId" value="${orderList.orderId}">
+      
+      
+     <div class="form-area">
+  <div class="form-row">
+    <button class="label-box" type="button">비밀번호</button>
+    <input type="password"
+           name="userPwd"
+           id="passwordInput"
+           class="password-input"
+           placeholder="비밀번호를 입력해주세요">
+  </div>
 
-      <div class="bottom-area">
-        <button class="label-box" type="button">비밀번호</button>
-        <input type="password" name="userPwd" id="passwordInput" class="password-input" placeholder="비밀번호 입력칸">
-        <button class="confirm-btn" type="submit">확인</button>
-      </div>
+  <div class="form-row">
+    <button class="label-box" type="button">취소 사유</button>
+    <textarea name="cancelReason"
+              id="cancelReason"
+              class="reason-input"
+              placeholder="취소 사유를 입력해주세요"></textarea>
+  </div>
+
+  <div class="btn-row">
+    <button class="confirm-btn" type="submit">확인</button>
+  </div>
+</div>
     </form>
     </main>
   </div>
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+<script>
+function validateForm() {
+  const pwd = document.getElementById("passwordInput").value.trim();
+  const reason = document.getElementById("cancelReason").value.trim();
 
-  <<!-- script>
-    function checkPassword() {
-      const password = document.getElementById("passwordInput").value.trim();
+  if (pwd === "") {
+    alert("비밀번호를 입력해주세요.");
+    return false;
+  }
 
-      if (password === "") {
-        alert("비밀번호를 입력해주세요.");
-        return;
-      }
+  if (reason === "") {
+    alert("취소 사유를 입력해주세요.");
+    return false;
+  }
 
-      alert("취소가 완료되었습니다.");
-    }
-  </script> -->
+  return true;
+}
+</script>
+
+
 </body>
 </html>

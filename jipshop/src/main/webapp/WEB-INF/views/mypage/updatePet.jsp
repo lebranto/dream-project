@@ -26,15 +26,17 @@
     <div class="content-wrap">
         <main class="content">
         
-        <form action="${contextPath}/mypage/updatePet" method="post">
+        <form action="${contextPath}/mypage/updatePet" method="post" enctype="multipart/form-data">
         
               <div class="reg-pet-card">
                 <div class="reg-pet-form-title">애완동물 정보</div>
+                <!-- 어느 애완 동물의 사진을 바꿀지 구분하기 위해 넣은것 -->
+                <input type="hidden" name="petNo" value="${pet.petNo}">
 
                 <!-- 사진 등록 -->
 				<label class="reg-file-label" for="petPhoto" id="fileLabel">
 				  📁&nbsp; <span id="fileNameText">사진 파일 올리기</span>
-				  <input id="petPhoto" type="file" accept="image/*" style="display:none;" name="petPhoto" 
+				  <input id="petPhoto" type="file" accept="image/*" style="display:none;" name="petPhotoFile" 
 				         onchange="updateFileName(this)" />
 				</label>
 
