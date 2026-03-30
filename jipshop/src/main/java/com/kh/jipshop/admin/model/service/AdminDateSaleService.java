@@ -19,6 +19,12 @@ public interface AdminDateSaleService {
 	
 	int selectTotalCountMonth(Map<String, Object> paramMap);
 	
+	int totalFeeMonth(Map<String, Object> paramMap);
+	
+	int totalDepositMonth(Map<String, Object> paramMap);
+	
+	int totalPayableMonth(Map<String, Object> paramMap);
+	
 	
 	//일별 조회
 	int dateListCount(Map<String, Object> paramMap);
@@ -29,6 +35,7 @@ public interface AdminDateSaleService {
 	int selectTotalDate(Map<String, Object> paramMap);
 
 	int selectTotalCountDate(Map<String, Object> paramMap);
+
 
 
 

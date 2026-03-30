@@ -74,8 +74,12 @@ public class AdminDateSaleController {
 
         List<Orders> list = aService.selectListMonth(paramMap);
         
+        
         int totalSales = aService.selectTotalMonth(paramMap);
         int totalOrderCount = aService.selectTotalCountMonth(paramMap);
+        int totalFee = aService.totalFeeMonth(paramMap);  // 수수료  
+        int totalDeposit = aService.totalDepositMonth(paramMap);  // 입금
+        int totalpayable = aService.totalPayableMonth(paramMap);  // 지급 예정액
         
         model.addAttribute("orderlist", list);
         model.addAttribute("pi", pi);
@@ -83,6 +87,9 @@ public class AdminDateSaleController {
         model.addAttribute("searchMonth", searchMonth);
         model.addAttribute("totalSales", totalSales);
         model.addAttribute("totalOrderCount", totalOrderCount);
+        model.addAttribute("totalFee",totalFee);
+        model.addAttribute("totalDeposit",totalDeposit);
+        model.addAttribute("totalpayable",totalpayable);
 
         return "admin/salesDaily";
     }

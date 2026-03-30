@@ -80,7 +80,9 @@
                     <c:otherwise>
                         <c:forEach var="o" items="${orderlist}">
                             <tr>
-                                <td style="color:var(--text-sub)">${o.orderDate}</td>
+                                <td style="color:var(--text-sub)">
+                                <fmt:formatDate value="${o.orderDate}" pattern="yyyy-MM-dd"/> 
+                                </td>
                                 <td><strong>${o.ordererName}</strong></td>
                                 <td class="td-num font-bold">
                                 <fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,###"/>
