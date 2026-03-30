@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 import com.kh.jipshop.mypage.model.dao.MypageDao;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
@@ -101,6 +102,12 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public int updateMember(Member m) {
 		return mDao.updateMember(m);
+	}
+
+	@Override
+	public int updatePet(Pet p) {
+		
+		return mDao.updatePet(p);
 	}
 	
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
 import com.kh.jipshop.mypage.model.vo.Orders;
@@ -35,6 +36,8 @@ public interface MypageDao {
 	int memberDeleteOk(Member m);
 
 	int updateMember(Member m);
+
+	int updatePet(Pet p);
 	
 
 

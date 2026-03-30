@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.member.model.vo.Pet;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.MyInqury;
 import com.kh.jipshop.mypage.model.vo.Orders;
@@ -140,14 +141,26 @@ public class MypageDaoImpl implements MypageDao {
 		return session.update("mypage.canclePurchase", orders);
 	}
 
+	
+	//회원 정보 삭제 관련
+	
 	@Override
 	public int memberDeleteOk(Member m) {
 		return session.update("mypage.memberDeleteOk", m);
 	}
 
+	
+	// 회원 정보 수정 관련
+	
 	@Override
 	public int updateMember(Member m) {
 		return session.update("mypage.updateMember",m);
+	}
+
+	@Override
+	public int updatePet(Pet p) {
+		
+		return session.update("mypage.updatePet",p);
 	}
 
 
