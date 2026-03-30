@@ -32,3 +32,32 @@
 .form-input.w-lg { width: 320px; flex: none; }
 .form-textarea { width: 100%; resize: vertical; min-height: 90px; line-height: 1.6; }
 .form-select { cursor: pointer; }
+.status-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-select {
+    width: 180px;
+}
+
+.status-lock-message {
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-sub);
+}
+
+.badge-out {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #eef4ff;
+    color: #3157c7;
+}

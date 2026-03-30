@@ -47,9 +47,4 @@ public class AdminOrderCancelDaoImpl implements AdminOrderCancelDao {
     public int updateCancelStatusRejected(SqlSessionTemplate sqlSession, int orderId) {
         return sqlSession.update("adminOrderMapper.updateCancelStatusRejected", orderId);
     }
-
-    @Override
-    public int restoreProductStock(SqlSessionTemplate sqlSession, int orderId) {
-        return sqlSession.update("adminOrderMapper.restoreProductStock", orderId);
-    }
 }
