@@ -20,12 +20,12 @@ public class AdminDashboardController {
 
         // 미처리 카운트
 //        model.addAttribute("unprocessedInquiryCount", adminDashboardService.getUnprocessedInquiryCount());
-//        model.addAttribute("unprocessedReportCount",  adminDashboardService.getUnprocessedReportCount());
+        model.addAttribute("unprocessedReportCount",  adminDashboardService.getUnProReportCount());
         model.addAttribute("todayOrderCount", adminDashboardService.getTodayOrderCount());
 
         // 최근 목록
         //model.addAttribute("recentInquiryList", adminDashboardService.getRecentInquiryList());
-        //model.addAttribute("recentReportList",  adminDashboardService.getRecentReportList());
+        model.addAttribute("recentReportList",  adminDashboardService.getRecentReportList());
         model.addAttribute("recentOrderList",   adminDashboardService.getRecentOrderList());
 
         return "admin/dashboard";

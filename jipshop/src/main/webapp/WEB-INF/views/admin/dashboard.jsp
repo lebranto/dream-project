@@ -7,7 +7,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application"/>
 <head>
     <meta charset="UTF-8">
-    <title>대시보드 - 집사상점</title>
+    <title>대시보드 - 집사상권</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/dashboard.css">
 </head>
@@ -56,41 +56,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>김민준</strong></td>
-                        <td><span class="badge badge-waiting">상품문의</span></td>
-                        <td class="td-ellipsis">해당 상품 재입고 예정이 있나요?</td>
-                        <td style="color:var(--text-sub)">2026-03-25</td>
-                        <td class="center"><span class="badge badge-pending">미처리</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>이서연</strong></td>
-                        <td><span class="badge badge-waiting">배송문의</span></td>
-                        <td class="td-ellipsis">주문한 지 3일이 지났는데 배송이 안됐어요</td>
-                        <td style="color:var(--text-sub)">2026-03-24</td>
-                        <td class="center"><span class="badge badge-pending">미처리</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>박도현</strong></td>
-                        <td><span class="badge badge-waiting">환불요청</span></td>
-                        <td class="td-ellipsis">상품이 사진과 달라서 환불 요청드립니다</td>
-                        <td style="color:var(--text-sub)">2026-03-23</td>
-                        <td class="center"><span class="badge badge-done">처리 완료</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>최지우</strong></td>
-                        <td><span class="badge badge-waiting">기타</span></td>
-                        <td class="td-ellipsis">앱에서 결제가 안됩니다 도움 부탁드려요</td>
-                        <td style="color:var(--text-sub)">2026-03-22</td>
-                        <td class="center"><span class="badge badge-pending">미처리</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>정하윤</strong></td>
-                        <td><span class="badge badge-waiting">취소요청</span></td>
-                        <td class="td-ellipsis">실수로 주문했습니다 취소 부탁드립니다</td>
-                        <td style="color:var(--text-sub)">2026-03-21</td>
-                        <td class="center"><span class="badge badge-done">처리 완료</span></td>
-                    </tr>
+                    <c:choose>
+                        <c:when test="${empty recentInquiryList}">
+                            <tr class="empty-row"><td colspan="5">최근 문의가 없습니다.</td></tr>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="i" items="${recentInquiryList}">
+                                <tr>
+                                    <td><strong>${i.MEMBERNAME}</strong></td>
+                                    <td><span class="badge badge-waiting">${i.INQUIRYTYPE}</span></td>
+                                    <td class="td-ellipsis">${i.INQUIRYCONTENT}</td>
+                                    <td style="color:var(--text-sub)">
+                                        <fmt:formatDate value="${i.INQUIRYREGDATE}" pattern="yyyy-MM-dd"/>
+                                    </td>
+                                    <td class="center">
+                                        <c:choose>
+                                            <c:when test="${i.REPLYYN == 'Y'}">
+                                                <span class="badge badge-done">처리 완료</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge badge-pending">미처리</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                 </tbody>
             </table>
         </div>
@@ -106,43 +98,39 @@
             <table>
                 <thead>
                     <tr>
-                        <th>신고 유형</th>
+                        <th>신고자</th>
                         <th>신고 사유</th>
                         <th>신고일</th>
                         <th class="center">처리 상태</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><span class="badge badge-cancel">욕설/비방</span></td>
-                        <td class="td-ellipsis">댓글에 욕설이 포함되어 있습니다</td>
-                        <td style="color:var(--text-sub)">2026-03-25</td>
-                        <td class="center"><span class="badge badge-pending">미처리</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge badge-cancel">허위정보</span></td>
-                        <td class="td-ellipsis">허위 리뷰로 의심됩니다</td>
-                        <td style="color:var(--text-sub)">2026-03-24</td>
-                        <td class="center"><span class="badge badge-pending">미처리</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge badge-cancel">스팸</span></td>
-                        <td class="td-ellipsis">광고성 댓글입니다</td>
-                        <td style="color:var(--text-sub)">2026-03-23</td>
-                        <td class="center"><span class="badge badge-done">처리 완료</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge badge-cancel">욕설/비방</span></td>
-                        <td class="td-ellipsis">판매자에 대한 비방 댓글입니다</td>
-                        <td style="color:var(--text-sub)">2026-03-22</td>
-                        <td class="center"><span class="badge badge-done">처리 완료</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge badge-cancel">기타</span></td>
-                        <td class="td-ellipsis">부적절한 내용이 포함되어 있습니다</td>
-                        <td style="color:var(--text-sub)">2026-03-21</td>
-                        <td class="center"><span class="badge badge-pending">미처리</span></td>
-                    </tr>
+                    <c:choose>
+                        <c:when test="${empty recentReportList}">
+                            <tr class="empty-row"><td colspan="4">최근 신고가 없습니다.</td></tr>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="r" items="${recentReportList}">
+                                <tr>
+                                    <td><strong>${r.MEMBERNAME}</strong></td>
+                                    <td class="td-ellipsis">${r.REPORTREASON}</td>
+                                    <td style="color:var(--text-sub)">
+                                        <fmt:formatDate value="${r.REPORTDATE}" pattern="yyyy-MM-dd"/>
+                                    </td>
+                                    <td class="center">
+                                        <c:choose>
+                                            <c:when test="${r.REPORTPROCESSYN == 'Y'}">
+                                                <span class="badge badge-done">처리 완료</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge badge-pending">미처리</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                 </tbody>
             </table>
         </div>

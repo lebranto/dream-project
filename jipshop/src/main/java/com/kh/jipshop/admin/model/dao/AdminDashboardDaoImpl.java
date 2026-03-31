@@ -12,14 +12,25 @@ public class AdminDashboardDaoImpl implements AdminDashboardDao{
 	@Autowired
 	private SqlSession session; 
 	
+	private String dash = "adminDashboard."; 
 	@Override
 	public int getTodayOrderCount() {
-		return session.selectOne("adminOrderMapper.getTodayOrderCount");
+		return session.selectOne(dash+"getTodayOrderCount");
 	}
 
 	@Override
 	public List<Map<String, Object>> getRecentOrderList() {
-		return session.selectList("adminOrderMapper.getRecentOrderList");
+		return session.selectList(dash+"getRecentOrderList");
+	}
+
+	@Override
+	public int getUnProReportCount() {
+		return session.selectOne(dash+"getUnProReportCount");
+	}
+
+	@Override
+	public List<Map<String, Object>> getRecentReportList() {
+		return session.selectList(dash+"getRecentReportList");
 	}
 
 }

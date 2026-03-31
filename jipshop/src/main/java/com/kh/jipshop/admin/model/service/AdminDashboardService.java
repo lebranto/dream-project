@@ -9,4 +9,8 @@ public interface AdminDashboardService {
 
 	List<Map<String, Object>> getRecentOrderList();
 
+	int getUnProReportCount();
+
+	List<Map<String, Object>> getRecentReportList();
+
 }
