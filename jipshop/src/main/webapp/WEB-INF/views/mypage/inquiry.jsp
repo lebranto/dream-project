@@ -9,7 +9,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>마이페이지 문의 내역</title>
- <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+  <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" />
   <!-- <link rel="stylesheet" href="${contextPath}/resources/css/mypage/inquiry.css"> -->
  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage/inquiry.css">
 </head>
