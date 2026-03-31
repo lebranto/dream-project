@@ -28,7 +28,7 @@
                 WHERE O.ORDER_DATE >= #{startDate}
                   AND O.ORDER_DATE &lt; #{nextMonthStartDate}
                   AND O.ORDER_CANCEL_YN = 'N'
-                ORDER BY ORDER_DATE DESC
+                ORDER BY O.ORDER_DATE DESC
             ) T1
         )
         WHERE RNUM BETWEEN #{offset} AND #{limit}
@@ -40,6 +40,7 @@
         FROM ORDERS
         WHERE ORDER_DATE >= #{startDate}
           AND ORDER_DATE &lt; #{nextMonthStartDate}
+          AND ORDER_CANCEL_YN = 'N'
 </select>
 
 <select id="selectTotalMonth" resultType="int">
@@ -47,6 +48,7 @@
         FROM ORDERS
         WHERE ORDER_DATE >= #{startDate}
           AND ORDER_DATE &lt; #{nextMonthStartDate}
+          AND ORDER_CANCEL_YN = 'N'
 </select>
 
 
@@ -55,6 +57,7 @@
         FROM ORDERS
         WHERE ORDER_DATE >= #{startDate}
           AND ORDER_DATE &lt; #{nextMonthStartDate}
+          AND ORDER_CANCEL_YN = 'N'
 
 </select>
 
@@ -83,10 +86,10 @@
                 ) AS COMPANY_NAME
                
                 FROM ORDERS O
-                WHERE O.ORDER_CANCEL_YN = 'N'
                 <where>
+                O.ORDER_CANCEL_YN = 'N'
                     <if test="startDate != null and endDate != null">
-                        O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+                       AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
                     </if>
                 </where>
                 ORDER BY O.ORDER_DATE DESC
@@ -97,10 +100,11 @@
     
     <select id="dateListCount" resultType="int">
         SELECT COUNT(*)
-        FROM ORDERS
+        FROM ORDERS O
         <where>
+        O.ORDER_CANCEL_YN = 'N'
             <if test="startDate != null and endDate != null">
-                ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+               AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
             </if>
         </where>
     </select>
@@ -109,10 +113,11 @@
     <!-- 총 매출 합계 -->
 	<select id="selectTotalDate" resultType="int">
 	 SELECT NVL(SUM(ORDER_TOTAL_PRICE), 0)
-        FROM ORDERS
+        FROM ORDERS O
         <where>
+         O.ORDER_CANCEL_YN = 'N'
             <if test="startDate != null and endDate != null">
-                ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+              AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
             </if>
         </where>
 	</select>
@@ -120,10 +125,11 @@
 	<!-- 총 주문 개수 -->
 	<select id="selectTotalCountDate" resultType="int">
 		     SELECT COUNT(*)
-        FROM ORDERS
+        FROM ORDERS O
         <where>
+         	O.ORDER_CANCEL_YN = 'N'
             <if test="startDate != null and endDate != null">
-                ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+               AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
             </if>
         </where>
 	
