@@ -201,10 +201,10 @@ public class CommunityMainController {
                                 Authentication auth,
                                 RedirectAttributes ra) {
 
-        if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof MemberExt)) {
-            ra.addFlashAttribute("alertMsg", "로그인 후 이용 가능합니다.");
-            return "redirect:/community/detail?boardNo=" + boardNo;
-        }
+    	 if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof MemberExt)) {
+    	        ra.addFlashAttribute("alertMsg", "로그인 후 사용 가능합니다.");
+    	        return "redirect:/member/login";
+    	    }
 
         if (commentId == null) {
             ra.addFlashAttribute("alertMsg", "신고 대상 댓글 정보가 없습니다.");

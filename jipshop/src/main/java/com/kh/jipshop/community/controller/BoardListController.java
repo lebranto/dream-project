@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.jipshop.community.model.service.CommunityService;
 import com.kh.jipshop.community.model.vo.Board;
@@ -44,10 +44,15 @@ public class BoardListController {
             @RequestParam("boardContent") String boardContent,
             @RequestParam(value="imageFiles", required=false) List<MultipartFile> imageFiles,
             Authentication auth,
-            HttpSession session) {
+            HttpSession session,
+            RedirectAttributes ra) {
 
         System.out.println("🔥 insertBoard 들어옴");
 
+        if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof MemberExt)) {
+            ra.addFlashAttribute("alertMsg", "로그인 후 사용 가능합니다.");
+            return "redirect:/member/login";
+        }
         MemberExt loginUser = (MemberExt) auth.getPrincipal();
 
         System.out.println("loginUser = " + loginUser);
@@ -63,11 +68,17 @@ public class BoardListController {
         int result = boardService.insertBoard(board);
 
         if (result <= 0) {
+            ra.addFlashAttribute("alertMsg", "게시글 작성에 실패했습니다.");
+            return "redirect:/community/writeBoard";
+        }
+        if (result <= 0) {
             return "redirect:/community/writeBoard";
         }
 
         int boardNo = board.getBoardNo();
         saveBoardImages(boardNo, imageFiles, session);
+        
+        ra.addFlashAttribute("alertMsg", "게시글이 등록되었습니다.");
 
         return "redirect:/community/main";
     }

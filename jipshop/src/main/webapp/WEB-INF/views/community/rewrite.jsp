@@ -281,6 +281,10 @@ document.getElementById("modifyForm").addEventListener("submit", function(e){
     }
 });
 </script>
-
+<c:if test="${not empty alertMsg}">
+    <script>
+        alert("${alertMsg}");
+    </script>
+</c:if>
 </body>
 </html>

@@ -17,7 +17,7 @@
     </a>
 
     <div class="sidebar-section">상품</div>
-    <a href="${contextPath }/admin/productRegist.do" class="sidebar-item <%= "productRegist".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/" class="sidebar-item <%= "productRegist".equals(currentMenu) ? "active" : "" %>">
         📦 상품 등록
     </a>
     <a href="${contextPath }/admin/productList.do" class="sidebar-item <%= "productList".equals(currentMenu) ? "active" : "" %>">
