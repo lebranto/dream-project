@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="adminDashboard">
+	<!-- 미처리 문의 수 -->
+    <select id="getUnproInquiryCount" resultType="int">
+        SELECT COUNT(*) FROM INQUIRY WHERE REPLY_YN = 'N'
+    </select>
+    
+    <!-- 미처리 신고 수 -->
+    <select id="getUnProReportCount" resultType="int">
+        SELECT COUNT(*) FROM COMMENT_REPORT WHERE REPORT_PROCESS_YN = 'N'
+    </select>
+ 
+    <!-- 오늘 주문 수 -->
+    <select id="getTodayOrderCount" resultType="int">
+        SELECT COUNT(*)
+        FROM ORDERS
+        WHERE TRUNC(ORDER_DATE) = TRUNC(SYSDATE)
+    </select>
+ 	
+ 	<!-- 최근 문의 5건 -->
+    <select id="getRecentInquiryList" resultType="map">
+        SELECT *
+        FROM (
+            SELECT
+                I.INQUIRY_ID        AS inquiryId,
+                M.MEMBER_NAME       AS memberName,
+                I.INQUIRY_TYPE      AS inquiryType,
+                I.INQUIRY_CONTENT   AS inquiryContent,
+                I.INQUIRY_REG_DATE  AS inquiryRegDate,
+                I.REPLY_YN          AS replyYn
+            FROM INQUIRY I
+            JOIN MEMBER M ON I.MEMBER_NO = M.MEMBER_NO
+            ORDER BY I.INQUIRY_REG_DATE DESC
+        )
+        WHERE ROWNUM &lt;= 5
+    </select>
+    
+    <!-- 최근 신고 5건 — COMMENT_REPORT 실제 컬럼 기준 -->
+    <select id="getRecentReportList" resultType="map">
+        SELECT *
+        FROM (
+            SELECT
+                CR.REPORT_ID            AS reportId,
+                CR.REPORTER_MEMBER_NO   AS reporterMemberNo,
+                M.MEMBER_NAME           AS memberName,
+                CR.REPORT_TYPE_ID       AS reportTypeId,
+                CR.REPORT_REASON        AS reportReason,
+                CR.REPORT_DATE          AS reportDate,
+                CR.REPORT_PROCESS_YN    AS reportProcessYn
+            FROM COMMENT_REPORT CR
+            LEFT JOIN MEMBER M ON CR.REPORTER_MEMBER_NO = M.MEMBER_NO
+            ORDER BY CR.REPORT_DATE DESC
+        )
+        WHERE ROWNUM &lt;= 5
+    </select>
+ 
+    <!-- 최근 주문 5건 -->
+    <select id="getRecentOrderList" resultType="map">
+        SELECT *
+        FROM (
+            SELECT
+                O.ORDER_ID            AS orderId,
+                O.ORDERER_NAME        AS ordererName,
+                O.ORDER_TOTAL_PRICE   AS orderTotalPrice,
+                O.ORDER_DATE          AS orderDate,
+                O.ORDER_CANCEL_YN     AS orderCancelYn
+            FROM ORDERS O
+            ORDER BY O.ORDER_DATE DESC
+        )
+        WHERE ROWNUM &lt;= 5
+    </select>
+ 
+</mapper>
