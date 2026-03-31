@@ -4,11 +4,36 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
+import com.kh.jipshop.mypage.model.vo.Orders;
 
 public interface AdminDateSaleService {
 
-	int salesListCount(Map<String, Object> paramMap);
+	// 월별 조회
+	int monthListCount(Map<String, Object> paramMap);
 
-	List<OrderDetailResponse> selectListSales(Map<String, Object> paramMap);
+	List<OrderDetailResponse> selectListMonth(Map<String, Object> paramMap);
+
+	// 월별 통계
+	
+	int selectTotalMonth(Map<String, Object> paramMap);
+	
+	int selectTotalCountMonth(Map<String, Object> paramMap);
+	
+	
+	
+	//일별 조회
+	int dateListCount(Map<String, Object> paramMap);
+
+	List<OrderDetailResponse> selectListDate(Map<String, Object> paramMap);
+
+	
+	
+	//일별 통계
+	int selectTotalDate(Map<String, Object> paramMap);
+
+	int selectTotalCountDate(Map<String, Object> paramMap);
+
+
+
 
 }

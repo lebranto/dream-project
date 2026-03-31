@@ -34,7 +34,10 @@
 			메인페이지, 회원가입페이지, 로그인페이지, 아이디 중복 체크 기능은
 			모든 사용자가 이용 가능하도록 설정.
 		 -->
-		
+		  <!-- 커뮤니티 작성 및 수정삭제 권한  -->
+		 <security:intercept-url pattern="/community/**" access="isAuthenticated()" />
+		 <security:intercept-url pattern="/mypage/**" access="isAuthenticated()" />
+		 
 		 <security:intercept-url pattern="/" access="permitAll" />
 		 <security:intercept-url pattern="/security/insert" access="permitAll" />
 		 <security:intercept-url pattern="/member/login" access="permitAll" />

@@ -25,11 +25,11 @@
     </a>
 
     <div class="sidebar-section">매출</div>
-    <a href="/admin/salesDaily.do" class="sidebar-item <%= "salesDaily".equals(currentMenu) ? "active" : "" %>">
-        📈 일별조회
+    <a href="${contextPath}/admin/salesDaily" class="sidebar-item <%= "salesDaily".equals(currentMenu) ? "active" : "" %>">
+        📈 월별조회
     </a>
-    <a href="/admin/salesMonthly.do" class="sidebar-item <%= "salesMonthly".equals(currentMenu) ? "active" : "" %>">
-        📅 월별조회
+    <a href="${contextPath}/admin/salesMonthly" class="sidebar-item <%= "salesMonthly".equals(currentMenu) ? "active" : "" %>">
+        📅 일별조회
     </a>
 
     <div class="sidebar-section">주문</div>
