@@ -3,290 +3,245 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+    background-color: #f3f3f3;
     color: #222;
 }
 
-button,
-textarea,
-input {
-    font-family: inherit;
+.toy-detail-page {
+    width: 1500px;
+    margin: 40px auto 100px;
 }
 
-.detail-container {
-    width: 1200px;
-    margin: 40px auto 80px;
-}
-
-.product-top {
+.toy-detail-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 60px;
+    gap: 70px;
     margin-bottom: 70px;
 }
 
-.product-image-area {
-    width: 620px;
-    min-height: 620px;
-    background: #fff;
-    border: 1px solid #ddd;
+.toy-image-box {
+    width: 650px;
+    height: 650px;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    padding: 30px;
 }
 
-.product-image-area img {
-    max-width: 100%;
-    max-height: 560px;
+.toy-detail-image {
+    max-width: 82%;
+    max-height: 82%;
     object-fit: contain;
-    display: block;
 }
 
-.product-info-area {
+.toy-info-box {
     flex: 1;
-    padding-top: 20px;
+    padding-top: 30px;
 }
 
-.product-title {
-    font-size: 42px;
+.toy-title {
+    margin: 0 0 28px;
+    font-size: 52px;
     font-weight: 700;
-    margin: 0 0 25px;
-    color: #0f2647;
-    line-height: 1.4;
+    color: #18386d;
+    line-height: 1.2;
 }
 
-.product-price {
+.toy-price {
+    margin: 0 0 34px;
     font-size: 34px;
     font-weight: 700;
-    color: #0f2647;
-    margin-bottom: 30px;
+    color: #18386d;
 }
 
-.product-desc {
+.toy-desc {
+    margin: 0 0 45px;
     font-size: 18px;
-    color: #444;
-    line-height: 1.8;
-    margin-bottom: 35px;
+    line-height: 1.9;
+    color: #4d4d4d;
 }
 
-.product-button-group {
+.toy-btn-group {
     display: flex;
     gap: 16px;
 }
 
-.cart-btn,
-.buy-btn {
+.main-action-btn {
     width: 170px;
     height: 56px;
     border: none;
-    outline: none;
-    border-radius: 8px;
-    font-size: 20px;
+    border-radius: 6px;
+    background-color: #d7b554;
+    color: #111;
+    font-size: 17px;
     font-weight: 700;
     cursor: pointer;
-    background-color: #ddb659;
-    color: #111;
-    transition: 0.2s;
-    appearance: none;
-    -webkit-appearance: none;
+    transition: all 0.2s ease;
 }
 
-.cart-btn:hover,
-.buy-btn:hover {
-    background-color: #cfa847;
+.main-action-btn:hover {
+    background-color: #cca748;
 }
 
-.detail-tab-wrap {
+.toy-tab-wrap {
     display: flex;
     justify-content: center;
     gap: 26px;
-    margin-bottom: 32px;
+    margin-bottom: 30px;
 }
 
-.detail-tab-btn {
+.toy-tab-btn {
     width: 150px;
-    height: 62px;
-    border: 1px solid #9ba9cc;
+    height: 64px;
+    border: 1px solid #9faed0;
     border-radius: 6px;
-    background-color: #b9c4df;
-    color: #14345f;
-    font-size: 18px;
+    background-color: #bcc8e2;
+    color: #17376a;
+    font-size: 17px;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.2s;
-    appearance: none;
-    -webkit-appearance: none;
+    transition: all 0.2s ease;
 }
 
-.detail-tab-btn:hover {
-    background-color: #aebadb;
+.toy-tab-btn:hover {
+    background-color: #b1bdd7;
 }
 
-.detail-tab-btn.active {
-    background-color: #a4b3d6;
+.toy-tab-btn.active {
+    background-color: #aab8d6;
 }
 
-.detail-content-box {
+.toy-content-box {
     display: none;
-    width: 1120px;
-    margin: 0 auto 40px;
-    box-sizing: border-box;
-}
-
-.detail-image-wrap {
-    background: #fff;
-    border: 1px solid #ddd;
-    padding: 50px;
-    box-sizing: border-box;
-}
-
-.detail-content-box img {
-    display: block;
-    max-width: 100%;
+    width: 100%;
     margin: 0 auto;
 }
 
-/* 리뷰영역 */
-#reviewInfo {
-    background: transparent;
-    border: none;
-    padding: 0;
+.toy-detail-content-image-wrap {
+    width: 1320px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 12px;
+    padding: 30px;
+    box-sizing: border-box;
 }
 
+.toy-detail-content-image {
+    width: 100%;
+    max-width: 1200px;
+    display: block;
+    margin: 0 auto;
+    height: auto;
+}
+
+/* 리뷰 영역 */
 .review-area-box {
-    width: 1120px;
+    width: 1320px;
     margin: 0 auto;
 }
 
 .review-list-wrap {
     width: 100%;
-    margin-bottom: 26px;
 }
 
 .review-item {
     width: 100%;
-    background-color: #fff;
-    border: 1px solid #d8d8d8;
+    min-height: 124px;
     border-radius: 18px;
-    padding: 22px 24px 18px;
-    margin-bottom: 22px;
+    padding: 20px 22px;
     box-sizing: border-box;
-    transition: 0.2s;
+    margin-bottom: 22px;
+    border: 1px solid #dcdcdc;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
 .review-item:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    border-color: #cfcfcf;
 }
 
 .review-bg-1,
 .review-bg-2 {
-    background-color: #fff;
+    background-color: #f7f7f7;
 }
 
 .review-main-text {
-    font-size: 19px;
+    font-size: 18px;
+    font-weight: 500;
     color: #222;
-    line-height: 1.5;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .review-meta {
     font-size: 15px;
-    color: #8b8b8b;
-    margin-bottom: 14px;
+    color: #8a8a8a;
+    margin-bottom: 10px;
 }
 
 .review-help-area {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
 }
 
 .review-help-btn {
-    min-width: 82px;
-    height: 32px;
-    padding: 0 14px;
     border: none;
-    outline: none;
-    border-radius: 14px;
-    background-color: #e8ebf3;
-    color: #576b8d;
+    background-color: #e5e7f0;
+    color: #6b7280;
+    border-radius: 12px;
+    padding: 6px 14px;
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.2s;
-    appearance: none;
-    -webkit-appearance: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    transition: all 0.2s ease;
 }
 
 .review-help-btn:hover {
-    background-color: #d9dfec;
-}
-
-.review-help-btn.active {
-    background-color: #cfd8ea;
-    color: #36517d;
+    background-color: #d9ddea;
 }
 
 .review-like-btn {
-    width: 34px;
-    height: 34px;
     border: none;
-    outline: none;
     background: transparent;
-    font-size: 28px;
+    font-size: 24px;
+    color: #8a8a8a;
     cursor: pointer;
-    line-height: 1;
     padding: 0;
-    transition: transform 0.15s ease;
-    appearance: none;
-    -webkit-appearance: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    line-height: 1;
+    transition: transform 0.18s ease, color 0.18s ease;
 }
 
 .review-like-btn:hover {
     transform: scale(1.08);
 }
 
-.review-like-btn.active {
-    transform: scale(1.08);
-}
-
 .review-like-count {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: #eef1f7;
-    color: #66789b;
-    font-size: 20px;
-    font-weight: 700;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: 0.2s;
-    flex-shrink: 0;
-}
-
-.review-item.liked .review-like-count {
-    background-color: #dfe6f5;
-    color: #39588d;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    border-radius: 14px;
+    background-color: #e5e7f0;
+    color: #6b7280;
+    font-size: 15px;
+    font-weight: 700;
+    transition: all 0.2s ease;
 }
 
 .review-page-num {
     text-align: center;
-    font-size: 40px;
-    color: #3a4f74;
-    margin: 26px 0 30px;
+    color: #555;
+    font-size: 32px;
     font-weight: 500;
+    margin: 10px 0 28px;
 }
 
 .review-write-wrap {
@@ -296,60 +251,148 @@ input {
 
 .review-input-box {
     width: 100%;
-    margin-bottom: 26px;
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 12px;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .review-textarea {
     width: 100%;
-    height: 150px;
-    resize: none;
-    border: 1px solid #d6d6d6;
-    border-radius: 14px;
-    background-color: #fff;
-    padding: 24px;
-    box-sizing: border-box;
-    font-size: 17px;
-    color: #333;
+    height: 145px;
+    border: none;
     outline: none;
-    transition: 0.2s;
-    display: block;
-    appearance: none;
-    -webkit-appearance: none;
+    resize: none;
+    background-color: transparent;
+    padding: 24px 24px 16px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.7;
+    font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
 }
 
-.review-textarea:focus {
-    border-color: #b7c5e2;
-    box-shadow: 0 0 0 3px rgba(185, 196, 223, 0.2);
+/* 리뷰 사진 첨부 */
+.review-upload-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 0 24px 24px;
+    box-sizing: border-box;
 }
 
-.review-textarea::placeholder {
-    color: #777;
+.review-upload-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 4px;
+}
+
+.review-file-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 110px;
+    height: 42px;
+    border-radius: 10px;
+    background-color: #e5e7f0;
+    color: #4e5c78;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.review-file-label:hover {
+    background-color: #d8deeb;
+}
+
+#reviewImage {
+    display: none;
+}
+
+.review-file-guide {
+    font-size: 13px;
+    color: #8c8c8c;
+    line-height: 1.5;
+}
+
+.review-upload-preview {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 170px;
+}
+
+.review-upload-preview img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #d9d9d9;
+    background-color: #f8f8f8;
+}
+
+.preview-remove-btn {
+    width: 74px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    color: #666;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.preview-remove-btn:hover {
+    background-color: #e3e3e3;
 }
 
 .review-submit-area {
     text-align: center;
+    margin-top: 26px;
 }
 
 .review-submit-btn {
     width: 145px;
     height: 54px;
     border: none;
-    outline: none;
-    border-radius: 16px;
-    background-color: #d9b44c;
-    color: #111b34;
-    font-size: 18px;
+    border-radius: 14px;
+    background-color: #d7b554;
+    color: #333;
+    font-size: 17px;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.2s;
-    appearance: none;
-    -webkit-appearance: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
 }
 
 .review-submit-btn:hover {
-    background-color: #cfa73b;
-    transform: translateY(-1px);
+    background-color: #cca748;
+}
+
+.review-item.liked {
+    border-color: #bfc7dc;
+    box-shadow: 0 8px 18px rgba(80, 100, 150, 0.12);
+}
+
+.review-item.liked .review-like-btn {
+    color: #4f6fb3;
+    transform: scale(1.08);
+}
+
+.review-item.liked .review-like-count {
+    background-color: #dbe4ff;
+    color: #35589a;
+}
+
+.review-item.liked .review-help-btn {
+    background-color: #dbe4ff;
+    color: #35589a;
 }

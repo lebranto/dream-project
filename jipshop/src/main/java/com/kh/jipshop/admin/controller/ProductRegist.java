@@ -13,5 +13,4 @@ public class ProductRegist {
 
         return "admin/inquiryList";
     }
- 
 }

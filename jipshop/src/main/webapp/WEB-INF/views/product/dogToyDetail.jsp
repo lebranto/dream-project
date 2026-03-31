@@ -17,71 +17,71 @@
 <c:set var="product" value="${param.product}" />
 <c:set var="loginUser" value="${sessionScope.loginUser}" />
 
-<div class="detail-container">
+<div class="toy-detail-page">
 
-    <div class="product-top">
-        <div class="product-image-area">
+    <div class="toy-detail-top">
+        <div class="toy-image-box">
             <c:choose>
                 <c:when test="${product eq '1'}">
-                    <img src="${pageContext.request.contextPath}/resources/img/dogtoy1.png" alt="하트볼 장난감">
+                    <img src="${pageContext.request.contextPath}/resources/img/dogtoy1.png" alt="하트볼 장난감" class="toy-detail-image">
                 </c:when>
                 <c:when test="${product eq '2'}">
-                    <img src="${pageContext.request.contextPath}/resources/img/dogtoy2.png" alt="프리스비 장난감">
+                    <img src="${pageContext.request.contextPath}/resources/img/dogtoy2.png" alt="프리스비 장난감" class="toy-detail-image">
                 </c:when>
                 <c:otherwise>
-                    <img src="${pageContext.request.contextPath}/resources/img/dogtoy1.png" alt="강아지 장난감">
+                    <img src="${pageContext.request.contextPath}/resources/img/dogtoy1.png" alt="강아지 장난감" class="toy-detail-image">
                 </c:otherwise>
             </c:choose>
         </div>
 
-        <div class="product-info-area">
+        <div class="toy-info-box">
             <c:choose>
                 <c:when test="${product eq '1'}">
-                    <h1 class="product-title">하트볼 장난감</h1>
-                    <div class="product-price">25,000원</div>
-                    <p class="product-desc">
+                    <h1 class="toy-title">하트볼 장난감</h1>
+                    <div class="toy-price">25,000원</div>
+                    <p class="toy-desc">
                         반려견의 흥미를 유도하며 즐겁게 놀 수 있는 공 장난감입니다.<br>
                         부드러운 촉감과 귀여운 디자인으로 편안하게 사용할 수 있는 제품입니다.
                     </p>
                 </c:when>
 
                 <c:when test="${product eq '2'}">
-                    <h1 class="product-title">프리스비 장난감</h1>
-                    <div class="product-price">25,000원</div>
-                    <p class="product-desc">
+                    <h1 class="toy-title">프리스비 장난감</h1>
+                    <div class="toy-price">25,000원</div>
+                    <p class="toy-desc">
                         던지고 물어오며 활동적으로 놀 수 있는 반려견 장난감입니다.<br>
                         야외 놀이와 실내 놀이 모두 활용할 수 있는 가벼운 제품입니다.
                     </p>
                 </c:when>
 
                 <c:otherwise>
-                    <h1 class="product-title">강아지 장난감</h1>
-                    <div class="product-price">25,000원</div>
-                    <p class="product-desc">반려견이 즐겁게 놀 수 있는 장난감입니다.</p>
+                    <h1 class="toy-title">강아지 장난감</h1>
+                    <div class="toy-price">25,000원</div>
+                    <p class="toy-desc">반려견이 즐겁게 놀 수 있는 장난감입니다.</p>
                 </c:otherwise>
             </c:choose>
 
-            <div class="product-button-group">
-                <button type="button" class="cart-btn">장바구니</button>
-                <button type="button" class="buy-btn">구매하기</button>
+            <div class="toy-btn-group">
+                <button type="button" class="main-action-btn">장바구니</button>
+                <button type="button" class="main-action-btn">구매하기</button>
             </div>
         </div>
     </div>
 
-    <div class="detail-tab-wrap">
-        <button type="button" class="detail-tab-btn" onclick="toggleSection('detailInfo', this)">상세보기</button>
-        <button type="button" class="detail-tab-btn" onclick="toggleSection('reviewInfo', this)">리뷰작성</button>
+    <div class="toy-tab-wrap">
+        <button type="button" class="toy-tab-btn active" onclick="toggleSection('detailInfo', this)">상세보기</button>
+        <button type="button" class="toy-tab-btn" onclick="toggleSection('reviewInfo', this)">리뷰작성</button>
     </div>
 
     <!-- 상세보기 -->
-    <div id="detailInfo" class="detail-content-box">
-        <div class="detail-image-wrap">
+    <div id="detailInfo" class="toy-content-box" style="display:block;">
+        <div class="toy-detail-content-image-wrap">
             <c:choose>
                 <c:when test="${product eq '1'}">
-                    <img src="${pageContext.request.contextPath}/resources/img/dogtoyDetail1.png" alt="하트볼 장난감 상세정보">
+                    <img src="${pageContext.request.contextPath}/resources/img/dogtoyDetail1.png" alt="하트볼 장난감 상세정보" class="toy-detail-content-image">
                 </c:when>
                 <c:when test="${product eq '2'}">
-                    <img src="${pageContext.request.contextPath}/resources/img/dogtoyDetail2.png" alt="프리스비 장난감 상세정보">
+                    <img src="${pageContext.request.contextPath}/resources/img/dogtoyDetail2.png" alt="프리스비 장난감 상세정보" class="toy-detail-content-image">
                 </c:when>
                 <c:otherwise>
                     <p>상품 상세정보가 준비 중입니다.</p>
@@ -91,7 +91,7 @@
     </div>
 
     <!-- 리뷰작성 -->
-    <div id="reviewInfo" class="detail-content-box">
+    <div id="reviewInfo" class="toy-content-box">
         <div class="review-area-box">
 
             <div class="review-list-wrap">
@@ -127,6 +127,19 @@
 
                     <div class="review-input-box">
                         <textarea name="reviewContent" class="review-textarea" placeholder="리뷰를 작성해주세요."></textarea>
+
+                        <div class="review-upload-box">
+                            <div class="review-upload-left">
+                                <label for="reviewImage" class="review-file-label">사진 첨부</label>
+                                <input type="file" id="reviewImage" name="reviewImage" accept="image/*" onchange="previewReviewImage(event)">
+                                <span class="review-file-guide">이미지 1장을 첨부할 수 있습니다.</span>
+                            </div>
+
+                            <div class="review-upload-preview" id="previewArea">
+                                <img id="previewImg" src="" alt="리뷰 이미지 미리보기">
+                                <button type="button" class="preview-remove-btn" onclick="removePreview()">삭제</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="review-submit-area">
@@ -146,7 +159,7 @@
     function toggleSection(sectionId, clickedBtn) {
         const detailBox = document.getElementById("detailInfo");
         const reviewBox = document.getElementById("reviewInfo");
-        const buttons = document.querySelectorAll(".detail-tab-btn");
+        const buttons = document.querySelectorAll(".toy-tab-btn");
 
         buttons.forEach(function(btn) {
             btn.classList.remove("active");
@@ -208,12 +221,34 @@
         }
     }
 
-    window.onload = function() {
-        const firstBtn = document.querySelector(".detail-tab-btn");
-        if (firstBtn) {
-            toggleSection("detailInfo", firstBtn);
+    function previewReviewImage(event) {
+        const file = event.target.files[0];
+        const previewArea = document.getElementById("previewArea");
+        const previewImg = document.getElementById("previewImg");
+
+        if (!file) {
+            previewArea.style.display = "none";
+            previewImg.src = "";
+            return;
         }
-    };
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            previewArea.style.display = "flex";
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removePreview() {
+        const fileInput = document.getElementById("reviewImage");
+        const previewArea = document.getElementById("previewArea");
+        const previewImg = document.getElementById("previewImg");
+
+        fileInput.value = "";
+        previewImg.src = "";
+        previewArea.style.display = "none";
+    }
 </script>
 
 </body>

@@ -130,6 +130,19 @@
 
                     <div class="review-input-box">
                         <textarea name="reviewContent" class="review-textarea" placeholder="리뷰를 작성해주세요."></textarea>
+
+                        <div class="review-upload-box">
+                            <div class="review-upload-left">
+                                <label for="reviewImage" class="review-file-label">사진 첨부</label>
+                                <input type="file" id="reviewImage" name="reviewImage" accept="image/*" onchange="previewReviewImage(event)">
+                                <span class="review-file-guide">이미지 1장을 첨부할 수 있습니다.</span>
+                            </div>
+
+                            <div class="review-upload-preview" id="previewArea">
+                                <img id="previewImg" src="" alt="리뷰 이미지 미리보기">
+                                <button type="button" class="preview-remove-btn" onclick="removePreview()">삭제</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="review-submit-area">
@@ -193,7 +206,6 @@
 
         const reviewItem = clickedElement.closest(".review-item");
         const likeCount = reviewItem.querySelector(".review-like-count");
-
         let currentCount = parseInt(likeCount.innerText);
 
         if (reviewItem.classList.contains("liked")) {
@@ -203,6 +215,35 @@
             reviewItem.classList.add("liked");
             likeCount.innerText = currentCount + 1;
         }
+    }
+
+    function previewReviewImage(event) {
+        const file = event.target.files[0];
+        const previewArea = document.getElementById("previewArea");
+        const previewImg = document.getElementById("previewImg");
+
+        if (!file) {
+            previewArea.style.display = "none";
+            previewImg.src = "";
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            previewArea.style.display = "flex";
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removePreview() {
+        const fileInput = document.getElementById("reviewImage");
+        const previewArea = document.getElementById("previewArea");
+        const previewImg = document.getElementById("previewImg");
+
+        fileInput.value = "";
+        previewImg.src = "";
+        previewArea.style.display = "none";
     }
 </script>
 
