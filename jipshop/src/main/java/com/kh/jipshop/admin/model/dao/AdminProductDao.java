@@ -16,4 +16,8 @@ public interface AdminProductDao {
 	
 	int insertProduct(AdminProduct product);
 
+	int insertCompany(String name, String phone, String address);
+
+	int selectLastCompanyCode();
+
 }

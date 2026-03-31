@@ -22,80 +22,101 @@
           enctype="multipart/form-data" id="registForm" onsubmit="return validateForm()">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
-        <div class="detail-card">
-            <div class="detail-card-header">📦 기본 정보</div>
-            <div class="detail-card-body">
+       <div class="detail-card">
+    <div class="detail-card-header">📦 기본 정보</div>
+    <div class="detail-card-body">
 
-                <div class="form-row">
-                    <label class="form-label required">카테고리</label>
-                    <select name="categoryId" class="form-select" required>
-                        <option value="">카테고리 선택</option>
-                        <c:set var="curParent" value=""/>
-                        <c:forEach var="cat" items="${categoryList}">
-                            <c:if test="${cat.PARENTNAME != curParent}">
-                                <c:if test="${curParent != ''}"></optgroup></c:if>
-                                <optgroup label="${cat.PARENTNAME}">
-                                <c:set var="curParent" value="${cat.PARENTNAME}"/>
-                            </c:if>
-                            <option value="${cat.CATEGORYID}">${cat.CATEGORYNAME}</option>
-                        </c:forEach>
-                        <c:if test="${curParent != ''}"></optgroup></c:if>
-                    </select>
+        <!-- 업체 -->
+        <div class="form-row top">
+            <label class="form-label required">업체</label>
+            <div class="form-col">
+
+                <div class="company-mode-group">
+                    <label>
+                        <input type="radio" name="companyMode" value="select" checked onclick="toggleCompanyMode()"> 기존 업체
+                    </label>
+                    <label>
+                        <input type="radio" name="companyMode" value="new" onclick="toggleCompanyMode()"> 새 업체 등록
+                    </label>
                 </div>
 
-                <div class="form-row">
-                    <label class="form-label required">업체</label>
-                    <select name="companyCode" class="form-select" required>
+                <!-- 기존 -->
+                <div id="companySelectRow" style="margin-top:8px;">
+                    <select name="companyCode" id="companyCode" class="form-select w-lg">
                         <option value="">업체 선택</option>
                         <c:forEach var="com" items="${companyList}">
-                            <option value="${com.COMPANYCODE}">${com.COMPANYNAME}</option>
+                            <option value="${com.COMPANYCODE}">
+                                ${com.COMPANYNAME}
+                            </option>
                         </c:forEach>
                     </select>
                 </div>
 
-                <div class="form-row">
-                    <label class="form-label required">상품명</label>
-                    <input type="text" name="productName" class="form-input"
-                           placeholder="상품명을 입력하세요." required>
-                </div>
+                <!-- 신규 -->
+                <div id="newCompanyArea" style="display:none; margin-top:8px;">
 
-                <div class="form-row">
-                    <label class="form-label required">가격</label>
-                    <input type="number" name="productPrice" class="form-input w-md"
-                           placeholder="0" min="0" required>
-                    <span style="font-size:13px;color:var(--text-sub)">원</span>
-                </div>
+    <div class="form-row">
+        <label class="form-label required">업체명</label>
+        <input type="text" name="newCompanyName" class="form-input w-lg" placeholder="업체명">
+    </div>
 
-                <div class="form-row">
-                    <label class="form-label required">재고</label>
-                    <input type="number" name="productStock" class="form-input w-md"
-                           placeholder="0" min="0" required>
-                </div>
+    <div class="form-row">
+        <label class="form-label required">전화번호</label>
+        <input type="text" name="companyPhone" class="form-input w-lg" placeholder="전화번호">
+    </div>
 
-                <div class="form-row">
-                    <label class="form-label">펫 유형</label>
-                    <select name="petType" class="form-select" style="width:140px">
-                        <option value="">전체</option>
-                        <option value="강아지">강아지</option>
-                        <option value="고양이">고양이</option>
-                        <option value="기타">기타</option>
-                    </select>
-                </div>
+    <div class="form-row">
+        <label class="form-label required">주소</label>
+        <input type="text" name="companyAddress" class="form-input w-lg" placeholder="주소">
+    </div>
 
-                <div class="form-row">
-                    <label class="form-label">연령대</label>
-                    <select name="ageGroup" class="form-select" style="width:140px">
-                        <option value="">전체</option>
-                        <option value="유아기">유아기</option>
-                        <option value="성장기">성장기</option>
-                        <option value="성체">성체</option>
-                        <option value="노령기">노령기</option>
-                    </select>
-                </div>
+</div>
 
             </div>
         </div>
 
+        <!-- 펫 -->
+        <div class="form-row">
+            <label class="form-label required">펫 유형</label>
+            <select name="petType" id="petType" class="form-select w-md" required>
+                <option value="">선택</option>
+                <option value="강아지">강아지</option>
+                <option value="고양이">고양이</option>
+            </select>
+        </div>
+
+        <!-- 카테고리 (고정) -->
+        <div class="form-row">
+            <label class="form-label required">카테고리</label>
+            <select name="categoryId" id="categoryId" class="form-select w-lg" required>
+                <option value="">선택</option>
+                <option value="1">사료</option>
+                <option value="2">장난감</option>
+                <option value="3">외출용품</option>
+                <option value="4">미용용품</option>
+            </select>
+        </div>
+
+        <!-- 상품명 -->
+        <div class="form-row">
+            <label class="form-label required">상품명</label>
+            <input type="text" name="productName" class="form-input w-lg" required>
+        </div>
+
+        <!-- 가격 -->
+        <div class="form-row">
+            <label class="form-label required">가격</label>
+            <input type="number" name="productPrice" class="form-input w-md" required>
+        </div>
+
+        <!-- 재고 -->
+        <div class="form-row">
+            <label class="form-label required">재고</label>
+            <input type="number" name="productStock" class="form-input w-md" required>
+        </div>
+
+    </div>
+</div>
         <div class="detail-card">
             <div class="detail-card-header">🖼 상품 이미지</div>
             <div class="detail-card-body">
@@ -167,12 +188,65 @@
         reader.readAsDataURL(file);
     }
 
+    function toggleCompanyMode() {
+        const mode = document.querySelector('input[name="companyMode"]:checked').value;
+        const companySelectRow = document.getElementById("companySelectRow");
+        const newCompanyArea = document.getElementById("newCompanyArea");
+        const companyCode = document.getElementById("companyCode");
+        const newCompanyName = document.getElementById("newCompanyName");
+
+        if (mode === "select") {
+            companySelectRow.style.display = "flex";
+            newCompanyArea.style.display = "none";
+            companyCode.disabled = false;
+            newCompanyName.disabled = true;
+            newCompanyName.value = "";
+        } else {
+            companySelectRow.style.display = "none";
+            newCompanyArea.style.display = "block";
+            companyCode.disabled = true;
+            companyCode.value = "";
+            newCompanyName.disabled = false;
+        }
+    }
+
     function validateForm() {
+        const mode = document.querySelector('input[name="companyMode"]:checked').value;
+        const companyCode = document.getElementById('companyCode');
+        const newCompanyName = document.getElementById('newCompanyName');
+        const petType = document.getElementById('petType');
+        const categoryId = document.getElementById('categoryId');
         const photo1 = document.getElementById('photo1');
+
+        if (mode === 'select' && (!companyCode.value || companyCode.value.trim() === '')) {
+            alert('기존 업체를 선택해주세요.');
+            companyCode.focus();
+            return false;
+        }
+
+        if (mode === 'new' && (!newCompanyName.value || newCompanyName.value.trim() === '')) {
+            alert('새 업체명을 입력해주세요.');
+            newCompanyName.focus();
+            return false;
+        }
+
+        if (!petType.value) {
+            alert('펫 유형을 선택해주세요.');
+            petType.focus();
+            return false;
+        }
+
+        if (!categoryId.value) {
+            alert('카테고리를 선택해주세요.');
+            categoryId.focus();
+            return false;
+        }
+
         if (!photo1.files || photo1.files.length === 0) {
             alert('대표 사진은 필수입니다.');
             return false;
         }
+
         return confirm('상품을 등록하시겠습니까?');
     }
 
@@ -182,6 +256,9 @@
         t.classList.add('show');
         setTimeout(() => t.classList.remove('show'), 2400);
     }
+    window.addEventListener("DOMContentLoaded", function() {
+        toggleCompanyMode();
+    });
 
     <c:if test="${not empty errorMsg}">
         window.onload = () => showToast('⚠️ ${errorMsg}');
