@@ -226,7 +226,7 @@ body{
         </div>
     </div>
 
-    <form id="orderForm" action="${contextPath}/order/insert" method="post">
+    <form id="orderForm" action="${contextPath}/orders/orderNew" method="post">
 
         <!-- ORDERS용 hidden -->
         <input type="hidden" name="memberNo" value="${memberNo}">
@@ -247,61 +247,50 @@ body{
 
             <c:choose>
                 <c:when test="${not empty productList}">
-                    <c:forEach var="p" items="${productList}" varStatus="st">
-                        <tr>
-                            <td>
-                                <div class="product">
-                                   <%--  <img src="${contextPath}${o.productPhoto1}" alt="${o.productName}"> --%>
-                                    <div>${p.productName}</div>
-                                </div>
-                            </td>
+    <c:forEach var="p" items="${productList}" varStatus="st">
+        <tr>
+            <td>
+                <div class="product">
+                    <%-- <img src="${contextPath}${p.photo1}" alt="${p.productName}"> --%>
+                    <div>${p.productName}</div>
+                </div>
+            </td>
 
-                            <td>
-                                <input type="number"
-                                       class="qty-input"
-                                       id="qty_${st.index}"
-                                       value="${o.detailQty}"
-                                       min="1"
-                                       data-index="${st.index}"
-                                       data-unit-price="${p.price}"
-                                       onchange="changeQty(${st.index})">
-                            </td>
+            <td>
+                <input type="number"
+                       class="qty-input"
+                       id="qty_${st.index}"
+                       value="1"
+                       min="1"
+                       data-index="${st.index}"
+                       data-unit-price="${p.price}"
+                       onchange="changeQty(${st.index})">
+            </td>
 
-                            <td>
-                                <span class="row-price" id="rowPrice_${st.index}">
-                                    <fmt:formatNumber value="${p.price * o.detailQty}" pattern="#,###" />
-                                </span>원
-                            </td>
+            <td>
+                <span class="row-price" id="rowPrice_${st.index}">
+                    <fmt:formatNumber value="${p.price}" pattern="#,###" />
+                </span>원
+            </td>
 
-                            <td>
-                            0
-                                <%-- <c:choose>
-                                    <c:when test="${p.orderDeliveryFee == 0}">
-                                        무료배송
-                                    </c:when>
-                                    <c:otherwise>
-                                        <fmt:formatNumber value="${p.orderDeliveryFee}" pattern="#,###" />원
-                                    </c:otherwise>
-                                </c:choose> --%>
-                            </td>
-                        </tr>
+            <td>0원</td>
+        </tr>
 
-                        <!-- ORDER_DETAIL insert용 hidden -->
-                        <tr class="hidden-area">
-                            <td colspan="4">
-                                <input type="hidden" name="detailList[${st.index}].productId" value="${o.productId}">
-                                <input type="hidden" name="detailList[${st.index}].detailQty" id="hiddenQty_${st.index}" value="${o.detailQty}">
-                                <input type="hidden" name="detailList[${st.index}].detailPrice" id="hiddenPrice_${st.index}" value="${o.detailPrice * o.detailQty}">
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </c:when>
-
-                <c:otherwise>
-                    <tr>
-                        <td colspan="4" class="empty-row">주문할 상품이 없습니다.</td>
-                    </tr>
-                </c:otherwise>
+        <!-- ORDER_DETAIL insert용 hidden -->
+        <tr class="hidden-area">
+            <td colspan="4">
+                <input type="hidden" name="detailList[${st.index}].productId" value="${p.productId}">
+                <input type="hidden" name="detailList[${st.index}].detailQty" id="hiddenQty_${st.index}" value="1">
+                <input type="hidden" name="detailList[${st.index}].detailPrice" id="hiddenPrice_${st.index}" value="${p.price}">
+            </td>
+        </tr>
+    </c:forEach>
+</c:when>
+<c:otherwise>
+    <tr>
+        <td colspan="4" class="empty-row">주문할 상품이 없습니다.</td>
+    </tr>
+</c:otherwise>
             </c:choose>
         </table>
 
@@ -334,15 +323,15 @@ body{
 
         <table class="info-table">
             <tr>
-                <td><span class="label required" value="${memberName}">주문하시는 분</span></td>
+                <td><span class="label required">주문하시는 분</span></td>
                 <td>
-                    <input type="text" id="ordererName" name="ordererName" value="${loginUser.memberName}">
+                    <input type="text" id="ordererName" name="ordererName" value="${memberName}">
                 </td>
             </tr>
             <tr>
                 <td><span class="label">전화번호</span></td>
                 <td>
-                    <input type="text" name="ordererTel" value="${phone}">
+                    <input type="text" name="ordererTel" value="02-0000-0000">
                 </td>
             </tr>
             <tr>
@@ -354,7 +343,7 @@ body{
             <tr>
                 <td><span class="label required">이메일</span></td>
                 <td>
-                    <c:set var="emailArr" value="${fn:split(loginUser.email, '@')}" />
+                    <c:set var="emailArr" value="${fn:split(email, '@')}" />
                     <input type="text" id="email1" value="${emailArr[0]}">
                     <select id="email2">
                         <option value="">직접입력</option>
@@ -387,7 +376,7 @@ body{
             <tr>
                 <td><span class="label required">받으실 곳</span></td>
                 <td>
-                    <input type="text" id="recvAddress" class="addr-input" value="0" placeholder="주소">
+                    <input type="text" id="recvAddress" class="addr-input" placeholder="주소">
                     <button type="button" onclick="execDaumPostcode()">우편번호 검색</button>
                     <br>
                     <input type="text" id="detailAddress" class="addr-input" placeholder="상세주소">
@@ -520,16 +509,16 @@ document.getElementById("addrDirect").addEventListener("change", function(){
 });
 
 function changeQty(index){
-    let qtyInput = document.getElementById("qty_" + index);
-    let qty = parseInt(qtyInput.value);
+    const qtyInput = document.getElementById("qty_" + index);
+    let qty = parseInt(qtyInput.value, 10);
 
-    if(isNaN(qty) || qty < 1){
+    if (isNaN(qty) || qty < 1) {
         qty = 1;
         qtyInput.value = 1;
     }
 
-    let unitPrice = parseInt(qtyInput.dataset.unitPrice);
-    let rowTotal = qty * unitPrice;
+    const unitPrice = parseInt(qtyInput.dataset.unitPrice, 10);
+    const rowTotal = qty * unitPrice;
 
     document.getElementById("rowPrice_" + index).innerText = rowTotal.toLocaleString();
     document.getElementById("hiddenQty_" + index).value = qty;
@@ -540,27 +529,41 @@ function changeQty(index){
 
 function updateTotalPrice(){
     let totalProductPrice = 0;
-    let deliveryFee = parseInt(document.getElementById("orderDeliveryFee").value);
+    let totalCount = 0;
 
     document.querySelectorAll(".qty-input").forEach(function(input){
-        let qty = parseInt(input.value);
-        let unitPrice = parseInt(input.dataset.unitPrice);
+        const qty = parseInt(input.value, 10);
+        const unitPrice = parseInt(input.dataset.unitPrice, 10);
 
-        if(!isNaN(qty) && !isNaN(unitPrice)){
+        if (!isNaN(qty) && !isNaN(unitPrice)) {
             totalProductPrice += qty * unitPrice;
+            totalCount += qty;
         }
     });
 
-    let finalPrice = totalProductPrice + deliveryFee;
+    let deliveryFee = 0;
+    if (totalProductPrice > 0 && totalProductPrice < 30000) {
+        deliveryFee = 3000;
+    }
 
+    const finalPrice = totalProductPrice + deliveryFee;
+
+    document.getElementById("totalCount").innerText = totalCount;
     document.getElementById("displayTotalPrice").innerText = totalProductPrice.toLocaleString();
+    document.getElementById("displayDeliveryFee").innerText = deliveryFee.toLocaleString();
     document.getElementById("displayFinalPrice").innerText = finalPrice.toLocaleString();
 
     document.getElementById("summaryProductPrice").innerText = totalProductPrice.toLocaleString();
+    document.getElementById("summaryDeliveryFee").innerText = deliveryFee.toLocaleString();
     document.getElementById("summaryFinalPrice").innerText = finalPrice.toLocaleString();
 
     document.getElementById("orderTotalPrice").value = totalProductPrice;
+    document.getElementById("orderDeliveryFee").value = deliveryFee;
 }
+
+window.onload = function(){
+    updateTotalPrice();
+};
 
 document.getElementById("payBtn").addEventListener("click", function(){
 
@@ -619,6 +622,7 @@ document.getElementById("payBtn").addEventListener("click", function(){
 window.onload = function(){
     updateTotalPrice();
 };
+
 </script>
 
 </body>
