@@ -13,5 +13,7 @@ public interface AdminProductDao {
 
 	List<Map<String, Object>> getCategoryList();
 	List<Map<String, Object>> getCompanyList();
+	
+	int insertProduct(AdminProduct product);
 
 }

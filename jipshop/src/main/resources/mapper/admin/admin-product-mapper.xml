@@ -99,4 +99,21 @@
         FROM COMPANY
         ORDER BY COMPANY_CODE
     </select>
+    
+    <!-- 상품 등록 -->
+    <insert id="insertProduct" parameterType="AdminProduct">
+        INSERT INTO PRODUCT (
+            PRODUCT_ID, CATEGORY_ID, COMPANY_CODE,
+            PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_STOCK,
+            PRODUCT_DETAIL, PRODUCT_PHOTO1, PRODUCT_PHOTO2,
+            PRODUCT_REG_DATE, PRODUCT_ACTIVE_YN,
+            PET_TYPE, AGE_GROUP
+        ) VALUES (
+            SEQ_PRODUCT.NEXTVAL, #{categoryId}, #{companyCode},
+            #{productName}, #{productPrice}, #{productStock},
+            #{productDetail}, #{productPhoto1}, #{productPhoto2},
+            SYSDATE, 'Y',
+            #{petType}, #{ageGroup}
+        )
+    </insert>
 </mapper>

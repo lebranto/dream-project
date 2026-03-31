@@ -34,4 +34,9 @@ public class AdminProductDaoImpl implements AdminProductDao {
 		return session.selectList("adminProduct.getCompanyList");
 	}
 
+	@Override
+	public int insertProduct(AdminProduct product) {
+		return session.insert("adminProduct.insertProduct", product);
+	}
+
 }

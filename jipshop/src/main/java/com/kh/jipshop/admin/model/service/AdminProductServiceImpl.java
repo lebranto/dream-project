@@ -34,4 +34,9 @@ public class AdminProductServiceImpl implements AdminProductService {
 		return adminProductDao.getCompanyList();
 	}
 
+	@Override
+	public int insertProduct(AdminProduct product) {
+		return adminProductDao.insertProduct(product);
+	}
+
 }
