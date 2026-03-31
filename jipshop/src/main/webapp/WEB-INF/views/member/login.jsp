@@ -73,7 +73,7 @@
               <!-- Remember Me Checkbox -->
               <div class="group-wrapper">
                 <div class="group">
-                  <input id="remember-me" class="rectangle" type="checkbox" name="remember" aria-label="로그인상태유지" />
+                  <input id="remember-me" class="rectangle" type="checkbox" name="remember-me" aria-label="로그인상태유지" />
                   <label for="remember-me" class="text-wrapper-3">로그인상태유지</label>
                 </div>
               </div>

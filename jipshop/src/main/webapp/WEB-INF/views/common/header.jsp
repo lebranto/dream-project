@@ -19,7 +19,7 @@
                  <a href="#">문의</a>
               </sec:authorize>
              <sec:authorize access="isAuthenticated()">
-                <label><sec:authentication property="principal.memberName"/>님 환영합니다.</label> &nbsp;&nbsp;
+                <label><sec:authentication property="principal.memberName"/>님 환영합니다.</label>
                 <a href="${contextPath}/mypage/purchase">마이페이지</a>
                 <a href="#">문의</a>
                 <form:form method="post" action="${contextPath}/member/logout" style="display: inline;">
