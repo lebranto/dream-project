@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="productMapper">
+
+    <resultMap id="productResultMap" type="com.kh.jipshop.product.model.vo.Products">
+        <id     property="productId"       column="PRODUCT_ID"/>
+        <result property="categoryId"      column="CATEGORY_ID"/>
+        <result property="companyCode"     column="COMPANY_CODE"/>
+        <result property="productName"     column="PRODUCT_NAME"/>
+        <result property="productPrice"    column="PRODUCT_PRICE"/>
+        <result property="productStock"    column="PRODUCT_STOCK"/>
+        <result property="productDetail"   column="PRODUCT_DETAIL"/>
+        <result property="productPhoto1"   column="PRODUCT_PHOTO1"/>
+        <result property="productPhoto2"   column="PRODUCT_PHOTO2"/>
+        <result property="productRegDate"  column="PRODUCT_REG_DATE"/>
+        <result property="productActiveYn" column="PRODUCT_ACTIVE_YN"/>
+        <result property="petType"         column="PET_TYPE"/>
+        <result property="ageGroup"        column="AGE_GROUP"/>
+        <result property="companyName"     column="COMPANY_NAME"/>
+        <result property="categoryName"    column="CATEGORY_NAME"/>
+    </resultMap>
+
+    <sql id="productWhere">
+        WHERE P.PRODUCT_ACTIVE_YN = 'Y'
+        <if test="petType != null and petType != ''">
+            AND P.PET_TYPE = #{petType}
+        </if>
+        <if test="categoryName != null and categoryName != ''">
+            AND PC.CATEGORY_NAME = #{categoryName}
+        </if>
+    </sql>
+
+    <select id="selectProductListCount"
+            parameterType="com.kh.jipshop.product.model.vo.ProductSearch"
+            resultType="_int">
+        SELECT COUNT(*)
+          FROM PRODUCT P
+          JOIN COMPANY C
+            ON P.COMPANY_CODE = C.COMPANY_CODE
+          JOIN PRODUCT_CATEGORY PC
+            ON P.CATEGORY_ID = PC.CATEGORY_ID
+        <include refid="productWhere"/>
+    </select>
+
+    <select id="selectProductList"
+            parameterType="com.kh.jipshop.product.model.vo.ProductSearch"
+            resultMap="productResultMap">
+        SELECT
+            P.PRODUCT_ID,
+            P.CATEGORY_ID,
+            P.COMPANY_CODE,
+            P.PRODUCT_NAME,
+            P.PRODUCT_PRICE,
+            P.PRODUCT_STOCK,
+            P.PRODUCT_DETAIL,
+            P.PRODUCT_PHOTO1,
+            P.PRODUCT_PHOTO2,
+            P.PRODUCT_REG_DATE,
+            P.PRODUCT_ACTIVE_YN,
+            P.PET_TYPE,
+            P.AGE_GROUP,
+            C.COMPANY_NAME,
+            PC.CATEGORY_NAME
+        FROM PRODUCT P
+        JOIN COMPANY C
+          ON P.COMPANY_CODE = C.COMPANY_CODE
+        JOIN PRODUCT_CATEGORY PC
+          ON P.CATEGORY_ID = PC.CATEGORY_ID
+        <include refid="productWhere"/>
+
+        <choose>
+            <when test="sort == 'lowPrice'">
+                ORDER BY P.PRODUCT_PRICE ASC, P.PRODUCT_ID DESC
+            </when>
+            <when test="sort == 'highPrice'">
+                ORDER BY P.PRODUCT_PRICE DESC, P.PRODUCT_ID DESC
+            </when>
+            <when test="sort == 'readCount'">
+                ORDER BY P.PRODUCT_ID DESC
+            </when>
+            <otherwise>
+                ORDER BY P.PRODUCT_REG_DATE DESC, P.PRODUCT_ID DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectProductDetail"
+            parameterType="_int"
+            resultMap="productResultMap">
+        SELECT
+            P.PRODUCT_ID,
+            P.CATEGORY_ID,
+            P.COMPANY_CODE,
+            P.PRODUCT_NAME,
+            P.PRODUCT_PRICE,
+            P.PRODUCT_STOCK,
+            P.PRODUCT_DETAIL,
+            P.PRODUCT_PHOTO1,
+            P.PRODUCT_PHOTO2,
+            P.PRODUCT_REG_DATE,
+            P.PRODUCT_ACTIVE_YN,
+            P.PET_TYPE,
+            P.AGE_GROUP,
+            C.COMPANY_NAME,
+            PC.CATEGORY_NAME
+        FROM PRODUCT P
+        JOIN COMPANY C
+          ON P.COMPANY_CODE = C.COMPANY_CODE
+        JOIN PRODUCT_CATEGORY PC
+          ON P.CATEGORY_ID = PC.CATEGORY_ID
+        WHERE P.PRODUCT_ID = #{value}
+          AND P.PRODUCT_ACTIVE_YN = 'Y'
+    </select>
+
+</mapper>

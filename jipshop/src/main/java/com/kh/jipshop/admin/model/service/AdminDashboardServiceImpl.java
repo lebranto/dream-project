@@ -23,4 +23,24 @@ public class AdminDashboardServiceImpl implements AdminDashboardService{
 		return adminDashboardDao.getRecentOrderList();
 	}
 
+	@Override
+	public int getUnProReportCount() {
+		return adminDashboardDao.getUnProReportCount();
+	}
+
+	@Override
+	public List<Map<String, Object>> getRecentReportList() {
+		return adminDashboardDao.getRecentReportList();
+	}
+
+	@Override
+	public int getUnproInquiryCount() {
+		return adminDashboardDao.getUnproInquiryCount();
+	}
+
+	@Override
+	public List<Map<String, Object>> getRecentInquiryList() {
+		return adminDashboardDao.getRecentInquiryList();
+	}
+
 }

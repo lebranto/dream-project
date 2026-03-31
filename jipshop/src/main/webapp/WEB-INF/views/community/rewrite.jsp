@@ -143,7 +143,7 @@
 
 </form>
 </div>
-
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 <script>
 const modifyImageInput = document.getElementById("modifyImageInput");
 const modifyNewImageArea = document.getElementById("modifyNewImageArea");
@@ -281,6 +281,10 @@ document.getElementById("modifyForm").addEventListener("submit", function(e){
     }
 });
 </script>
-
+<c:if test="${not empty alertMsg}">
+    <script>
+        alert("${alertMsg}");
+    </script>
+</c:if>
 </body>
 </html>

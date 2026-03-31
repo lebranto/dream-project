@@ -160,7 +160,12 @@
             writeModal.classList.remove("show");
         }
     });
+    
 </script>
-
+<c:if test="${not empty alertMsg}">
+    <script>
+        alert("${alertMsg}");
+    </script>
+</c:if>
 </body>
 </html>

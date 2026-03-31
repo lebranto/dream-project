@@ -172,7 +172,7 @@
         <button type="button" class="custom-modal-btn" id="customModalConfirm">확인</button>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 <script>
     const boardType = "${param.boardType}";
     const categoryButtons = document.querySelectorAll(".category-btn");
@@ -291,10 +291,29 @@
         });
     }
 
-    writeForm.addEventListener("submit", function(e) {
-        const title = titleInput.value.trim();
-        const content = contentInput.value.trim();
-        const categoryCode = categoryCodeInput.value;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const writeForm = document.querySelector("#writeForm");
+        const titleInput = document.querySelector('input[name="boardTitle"]');
+        const contentInput = document.querySelector('textarea[name="boardContent"]');
+        const categoryCodeInput = document.querySelector('input[name="categoryCode"]');
+        
+        const loginMemberNo = "${loginUser.memberNo}";
+        const boardType = "${param.boardType}"; 
+
+        if (writeForm) {
+            writeForm.addEventListener("submit", function(e) {
+                const title = titleInput ? titleInput.value.trim() : "";
+                const content = contentInput ? contentInput.value.trim() : "";
+                const categoryCode = categoryCodeInput ? categoryCodeInput.value : "";
+
+                if (!loginMemberNo || loginMemberNo === "" || loginMemberNo === "0") {
+                    e.preventDefault();
+                    alert("로그인 후 사용 가능합니다.");
+                    location.href = "${pageContext.request.contextPath}/member/login";
+                    return;
+                }
+
 
         if (boardType === "tip" || boardType === "free") {
             if (!categoryCode) {
@@ -317,6 +336,10 @@
         }
     });
 </script>
-
+<c:if test="${not empty alertMsg}">
+    <script>
+        alert("${alertMsg}");
+    </script>
+</c:if>
 </body>
 </html>

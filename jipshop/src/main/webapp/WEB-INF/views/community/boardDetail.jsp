@@ -210,7 +210,7 @@
         </form>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -377,6 +377,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
-
+<c:if test="${not empty alertMsg}">
+    <script>
+        alert("${alertMsg}");
+    </script>
+</c:if>
 </body>
 </html>
