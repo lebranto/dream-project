@@ -5,13 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/product")
 public class AdminProductController {
-
-	  @GetMapping("/productRegist.do")
-	    public String productRegist() {
-
-	        return "admin/productRegist";
-	    }
-	
+    /**
+     * 상품 등록 페이지 이동
+     * URL : /admin/product/regist
+     */
+    @GetMapping("/regist")
+    public String productRegistForm() {
+        return "admin/productRegist";
+    }
 }
