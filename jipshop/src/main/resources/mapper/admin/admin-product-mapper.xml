@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="adminProduct">
+	<resultMap id="productRM" type="AdminProduct">
+        <id     property="productId"       column="PRODUCT_ID"/>
+        <result property="categoryId"      column="CATEGORY_ID"/>
+        <result property="categoryName"    column="CATEGORY_NAME"/>
+        <result property="companyCode"     column="COMPANY_CODE"/>
+        <result property="companyName"     column="COMPANY_NAME"/>
+        <result property="productName"     column="PRODUCT_NAME"/>
+        <result property="productPrice"    column="PRODUCT_PRICE"/>
+        <result property="productStock"    column="PRODUCT_STOCK"/>
+        <result property="productDetail"   column="PRODUCT_DETAIL"/>
+        <result property="productPhoto1"   column="PRODUCT_PHOTO1"/>
+        <result property="productPhoto2"   column="PRODUCT_PHOTO2"/>
+        <result property="productRegDate"  column="PRODUCT_REG_DATE"/>
+        <result property="productActiveYn" column="PRODUCT_ACTIVE_YN"/>
+        <result property="petType"         column="PET_TYPE"/>
+        <result property="ageGroup"        column="AGE_GROUP"/>
+    </resultMap>
+ 
+    <!-- 공통 WHERE -->
+    <sql id="searchWhere">
+        <where>
+            <if test="categoryId != null and categoryId != ''">
+                AND P.CATEGORY_ID = #{categoryId}
+            </if>
+            <if test="productActiveYn != null and productActiveYn != ''">
+                AND P.PRODUCT_ACTIVE_YN = #{productActiveYn}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    P.PRODUCT_NAME  LIKE '%' || #{keyword} || '%'
+                 OR C.COMPANY_NAME  LIKE '%' || #{keyword} || '%'
+                )
+            </if>
+        </where>
+    </sql>
+ 
+    <!-- 전체 수 -->
+    <select id="getProductCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM PRODUCT P
+        JOIN COMPANY C ON P.COMPANY_CODE = C.COMPANY_CODE
+        <include refid="searchWhere"/>
+    </select>
+ 
+    <!-- 목록 (페이징) -->
+    <select id="getProductList" parameterType="map" resultMap="productRM">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS RNUM, T.*
+            FROM (
+                SELECT
+                    P.PRODUCT_ID,
+                    P.CATEGORY_ID,
+                    PC.CATEGORY_NAME,
+                    P.COMPANY_CODE,
+                    C.COMPANY_NAME,
+                    P.PRODUCT_NAME,
+                    P.PRODUCT_PRICE,
+                    P.PRODUCT_STOCK,
+                    P.PRODUCT_PHOTO1,
+                    P.PRODUCT_REG_DATE,
+                    P.PRODUCT_ACTIVE_YN,
+                    P.PET_TYPE,
+                    P.AGE_GROUP
+                FROM PRODUCT P
+                JOIN COMPANY C          ON P.COMPANY_CODE = C.COMPANY_CODE
+                JOIN PRODUCT_CATEGORY PC ON P.CATEGORY_ID  = PC.CATEGORY_ID
+                <include refid="searchWhere"/>
+                ORDER BY P.PRODUCT_REG_DATE DESC
+            ) T
+            WHERE ROWNUM &lt;= #{pi.boardLimit} * #{pi.currentPage}
+        )
+        WHERE RNUM &gt; #{pi.boardLimit} * (#{pi.currentPage} - 1)
+    </select>
+    
+    <!-- 카테고리 목록 (부모명 포함, 그룹 표시용) -->
+    <select id="getCategoryList" resultType="map">
+        SELECT
+            C.CATEGORY_ID        AS categoryId,
+            C.CATEGORY_NAME      AS categoryName,
+            P.CATEGORY_NAME      AS parentName
+        FROM PRODUCT_CATEGORY C
+        JOIN PRODUCT_CATEGORY P ON C.CATEGORY_PARENT_ID = P.CATEGORY_ID
+        WHERE C.CATEGORY_PARENT_ID IS NOT NULL
+        ORDER BY C.CATEGORY_PARENT_ID, C.CATEGORY_ID
+    </select>
+ 
+    <!-- 업체 목록 (등록/수정 폼 드롭다운) -->
+    <select id="getCompanyList" resultType="map">
+        SELECT
+            COMPANY_CODE AS companyCode,
+            COMPANY_NAME AS companyName
+        FROM COMPANY
+        ORDER BY COMPANY_CODE
+    </select>
+    
+    <!-- 상품 등록 -->
+    <insert id="insertProduct" parameterType="AdminProduct">
+        INSERT INTO PRODUCT (
+            PRODUCT_ID, CATEGORY_ID, COMPANY_CODE,
+            PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_STOCK,
+            PRODUCT_DETAIL, PRODUCT_PHOTO1, PRODUCT_PHOTO2,
+            PRODUCT_REG_DATE, PRODUCT_ACTIVE_YN,
+            PET_TYPE, AGE_GROUP
+        ) VALUES (
+            SEQ_PRODUCT.NEXTVAL, #{categoryId}, #{companyCode},
+            #{productName}, #{productPrice}, #{productStock},
+            #{productDetail}, #{productPhoto1}, #{productPhoto2},
+            SYSDATE, 'Y',
+            #{petType}, #{ageGroup}
+        )
+    </insert>
+</mapper>
