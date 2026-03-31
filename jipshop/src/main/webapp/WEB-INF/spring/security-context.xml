@@ -22,14 +22,19 @@
 	<!-- SMS 인증 경로 보안 제외 -->
 	<security:http security="none" pattern="/sms/**"/>
 	<security:http auto-config="true">
+	
+	<!-- 커뮤니티 읽기 허용 -->
+<security:intercept-url pattern="/community/main" access="permitAll" />
+<security:intercept-url pattern="/community/detail" access="permitAll" />
+
+<!-- 나머지 커뮤니티 기능은 로그인 필요 -->
+<security:intercept-url pattern="/community/**" access="isAuthenticated()" />
+	
 		<!-- 
 			메인페이지, 회원가입페이지, 로그인페이지, 아이디 중복 체크 기능은
 			모든 사용자가 이용 가능하도록 설정.
 		 -->
-		  <!-- 커뮤니티 작성 및 수정삭제 권한  -->
-		 <security:intercept-url pattern="/community/**" access="isAuthenticated()" />
-		 
-		 
+		
 		 <security:intercept-url pattern="/" access="permitAll" />
 		 <security:intercept-url pattern="/security/insert" access="permitAll" />
 		 <security:intercept-url pattern="/member/login" access="permitAll" />
@@ -41,6 +46,7 @@
 		 <security:intercept-url pattern="/member/enrollComplete" access="permitAll" />
 		 
 		 <security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
+		 
 		 
 		 <!-- 
 		 	form-login
