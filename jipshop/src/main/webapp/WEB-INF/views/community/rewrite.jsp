@@ -143,7 +143,7 @@
 
 </form>
 </div>
-
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 <script>
 const modifyImageInput = document.getElementById("modifyImageInput");
 const modifyNewImageArea = document.getElementById("modifyNewImageArea");

@@ -16,7 +16,7 @@
                  <a href="${contextPath}/member/login">로그인</a>
                  <a href="${contextPath}/security/insert">회원가입</a>
                  <a href="${contextPath}/mypage/purchase">마이페이지</a>
-                 <a href="#">문의</a>
+                 <a href="${contextPath}/product/inquiryList">문의</a>
               </sec:authorize>
              <sec:authorize access="isAuthenticated()">
                 <label><sec:authentication property="principal.memberName"/>님 환영합니다.</label> &nbsp;&nbsp;
@@ -65,7 +65,7 @@
     <nav class="main-nav">
         <div class="nav-inner">
             <div class="all-menu">
-                <a href="javascript:void(0);" class="nav-link all-menu-btn">
+               <a href="${contextPath}/product/list" class="nav-link all-menu-btn">
                     <span class="menu-circle">☰</span>
                     <span>전체 메뉴</span>
                 </a>
@@ -73,17 +73,17 @@
                     <div class="allmenu-wrap">
                         <div class="allmenu-box">
                             <div class="allmenu-title">강아지</div>
-                            <a href="${pageContext.request.contextPath}/dog/feed">사료</a>
-                            <a href="${pageContext.request.contextPath}/dog/toy">장난감</a>
-                            <a href="${pageContext.request.contextPath}/dog/outdoor">외출용품</a>
-                            <a href="${pageContext.request.contextPath}/dog/groom">미용용품</a>
+                            <a href="${contextPath}/product/list?petType=강아지&categoryName=사료">사료</a>
+							<a href="${contextPath}/product/list?petType=강아지&categoryName=장난감">장난감</a>
+					<a href="${contextPath}/product/list?petType=강아지&categoryName=외출용품">외출용품</a>
+						<a href="${contextPath}/product/list?petType=강아지&categoryName=미용용품">미용용품</a>
                         </div>
                         <div class="allmenu-box">
                             <div class="allmenu-title">고양이</div>
-                            <a href="${pageContext.request.contextPath}/cat/feed">사료</a>
-                            <a href="${pageContext.request.contextPath}/cat/toy">장난감</a>
-                            <a href="${pageContext.request.contextPath}/cat/outdoor">외출용품</a>
-                            <a href="${pageContext.request.contextPath}/cat/groom">미용용품</a>
+                            <a href="${contextPath}/product/list?petType=고양이&categoryName=사료">사료</a>
+<a href="${contextPath}/product/list?petType=고양이&categoryName=장난감">장난감</a>
+<a href="${contextPath}/product/list?petType=고양이&categoryName=외출용품">외출용품</a>
+<a href="${contextPath}/product/list?petType=고양이&categoryName=미용용품">미용용품</a>
                         </div>
                     </div>
                 </div>
@@ -93,19 +93,19 @@
                 <li class="menu-item has-sub">
                     <a href="javascript:void(0);" class="nav-link">강아지</a>
                     <div class="small-dropdown">
-                        <a href="${pageContext.request.contextPath}/dog/feed">사료</a>
-                        <a href="${pageContext.request.contextPath}/dog/toy">장난감</a>
-                        <a href="${pageContext.request.contextPath}/dog/outdoor">외출용품</a>
-                        <a href="${pageContext.request.contextPath}/dog/groom">미용용품</a>
+                        <a href="${contextPath}/product/list?petType=강아지&categoryName=사료">사료</a>
+<a href="${contextPath}/product/list?petType=강아지&categoryName=장난감">장난감</a>
+<a href="${contextPath}/product/list?petType=강아지&categoryName=외출용품">외출용품</a>
+<a href="${contextPath}/product/list?petType=강아지&categoryName=미용용품">미용용품</a>
                     </div>
                 </li>
                 <li class="menu-item has-sub">
                     <a href="javascript:void(0);" class="nav-link">고양이</a>
                     <div class="small-dropdown">
-                        <a href="${pageContext.request.contextPath}/cat/feed">사료</a>
-                        <a href="${pageContext.request.contextPath}/cat/toy">장난감</a>
-                        <a href="${pageContext.request.contextPath}/cat/outdoor">외출용품</a>
-                        <a href="${pageContext.request.contextPath}/cat/groom">미용용품</a>
+                        <a href="${contextPath}/product/list?petType=고양이&categoryName=사료">사료</a>
+<a href="${contextPath}/product/list?petType=고양이&categoryName=장난감">장난감</a>
+<a href="${contextPath}/product/list?petType=고양이&categoryName=외출용품">외출용품</a>
+<a href="${contextPath}/product/list?petType=고양이&categoryName=미용용품">미용용품</a>
                     </div>
                 </li>
                 <li class="menu-item">

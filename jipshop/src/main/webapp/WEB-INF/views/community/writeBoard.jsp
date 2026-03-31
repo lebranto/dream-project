@@ -172,7 +172,7 @@
         <button type="button" class="custom-modal-btn" id="customModalConfirm">확인</button>
     </div>
 </div>
-
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 <script>
     const boardType = "${param.boardType}";
     const categoryButtons = document.querySelectorAll(".category-btn");

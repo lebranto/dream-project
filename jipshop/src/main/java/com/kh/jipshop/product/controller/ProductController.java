@@ -1,112 +1,119 @@
 package com.kh.jipshop.product.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.kh.jipshop.common.model.vo.PageInfo;
+import com.kh.jipshop.common.template.Pagination;
+import com.kh.jipshop.product.model.service.ProductServiceImpl;
+import com.kh.jipshop.product.model.vo.ProductSearch;
+import com.kh.jipshop.product.model.vo.Products;
 
 @Controller
+@RequestMapping("/product")
 public class ProductController {
-	
-		@RequestMapping("/")
-		public String home() {
-			return "product/home";
-    	}
 
-    	@RequestMapping("/terms")
-    	public String terms() {
-        	return "product/terms";
-    	}
+    @Autowired
+    private ProductServiceImpl productService;
 
-		@RequestMapping("/privacy")
-	   public String privacy() {
-	       return "product/privacy";
-	   }
+    @GetMapping("/detail")
+    public String productDetail(@RequestParam("productId") int productId, Model model) {
 
-	   // 강아지 미용용품
-	   
-	   @RequestMapping("/dog/groom")
-	   public String dogGroomPage() {
-	       return "product/dogGroom";
-	   }
-	   
-	   @RequestMapping("/dog/groom/detail")
-	   public String dogGroomDetailPage() {
-	       return "product/dogGroomDetail";
-	   }
+        System.out.println("=== productDetail controller 진입 ===");
+        System.out.println("productId : " + productId);
 
-	   // 강아지 외출용품
-	   @RequestMapping("/dog/outdoor")
-	   public String dogOutdoorPage() {
-	       return "product/dogOutdoor";
-	   }
+        Products product = productService.selectProductDetail(productId);
 
-	   @RequestMapping("/dog/outdoor/detail")
-	   public String dogOutdoorDetailPage() {
-	       return "product/dogOutdoorDetail";
-	   }
-	   
-	   // 강아지 장난감
-	   @RequestMapping("/dog/toy")
-	   public String dogToyPage() {
-	       return "product/dogToy";
-	   }
+        System.out.println("조회된 product : " + product);
 
-	   @RequestMapping("/dog/toy/detail")
-	   public String dogToyDetailPage() {
-	       return "product/dogToyDetail";
-	   }
-	   
-	    // 고양이 장난감
-	   @RequestMapping("/cat/toy")
-	   public String catToyPage() {
-	       return "product/catToy";
-	   }
+        if (product == null) {
+            model.addAttribute("errorMsg", "상품 정보를 찾을 수 없습니다.");
+            return "common/errorPage";
+        }
 
-	   @RequestMapping("/cat/toy/detail")
-	   public String catToyDetailPage() {
-	       return "product/catToyDetail";
-	   }
-	   
-	    // 고양이 미용용품
-	    @RequestMapping("/cat/groom")
-	    public String catGroomPage() {
-	        return "product/catGroom";
-	    }
+        model.addAttribute("product", product);
 
-	    @RequestMapping("/cat/groom/detail")
-	    public String catGroomDetailPage() {
-	        return "product/catGroomDetail";
-	    }
-	    
-	   // 고양이 외출용품
-	    @RequestMapping("/cat/outdoor")
-	    public String catOutdoorPage() {
-	        return "product/catOutdoor";
-	    }
+        // 아직 리뷰기능 전이라 임시값
+        model.addAttribute("reviewCount", 0);
 
-	    @RequestMapping("/cat/outdoor/detail")
-	    public String catOutdoorDetailPage() {
-	        return "product/catOutdoorDetail";
-	    }
-	   
-	    // 고양이 사료
-	   @RequestMapping("/cat/feed")
-	    public String catFeedPage() {
-	        return "product/catFeed";
-	    }
+        return "product/productDetail";
+    }
 
-	    @RequestMapping("/cat/feed/detail")
-	    public String catFeedDetailPage() {
-	        return "product/catFeedDetail";
-	    }
-	   
-	   // ������ ���
-	   @RequestMapping("/dog/feed")
-	   public String dogFeedPage() {
-	       return "product/dogFeed";
-	   }
-	   
-	   @RequestMapping("/dog/feed/detail")
-	   public String dogFeedDetailPage() {
-	       return "product/dogFeedDetail";
-	   }
+    @PostMapping("/cart")
+    public String addCart(@RequestParam("productId") int productId,
+                          @RequestParam("qty") int qty,
+                          HttpSession session) {
+
+        System.out.println("=== addCart controller 진입 ===");
+        System.out.println("productId : " + productId);
+        System.out.println("qty : " + qty);
+
+        session.setAttribute("alertMsg", "장바구니 기능은 연결 전입니다. 현재는 버튼 동작만 확인용입니다.");
+        return "redirect:/product/detail?productId=" + productId;
+    }
+
+    @PostMapping("/buyNow")
+    public String buyNow(@RequestParam("productId") int productId,
+                         @RequestParam("qty") int qty,
+                         HttpSession session) {
+
+        System.out.println("=== buyNow controller 진입 ===");
+        System.out.println("productId : " + productId);
+        System.out.println("qty : " + qty);
+
+        session.setAttribute("alertMsg", "구매하기 기능은 연결 전입니다. 현재는 버튼 동작만 확인용입니다.");
+        return "redirect:/product/detail?productId=" + productId;
+    }
+    @RequestMapping("/")
+    public String home() {
+       return "product/home";
+     }
+
+     @RequestMapping("/terms")
+     public String terms() {
+         return "product/terms";
+     }
+
+    @RequestMapping("/privacy")
+    public String privacy() {
+        return "product/privacy";
+    }
+    @GetMapping("/list")
+    public String productList(
+            @RequestParam(value = "petType", required = false) String petType,
+            @RequestParam(value = "categoryName", required = false) String categoryName,
+            @RequestParam(value = "sort", defaultValue = "latest") String sort,
+            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+            Model model) {
+
+        ProductSearch search = new ProductSearch();
+        search.setPetType(petType);
+        search.setCategoryName(categoryName);
+        search.setSort(sort);
+
+        int listCount = productService.selectProductListCount(search);
+
+        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 12, 5);
+
+        List<Products> productList = productService.selectProductList(search, pi);
+
+        model.addAttribute("productList", productList);
+        model.addAttribute("listCount", listCount);
+        model.addAttribute("pi", pi);
+
+        model.addAttribute("petType", petType);
+        model.addAttribute("categoryName", categoryName);
+        model.addAttribute("sort", sort);
+
+        return "product/productList";
+    }
 }
