@@ -29,7 +29,7 @@ public class AdminDateSaleServiceImpl implements AdminDateSaleService{
 	}
 
 	@Override
-	public List<Orders> selectListMonth(Map<String, Object> paramMap) {
+	public List<OrderDetailResponse> selectListMonth(Map<String, Object> paramMap) {
 		// TODO Auto-generated method stub
 		return aDao.selectListMonth(paramMap);
 	}
@@ -48,26 +48,7 @@ public class AdminDateSaleServiceImpl implements AdminDateSaleService{
 		// TODO Auto-generated method stub
 		return aDao.selectTotalCountMonth(paramMap);
 	}
-	
-	@Override
-	public int totalFeeMonth(Map<String, Object> paramMap) {
-	
-		return aDao.totalFeeMonth(paramMap);
-	}
 
-	@Override
-	public int totalDepositMonth(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int totalPayableMonth(Map<String, Object> paramMap) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
 	
 	
 	// 일별 조회
@@ -79,7 +60,7 @@ public class AdminDateSaleServiceImpl implements AdminDateSaleService{
 	}
 
 	@Override
-	public List<Orders> selectListDate(Map<String, Object> paramMap) {
+	public List<OrderDetailResponse> selectListDate(Map<String, Object> paramMap) {
 	
 		return aDao.selectListDate(paramMap);
 	}

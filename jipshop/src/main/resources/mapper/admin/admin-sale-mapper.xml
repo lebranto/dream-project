@@ -7,15 +7,27 @@
 
 <!-- 월별 -->
 
-    <select id="selectListMonth" resultType="Orders">
+    <select id="selectListMonth" resultType="OrderDetailResponse">
    SELECT *
         FROM (
             SELECT ROWNUM AS RNUM, T1.*
             FROM (
-                SELECT *
-                FROM ORDERS
-                WHERE ORDER_DATE >= #{startDate}
-                  AND ORDER_DATE &lt; #{nextMonthStartDate}
+                SELECT 
+                O.ORDER_TOTAL_PRICE, 
+                O.ORDER_DATE, 
+                (
+                    SELECT MIN(C.COMPANY_NAME)
+                    FROM ORDER_DETAIL OD
+                    JOIN PRODUCT P
+                      ON OD.PRODUCT_ID = P.PRODUCT_ID
+                    JOIN COMPANY C
+                      ON P.COMPANY_CODE = C.COMPANY_CODE
+                    WHERE OD.ORDER_ID = O.ORDER_ID
+                ) AS COMPANY_NAME
+                FROM ORDERS O
+                WHERE O.ORDER_DATE >= #{startDate}
+                  AND O.ORDER_DATE &lt; #{nextMonthStartDate}
+                  AND O.ORDER_CANCEL_YN = 'N'
                 ORDER BY ORDER_DATE DESC
             ) T1
         )
@@ -50,7 +62,40 @@
 
 <!-- 일별 -->
 
-<select id="dateListCount" resultType="int">
+
+
+    <select id="selectListDate" resultType="OrderDetailResponse">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS RNUM, T1.*
+            FROM (
+                SELECT 
+                O.ORDER_TOTAL_PRICE, 
+                O.ORDER_DATE, 
+                (
+                    SELECT MIN(C.COMPANY_NAME)
+                    FROM ORDER_DETAIL OD
+                    JOIN PRODUCT P
+                      ON OD.PRODUCT_ID = P.PRODUCT_ID
+                    JOIN COMPANY C
+                      ON P.COMPANY_CODE = C.COMPANY_CODE
+                    WHERE OD.ORDER_ID = O.ORDER_ID
+                ) AS COMPANY_NAME
+               
+                FROM ORDERS O
+                WHERE O.ORDER_CANCEL_YN = 'N'
+                <where>
+                    <if test="startDate != null and endDate != null">
+                        O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+                    </if>
+                </where>
+                ORDER BY O.ORDER_DATE DESC
+            ) T1
+        )
+        WHERE RNUM BETWEEN #{offset} AND #{limit}
+    </select>
+    
+    <select id="dateListCount" resultType="int">
         SELECT COUNT(*)
         FROM ORDERS
         <where>
@@ -59,24 +104,7 @@
             </if>
         </where>
     </select>
-
-    <select id="selectListDate" resultType="Orders">
-        SELECT *
-        FROM (
-            SELECT ROWNUM AS RNUM, T1.*
-            FROM (
-                SELECT *
-                FROM ORDERS
-                <where>
-                    <if test="startDate != null and endDate != null">
-                        ORDER_DATE BETWEEN #{startDate} AND #{endDate}
-                    </if>
-                </where>
-                ORDER BY ORDER_DATE DESC
-            ) T1
-        )
-        WHERE RNUM BETWEEN #{offset} AND #{limit}
-    </select>
+    
 
     <!-- 총 매출 합계 -->
 	<select id="selectTotalDate" resultType="int">

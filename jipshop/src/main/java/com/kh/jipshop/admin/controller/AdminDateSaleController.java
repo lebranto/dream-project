@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.jipshop.admin.model.service.AdminDateSaleService;
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
+import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
 import com.kh.jipshop.mypage.model.vo.Orders;
 import com.kh.jipshop.security.model.vo.MemberExt;
 
@@ -72,14 +73,11 @@ public class AdminDateSaleController {
 
         PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
-        List<Orders> list = aService.selectListMonth(paramMap);
+        List<OrderDetailResponse> list = aService.selectListMonth(paramMap);
         
         
         int totalSales = aService.selectTotalMonth(paramMap);
         int totalOrderCount = aService.selectTotalCountMonth(paramMap);
-        int totalFee = aService.totalFeeMonth(paramMap);  // 수수료  
-        int totalDeposit = aService.totalDepositMonth(paramMap);  // 입금
-        int totalpayable = aService.totalPayableMonth(paramMap);  // 지급 예정액
         
         model.addAttribute("orderlist", list);
         model.addAttribute("pi", pi);
@@ -87,9 +85,6 @@ public class AdminDateSaleController {
         model.addAttribute("searchMonth", searchMonth);
         model.addAttribute("totalSales", totalSales);
         model.addAttribute("totalOrderCount", totalOrderCount);
-        model.addAttribute("totalFee",totalFee);
-        model.addAttribute("totalDeposit",totalDeposit);
-        model.addAttribute("totalpayable",totalpayable);
 
         return "admin/salesDaily";
     }
@@ -127,7 +122,7 @@ public class AdminDateSaleController {
 
         PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
-        List<Orders> list = aService.selectListDate(paramMap);
+        List<OrderDetailResponse> list = aService.selectListDate(paramMap);
         
         int totalSales = aService.selectTotalDate(paramMap);
         int totalOrderCount = aService.selectTotalCountDate(paramMap);

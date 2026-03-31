@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderDetailResponse {
 	
-	//주문쪽 필드
+	// 주문쪽 필드
 	private int orderTotalPrice;
 	private Date orderDate;
 	private int orderId;
@@ -21,7 +21,7 @@ public class OrderDetailResponse {
 	private String productName;
 	private String photo1;
 	private int productPrice;
-	
+		
 	// 최근 본 상품 쪽 필드
 	private int viewId;
 	private Date viewedDate;
@@ -29,7 +29,9 @@ public class OrderDetailResponse {
 	// 배송 상태
 	private String deliveryStatus;
 	
-	
+	// 업체 필드
+	private String companyCode;
+	private String companyName;
 	
 	
 }

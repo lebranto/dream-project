@@ -12,7 +12,7 @@ public interface AdminDateSaleDao {
 	//월별
 	int monthListCount(Map<String, Object> paramMap);
 
-	List<Orders> selectListMonth(Map<String, Object> paramMap);
+	List<OrderDetailResponse> selectListMonth(Map<String, Object> paramMap);
 	
 	int selectTotalMonth(Map<String, Object> paramMap);
 
@@ -24,7 +24,7 @@ public interface AdminDateSaleDao {
 
 	int dateListCount(Map<String, Object> paramMap);
 
-	List<Orders> selectListDate(Map<String, Object> paramMap);
+	List<OrderDetailResponse> selectListDate(Map<String, Object> paramMap);
 
 	int selectTotalDate(Map<String, Object> paramMap);
 

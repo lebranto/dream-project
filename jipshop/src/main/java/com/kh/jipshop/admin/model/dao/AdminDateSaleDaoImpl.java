@@ -21,7 +21,7 @@ public class AdminDateSaleDaoImpl implements AdminDateSaleDao{
 	// 월별
 	
 	@Override
-	public List<Orders> selectListMonth(Map<String, Object> paramMap) {
+	public List<OrderDetailResponse> selectListMonth(Map<String, Object> paramMap) {
 		
 		return session.selectList("adminSaleMapper.selectListMonth",paramMap);
 	}
@@ -48,7 +48,7 @@ public class AdminDateSaleDaoImpl implements AdminDateSaleDao{
 	
 	//일별
 	@Override
-	public List<Orders> selectListDate(Map<String, Object> paramMap) {
+	public List<OrderDetailResponse> selectListDate(Map<String, Object> paramMap) {
 
 		return session.selectList("adminSaleMapper.selectListDate",paramMap);
 	}

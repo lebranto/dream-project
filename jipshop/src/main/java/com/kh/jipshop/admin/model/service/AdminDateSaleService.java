@@ -11,7 +11,7 @@ public interface AdminDateSaleService {
 	// 월별 조회
 	int monthListCount(Map<String, Object> paramMap);
 
-	List<Orders> selectListMonth(Map<String, Object> paramMap);
+	List<OrderDetailResponse> selectListMonth(Map<String, Object> paramMap);
 
 	// 월별 통계
 	
@@ -19,18 +19,15 @@ public interface AdminDateSaleService {
 	
 	int selectTotalCountMonth(Map<String, Object> paramMap);
 	
-	int totalFeeMonth(Map<String, Object> paramMap);
-	
-	int totalDepositMonth(Map<String, Object> paramMap);
-	
-	int totalPayableMonth(Map<String, Object> paramMap);
 	
 	
 	//일별 조회
 	int dateListCount(Map<String, Object> paramMap);
 
-	List<Orders> selectListDate(Map<String, Object> paramMap);
+	List<OrderDetailResponse> selectListDate(Map<String, Object> paramMap);
 
+	
+	
 	//일별 통계
 	int selectTotalDate(Map<String, Object> paramMap);
 

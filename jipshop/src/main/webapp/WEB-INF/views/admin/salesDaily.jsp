@@ -54,14 +54,14 @@
         <div class="stat-card">
             <div class="stat-label">현금 수수료</div>
             <div class="stat-value text-blue">
-                <fmt:formatNumber value="${totalSales}" pattern="#,###"/>원
+                <fmt:formatNumber value="${totalSales * 0.1}" pattern="#,###"/>원
             </div>
             <div class="stat-sub">현금 결제 수수료 합계</div>
         </div>
         <div class="stat-card">
             <div class="stat-label">지급 예정액</div>
             <div class="stat-value text-red">
-                <fmt:formatNumber value="${totalSales}" pattern="#,###"/>원
+                <fmt:formatNumber value="${totalSales*1.1*0.9}" pattern="#,###"/>원
             </div>
             <div class="stat-sub">판매자 지급 예정</div>
         </div>
@@ -74,7 +74,7 @@
                     <th>입점일</th>
                     <th>판매업체명</th>
                     <th class="td-num">매출 금액</th>
-                    <th class="td-num">전체 수수료</th>
+                    <th class="td-num">현금 수수료</th>
                     <th class="td-num">입금 금액</th>
                     <th class="td-num">지급 예정액</th>
                 </tr>
@@ -90,19 +90,19 @@
                                 <td style="color:var(--text-sub)">
                                 <fmt:formatDate value="${o.orderDate}" pattern="yyyy-MM-dd"/> 
                                 </td>
-                                <td><strong>${o.ordererName}</strong></td> 
+                                <td><strong>${o.companyName}</strong></td> 
                                 <td class="td-num font-bold">
                                     <fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,###"/>
                                 </td>
                                 <td class="td-num" style="color:var(--text-sub)">
                                    
-                                <fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,###"/>
+                                <fmt:formatNumber value="${o.orderTotalPrice * 0.1}" pattern="#,###"/>
                                 </td>
                                 <td class="td-num">
-                                    <fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,###"/>
+                                    <fmt:formatNumber value="${o.orderTotalPrice * 1.1}" pattern="#,###"/>
                                 </td>
                                 <td class="td-num" style="color:var(--accent)">
-                                    <fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,###"/>
+                                    <fmt:formatNumber value="${o.orderTotalPrice * 1.1 * 0.9}" pattern="#,###"/>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -113,13 +113,13 @@
                                <fmt:formatNumber value="${totalSales}" pattern="#,###"/> 
                             </td>
                             <td class="td-num">
-                             <fmt:formatNumber value="${totalSales}" pattern="#,###"/>
+                             <fmt:formatNumber value="${totalSales*0.1}" pattern="#,###"/>
                             </td>
                             <td class="td-num">
-                            <fmt:formatNumber value="${totalSales}" pattern="#,###"/>
+                            <fmt:formatNumber value="${totalSales *1.1}" pattern="#,###"/>
                             </td>
                             <td class="td-num">
-                             <fmt:formatNumber value="${totalSales}" pattern="#,###"/>
+                             <fmt:formatNumber value="${totalSales * 1.1 * 0.9}" pattern="#,###"/>
                             </td>
                         </tr>
                     </c:otherwise>
