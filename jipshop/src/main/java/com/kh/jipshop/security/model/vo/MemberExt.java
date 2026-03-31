@@ -1,5 +1,6 @@
 package com.kh.jipshop.security.model.vo;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,8 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.kh.jipshop.member.model.vo.Member;
 
-public class MemberExt extends Member implements UserDetails{
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class MemberExt extends Member implements UserDetails, Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	// SimpleGrantedAuthority
 	//  - 문자열 형태의 권한
 	//  - "ROLE-USER", "ROLE_ADMIN", "ROLE_MANAGER"...
