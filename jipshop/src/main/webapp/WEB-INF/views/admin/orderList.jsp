@@ -101,12 +101,11 @@
                 <thead>
                     <tr>
                         <th class="center"><input type="checkbox" id="checkAll" onchange="toggleAll()"></th>
-                        <th>번호</th>
                         <th>주문번호</th>
                         <th>주문자</th>
                         <th>연락처</th>
                         <th>대표상품</th>
-                        <th>주문금액</th>
+                        <th class="price-head">총 주문금액</th>
                         <th class="center">배송여부</th>
                         <th class="center">취소요청</th>
                         <th class="center">주문상태</th>
@@ -127,12 +126,12 @@
                                         <input type="checkbox" class="rowCheck" name="orderIds"
                                                value="${order.orderId}" onchange="updateBulk()">
                                     </td>
-                                    <td>${(pi.currentPage - 1) * pi.boardLimit + status.count}</td>
+                                   
                                     <td>${order.orderId}</td>
                                     <td>${order.ordererName}</td>
                                     <td>${order.ordererPhone}</td>
                                     <td>${order.productName}</td>
-                                    <td class="td-num">
+                                    <td class="price-cell">
                                         <fmt:formatNumber value="${order.orderTotalPrice}" pattern="#,###"/>원
                                     </td>
                                     <td class="center">

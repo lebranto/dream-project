@@ -93,101 +93,107 @@
         <div class="table-wrap">
             <table>
                 <thead>
-                    <tr>
-                        <th style="width: 44px;">
-                            <input type="checkbox" id="checkAll">
-                        </th>
-                        <th style="width: 80px;">번호</th>
-                        <th style="width: 140px;">신고자</th>
-                        <th style="width: 120px;">신고 대상</th>
-                        <th style="width: 120px;">신고 유형</th>
-                        <th>신고 내용</th>
-                        <th style="width: 120px;">신고일</th>
-                        <th style="width: 120px;">처리 상태</th>
-                        <th style="width: 100px;">액션</th>
-                    </tr>
+                    <thead>
+    <tr>
+        <th style="width: 44px;">
+            <input type="checkbox" id="checkAll">
+        </th>
+        <th style="width: 110px;">댓글 ID</th>
+        <th style="width: 130px;">신고자 ID</th>
+        <th style="width: 130px;">신고대상 ID</th>
+        <th style="width: 110px;">게시판번호</th>
+        <th style="width: 120px;">신고 유형</th>
+        <th>신고 내용</th>
+        <th style="width: 120px;">신고일</th>
+        <th style="width: 120px;">처리 상태</th>
+        <th style="width: 100px;">액션</th>
+    </tr>
+</thead>
                 </thead>
 
                 <tbody>
                     <c:choose>
                         <c:when test="${empty reportList}">
                             <tr>
-                                <td colspan="9" class="empty-row">접수된 신고가 없습니다.</td>
+                                <td colspan="10" class="empty-row">접수된 신고가 없습니다.</td>
                             </tr>
                         </c:when>
 
-                        <c:otherwise>
-                            <c:forEach var="r" items="${reportList}" varStatus="s">
-                                <tr class="clickable-row"
-                                    onclick="location.href='${contextPath}/admin/reportDetail.do?reportId=${r.reportId}'">
+                       <c:otherwise>
+    <c:forEach var="r" items="${reportList}" varStatus="s">
+        <tr class="clickable-row"
+            onclick="location.href='${contextPath}/admin/reportDetail.do?reportId=${r.reportId}'">
 
-                                    <td onclick="event.stopPropagation();">
-                                        <input type="checkbox"
-                                               name="reportIds"
-                                               value="${r.reportId}"
-                                               class="row-check">
-                                    </td>
+            <td onclick="event.stopPropagation();">
+                <input type="checkbox"
+                       name="reportIds"
+                       value="${r.reportId}"
+                       class="row-check">
+            </td>
 
-                                    <td>
-                                        ${((pi.currentPage - 1) * pi.boardLimit) + s.index + 1}
-                                    </td>
+            <td>
+                <c:out value="${r.commentId}" default="-"/>
+            </td>
 
-                                    <td>
-                                        <c:out value="${r.reporterId}" default="-"/>
-                                    </td>
+            <td>
+                <c:out value="${r.reporterId}" default="-"/>
+            </td>
 
-                                    <td>
-                                        게시글 ${r.boardNo}
-                                    </td>
+            <td>
+                <c:out value="${r.reportedMemberId}" default="-"/>
+            </td>
 
-                                    <td>
-                                        <c:out value="${r.reportTypeName}" default="기타"/>
-                                    </td>
+            <td>
+                <c:out value="${r.boardNo}" default="-"/>
+            </td>
 
-                                    <td class="left">
-                                        <c:choose>
-                                            <c:when test="${not empty r.reportReason}">
-                                                <c:out value="${r.reportReason}"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                내용 없음
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
+            <td>
+                <c:out value="${r.reportTypeName}" default="기타"/>
+            </td>
 
-                                    <td>
-                                        <c:out value="${r.reportDate}" default="-"/>
-                                    </td>
+            <td class="left">
+                <c:choose>
+                    <c:when test="${not empty r.reportReason}">
+                        <c:out value="${r.reportReason}"/>
+                    </c:when>
+                    <c:otherwise>
+                        내용 없음
+                    </c:otherwise>
+                </c:choose>
+            </td>
 
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${r.reportProcessYn eq 'Y'}">
-                                                <span class="badge badge-done">처리 완료</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="badge badge-pending">처리 대기</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
+            <td>
+                <c:out value="${r.reportDate}" default="-"/>
+            </td>
 
-                                    <td onclick="event.stopPropagation();">
-                                        <c:choose>
-                                            <c:when test="${r.reportProcessYn eq 'Y'}">
-                                                <button type="button" class="action-btn done-btn" disabled>완료</button>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <button type="button"
-                                                        class="action-btn"
-                                                        onclick="processOne(${r.reportId});">
-                                                    처리
-                                                </button>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
+            <td>
+                <c:choose>
+                    <c:when test="${r.reportProcessYn eq 'Y'}">
+                        <span class="badge badge-done">처리 완료</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="badge badge-pending">처리 대기</span>
+                    </c:otherwise>
+                </c:choose>
+            </td>
 
-                                </tr>
-                            </c:forEach>
-                        </c:otherwise>
+            <td onclick="event.stopPropagation();">
+                <c:choose>
+                    <c:when test="${r.reportProcessYn eq 'Y'}">
+                        <button type="button" class="action-btn done-btn" disabled>완료</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button type="button"
+                                class="action-btn"
+                                onclick="processOne(${r.reportId});">
+                            처리
+                        </button>
+                    </c:otherwise>
+                </c:choose>
+            </td>
+        </tr>
+    </c:forEach>
+</c:otherwise>
                     </c:choose>
                 </tbody>
             </table>
@@ -197,21 +203,21 @@
 <div class="pagination">
     <c:if test="${pi.currentPage > 1}">
         <a class="page-num"
-           href="?page=${pi.currentPage-1}&startDate=${param.startDate}&endDate=${param.endDate}&reportStatus=${param.reportStatus}&keyword=${param.keyword}">
+           href="${contextPath}/admin/reportList.do?currentPage=${pi.currentPage - 1}&startDate=${param.startDate}&endDate=${param.endDate}&reportStatus=${param.reportStatus}&keyword=${param.keyword}">
             ◀
         </a>
     </c:if>
 
     <c:forEach begin="${pi.startPage}" end="${pi.endPage}" var="p">
-        <a class="page-num ${p==pi.currentPage?'active':''}"
-           href="?page=${p}&startDate=${param.startDate}&endDate=${param.endDate}&reportStatus=${param.reportStatus}&keyword=${param.keyword}">
+        <a class="page-num ${p == pi.currentPage ? 'active' : ''}"
+           href="${contextPath}/admin/reportList.do?currentPage=${p}&startDate=${param.startDate}&endDate=${param.endDate}&reportStatus=${param.reportStatus}&keyword=${param.keyword}">
             ${p}
         </a>
     </c:forEach>
 
     <c:if test="${pi.currentPage < pi.maxPage}">
         <a class="page-num"
-           href="?page=${pi.currentPage+1}&startDate=${param.startDate}&endDate=${param.endDate}&reportStatus=${param.reportStatus}&keyword=${param.keyword}">
+           href="${contextPath}/admin/reportList.do?currentPage=${pi.currentPage + 1}&startDate=${param.startDate}&endDate=${param.endDate}&reportStatus=${param.reportStatus}&keyword=${param.keyword}">
             ▶
         </a>
     </c:if>

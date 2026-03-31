@@ -83,7 +83,6 @@
 <thead>
 <tr>
     <th class="center"><input type="checkbox"></th>
-    <th class="center">번호</th>
     <th>구매자</th>
     <th class="center">주문번호</th>
     <th>상품명</th>
@@ -111,8 +110,6 @@
 
 <tr>
     <td class="center"><input type="checkbox"></td>
-
-    <td class="center">${status.index + 1}</td>
     <td>${c.ordererName}</td>
     <td class="center">${c.orderId}</td>
     <td>${c.productName}</td>
@@ -181,13 +178,28 @@
 </tbody>
 </table>
 
+<!-- 페이징 -->
 <div class="pagination">
-<c:forEach begin="${pi.startPage}" end="${pi.endPage}" var="p">
-<a class="page-num ${p == pi.currentPage ? 'active' : ''}"
-   href="${contextPath}/admin/orderCancel/list?currentPage=${p}">
-    ${p}
-</a>
-</c:forEach>
+    <c:if test="${pi.currentPage > 1}">
+        <a class="page-num"
+           href="${contextPath}/admin/orderCancel/list?currentPage=${pi.currentPage - 1}&startDate=${param.startDate}&endDate=${param.endDate}&cancelStatus=${param.cancelStatus}&keyword=${param.keyword}">
+            ◀
+        </a>
+    </c:if>
+
+    <c:forEach begin="${pi.startPage}" end="${pi.endPage}" var="p">
+        <a class="page-num ${p == pi.currentPage ? 'active' : ''}"
+           href="${contextPath}/admin/orderCancel/list?currentPage=${p}&startDate=${param.startDate}&endDate=${param.endDate}&cancelStatus=${param.cancelStatus}&keyword=${param.keyword}">
+            ${p}
+        </a>
+    </c:forEach>
+
+    <c:if test="${pi.currentPage < pi.maxPage}">
+        <a class="page-num"
+           href="${contextPath}/admin/orderCancel/list?currentPage=${pi.currentPage + 1}&startDate=${param.startDate}&endDate=${param.endDate}&cancelStatus=${param.cancelStatus}&keyword=${param.keyword}">
+            ▶
+        </a>
+    </c:if>
 </div>
 
 </div>
