@@ -13,10 +13,5 @@ public class ProductRegist {
 
         return "admin/inquiryList";
     }
-    
-    @GetMapping("/productRegist.do")
-    public String productRegist() {
-
-        return "admin/productRegist";
-    }
+ 
 }
