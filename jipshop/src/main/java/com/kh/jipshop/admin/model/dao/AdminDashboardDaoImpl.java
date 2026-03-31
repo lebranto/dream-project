@@ -33,4 +33,14 @@ public class AdminDashboardDaoImpl implements AdminDashboardDao{
 		return session.selectList(dash+"getRecentReportList");
 	}
 
+	@Override
+	public int getUnproInquiryCount() {
+		return session.selectOne(dash+"getUnproInquiryCount");
+	}
+
+	@Override
+	public List<Map<String, Object>> getRecentInquiryList() {
+		return session.selectList(dash+"getRecentInquiryList");
+	}
+
 }

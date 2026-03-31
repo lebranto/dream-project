@@ -13,4 +13,8 @@ public interface AdminDashboardService {
 
 	List<Map<String, Object>> getRecentReportList();
 
+	int getUnproInquiryCount();
+
+	List<Map<String, Object>> getRecentInquiryList();
+
 }
