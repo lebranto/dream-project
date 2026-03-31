@@ -1,49 +1,161 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="adminCommentReportMapper">
 
-    <select id="selectDetail" resultType="com.kh.jipshop.admin.model.vo.AdminCommentReport">
-        SELECT
-            CR.REPORT_ID,
-            CR.COMMENT_ID,
-            RT.TYPE_NAME AS REPORT_TYPE_NAME,
-            CR.REPORT_REASON,
-            CR.REPORT_DATE,
-            BC.BOARD_NO,
-            BC.COMMENT_CONTENT,
-            BC.COMMENT_REG_DATE,
-            M.MEMBER_ID AS COMMENT_WRITER_ID
-        FROM COMMENT_REPORT CR
-        JOIN REPORT_TYPE RT ON CR.REPORT_TYPE_ID = RT.REPORT_TYPE_ID
-        JOIN BOARD_COMMENT BC ON CR.COMMENT_ID = BC.COMMENT_ID
-        JOIN MEMBER M ON BC.MEMBER_NO = M.MEMBER_NO
-        WHERE CR.REPORT_ID = #{reportId}
+    <resultMap id="adminCommentReportResultMap" type="com.kh.jipshop.admin.model.vo.AdminCommentReport">
+    <id property="reportId" column="REPORT_ID"/>
+    <result property="reporterMemberNo" column="REPORTER_MEMBER_NO"/>
+    <result property="commentId" column="COMMENT_ID"/>
+    <result property="reportTypeId" column="REPORT_TYPE_ID"/>
+    <result property="reportReason" column="REPORT_REASON"/>
+    <result property="reportDate" column="REPORT_DATE"/>
+    <result property="reportProcessYn" column="REPORT_PROCESS_YN"/>
+
+    <result property="reporterId" column="REPORTER_ID"/>
+    <result property="reportedMemberNo" column="REPORTED_MEMBER_NO"/>
+    <result property="reportedMemberId" column="REPORTED_MEMBER_ID"/>
+    <result property="boardNo" column="BOARD_NO"/>
+    <result property="reportTypeName" column="REPORT_TYPE_NAME"/>
+    <result property="commentContent" column="COMMENT_CONTENT"/>
+    <result property="reportStatus" column="REPORT_STATUS"/>
+    <result property="processLabel" column="PROCESS_LABEL"/>
+</resultMap>
+
+    <sql id="searchCondition">
+        <where>
+            <if test="startDate != null and startDate != ''">
+                AND CR.REPORT_DATE <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
+            </if>
+
+            <if test="endDate != null and endDate != ''">
+                AND CR.REPORT_DATE <![CDATA[<]]> TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+            </if>
+
+            <if test="reportStatus != null and reportStatus != ''">
+                <choose>
+                    <when test="reportStatus == 'PENDING'">
+                        AND CR.REPORT_PROCESS_YN = 'N'
+                    </when>
+                    <when test="reportStatus == 'DONE'">
+                        AND CR.REPORT_PROCESS_YN = 'Y'
+                    </when>
+                </choose>
+            </if>
+
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    M.MEMBER_ID LIKE '%' || #{keyword} || '%'
+                    OR TO_CHAR(BC.BOARD_NO) LIKE '%' || #{keyword} || '%'
+                    OR NVL(RT.TYPE_NAME, '') LIKE '%' || #{keyword} || '%'
+                    OR NVL(CR.REPORT_REASON, '') LIKE '%' || #{keyword} || '%'
+                    OR NVL(BC.COMMENT_CONTENT, '') LIKE '%' || #{keyword} || '%'
+                )
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectReportListCount" parameterType="hashmap" resultType="_int">
+        SELECT COUNT(*)
+          FROM COMMENT_REPORT CR
+          JOIN MEMBER M
+            ON CR.REPORTER_MEMBER_NO = M.MEMBER_NO
+          JOIN BOARD_COMMENT BC
+            ON CR.COMMENT_ID = BC.COMMENT_ID
+          LEFT JOIN REPORT_TYPE RT
+            ON CR.REPORT_TYPE_ID = RT.REPORT_TYPE_ID
+        <include refid="searchCondition"/>
     </select>
 
-    <update id="deleteComment">
-        UPDATE BOARD_COMMENT
-        SET COMMENT_ACTIVE_YN = 'N'
-        WHERE COMMENT_ID = #{commentId}
-    </update>
-
-    <update id="updateReportStatus">
-        UPDATE COMMENT_REPORT
-        SET REPORT_PROCESS_YN = 'Y'
-        WHERE REPORT_ID = #{reportId}
-    </update>
-
-<select id="selectReportList" resultType="com.kh.jipshop.admin.model.vo.AdminCommentReport">
+    <select id="selectReportList"
+        parameterType="hashmap"
+        resultMap="adminCommentReportResultMap">
     SELECT
-        CR.REPORT_ID,
-        CR.COMMENT_ID,
-        RT.TYPE_NAME AS REPORT_TYPE_NAME,
-        CR.REPORT_REASON,
-        CR.REPORT_DATE,
-        CR.REPORT_PROCESS_YN
-    FROM COMMENT_REPORT CR
-    JOIN REPORT_TYPE RT ON CR.REPORT_TYPE_ID = RT.REPORT_TYPE_ID
-    ORDER BY CR.REPORT_ID DESC
+           CR.REPORT_ID,
+           CR.REPORTER_MEMBER_NO,
+           CR.COMMENT_ID,
+           CR.REPORT_TYPE_ID,
+           CR.REPORT_REASON,
+           TO_CHAR(CR.REPORT_DATE, 'YYYY-MM-DD') AS REPORT_DATE,
+           CR.REPORT_PROCESS_YN,
+
+           M.MEMBER_ID AS REPORTER_ID,
+           BC.MEMBER_NO AS REPORTED_MEMBER_NO,
+           RM.MEMBER_ID AS REPORTED_MEMBER_ID,
+           BC.BOARD_NO AS BOARD_NO,
+           NVL(RT.TYPE_NAME, '기타') AS REPORT_TYPE_NAME,
+           BC.COMMENT_CONTENT,
+
+           CASE
+               WHEN CR.REPORT_PROCESS_YN = 'Y' THEN 'DONE'
+               ELSE 'PENDING'
+           END AS REPORT_STATUS,
+
+           CASE
+               WHEN CR.REPORT_PROCESS_YN = 'Y' THEN '처리 완료'
+               ELSE '처리 대기'
+           END AS PROCESS_LABEL
+      FROM COMMENT_REPORT CR
+      JOIN MEMBER M
+        ON CR.REPORTER_MEMBER_NO = M.MEMBER_NO
+      JOIN BOARD_COMMENT BC
+        ON CR.COMMENT_ID = BC.COMMENT_ID
+ LEFT JOIN MEMBER RM
+        ON BC.MEMBER_NO = RM.MEMBER_NO
+ LEFT JOIN REPORT_TYPE RT
+        ON CR.REPORT_TYPE_ID = RT.REPORT_TYPE_ID
+    <include refid="searchCondition"/>
+     ORDER BY CR.REPORT_ID DESC
 </select>
+
+    <update id="updateReportProcess" parameterType="_int">
+        UPDATE COMMENT_REPORT
+           SET REPORT_PROCESS_YN = 'Y'
+         WHERE REPORT_ID = #{reportId}
+           AND REPORT_PROCESS_YN = 'N'
+    </update>
+
+    <update id="updateBulkReportProcess" parameterType="list">
+        UPDATE COMMENT_REPORT
+           SET REPORT_PROCESS_YN = 'Y'
+         WHERE REPORT_ID IN
+         <foreach collection="list" item="id" open="(" separator="," close=")">
+             #{id}
+         </foreach>
+    </update>
+
+    <delete id="deleteBulkReport" parameterType="list">
+        DELETE FROM COMMENT_REPORT
+         WHERE REPORT_ID IN
+         <foreach collection="list" item="id" open="(" separator="," close=")">
+             #{id}
+         </foreach>
+    </delete>
+    
+    <update id="deactivateCommentByReportId" parameterType="_int">
+    UPDATE BOARD_COMMENT
+       SET COMMENT_ACTIVE_YN = 'N'
+     WHERE COMMENT_ID = (
+            SELECT COMMENT_ID
+              FROM COMMENT_REPORT
+             WHERE REPORT_ID = #{reportId}
+       )
+       AND COMMENT_ACTIVE_YN = 'Y'
+</update>
+<update id="deactivateCommentsByReportIds" parameterType="list">
+    UPDATE BOARD_COMMENT
+       SET COMMENT_ACTIVE_YN = 'N'
+     WHERE COMMENT_ID IN (
+            SELECT COMMENT_ID
+              FROM COMMENT_REPORT
+             WHERE REPORT_ID IN
+             <foreach collection="list" item="id" open="(" separator="," close=")">
+                 #{id}
+             </foreach>
+       )
+       AND COMMENT_ACTIVE_YN = 'Y'
+</update>
+
 </mapper>

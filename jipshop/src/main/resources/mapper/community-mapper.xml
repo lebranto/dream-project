@@ -499,25 +499,25 @@
     <!-- CommunityMainController.reportComment -->
     <!-- CommunityDaoImpl.insertCommentReport -->
     <!-- ========================= -->
-    <insert id="insertCommentReport" parameterType="map">
-        INSERT INTO COMMENT_REPORT (
-            REPORT_ID,
-            REPORTER_MEMBER_NO,
-            COMMENT_ID,
-            REPORT_TYPE_ID,
-            REPORT_REASON,
-            REPORT_DATE,
-            REPORT_PROCESS_YN
-        ) VALUES (
-            SEQ_COMMENT_REPORT_ID.NEXTVAL,
-            #{reporterMemberNo},
-            #{commentId},
-            1,
-            '댓글 신고',
-            SYSDATE,
-            'N'
-        )
-    </insert>
+   <insert id="insertCommentReport" parameterType="map">
+    INSERT INTO COMMENT_REPORT (
+        REPORT_ID,
+        REPORTER_MEMBER_NO,
+        COMMENT_ID,
+        REPORT_TYPE_ID,
+        REPORT_REASON,
+        REPORT_DATE,
+        REPORT_PROCESS_YN
+    ) VALUES (
+        SEQ_COMMENT_REPORT_ID.NEXTVAL,
+        #{reporterMemberNo},
+        #{commentId},
+        #{reportTypeId},
+        #{reportReason},
+        SYSDATE,
+        'N'
+    )
+</insert>
 <!-- 개시글 개수 -->
 <select id="selectBoardListCount" resultType="int">
     SELECT COUNT(*)

@@ -3,11 +3,12 @@
 <% request.setAttribute("currentMenu", "productRegist"); %>
 <!DOCTYPE html>
 <html lang="ko">
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <head>
     <meta charset="UTF-8">
     <title>상품 등록 - 집사상권</title>
-    <link rel="stylesheet" href="/resources/css/admin.css">
-    <link rel="stylesheet" href="/resources/css/productRegist.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/admin/productRegist.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>

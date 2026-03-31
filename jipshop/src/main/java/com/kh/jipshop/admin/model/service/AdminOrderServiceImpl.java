@@ -91,44 +91,53 @@ public class AdminOrderServiceImpl implements AdminOrderService {
     @Transactional
     public int updateOrderStatus(int orderId, String orderStatus) {
 
-        if ("REQ_CANCEL".equals(orderStatus)) {
-            return adminOrderDao.updateCancelStatus(sqlSession, orderId);
-        }
+        String deliveryStatus;
+        String deliveryYn;
 
-        adminOrderDao.clearCancelStatus(sqlSession, orderId);
-
-        Integer deliveryId = adminOrderDao.selectDeliveryIdByOrderId(sqlSession, orderId);
-
-        if (deliveryId == null || deliveryId == 0) {
-            adminOrderDao.insertDelivery(sqlSession, orderId);
-            deliveryId = adminOrderDao.selectLatestDeliveryIdByOrderId(sqlSession, orderId);
-        }
-
-        if (deliveryId == null || deliveryId == 0) {
-            return 0;
-        }
-
-        String deliveryYn = "N";
-        String deliveryStatus = "준비중";
-
-        if ("SHIP".equals(orderStatus)) {
+        if ("PAY".equals(orderStatus)) {
+            deliveryStatus = "결제완료";
+            deliveryYn = "N";
+        } else if ("OUT".equals(orderStatus)) {
+            deliveryStatus = "출고완료";
+            deliveryYn = "N";
+        } else if ("SHIP".equals(orderStatus)) {
             deliveryStatus = "배송중";
+            deliveryYn = "N";
         } else if ("DONE".equals(orderStatus)) {
             deliveryStatus = "배송완료";
             deliveryYn = "Y";
+        } else {
+            return 0;
         }
 
-        HashMap<String, Object> param = new HashMap<>();
-        param.put("deliveryId", deliveryId);
-        param.put("deliveryYn", deliveryYn);
-        param.put("deliveryStatus", deliveryStatus);
+        Integer deliveryId = adminOrderDao.selectDeliveryIdByOrderId(sqlSession, orderId);
+
+        if (deliveryId == null) {
+            int insertDeliveryResult = adminOrderDao.insertDelivery(sqlSession, orderId);
+            if (insertDeliveryResult <= 0) {
+                return 0;
+            }
+
+            deliveryId = adminOrderDao.selectLatestDeliveryIdByOrderId(sqlSession, orderId);
+            if (deliveryId == null) {
+                return 0;
+            }
+        }
 
         Integer statusCount = adminOrderDao.selectStatusCountByDeliveryId(sqlSession, deliveryId);
+        if (statusCount == null) {
+            statusCount = 0;
+        }
 
-        if (statusCount != null && statusCount > 0) {
-            return adminOrderDao.updateLatestStatus(sqlSession, param);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("deliveryId", deliveryId);
+        map.put("deliveryYn", deliveryYn);
+        map.put("deliveryStatus", deliveryStatus);
+
+        if (statusCount > 0) {
+            return adminOrderDao.updateLatestStatus(sqlSession, map);
         } else {
-            return adminOrderDao.insertStatus(sqlSession, param);
+            return adminOrderDao.insertStatus(sqlSession, map);
         }
     }
 }

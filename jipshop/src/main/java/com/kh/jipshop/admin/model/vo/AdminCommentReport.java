@@ -1,27 +1,28 @@
 package com.kh.jipshop.admin.model.vo;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
 public class AdminCommentReport {
 
-    private int reportId;
-    private int commentId;
-    private String reportTypeName;
-    private String reportReason;
-    private Date reportDate;
+	private int reportId;
+	private int reporterMemberNo;
+	private int commentId;
+	private int reportTypeId;
+	private String reportReason;
+	private String reportDate;
+	private String reportProcessYn;
 
-    private int boardNo;
-    private String commentContent;
-    private Date commentRegDate;
-    private String commentWriterId;
-
-    
+	private String reporterId;
+	private int reportedMemberNo;
+	private String reportedMemberId;
+	private int boardNo;
+	private String reportTypeName;
+	private String commentContent;
+	private String reportStatus;
+	private String processLabel;    // 처리 대기 / 처리 완료
 }

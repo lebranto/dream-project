@@ -194,58 +194,49 @@ public class MypageController {
 	}
 		
 	
-// 구매 취소 관련	
-	
+	// 구매 취소 관련
+
 	@GetMapping("/cancle")
 	public String canclePage(
-			@RequestParam Integer orderId,
-			Model model
-			) {	
-			
-		
-		OrderDetailResponse od = mService.canclePage(orderId);
-		
-		model.addAttribute("orderList",od);
-		
-		return "mypage/cancle";
-	}
-	
+	        @RequestParam Integer orderId,
+	        Model model
+	) {
+	    OrderDetailResponse od = mService.canclePage(orderId);
+	    model.addAttribute("orderList", od);
 
-	 @PostMapping("/cancle") public String canclePurchase(
-			 @RequestParam("userPwd") String check,
-			 Orders orders,
-			 Authentication auth
-			 ) {
-	
-		 
-     String password = ((MemberExt)auth.getPrincipal()).getPassword();
-     
-     
-     // post 형식 때문에 numberNo 를 받지 않았기 때문에 memberNo를 추가하는 코드
-     int numberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
-     orders.setMemberNo(numberNo);
-     
-     
-     // 암호화된 코드를 비교해 일치하는지 보는 코드
-     PasswordEncoder pe = new BCryptPasswordEncoder();
-     
-     boolean ch = pe.matches(check, password);
-     
-   
-     
-     if(ch) {
-    	 int result = mService.canclePurchase(orders);
-    	 
-    	 if(result!=0) {
-    		 return "redirect:/mypage/purchase";
-    	 }else{
-    		 return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
-    	 }
-     } else {
-    	 return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
-   	 
-     	} 
-	 
+	    return "mypage/cancle";
+	}
+
+	@PostMapping("/cancle")
+	public String canclePurchase(
+	        @RequestParam("userPwd") String check,
+	        @RequestParam("cancelReason") String cancelReason,
+	        Orders orders,
+	        Authentication auth
+	) {
+
+	    String password = ((MemberExt) auth.getPrincipal()).getPassword();
+
+	    int memberNo = ((MemberExt) auth.getPrincipal()).getMemberNo();
+	    orders.setMemberNo(memberNo);
+
+	    // 취소 사유 세팅
+	    orders.setCancelReason(cancelReason);
+
+	    PasswordEncoder pe = new BCryptPasswordEncoder();
+	    boolean ch = pe.matches(check, password);
+
+	    if (ch) {
+	        int result = mService.canclePurchase(orders);
+
+	        if (result != 0) {
+	            return "redirect:/mypage/purchase";
+	        } else {
+	            return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
+	        }
+	    } else {
+	        return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
+	    }
 	}
 
 	 

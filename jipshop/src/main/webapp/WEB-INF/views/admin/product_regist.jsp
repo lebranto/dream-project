@@ -91,8 +91,8 @@
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/views/admin/sidebar.jsp"/>
-<jsp:include page="/WEB-INF/views/admin/header.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>
+<jsp:include page="/WEB-INF/views/admin/common/header.jsp"/>
 
     <div class="admin-wrapper">
 

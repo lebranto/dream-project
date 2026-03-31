@@ -54,3 +54,22 @@ input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--accent2)
 .stat-card .stat-label { font-size: 11px; font-weight: 600; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; }
 .stat-card .stat-value { font-size: 22px; font-weight: 700; color: var(--text-main); }
 .stat-card .stat-sub   { font-size: 11px; color: var(--text-sub); }
+.badge-out {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #eef4ff;
+    color: #3157c7;
+}
+.price-cell {
+    text-align: right;
+    padding-right: 24px;
+    white-space: nowrap;
+}
+.price-head {
+    text-align: right;
+    padding-right: 24px;
+}
