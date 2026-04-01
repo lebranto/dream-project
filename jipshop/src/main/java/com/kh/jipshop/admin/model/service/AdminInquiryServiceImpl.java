@@ -1,5 +1,6 @@
 package com.kh.jipshop.admin.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,15 @@ public class AdminInquiryServiceImpl implements AdminInquiryService{
 	@Override
 	public AdminInquiry getInquiryByNo(int inquiryId) {
 		return adminInquiryDao.getInquiryByNo(inquiryId);
+	}
+
+	@Override
+	public int updateReply(int inquiryId, String trim) {
+		Map<String, Object> param = new HashMap<>();
+	    param.put("inquiryId",    inquiryId);
+	    param.put("replyContent", trim);
+	    
+		return adminInquiryDao.updateReply(param);
 	}
 	
 	

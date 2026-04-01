@@ -66,40 +66,53 @@
             </c:if>
         </div>
         <div class="detail-card-body">
-            <c:choose>
-                <c:when test="${inquiry.replyYn == 'Y'}">
-                    <%-- 이미 답변된 경우: 내용 표시 + 수정 폼 --%>
-                    <div class="reply-content">${inquiry.replyContent}</div>
-                    <div style="margin-top:14px;color:var(--text-sub);font-size:12px">
-                        답변을 수정하려면 아래에 다시 입력하세요.
-                    </div>
-                </c:when>
-            </c:choose>
 
-            <form action="${contextPath}/admin/inquiryReply" method="post" id="replyForm">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input type="hidden" name="inquiryId" value="${inquiry.inquiryId}">
-                <textarea name="replyContent" class="form-textarea"
-                          style="min-height:120px;margin-top:12px"
-                          placeholder="답변 내용을 입력하세요.">${inquiry.replyContent}</textarea>
-                <div class="btn-group" style="margin-top:12px">
-                    <button type="button" class="btn btn-outline"
-                            onclick="location.href='${contextPath}/admin/inquiryList'">목록</button>
-                    <form action="${contextPath}/admin/inquiryDelete" method="post" style="display:inline">
+            <c:choose>
+                <%-- 답변 완료 상태: 내용 표시 + 수정 버튼 --%>
+                <c:when test="${inquiry.replyYn == 'Y'}">
+                    <div class="reply-box" id="replyView">
+                        <div class="reply-content">${inquiry.replyContent}</div>
+                        <div class="btn-group" style="margin-top:12px">
+                        	<button type="button" class="btn btn-outline"
+                					onclick="location.href='${contextPath}/admin/inquiryList'">목록</button>
+                            <button type="button" class="btn btn-outline btn-sm"
+                                    onclick="toggleEdit(true)">✏️ 수정</button>
+                        </div>
+                    </div>
+
+                    <%-- 수정 폼 (기본 숨김) --%>
+                    <form action="${contextPath}/admin/inquiryReply" method="post"
+                          id="replyEditForm" style="display:none" onsubmit="return confirmReply()">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="inquiryId" value="${inquiry.inquiryId}">
-                        <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('문의를 삭제하시겠습니까?')">삭제</button>
+                        <textarea id="replyEditContent" name="replyContent" class="form-textarea"
+                                  style="min-height:120px">${inquiry.replyContent}</textarea>
+                        <div class="btn-group" style="margin-top:12px">
+                            <button type="button" class="btn btn-outline"
+                                    onclick="toggleEdit(false)">취소</button>
+                            <button type="submit" class="btn btn-primary">수정 완료</button>
+                        </div>
                     </form>
-                    <button type="submit" class="btn btn-primary"
-                            onclick="return confirmReply()">
-                        <c:choose>
-                            <c:when test="${inquiry.replyYn == 'Y'}">답변 수정</c:when>
-                            <c:otherwise>답변 등록</c:otherwise>
-                        </c:choose>
-                    </button>
-                </div>
-            </form>
+                </c:when>
+
+                <%-- 미처리 상태: 답변 등록 폼 --%>
+                <c:otherwise>
+                    <form action="${contextPath}/admin/inquiryReply" method="post"
+                          onsubmit="return confirmReply()">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="hidden" name="inquiryId" value="${inquiry.inquiryId}">
+                        <textarea id="replyContent" name="replyContent" class="form-textarea"
+                                  style="min-height:120px"
+                                  placeholder="답변 내용을 입력하세요."></textarea>
+                        <div class="btn-group" style="margin-top:12px">
+                        	<button type="button" class="btn btn-outline"
+                					onclick="location.href='${contextPath}/admin/inquiryList'">목록</button>
+                            <button type="submit" class="btn btn-primary">답변 등록</button>
+                        </div>
+                    </form>
+                </c:otherwise>
+            </c:choose>
+
         </div>
     </div>
 
@@ -107,6 +120,11 @@
 
 <div class="toast" id="toast"></div>
 <script>
+    function toggleEdit(show) {
+        document.getElementById('replyView').style.display     = show ? 'none' : '';
+        document.getElementById('replyEditForm').style.display = show ? '' : 'none';
+    }
+
     function confirmReply() {
         const content = document.querySelector('textarea[name="replyContent"]').value.trim();
         if (!content) {

@@ -13,4 +13,6 @@ public interface AdminInquiryService {
 
 	AdminInquiry getInquiryByNo(int inquiryId);
 
+	int updateReply(int inquiryId, String trim);
+
 }

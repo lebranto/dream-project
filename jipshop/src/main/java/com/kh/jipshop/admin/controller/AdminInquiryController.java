@@ -7,14 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.jipshop.admin.model.service.AdminInquiryService;
 import com.kh.jipshop.admin.model.vo.AdminInquiry;
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
-import com.kh.jipshop.inquiry.model.vo.Inquiry;
 
 @Controller
 @RequestMapping("/admin")
@@ -63,5 +64,32 @@ public class AdminInquiryController {
  
         model.addAttribute("inquiry", inquiry);
         return "admin/inquiry/inquiryDetail";
+    }
+    
+    // 답변 등록 / 수정  
+    //    - replyYn = 'N'이면 등록버튼
+    //    - replyYn = 'Y'이면 수정버튼
+    @PostMapping("/inquiryReply")
+    public String inquiryReply(
+            @RequestParam int    inquiryId,
+            @RequestParam String replyContent,
+            RedirectAttributes ra) {
+ 
+        if (replyContent == null || replyContent.trim().isEmpty()) {
+            ra.addFlashAttribute("errorMsg", "답변 내용을 입력해주세요.");
+            return "redirect:/admin/inquiryDetail?inquiryId=" + inquiryId;
+        }
+ 
+        AdminInquiry inquiry = adminInquiryService.getInquiryByNo(inquiryId);
+        boolean isUpdate = inquiry != null && "Y".equals(inquiry.getReplyYn());
+ 
+        int result = adminInquiryService.updateReply(inquiryId, replyContent.trim());
+ 
+        if (result > 0) {
+            ra.addFlashAttribute("successMsg", isUpdate ? "답변이 수정되었습니다." : "답변이 등록되었습니다.");
+        } else {
+            ra.addFlashAttribute("errorMsg", "처리에 실패했습니다.");
+        }
+        return "redirect:/admin/inquiryDetail?inquiryId=" + inquiryId;
     }
 }

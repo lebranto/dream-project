@@ -13,4 +13,6 @@ public interface AdminInquiryDao {
 
 	AdminInquiry getInquiryByNo(int inquiryId);
 
+	int updateReply(Map<String, Object> param);
+
 }

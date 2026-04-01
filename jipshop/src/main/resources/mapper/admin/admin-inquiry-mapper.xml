@@ -87,4 +87,13 @@
         WHERE I.INQUIRY_ID = #{inquiryId}
     </select>
     
+    <!-- 답변 등록 -->
+    <update id="updateReply" parameterType="map">
+        UPDATE INQUIRY
+        SET
+            REPLY_CONTENT = #{replyContent},
+            REPLY_DATE = SYSDATE,
+            REPLY_YN = 'Y'
+        WHERE INQUIRY_ID = #{inquiryId}
+    </update>
 </mapper>
