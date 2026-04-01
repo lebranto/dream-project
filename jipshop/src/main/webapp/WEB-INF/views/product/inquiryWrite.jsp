@@ -16,7 +16,7 @@
         <div class="inquiry-write-container">
             <h2 class="page-title">1:1 문의</h2>
 
-            <form action="${pageContext.request.contextPath}/inquiry/write" 
+            <form action="${pageContext.request.contextPath}/product/inquiryWrite" 
                   method="post" 
                   enctype="multipart/form-data">
 
