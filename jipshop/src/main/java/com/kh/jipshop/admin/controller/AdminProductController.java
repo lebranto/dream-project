@@ -59,7 +59,6 @@ public class AdminProductController {
         model.addAttribute("param",       paramMap);
         
         List<Map<String, Object>> categoryList = adminProductService.getCategoryList();
-        System.out.println("=== categoryList: " + categoryList);  // ← 추가
         model.addAttribute("categoryList", categoryList);
         
         return "admin/product/productList";

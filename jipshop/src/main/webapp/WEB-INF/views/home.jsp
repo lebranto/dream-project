@@ -277,48 +277,56 @@
     </section>
      <nav class="view-2" aria-label="사이드 메뉴">
           <div class="frame-19">
+          	<a href="${contextPath }/community/main">
             <div class="rectangle-7"></div>
-            <span class="text-wrapper-14">커뮤니티</span>
-            <div class="group-11" aria-hidden="true">
-              <div class="ellipse-3"></div>
-              <div class="ellipse-4"></div>
-              <div class="ellipse-5"></div>
-              <div class="ellipse-6"></div>
-            </div>
+	            <span class="text-wrapper-14">커뮤니티</span>
+	            <div class="group-11" aria-hidden="true">
+	              <div class="ellipse-3"></div>
+	              <div class="ellipse-4"></div>
+	              <div class="ellipse-5"></div>
+	              <div class="ellipse-6"></div>
+	            </div>
+            </a>
           </div>
           <div class="frame-20">
             <div class="rectangle-7"></div>
-            <span class="text-wrapper-14">마이페이지</span>
-            <div class="group-11" aria-hidden="true">
-              <div class="ellipse-3"></div>
-              <div class="ellipse-4"></div>
-              <div class="ellipse-5"></div>
-              <div class="ellipse-6"></div>
-            </div>
+            <a href="${contextPath }/mypage/purchase">
+	            <span class="text-wrapper-14">마이페이지</span>
+	            <div class="group-11" aria-hidden="true">
+	              <div class="ellipse-3"></div>
+	              <div class="ellipse-4"></div>
+	              <div class="ellipse-5"></div>
+	              <div class="ellipse-6"></div>
+	            </div>
+	      	</a>
           </div>
           <div class="frame-20">
             <div class="rectangle-7"></div>
-            <span class="text-wrapper-14">장바구니</span>
-            <div class="group-11" aria-hidden="true">
-              <div class="ellipse-3"></div>
-              <div class="ellipse-4"></div>
-              <div class="ellipse-5"></div>
-              <div class="ellipse-6"></div>
-            </div>
+            <a href="${contextPath }/orders/cart">
+	            <span class="text-wrapper-14">장바구니</span>
+	            <div class="group-11" aria-hidden="true">
+	              <div class="ellipse-3"></div>
+	              <div class="ellipse-4"></div>
+	              <div class="ellipse-5"></div>
+	              <div class="ellipse-6"></div>
+	            </div>
+	      	</a>
           </div>
           <div class="frame-20">
             <div class="rectangle-7"></div>
-            <span class="text-wrapper-14">고객센터</span>
-            <div class="group-11" aria-hidden="true">
-              <div class="ellipse-3"></div>
-              <div class="ellipse-4"></div>
-              <div class="ellipse-5"></div>
-              <div class="ellipse-6"></div>
-            </div>
+            <a href="${contextPath }/product/inquiryList">
+	            <span class="text-wrapper-14">고객센터</span>
+	            <div class="group-11" aria-hidden="true">
+	              <div class="ellipse-3"></div>
+	              <div class="ellipse-4"></div>
+	              <div class="ellipse-5"></div>
+	              <div class="ellipse-6"></div>
+	            </div>
+	      	</a>
           </div>
-            <div class="frame-20">
+            <div class="frame-20" onclick="scrollToTop()"style="cursor: pointer;">
             <div class="rectangle-7"></div>
-            <span class="text-wrapper-14" onclick="scrollToTop()"style="cursor: pointer;">위로</span>
+            <span class="text-wrapper-14">위로</span>
             <div class="group-11" aria-hidden="true">
               <div class="ellipse-3"></div>
               <div class="ellipse-4"></div>
