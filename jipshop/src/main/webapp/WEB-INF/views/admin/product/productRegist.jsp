@@ -57,17 +57,17 @@
 
     <div class="form-row">
         <label class="form-label required">업체명</label>
-        <input type="text" name="newCompanyName" class="form-input w-lg" placeholder="업체명">
+        <input type="text" name="newCompanyName" id="newCompanyName" class="form-input w-lg" placeholder="업체명">
     </div>
 
     <div class="form-row">
         <label class="form-label required">전화번호</label>
-        <input type="text" name="companyPhone" class="form-input w-lg" placeholder="전화번호">
+        <input type="text" name="companyPhone" id="companyPhone" class="form-input w-lg" placeholder="전화번호">
     </div>
 
     <div class="form-row">
         <label class="form-label required">주소</label>
-        <input type="text" name="companyAddress" class="form-input w-lg" placeholder="주소">
+        <input type="text" name="companyAddress" id="companyAdress"  class="form-input w-lg" placeholder="주소">
     </div>
 
 </div>
@@ -238,6 +238,17 @@
         if (mode === 'new' && (!newCompanyName.value || newCompanyName.value.trim() === '')) {
             alert('새 업체명을 입력해주세요.');
             newCompanyName.focus();
+            return false;
+        }
+        if (mode === 'new' && (!companyPhone.value || companyPhone.value.trim() === '')) {
+            alert('전화번호를 입력해주세요.');
+            companyPhone.focus();
+            return false;
+        }
+
+        if (mode === 'new' && (!companyAddress.value || companyAddress.value.trim() === '')) {
+            alert('주소를 입력해주세요.');
+            companyAddress.focus();
             return false;
         }
 

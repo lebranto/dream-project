@@ -84,7 +84,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="center">번호</th>
+                        <th class="center">상품아이디</th>
                         <th>카테고리</th>
                         <th>업체명</th>
                         <th>상품명</th>
@@ -108,9 +108,7 @@
                             <c:forEach var="p" items="${productList}" varStatus="status">
                                 <tr>
                                     <!-- 번호 -->
-                                    <td class="center">
-                                        ${totalCount - ((pi.currentPage - 1) * pi.boardLimit) - status.index}
-                                    </td>
+                                    <td class="center">${p.productId}</td>
 
                                     <!-- 카테고리 -->
                                     <td>
