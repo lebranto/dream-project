@@ -153,7 +153,7 @@
             <c:when test="${c.cancelStatus eq 'PENDING'}">
 
                 <form action="${contextPath}/admin/orderCancel/approve" method="post" style="display:inline;">
-                    <input type="hidden" name="orderId" value="${c.orderId}">
+                   <input type="hidden" name="detailId" value="${c.detailId}">
                     <button type="submit" class="btn btn-success btn-sm">승인</button>
                 </form>
 

@@ -48,31 +48,32 @@ public class AdminOrderCancelController {
 
     @PostMapping("/approve")
     public String approveCancel(
-            @RequestParam("orderId") int orderId,
+            @RequestParam("detailId") int detailId,
             RedirectAttributes ra) {
 
-        int result = adminOrderCancelService.approveCancel(orderId);
+        int result = adminOrderCancelService.approveCancel(detailId);
 
         if(result > 0) {
-            ra.addFlashAttribute("alertMsg", "취소 승인 처리가 완료되었습니다.");
+            ra.addFlashAttribute("alertMsg", "취소 승인 처리 완료");
         } else {
-            ra.addFlashAttribute("alertMsg", "취소 승인 처리에 실패했습니다.");
+            ra.addFlashAttribute("alertMsg", "취소 승인 실패");
         }
 
         return "redirect:/admin/orderCancel/list";
     }
 
+
     @PostMapping("/reject")
     public String rejectCancel(
-            @RequestParam("orderId") int orderId,
+            @RequestParam("detailId") int detailId,
             RedirectAttributes ra) {
 
-        int result = adminOrderCancelService.rejectCancel(orderId);
+        int result = adminOrderCancelService.rejectCancel(detailId);
 
         if(result > 0) {
-            ra.addFlashAttribute("alertMsg", "취소 반려 처리가 완료되었습니다.");
+            ra.addFlashAttribute("alertMsg", "취소 반려 처리 완료");
         } else {
-            ra.addFlashAttribute("alertMsg", "취소 반려 처리에 실패했습니다.");
+            ra.addFlashAttribute("alertMsg", "취소 반려 실패");
         }
 
         return "redirect:/admin/orderCancel/list";

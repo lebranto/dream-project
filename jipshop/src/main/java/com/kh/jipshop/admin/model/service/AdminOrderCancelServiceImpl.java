@@ -47,4 +47,5 @@ public class AdminOrderCancelServiceImpl implements AdminOrderCancelService {
     public int rejectCancel(int orderId) {
         return adminOrderCancelDao.updateCancelStatusRejected(sqlSession, orderId);
     }
+    
 }

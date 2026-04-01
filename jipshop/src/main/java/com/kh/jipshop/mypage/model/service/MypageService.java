@@ -41,6 +41,8 @@ public interface MypageService {
 
 	int saveOrUpdatePet(Pet p);
 
+	int requestCancel(Orders orders);
+
 
 
 

@@ -202,6 +202,16 @@ public class MypageDaoImpl implements MypageDao {
 	        return session.update("mypage.updatePet", p);
 	    }
 
+	    @Override
+	    public int checkDetailCancelRequest(SqlSessionTemplate sqlSession, Orders orders) {
+	        return sqlSession.selectOne("mypage.checkDetailCancelRequest", orders);
+	    }
+
+	    @Override
+	    public int requestDetailCancel(SqlSessionTemplate sqlSession, Orders orders) {
+	        return sqlSession.update("mypage.requestDetailCancel", orders);
+	    }
+
 	
 
 	
