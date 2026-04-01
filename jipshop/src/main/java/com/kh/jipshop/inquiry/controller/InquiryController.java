@@ -37,4 +37,10 @@ public class InquiryController {
 
         return "product/inquiryList";
     }
+    
+    @GetMapping("/inquiryWrite")
+    public String inquiryWriteForm() {
+        return "product/inquiryWrite";
+    }
 }
+
