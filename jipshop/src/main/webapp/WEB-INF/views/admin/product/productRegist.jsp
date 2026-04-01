@@ -6,7 +6,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <head>
     <meta charset="UTF-8">
-    <title>상품 등록 - 집사상권</title>
+    <title>상품 등록 - 집사상점</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/product/productRegist.css">
 </head>

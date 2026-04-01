@@ -7,7 +7,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application"/>
 <head>
     <meta charset="UTF-8">
-    <title>대시보드 - 집사상권</title>
+    <title>대시보드 - 집사상점</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/dashboard.css">
 </head>
