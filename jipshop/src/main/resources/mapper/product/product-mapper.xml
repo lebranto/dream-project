@@ -115,4 +115,19 @@
           AND P.PRODUCT_ACTIVE_YN = 'Y'
     </select>
 
+<insert id="insertCompany" parameterType="string">
+    INSERT INTO COMPANY (
+        COMPANY_CODE,
+        COMPANY_NAME,
+        STATUS
+    ) VALUES (
+        SEQ_COMPANY.NEXTVAL,
+        #{value},
+        'Y'
+    )
+</insert>
+
+<select id="selectLastCompanyCode" resultType="int">
+    SELECT MAX(COMPANY_CODE) FROM COMPANY
+</select>
 </mapper>

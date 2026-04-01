@@ -1,0 +1,185 @@
+/* productRegist.css */
+.detail-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 18px; }
+.detail-card-header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 12px 18px; font-size: 13px; font-weight: 700; color: var(--text-main); }
+.detail-card-body { padding: 20px 22px; }
+.form-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.form-row:last-child { margin-bottom: 0; }
+.form-row.top { align-items: flex-start; }
+.form-label { font-size: 12px; font-weight: 700; color: var(--text-sub); min-width: 90px; }
+.form-label.required::after { content: ' *'; color: var(--red); }
+.form-input, .form-select, .form-textarea { border: 1px solid var(--border); border-radius: 6px; padding: 7px 11px; font-size: 13px; font-family: inherit; color: var(--text-main); background: #fff; outline: none; transition: border 0.15s; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent2); }
+.form-input { flex: 1; }
+.form-input.w-md { width: 200px; flex: none; }
+.form-textarea { width: 100%; resize: vertical; line-height: 1.6; }
+.form-select { cursor: pointer; }
+.btn-group { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
+.img-preview-box { width: 140px; height: 140px; border: 2px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; background: var(--bg); overflow: hidden; cursor: pointer; transition: border-color 0.15s; }
+.img-preview-box:hover { border-color: var(--accent2); }
+.img-ph { font-size: 12px; color: var(--text-sub); text-align: center; line-height: 1.8; }
+.form-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-help {
+    font-size: 12px;
+    color: var(--text-sub);
+    line-height: 1.5;
+}
+
+.inline-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.inline-unit {
+    font-size: 13px;
+    color: var(--text-sub);
+}
+
+.w-lg {
+    width: 320px;
+    max-width: 100%;
+}
+
+.company-mode-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.radio-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-main);
+}
+.radio-chip input[type="radio"] {
+    margin: 0;
+}
+
+/* 카드 안쪽 여백 */
+.detail-card-body {
+    padding: 28px 36px;
+}
+
+/* 공통 라벨 */
+.form-label {
+    width: 120px;
+    flex-shrink: 0;
+    margin-right: 12px;
+}
+
+/* 공통 한 줄 */
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;  /* 기존 14px보다 좀 더 띄움 */
+}
+
+/* 업체 줄만 위 정렬 */
+.form-row.top {
+    align-items: flex-start;
+}
+
+/* 업체 라디오 */
+.company-mode-group {
+    display: flex;
+    align-items: center;
+    gap: 24px;           /* 16 -> 24 */
+    font-size: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 18px; /* 라디오와 아래 신규업체영역 사이 간격 */
+}
+
+/* 신규 업체 전체 영역 */
+#newCompanyArea {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;           /* 내부 줄 간격 */
+    margin-top: 18px;    /* 라디오 아래 여백 */
+    padding-top: 6px;
+}
+
+/* 신규 업체 내부 줄 */
+#newCompanyArea .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    gap: 18px;           /* 라벨과 인풋 간격 */
+}
+
+/* 신규 업체 라벨 */
+#newCompanyArea .form-label {
+    width: 140px;        /* 120보다 조금 넓혀서 답답함 줄임 */
+    margin-right: 0;
+}
+
+/* 입력창 */
+#newCompanyArea .form-input {
+    flex: 1;
+    max-width: 1040px;
+    min-width: 0;
+}
+
+/* 상품명 */
+.form-input.w-lg{
+    width: 450px;        /* 기존 420가 너무 짧아 보임 */
+    max-width: 100%;
+    flex: none;
+}
+.form-select.w-lg {
+	 width: 240px;
+    max-width: 100%;
+    flex: none;
+}
+/* 가격 / 재고 */
+.form-input.w-md,
+.form-select.w-md {
+    width: 240px;
+    max-width: 100%;
+    flex: none;
+} 
+/* ===== 업체 영역 간격만 강제로 띄우기 ===== */
+
+/* 업체 라디오 줄 아래 여백 */
+.company-mode-group {
+    margin-bottom: 24px !important;
+}
+
+/* 기존 업체 select 줄 */
+#companySelectRow {
+    margin-top: 12px !important;
+}
+
+/* 신규 업체 전체 박스 */
+#newCompanyArea {
+    margin-top: 20px !important;
+    row-gap: 20px !important;
+}
+
+/* 신규 업체 각 줄 간격 */
+#newCompanyArea .form-row {
+    margin-bottom: 14px !important;
+    align-items: center;
+}
+
+/* 마지막 줄은 아래 마진 제거 */
+#newCompanyArea .form-row:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* 신규 업체 라벨-입력칸 사이도 조금 더 */
+#newCompanyArea .form-label {
+    margin-right: 18px !important;
+}

@@ -27,7 +27,7 @@
                 </form:form>
              </sec:authorize>
              <sec:authorize access="hasRole('ROLE_ADMIN')">
-					<a href="${contextPath}/admin/memberList">관리자페이지</a>
+					<a href="${contextPath}/admin/dashboard">관리자페이지</a>
 				</sec:authorize>
             </div>
         </div>
