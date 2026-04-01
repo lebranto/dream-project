@@ -69,4 +69,22 @@
         WHERE RNUM &gt; #{startRow}
     </select>
     
+    <select id="getInquiryByNo" parameterType="int" resultMap="inquiryRM">
+    	SELECT
+            I.INQUIRY_ID,
+            I.MEMBER_NO,
+            M.MEMBER_NAME,
+            M.MEMBER_ID,
+            I.INQUIRY_TYPE,
+            I.INQUIRY_CONTENT,
+            I.INQUIRY_PHOTO,
+            I.INQUIRY_REG_DATE,
+            I.REPLY_CONTENT,
+            I.REPLY_DATE,
+            I.REPLY_YN
+        FROM INQUIRY I
+        JOIN MEMBER M ON I.MEMBER_NO = M.MEMBER_NO
+        WHERE I.INQUIRY_ID = #{inquiryId}
+    </select>
+    
 </mapper>

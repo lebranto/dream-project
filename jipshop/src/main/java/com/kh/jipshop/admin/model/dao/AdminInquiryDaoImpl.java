@@ -27,5 +27,10 @@ public class AdminInquiryDaoImpl implements AdminInquiryDao{
         return session.selectList(ns + "getInquiryList", paramMap);
     }
 
+	@Override
+	public AdminInquiry getInquiryByNo(int inquiryId) {
+		return session.selectOne(ns + "getInquiryByNo", inquiryId);
+	}
+
 	
 }

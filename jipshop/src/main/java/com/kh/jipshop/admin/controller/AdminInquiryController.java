@@ -53,4 +53,15 @@ public class AdminInquiryController {
  
         return "admin/inquiry/inquiryList";
     }
+    
+    // 문의 상세
+    @GetMapping("/inquiryDetail")
+    public String inquiryDetail(@RequestParam int inquiryId, Model model) {
+ 
+        AdminInquiry inquiry = adminInquiryService.getInquiryByNo(inquiryId);
+        if (inquiry == null) return "redirect:/admin/inquiryList";
+ 
+        model.addAttribute("inquiry", inquiry);
+        return "admin/inquiry/inquiryDetail";
+    }
 }

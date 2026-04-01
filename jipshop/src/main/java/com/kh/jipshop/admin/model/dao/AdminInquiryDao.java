@@ -11,4 +11,6 @@ public interface AdminInquiryDao {
 
 	List<AdminInquiry> getInquiryList(Map<String, Object> paramMap);
 
+	AdminInquiry getInquiryByNo(int inquiryId);
+
 }

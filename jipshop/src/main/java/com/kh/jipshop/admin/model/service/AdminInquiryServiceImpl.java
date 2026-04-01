@@ -24,6 +24,11 @@ public class AdminInquiryServiceImpl implements AdminInquiryService{
 	public List<AdminInquiry> getInquiryList(Map<String, Object> paramMap) {
 		return adminInquiryDao.getInquiryList(paramMap);
 	}
+
+	@Override
+	public AdminInquiry getInquiryByNo(int inquiryId) {
+		return adminInquiryDao.getInquiryByNo(inquiryId);
+	}
 	
 	
 }
