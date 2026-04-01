@@ -96,7 +96,17 @@
                 <option value="4">미용용품</option>
             </select>
         </div>
-
+<!-- 연령 -->
+<div class="form-row">
+    <label class="form-label">연령대</label>
+    <select name="ageGroup" id="ageGroup" class="form-select w-md">
+        <option value="">선택</option>
+        <option value="키드">키드</option>
+        <option value="어덜트">어덜트</option>
+        <option value="시니어">시니어</option>
+        <option value="전연령">전연령</option>
+    </select>
+</div>
         <!-- 상품명 -->
         <div class="form-row">
             <label class="form-label required">상품명</label>
@@ -216,6 +226,7 @@
         const newCompanyName = document.getElementById('newCompanyName');
         const petType = document.getElementById('petType');
         const categoryId = document.getElementById('categoryId');
+        const ageGroup = document.getElementById('ageGroup');
         const photo1 = document.getElementById('photo1');
 
         if (mode === 'select' && (!companyCode.value || companyCode.value.trim() === '')) {
@@ -239,6 +250,11 @@
         if (!categoryId.value) {
             alert('카테고리를 선택해주세요.');
             categoryId.focus();
+            return false;
+        }
+        if (!ageGroup.value) {
+            alert('연령대를 선택해주세요.');
+            ageGroup.focus();
             return false;
         }
 

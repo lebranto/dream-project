@@ -130,4 +130,5 @@
 <select id="selectLastCompanyCode" resultType="int">
     SELECT MAX(COMPANY_CODE) FROM COMPANY
 </select>
+
 </mapper>

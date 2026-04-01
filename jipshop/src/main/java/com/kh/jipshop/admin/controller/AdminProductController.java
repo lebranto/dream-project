@@ -62,6 +62,129 @@ public class AdminProductController {
  
         return "admin/product/productList";
     }
+	// 상품 수정 화면
+	@GetMapping("/productUpdate")
+	public String productUpdateForm(@RequestParam("productId") int productId,
+	                                @RequestParam(value = "page", defaultValue = "1") int page,
+	                                @RequestParam Map<String, Object> paramMap,
+	                                Model model) {
+
+	    AdminProduct product = adminProductService.selectProductDetail(productId);
+
+	    model.addAttribute("product", product);
+	    model.addAttribute("categoryList", adminProductService.getCategoryList());
+	    model.addAttribute("companyList", adminProductService.getCompanyList());
+
+	    model.addAttribute("page", page);
+	    model.addAttribute("param", paramMap);
+
+	    return "admin/product/productUpdate";
+	    // 등록폼 재사용이면 return "admin/product/productRegist";
+	}
+	// 상품 수정 처리
+	@PostMapping("/productUpdate")
+	public String productUpdate(AdminProduct product,
+	                            @RequestParam(value = "photo1", required = false) MultipartFile photo1,
+	                            @RequestParam(value = "photo2", required = false) MultipartFile photo2,
+	                            @RequestParam(value = "page", defaultValue = "1") int page,
+	                            @RequestParam Map<String, Object> paramMap,
+	                            RedirectAttributes ra) {
+
+	    // 신규 회사 처리
+	    if ("new".equals(product.getCompanyMode())) {
+	        int companyCode = adminProductService.insertCompany(
+	            product.getNewCompanyName(),
+	            product.getCompanyPhone(),
+	            product.getCompanyAddress()
+	        );
+	        product.setCompanyCode(companyCode);
+	    }
+
+	    // 대표사진 새로 올린 경우만 변경
+	    if (photo1 != null && !photo1.isEmpty()) {
+	        String savedName = Utils.saveFile(photo1, application, "product");
+	        product.setProductPhoto1(savedName);
+	    }
+
+	    // 추가사진 새로 올린 경우만 변경
+	    if (photo2 != null && !photo2.isEmpty()) {
+	        String savedName = Utils.saveFile(photo2, application, "product");
+	        product.setProductPhoto2(savedName);
+	    }
+
+	    int result = adminProductService.updateProduct(product);
+
+	    if (result > 0) {
+	        ra.addFlashAttribute("successMsg", "상품이 수정되었습니다.");
+	    } else {
+	        ra.addFlashAttribute("errorMsg", "상품 수정에 실패했습니다.");
+	    }
+
+	    StringBuilder url = new StringBuilder("redirect:/admin/productList?page=" + page);
+
+	    if (paramMap.get("categoryId") != null && !paramMap.get("categoryId").toString().trim().isEmpty()) {
+	        url.append("&categoryId=").append(paramMap.get("categoryId"));
+	    }
+	    if (paramMap.get("productActiveYn") != null && !paramMap.get("productActiveYn").toString().trim().isEmpty()) {
+	        url.append("&productActiveYn=").append(paramMap.get("productActiveYn"));
+	    }
+	    if (paramMap.get("keyword") != null && !paramMap.get("keyword").toString().trim().isEmpty()) {
+	        url.append("&keyword=").append(paramMap.get("keyword"));
+	    }
+
+	    return url.toString();
+	}
+	// 판매중지 / 판매재개
+	@PostMapping("/productToggleStatus")
+	public String productToggleStatus(@RequestParam("productId") int productId,
+	                                  @RequestParam("productActiveYn") String productActiveYn,
+	                                  @RequestParam(value = "page", defaultValue = "1") int page,
+	                                  @RequestParam Map<String, Object> paramMap,
+	                                  RedirectAttributes ra) {
+
+	    AdminProduct product = new AdminProduct();
+	    product.setProductId(productId);
+	    product.setProductActiveYn(productActiveYn);
+
+	    int result = adminProductService.updateProductActiveYn(product);
+
+	    if (result > 0) {
+	        if ("Y".equals(productActiveYn)) {
+	            ra.addFlashAttribute("successMsg", "판매가 재개되었습니다.");
+	        } else {
+	            ra.addFlashAttribute("successMsg", "판매가 중지되었습니다.");
+	        }
+	    } else {
+	        ra.addFlashAttribute("errorMsg", "상태 변경에 실패했습니다.");
+	    }
+
+	    StringBuilder url = new StringBuilder("redirect:/admin/productList?page=" + page);
+
+	    if (paramMap.get("categoryId") != null && !paramMap.get("categoryId").toString().trim().isEmpty()) {
+	        url.append("&categoryId=").append(paramMap.get("categoryId"));
+	    }
+	    if (paramMap.get("productActiveYnSearch") != null && !paramMap.get("productActiveYnSearch").toString().trim().isEmpty()) {
+	        url.append("&productActiveYn=").append(paramMap.get("productActiveYnSearch"));
+	    }
+	    if (paramMap.get("keyword") != null && !paramMap.get("keyword").toString().trim().isEmpty()) {
+	        url.append("&keyword=").append(paramMap.get("keyword"));
+	    }
+
+	    return url.toString();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
     // 상품 등록 화면 /admin/productRegist
