@@ -187,6 +187,7 @@ public class MypageDaoImpl implements MypageDao {
 		return session.update("mypage.updateMember",m);
 	}
 
+	
 	  @Override
 	    public Pet selectPetByMemberNo(int memberNo) {
 	        return session.selectOne("mypage.selectPetByMemberNo", memberNo);

@@ -17,7 +17,7 @@
 <div class="menu-group">
       <div class="menu-title">my 쇼핑</div>
       <ul class="menu-list">
-        <a href="${contextPath}/orders/orderNew">구매 내역 보기</a><br>
+        <a href="${contextPath}/mypage/purchase">구매 내역 보기</a><br>
         <a href="${contextPath}/mypage/recent">최근 본 상품</a>
       </ul>
     </div>

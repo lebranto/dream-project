@@ -238,11 +238,11 @@
 	
 	<update id="updateMember">
 		UPDATE MEMBER
-		SET EMAIL = '${email}', 
-		MEMBER_NAME= '${memberName}' , 
-		MEMBER_ADDRESS =  '${address}',
-		PHONE = '${phone}'
-		WHERE MEMBER_NO = ${memberNo} 
+		SET EMAIL = #{email}, 
+		MEMBER_NAME= #{memberName}, 
+		MEMBER_ADDRESS =  #{address},
+		PHONE = #{phone}
+		WHERE MEMBER_NO = #{memberNo} 
 	</update>
 	
 

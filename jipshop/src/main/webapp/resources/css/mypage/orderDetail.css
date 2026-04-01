@@ -1,0 +1,136 @@
+@charset "UTF-8";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #efefef;
+  font-family: "맑은 고딕", sans-serif;
+  color: #333;
+}
+
+/* 전체 본문 */
+.content-wrap {
+  margin-left: 220px;   /* 사이드바 너비만큼 띄우기 */
+  padding: 40px 0 80px;
+  display: flex;
+  justify-content: center;
+  min-height: 800px;
+}
+
+/* 빨간 박스 영역 전체 */
+.content-inner {
+  width: 760px;
+  min-height: 730px;
+  border: 2px solid red;   /* 작업 끝나면 지워도 됨 */
+  padding: 40px 20px;
+  background-color: #efefef;
+}
+
+/* 상단 마이페이지 제목 */
+.mypage-title {
+  width: 395px;
+  height: 48px;
+  margin: 0 auto 24px;
+  background-color: #e7dcc4;
+  border-radius: 6px;
+  text-align: center;
+  line-height: 48px;
+  font-size: 28px;
+  font-weight: 500;
+  color: #8c6b2f;
+}
+
+/* 주문 전체 박스 */
+.order-box {
+  width: 100%;
+  min-height: 460px;
+  border: 1px solid #777;
+  border-radius: 14px;
+  background-color: #f3f3f3;
+  padding: 90px 20px 30px;
+}
+
+/* 주문 1개 */
+.order-item {
+  width: 100%;
+  border: 1px solid #999;
+  background-color: #fff;
+}
+
+/* 상단 상품 정보 */
+.order-top {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 18px 20px;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #999;
+}
+
+.order-img {
+  width: 110px;
+  height: 70px;
+  flex-shrink: 0;
+}
+
+.order-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+/* 상품 정보 */
+.order-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+  color: #444;
+}
+
+.order-info > div {
+  flex: 1;
+  text-align: center;
+}
+
+/* 배송 상태 영역 */
+.order-status {
+  background-color: #e7c48c;
+  height: 95px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #222;
+}
+
+.dot-group {
+  font-size: 30px;
+  letter-spacing: 8px;
+  color: #8f6b2e;
+}
+
+/* 배송 상세 정보 */
+.order-detail {
+  background-color: #ece2ca;
+  padding: 18px 14px;
+  font-size: 15px;
+  line-height: 2;
+  color: #222;
+}
+
+/* 데이터 없을 때 */
+.empty-order {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 18px;
+  color: #666;
+}
