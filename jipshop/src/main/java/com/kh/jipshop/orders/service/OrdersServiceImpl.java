@@ -50,13 +50,13 @@ public class OrdersServiceImpl implements OrdersService{
 
         Delivery delivery = new Delivery();
         delivery.setOrderId(order.getOrderId());
-        delivery.setCourier("미정");
+        delivery.setCourier("멍냥이");
 
-		/*
-		 * Calendar cal = Calendar.getInstance(); 
-		 * cal.add(Calendar.DATE, 3);
-		 * delivery.setExpectedDate(cal.getTime());
-		 */
+		
+		 Calendar cal = Calendar.getInstance(); 
+		 cal.add(Calendar.DATE, 3);
+		 delivery.setExpectedDate(cal.getTime());
+		 
 
         int deliveryResult = oDao.insertDelivery(delivery);
         if (deliveryResult <= 0) {
@@ -64,9 +64,9 @@ public class OrdersServiceImpl implements OrdersService{
         }
 
         Status status = new Status();
-        status.setDnum("D" + String.format("%06d", delivery.getDeliveryId()));
+        status.setDnum("D" + String.format("%04d", delivery.getDeliveryId()));
         status.setDeliveryYn("N");
-        status.setDeliveryStatus("배송준비중");
+        status.setDeliveryStatus("배송진행중");
         status.setDeliveryId(delivery.getDeliveryId());
 
         int statusResult = oDao.insertStatus(status);

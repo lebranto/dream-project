@@ -32,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 	    public String orderNew(
 	            Authentication auth,
 	            Model model,
+	            @RequestParam Integer productId,
 	            @RequestParam Map<String, Object> paramMap
 	    ) {
 	        String memberName = ((MemberExt) auth.getPrincipal()).getMemberName();
@@ -39,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 	        int memberNo = ((MemberExt) auth.getPrincipal()).getMemberNo();
 	        String email = ((MemberExt) auth.getPrincipal()).getEmail();
 	        
-	        
+	        paramMap.put("productId",productId);
 	        paramMap.put("memberNo", memberNo);
 	        
 	        List<Product> list = oService.productList(paramMap);
@@ -60,6 +61,7 @@ import lombok.extern.slf4j.Slf4j;
 	        model.addAttribute("memberName", memberName);
 	        model.addAttribute("memberNo", memberNo);
 	        model.addAttribute("email",email);
+	        
 	        
 	        model.addAttribute("totalPrice", totalPrice);
 	        model.addAttribute("totalCount", totalCount);
