@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,10 @@ public class AdminProductDaoImpl implements AdminProductDao {
 
 	@Autowired
 	private SqlSession session;
+	
+	@Autowired
+	private SqlSessionTemplate sqlSession;
+	
 	@Override
 	public int getProductCount(Map<String, Object> paramMap) {
 		return session.selectOne("adminProduct.getProductCount", paramMap);
@@ -51,6 +56,20 @@ public class AdminProductDaoImpl implements AdminProductDao {
 	@Override
 	public int selectLastCompanyCode() {
 	    return session.selectOne("adminProduct.selectLastCompanyCode");
+	}
+	@Override
+	public AdminProduct selectProductDetail(SqlSessionTemplate sqlSession, int productId) {
+	    return sqlSession.selectOne("adminProduct.selectProductDetail", productId);
+	}
+
+	@Override
+	public int updateProduct(SqlSessionTemplate sqlSession, AdminProduct product) {
+	    return sqlSession.update("adminProduct.updateProduct", product);
+	}
+
+	@Override
+	public int updateProductActiveYn(SqlSessionTemplate sqlSession, AdminProduct product) {
+	    return sqlSession.update("adminProduct.updateProductActiveYn", product);
 	}
 
 }

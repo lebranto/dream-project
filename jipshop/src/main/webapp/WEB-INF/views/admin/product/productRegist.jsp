@@ -57,17 +57,17 @@
 
     <div class="form-row">
         <label class="form-label required">업체명</label>
-        <input type="text" name="newCompanyName" class="form-input w-lg" placeholder="업체명">
+        <input type="text" name="newCompanyName" id="newCompanyName" class="form-input w-lg" placeholder="업체명">
     </div>
 
     <div class="form-row">
         <label class="form-label required">전화번호</label>
-        <input type="text" name="companyPhone" class="form-input w-lg" placeholder="전화번호">
+        <input type="text" name="companyPhone" id="companyPhone" class="form-input w-lg" placeholder="전화번호">
     </div>
 
     <div class="form-row">
         <label class="form-label required">주소</label>
-        <input type="text" name="companyAddress" class="form-input w-lg" placeholder="주소">
+        <input type="text" name="companyAddress" id="companyAdress"  class="form-input w-lg" placeholder="주소">
     </div>
 
 </div>
@@ -96,7 +96,17 @@
                 <option value="4">미용용품</option>
             </select>
         </div>
-
+<!-- 연령 -->
+<div class="form-row">
+    <label class="form-label">연령대</label>
+    <select name="ageGroup" id="ageGroup" class="form-select w-md">
+        <option value="">선택</option>
+        <option value="키드">키드</option>
+        <option value="어덜트">어덜트</option>
+        <option value="시니어">시니어</option>
+        <option value="전연령">전연령</option>
+    </select>
+</div>
         <!-- 상품명 -->
         <div class="form-row">
             <label class="form-label required">상품명</label>
@@ -216,6 +226,7 @@
         const newCompanyName = document.getElementById('newCompanyName');
         const petType = document.getElementById('petType');
         const categoryId = document.getElementById('categoryId');
+        const ageGroup = document.getElementById('ageGroup');
         const photo1 = document.getElementById('photo1');
 
         if (mode === 'select' && (!companyCode.value || companyCode.value.trim() === '')) {
@@ -229,6 +240,17 @@
             newCompanyName.focus();
             return false;
         }
+        if (mode === 'new' && (!companyPhone.value || companyPhone.value.trim() === '')) {
+            alert('전화번호를 입력해주세요.');
+            companyPhone.focus();
+            return false;
+        }
+
+        if (mode === 'new' && (!companyAddress.value || companyAddress.value.trim() === '')) {
+            alert('주소를 입력해주세요.');
+            companyAddress.focus();
+            return false;
+        }
 
         if (!petType.value) {
             alert('펫 유형을 선택해주세요.');
@@ -239,6 +261,11 @@
         if (!categoryId.value) {
             alert('카테고리를 선택해주세요.');
             categoryId.focus();
+            return false;
+        }
+        if (!ageGroup.value) {
+            alert('연령대를 선택해주세요.');
+            ageGroup.focus();
             return false;
         }
 
