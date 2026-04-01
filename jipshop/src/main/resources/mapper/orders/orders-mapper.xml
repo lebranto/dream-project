@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="orders">
+
+	<select id="productList" resultType="product">
+	
+	SELECT 
+        PRODUCT_ID   AS productId,
+        CATEGORY_ID  AS categoryId,
+        COMPANY_CODE AS companyCode,
+        PRODUCT_NAME AS productName,
+        PRODUCT_PRICE AS price,
+        PRODUCT_STOCK AS stock,
+        PRODUCT_DETAIL AS detail,
+        PRODUCT_PHOTO1 AS photo1,
+        PRODUCT_PHOTO2 AS photo2,
+        PRODUCT_REG_DATE AS productRegDate,
+        PRODUCT_ACTIVE_YN AS activeYn,
+        PET_TYPE AS petType,
+        AGE_GROUP AS ageGroup
+	 FROM PRODUCT
+	 WHERE PRODUCT_ID IN (1,2)
+	<!-- = #{productId} -->
+	</select>
+
+
+	<insert id="insertOrders" parameterType="orders">
+        <selectKey keyProperty="orderId" resultType="int" order="BEFORE">
+   		 SELECT SEQ_ORDER.NEXTVAL FROM DUAL
+		</selectKey>
+
+        INSERT INTO ORDERS (
+            ORDER_ID,
+            MEMBER_NO,
+            ORDER_DATE,
+            ORDER_TOTAL_PRICE,
+            ORDER_DELIVERY_FEE,
+            ORDERER_NAME,
+            ORDERER_PHONE,
+            ORDERER_EMAIL,
+            ORDER_MEMO,
+            RECV_NAME,
+            RECV_ADDRESS,
+            RECV_PHONE
+        ) VALUES (
+            #{orderId},
+            #{memberNo},
+            SYSDATE,
+            #{orderTotalPrice},
+            #{orderDeliveryFee},
+            #{ordererName},
+            #{ordererPhone},
+            #{ordererEmail},
+            #{orderMemo},
+            #{recvName},
+            #{recvAddress},
+            #{recvPhone}
+        )
+    </insert>
+
+    <insert id="insertOrderDetail" parameterType="orderDetail">
+       <selectKey keyProperty="detailId" resultType="int" order="BEFORE">
+    	 SELECT SEQ_DETAIL.NEXTVAL FROM DUAL
+	   </selectKey>
+
+        INSERT INTO ORDER_DETAIL (
+            DETAIL_ID,
+            ORDER_ID,
+            PRODUCT_ID,
+            DETAIL_QTY,
+            DETAIL_PRICE
+        ) VALUES (
+            #{detailId},
+            #{orderId},
+            #{productId},
+            #{detailQty},
+            #{detailPrice}
+        )
+    </insert>
+
+	 <insert id="insertDelivery" parameterType="com.kh.jipshop.orders.model.vo.Delivery">
+        <selectKey keyProperty="deliveryId" resultType="int" order="BEFORE">
+            SELECT SEQ_DELIVERY.NEXTVAL FROM DUAL
+        </selectKey>
+
+        INSERT INTO DELIVERY (
+            DELIVERY_ID,
+            ORDER_ID,
+            COURIER,
+            EXPECTED_DATE
+        ) VALUES (
+            #{deliveryId},
+            #{orderId},
+            #{courier},
+            #{expectedDate}
+        )
+    </insert>
+
+    <insert id="insertStatus" parameterType="com.kh.jipshop.orders.model.vo.Status">
+        INSERT INTO STATUS (
+            DNUM,
+            DELIVERY_YN,
+            DELIVERY_STATUS,
+            DELIVERY_ID
+        ) VALUES (
+            #{dnum},
+            #{deliveryYn},
+            #{deliveryStatus},
+            #{deliveryId}
+        )
+    </insert>
+
+</mapper>

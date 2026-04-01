@@ -1,0 +1,20 @@
+.filter-bar { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-label { font-size: 12px; font-weight: 600; color: var(--text-sub); }
+.filter-input { border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 13px; font-family: inherit; color: var(--text-main); background: var(--bg); outline: none; }
+.filter-input:focus { border-color: var(--accent2); }
+.filter-select { border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 13px; font-family: inherit; background: var(--bg); outline: none; cursor: pointer; }
+.table-wrap { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: #f9f7f3; border-bottom: 1px solid var(--border); }
+th { padding: 11px 12px; text-align: left; font-size: 12px; font-weight: 600; color: var(--text-sub); white-space: nowrap; }
+th.center, td.center { text-align: center; }
+td { padding: 11px 12px; border-bottom: 1px solid #f0ebe2; color: var(--text-main); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+.clickable-row { cursor: pointer; }
+.clickable-row:hover td { background: var(--row-hover); }
+.td-ellipsis { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-sub); }
+.empty-row td { padding: 36px !important; text-align: center; color: var(--text-sub); }
+.pagination { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 16px; border-top: 1px solid var(--border); }
+.page-num { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 13px; border: 1px solid var(--border); background: #fff; color: var(--text-sub); text-decoration: none; transition: all 0.15s; }
+.page-num.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.page-num:hover:not(.active) { background: var(--bg); }

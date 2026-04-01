@@ -41,7 +41,7 @@
     </a>
 
     <div class="sidebar-section">고객센터</div>
-    <a href="${contextPath }/admin/inquiryList.do" class="sidebar-item <%= "inquiryList".equals(currentMenu) ? "active" : "" %>">
+    <a href="${contextPath }/admin/inquiryList" class="sidebar-item <%= "inquiryList".equals(currentMenu) ? "active" : "" %>">
         💬 문의 조회
     </a>
     <a href="${contextPath }/admin/reportList.do" class="sidebar-item <%= "reportList".equals(currentMenu) ? "active" : "" %>">

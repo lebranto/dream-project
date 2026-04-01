@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="adminInquiry">
+	<resultMap id="inquiryRM" type="AdminInquiry">
+        <id     property="inquiryId"      column="INQUIRY_ID"/>
+        <result property="memberNo"       column="MEMBER_NO"/>
+        <result property="memberName"     column="MEMBER_NAME"/>
+        <result property="memberId"       column="MEMBER_ID"/>
+        <result property="inquiryType"    column="INQUIRY_TYPE"/>
+        <result property="inquiryContent" column="INQUIRY_CONTENT"/>
+        <result property="inquiryPhoto"   column="INQUIRY_PHOTO"/>
+        <result property="inquiryRegDate" column="INQUIRY_REG_DATE"/>
+        <result property="replyContent"   column="REPLY_CONTENT"/>
+        <result property="replyDate"      column="REPLY_DATE"/>
+        <result property="replyYn"        column="REPLY_YN"/>
+    </resultMap>
+ 
+    <sql id="searchWhere">
+        <where>
+            <if test="inquiryType != null and inquiryType != ''">
+                AND I.INQUIRY_TYPE = #{inquiryType}
+            </if>
+            <if test="replyYn != null and replyYn != ''">
+                AND I.REPLY_YN = #{replyYn}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    M.MEMBER_NAME     LIKE '%' || #{keyword} || '%'
+                 OR I.INQUIRY_CONTENT LIKE '%' || #{keyword} || '%'
+                )
+            </if>
+        </where>
+    </sql>
+ 
+    <!-- 전체 수 -->
+    <select id="getInquiryCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM INQUIRY I
+        JOIN MEMBER M ON I.MEMBER_NO = M.MEMBER_NO
+        <include refid="searchWhere"/>
+    </select>
+ 
+    <!-- 목록 (페이징) -->
+    <select id="getInquiryList" parameterType="map" resultMap="inquiryRM">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS RNUM, T.*
+            FROM (
+                SELECT
+                    I.INQUIRY_ID,
+                    I.MEMBER_NO,
+                    M.MEMBER_NAME,
+                    M.MEMBER_ID,
+                    I.INQUIRY_TYPE,
+                    I.INQUIRY_CONTENT,
+                    I.INQUIRY_PHOTO,
+                    I.INQUIRY_REG_DATE,
+                    I.REPLY_YN
+                FROM INQUIRY I
+                JOIN MEMBER M ON I.MEMBER_NO = M.MEMBER_NO
+                <include refid="searchWhere"/>
+                ORDER BY I.INQUIRY_REG_DATE DESC
+            ) T
+            WHERE ROWNUM &lt;= #{endRow}
+        )
+        WHERE RNUM &gt; #{startRow}
+    </select>
+    
+    <select id="getInquiryByNo" parameterType="int" resultMap="inquiryRM">
+    	SELECT
+            I.INQUIRY_ID,
+            I.MEMBER_NO,
+            M.MEMBER_NAME,
+            M.MEMBER_ID,
+            I.INQUIRY_TYPE,
+            I.INQUIRY_CONTENT,
+            I.INQUIRY_PHOTO,
+            I.INQUIRY_REG_DATE,
+            I.REPLY_CONTENT,
+            I.REPLY_DATE,
+            I.REPLY_YN
+        FROM INQUIRY I
+        JOIN MEMBER M ON I.MEMBER_NO = M.MEMBER_NO
+        WHERE I.INQUIRY_ID = #{inquiryId}
+    </select>
+    
+    <!-- 답변 등록 -->
+    <update id="updateReply" parameterType="map">
+        UPDATE INQUIRY
+        SET
+            REPLY_CONTENT = #{replyContent},
+            REPLY_DATE = SYSDATE,
+            REPLY_YN = 'Y'
+        WHERE INQUIRY_ID = #{inquiryId}
+    </update>
+</mapper>

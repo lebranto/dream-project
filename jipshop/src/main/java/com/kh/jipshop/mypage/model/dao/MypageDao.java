@@ -29,15 +29,32 @@ public interface MypageDao {
 
 	int delectInquiry(MyInqury mi);
 
-	OrderDetailResponse canclePage(Integer orderId);
+	OrderDetailResponse canclePage(Map<String, Object> paramMap);
 
-	int canclePurchase(Orders orders);
+	int checkDetailCanceled(Orders orders);
+	
+	int selectCancelAmount(Orders orders);
+	
+	int updateDetailCancel(Orders orders);
+	
+	int updateOrderTotalPrice(int orderId, int cancelAmount);
+	
+	int countRemainDetails(int orderId);
+	
+	int updateOrderCancelComplete(Orders orders);
 
 	int memberDeleteOk(Member m);
 
 	int updateMember(Member m);
 
 	int updatePet(Pet p);
+
+	Pet selectPetByMemberNo(int memberNo);
+
+	int insertPet(Pet p);
+
+	
+	
 	
 
 

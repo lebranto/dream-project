@@ -20,6 +20,12 @@ public interface AdminProductService {
 
 	int selectLastCompanyCode();
 
+	AdminProduct selectProductDetail(int productId);
+
+	int updateProduct(AdminProduct product);
+
+	int updateProductActiveYn(AdminProduct product);
+
 	
 
 }

@@ -21,6 +21,10 @@ public class OrderDetailResponse {
 	private String productName;
 	private String photo1;
 	private int productPrice;
+	
+	// 상품 디테일 필드
+	private int detailId;
+	private int detailPrice;
 		
 	// 최근 본 상품 쪽 필드
 	private int viewId;
