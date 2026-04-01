@@ -3,10 +3,10 @@ package com.kh.jipshop.mypage.controller;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -198,10 +198,15 @@ public class MypageController {
 
 	@GetMapping("/cancle")
 	public String canclePage(
-	        @RequestParam Integer orderId,
+			@RequestParam("orderId") int orderId,
+		    @RequestParam("detailId") int detailId,
 	        Model model
 	) {
-	    OrderDetailResponse od = mService.canclePage(orderId);
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("orderId", orderId);
+	    paramMap.put("detailId", detailId);
+
+	    OrderDetailResponse od = mService.canclePage(paramMap);
 	    model.addAttribute("orderList", od);
 
 	    return "mypage/cancle";
@@ -232,12 +237,19 @@ public class MypageController {
 	        if (result != 0) {
 	            return "redirect:/mypage/purchase";
 	        } else {
-	            return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
+	            return "redirect:/mypage/cancle?orderId=" 
+	                    + orders.getOrderId()
+	                    + "&detailId="
+	                    + orders.getDetailId();
 	        }
 	    } else {
-	        return "redirect:/mypage/cancle?orderId=" + orders.getOrderId();
+	        return "redirect:/mypage/cancle?orderId="
+	                + orders.getOrderId()
+	                + "&detailId="
+	                + orders.getDetailId();
 	    }
 	}
+	
 
 	 
 	 
@@ -344,55 +356,63 @@ public class MypageController {
 	
 	
 	
-	@PostMapping("/mypage/updatePet")
-	public String updatePet(
-	        Pet p,
-	        @RequestParam(value="petPhotoFile", required=false) MultipartFile file,
-	        HttpSession session,
-	        Model model) {
-
-	    if (file != null && !file.isEmpty()) {
-
-	        String savePath = session.getServletContext()
-	                .getRealPath("/resources/upload/pet/");
-
-	        File folder = new File(savePath);
-	        if (!folder.exists()) {
-	            folder.mkdirs();
-	        }
-
-	        String originName = file.getOriginalFilename();
-	        String ext = originName.substring(originName.lastIndexOf("."));
-
-	        String time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-	        int random = (int)(Math.random() * 90000 + 10000);
-
-	        String changeName = time + random + ext;
+	 @PostMapping("/updatePet")
+	    public String updatePet(Pet p,
+	                            MultipartFile petPhotoFile,
+	                            Authentication auth,
+	                            HttpSession session,
+	                            Model model) {
 
 	        try {
-	            file.transferTo(new File(savePath, changeName));
+	            int memberNo = ((MemberExt) auth.getPrincipal()).getMemberNo();
+	            p.setMemberNo(memberNo);
+
+	            if (petPhotoFile != null && !petPhotoFile.isEmpty()) {
+	                String savePath = session.getServletContext().getRealPath("/resources/upload/pet/");
+
+	                File folder = new File(savePath);
+	                if (!folder.exists()) {
+	                    folder.mkdirs();
+	                }
+
+	                String originName = petPhotoFile.getOriginalFilename();
+	                String ext = "";
+
+	                if (originName != null && originName.lastIndexOf(".") != -1) {
+	                    ext = originName.substring(originName.lastIndexOf("."));
+	                }
+
+	                String time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+	                int random = (int)(Math.random() * 90000 + 10000);
+	                String changeName = time + random + ext;
+
+	                petPhotoFile.transferTo(new File(savePath, changeName));
+	                p.setPetPhoto("/resources/upload/pet/" + changeName);
+	            }
+
+	            int result = mService.saveOrUpdatePet(p);
+
+	            if (result > 0) {
+	                return "redirect:/mypage/checkPet";
+	            } else {
+	                model.addAttribute("errorMsg", "반려동물 정보 저장 실패");
+	                model.addAttribute("pet", p);
+	                return "mypage/updatePet";
+	            }
+
 	        } catch (Exception e) {
 	            e.printStackTrace();
+	            model.addAttribute("errorMsg", "서버 오류로 저장에 실패했습니다.");
+	            model.addAttribute("pet", p);
+	            return "mypage/updatePet";
 	        }
-
-	        p.setPetPhoto("/resources/upload/pet/" + changeName);
 	    }
 
-	    int result = mService.updatePet(p);
-
-	    if (result > 0) {
-	        return "redirect:/";
-	    } else {
-	        model.addAttribute("errorMsg", "수정 실패");
-	        return "mypage/updatePet";
-	    }
-	}
-
 	
 
 	
 	
-// memberDelete 관련	
+// 회원 삭제 관련	
 	
 	@GetMapping("/memberDelete")
      public String memberDelete() {

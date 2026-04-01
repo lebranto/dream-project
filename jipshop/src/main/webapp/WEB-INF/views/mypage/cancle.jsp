@@ -46,6 +46,7 @@
 
             <form action="${contextPath}/mypage/cancle" method="post" onsubmit="return validateForm()">
                 <input type="hidden" name="orderId" value="${orderList.orderId}">
+                <input type="hidden" name="detailId" value="${orderList.detailId}">
                 <input type="hidden" name="cancelReason" id="cancelReason">
 
                 <div class="form-area">

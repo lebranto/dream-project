@@ -79,7 +79,7 @@
                  <img class="product-thumb" src="${o.photo1}" alt="${o.productName}">
                   <div class="product-info">
                     <div class="product-name">${o.productName}</div>
-                    <div><fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,##0원" /></div>
+                    <div><fmt:formatNumber value="${o.detailPrice}" pattern="#,##0원" /></div>
                   </div>
                 </div>
 
@@ -96,7 +96,7 @@
                 </div>
 
                 <div class="info-cell">
-                  <a href="${contextPath}/mypage/cancle?orderId=${o.orderId}" class="cancel-btn">구매 취소</a>
+                  <a href="${contextPath}/mypage/cancle?orderId=${o.orderId}&detailId=${o.detailId}" class="cancel-btn">구매 취소</a>
                 </div>
               </div>
             </c:forEach>
