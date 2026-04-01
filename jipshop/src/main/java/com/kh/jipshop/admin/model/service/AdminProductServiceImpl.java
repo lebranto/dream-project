@@ -3,6 +3,7 @@ package com.kh.jipshop.admin.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,10 @@ public class AdminProductServiceImpl implements AdminProductService {
 	
 	@Autowired
 	private AdminProductDao adminProductDao;
+	
+	@Autowired
+	private SqlSessionTemplate sqlSession;
+	
 	@Override
 	public int getProductCount(Map<String, Object> paramMap) {
 		return adminProductDao.getProductCount(paramMap);
@@ -46,6 +51,20 @@ public class AdminProductServiceImpl implements AdminProductService {
 	@Override
 	public int selectLastCompanyCode() {
 	    return adminProductDao.selectLastCompanyCode();
+	}
+	@Override
+	public AdminProduct selectProductDetail(int productId) {
+	    return adminProductDao.selectProductDetail(sqlSession, productId);
+	}
+
+	@Override
+	public int updateProduct(AdminProduct product) {
+	    return adminProductDao.updateProduct(sqlSession, product);
+	}
+
+	@Override
+	public int updateProductActiveYn(AdminProduct product) {
+	    return adminProductDao.updateProductActiveYn(sqlSession, product);
 	}
 
 }

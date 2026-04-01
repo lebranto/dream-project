@@ -215,15 +215,17 @@
         }
     });
 
-    categoryButtons.forEach(function(btn) {
-        btn.addEventListener("click", function() {
-            categoryButtons.forEach(function(item) {
-                item.classList.remove("active");
+    if (categoryButtons.length > 0) {
+        categoryButtons.forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                categoryButtons.forEach(function(item) {
+                    item.classList.remove("active");
+                });
+                this.classList.add("active");
+                categoryCodeInput.value = this.dataset.code;
             });
-            this.classList.add("active");
-            categoryCodeInput.value = this.dataset.code;
         });
-    });
+    }
 
     if (boardType === "myKidBoard") {
         categoryCodeInput.value = "101";
@@ -238,6 +240,7 @@
 
         if (mergedFiles.length > 3) {
             showModal("사진은 최대 3개까지만 첨부할 수 있습니다.");
+            imageInput.value = "";
             return;
         }
 
@@ -248,14 +251,22 @@
 
     function updateImageInput() {
         const dt = new DataTransfer();
+
         selectedImages.forEach(function(file) {
             dt.items.add(file);
         });
+
         imageInput.files = dt.files;
+        imageCountText.textContent = selectedImages.length + "개";
     }
 
     function renderImagePreview() {
         imagePreviewArea.innerHTML = "";
+
+        if (selectedImages.length === 0) {
+            imageCountText.textContent = "0개";
+            return;
+        }
 
         selectedImages.forEach(function(file, index) {
             const reader = new FileReader();
@@ -263,7 +274,6 @@
             reader.onload = function(e) {
                 const item = document.createElement("div");
                 item.className = "preview-item";
-
                 item.innerHTML =
                     '<img src="' + e.target.result + '" alt="이미지 미리보기">' +
                     '<button type="button" class="remove-btn" data-index="' + index + '">×</button>';
@@ -274,8 +284,6 @@
 
             reader.readAsDataURL(file);
         });
-
-        imageCountText.textContent = selectedImages.length + "개";
     }
 
     function bindRemoveButtons() {
@@ -283,7 +291,7 @@
 
         removeButtons.forEach(function(btn) {
             btn.onclick = function() {
-                const index = parseInt(this.dataset.index);
+                const index = parseInt(this.dataset.index, 10);
                 selectedImages.splice(index, 1);
                 updateImageInput();
                 renderImagePreview();
@@ -291,29 +299,10 @@
         });
     }
 
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const writeForm = document.querySelector("#writeForm");
-        const titleInput = document.querySelector('input[name="boardTitle"]');
-        const contentInput = document.querySelector('textarea[name="boardContent"]');
-        const categoryCodeInput = document.querySelector('input[name="categoryCode"]');
-        
-        const loginMemberNo = "${loginUser.memberNo}";
-        const boardType = "${param.boardType}"; 
-
-        if (writeForm) {
-            writeForm.addEventListener("submit", function(e) {
-                const title = titleInput ? titleInput.value.trim() : "";
-                const content = contentInput ? contentInput.value.trim() : "";
-                const categoryCode = categoryCodeInput ? categoryCodeInput.value : "";
-
-                if (!loginMemberNo || loginMemberNo === "" || loginMemberNo === "0") {
-                    e.preventDefault();
-                    alert("로그인 후 사용 가능합니다.");
-                    location.href = "${pageContext.request.contextPath}/member/login";
-                    return;
-                }
-
+    writeForm.addEventListener("submit", function(e) {
+        const title = titleInput ? titleInput.value.trim() : "";
+        const content = contentInput ? contentInput.value.trim() : "";
+        const categoryCode = categoryCodeInput ? categoryCodeInput.value : "";
 
         if (boardType === "tip" || boardType === "free") {
             if (!categoryCode) {
