@@ -15,6 +15,11 @@ public class ordersController {
 		return "orders/cart";
 	}
 	
+	@RequestMapping("/cartList")
+	public String cartList() {
+		return "orders/cartList";
+	}
+	
 	@RequestMapping("/favorites")
 	public String favorites() {
 		return "orders/favorites";

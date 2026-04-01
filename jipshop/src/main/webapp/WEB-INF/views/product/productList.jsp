@@ -121,11 +121,19 @@
                                         <button type="submit" class="buy-btn">바로구매</button>
                                     </form>
 
-                                    <form action="${pageContext.request.contextPath}/product/cart" method="post" class="inline-form">
-                                        <input type="hidden" name="productId" value="${p.productId}">
-                                        <input type="hidden" name="qty" value="1">
-                                        <button type="submit" class="cart-btn">장바구니</button>
-                                    </form>
+                                    <form action="${pageContext.request.contextPath}/cartList/add" method="post" class="inline-form">
+    									<input type="hidden" name="productId" value="${p.productId}">
+    
+    									<!-- ⭐ 추가 -->
+    									<input type="hidden" name="productName" value="${p.productName}">
+    									<input type="hidden" name="productPrice" value="${p.productPrice}">
+    									<input type="hidden" name="productPhoto" value="${p.productPhoto1}">
+    
+    									<input type="hidden" name="qty" value="1">
+    
+    									<button type="submit" class="cart-btn">장바구니</button>
+									</form>
+									
                                 </div>
                             </div>
 

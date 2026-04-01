@@ -132,8 +132,9 @@ input[type="checkbox"] {
 
 <div class="content-wrapper">
 <div class="mypage-container">
-
+<aside class="sidebar">
 <jsp:include page="/WEB-INF/views/common/myPageSidebar.jsp" />
+</aside>
 
 <div class="mypage-content">
 
