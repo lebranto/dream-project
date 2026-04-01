@@ -1,0 +1,95 @@
+package com.kh.jipshop.admin.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.kh.jipshop.admin.model.service.AdminInquiryService;
+import com.kh.jipshop.admin.model.vo.AdminInquiry;
+import com.kh.jipshop.common.model.vo.PageInfo;
+import com.kh.jipshop.common.template.Pagination;
+
+@Controller
+@RequestMapping("/admin")
+public class AdminInquiryController {
+	
+	@Autowired
+    private AdminInquiryService adminInquiryService;
+ 
+    // 1. 문의 목록
+    @GetMapping("/inquiryList")
+    public String inquiryList(
+            @RequestParam(value = "page", defaultValue = "1") int currentPage,
+            @RequestParam Map<String, Object> paramMap,
+            Model model) {
+ 
+        paramMap.remove("page");
+        paramMap.entrySet().removeIf(e ->
+            e.getValue() == null || e.getValue().toString().trim().isEmpty()
+        );
+ 
+        int boardLimit = 10;
+        int pageLimit  = 10;
+        int totalCount = adminInquiryService.getInquiryCount(paramMap);
+ 
+        PageInfo pi = Pagination.getPageInfo(totalCount, currentPage, pageLimit, boardLimit);
+        paramMap.put("pi",       pi);
+        paramMap.put("startRow", (currentPage - 1) * boardLimit);
+        paramMap.put("endRow",   currentPage * boardLimit);
+ 
+        List<AdminInquiry> inquiryList = adminInquiryService.getInquiryList(paramMap);
+ 
+        model.addAttribute("inquiryList", inquiryList);
+        model.addAttribute("totalCount",  totalCount);
+        model.addAttribute("pi",          pi);
+        model.addAttribute("param",       paramMap);
+ 
+        return "admin/inquiry/inquiryList";
+    }
+    
+    // 문의 상세
+    @GetMapping("/inquiryDetail")
+    public String inquiryDetail(@RequestParam int inquiryId, Model model) {
+ 
+        AdminInquiry inquiry = adminInquiryService.getInquiryByNo(inquiryId);
+        if (inquiry == null) return "redirect:/admin/inquiryList";
+ 
+        model.addAttribute("inquiry", inquiry);
+        return "admin/inquiry/inquiryDetail";
+    }
+    
+    // 답변 등록 / 수정  
+    //    - replyYn = 'N'이면 등록버튼
+    //    - replyYn = 'Y'이면 수정버튼
+    @PostMapping("/inquiryReply")
+    public String inquiryReply(
+            @RequestParam int    inquiryId,
+            @RequestParam String replyContent,
+            RedirectAttributes ra) {
+ 
+        if (replyContent == null || replyContent.trim().isEmpty()) {
+            ra.addFlashAttribute("errorMsg", "답변 내용을 입력해주세요.");
+            return "redirect:/admin/inquiryDetail?inquiryId=" + inquiryId;
+        }
+ 
+        AdminInquiry inquiry = adminInquiryService.getInquiryByNo(inquiryId);
+        boolean isUpdate = inquiry != null && "Y".equals(inquiry.getReplyYn());
+ 
+        int result = adminInquiryService.updateReply(inquiryId, replyContent.trim());
+ 
+        if (result > 0) {
+            ra.addFlashAttribute("successMsg", isUpdate ? "답변이 수정되었습니다." : "답변이 등록되었습니다.");
+        } else {
+            ra.addFlashAttribute("errorMsg", "처리에 실패했습니다.");
+        }
+        return "redirect:/admin/inquiryDetail?inquiryId=" + inquiryId;
+    }
+}

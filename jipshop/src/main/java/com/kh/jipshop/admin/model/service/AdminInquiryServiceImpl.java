@@ -1,0 +1,44 @@
+package com.kh.jipshop.admin.model.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.kh.jipshop.admin.model.dao.AdminInquiryDao;
+import com.kh.jipshop.admin.model.vo.AdminInquiry;
+
+@Service
+public class AdminInquiryServiceImpl implements AdminInquiryService{
+	
+	@Autowired
+	private AdminInquiryDao adminInquiryDao;
+
+	@Override
+	public int getInquiryCount(Map<String, Object> paramMap) {
+		return adminInquiryDao.getInquiryCount(paramMap);
+	}
+
+	@Override
+	public List<AdminInquiry> getInquiryList(Map<String, Object> paramMap) {
+		return adminInquiryDao.getInquiryList(paramMap);
+	}
+
+	@Override
+	public AdminInquiry getInquiryByNo(int inquiryId) {
+		return adminInquiryDao.getInquiryByNo(inquiryId);
+	}
+
+	@Override
+	public int updateReply(int inquiryId, String trim) {
+		Map<String, Object> param = new HashMap<>();
+	    param.put("inquiryId",    inquiryId);
+	    param.put("replyContent", trim);
+	    
+		return adminInquiryDao.updateReply(param);
+	}
+	
+	
+}
