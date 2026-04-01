@@ -79,7 +79,7 @@
                  <img class="product-thumb" src="${o.photo1}" alt="${o.productName}">
                   <div class="product-info">
                     <div class="product-name">${o.productName}</div>
-                    <div><fmt:formatNumber value="${o.orderTotalPrice}" pattern="#,##0원" /></div>
+                    <div><fmt:formatNumber value="${o.detailPrice}" pattern="#,##0원" /></div>
                   </div>
                 </div>
 

@@ -1,5 +1,6 @@
 package com.kh.jipshop.mypage.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -136,10 +137,39 @@ public class MypageDaoImpl implements MypageDao {
 		return session.selectOne("mypage.canclePage",orderId);
 	}
 
-	@Override
-	public int canclePurchase(Orders orders) {
-		return session.update("mypage.canclePurchase", orders);
-	}
+	
+	 @Override
+	    public int checkDetailCanceled(Orders orders) {
+	        return session.selectOne("mypage.checkDetailCanceled", orders);
+	    }
+
+	    @Override
+	    public int selectCancelAmount(Orders orders) {
+	        return session.selectOne("mypage.selectCancelAmount", orders);
+	    }
+
+	    @Override
+	    public int updateDetailCancel(Orders orders) {
+	        return session.update("mypage.updateDetailCancel", orders);
+	    }
+
+	    @Override
+	    public int updateOrderTotalPrice(int orderId, int cancelAmount) {
+	        Map<String, Object> paramMap = new HashMap<>();
+	        paramMap.put("orderId", orderId);
+	        paramMap.put("cancelAmount", cancelAmount);
+	        return session.update("mypage.updateOrderTotalPrice", paramMap);
+	    }
+
+	    @Override
+	    public int countRemainDetails(int orderId) {
+	        return session.selectOne("mypage.countRemainDetails", orderId);
+	    }
+
+	    @Override
+	    public int updateOrderCancelComplete(Orders orders) {
+	        return session.update("mypage.updateOrderCancelComplete", orders);
+	    }
 
 	
 	//회원 정보 삭제 관련
@@ -163,6 +193,7 @@ public class MypageDaoImpl implements MypageDao {
 		return session.update("mypage.updatePet",p);
 	}
 
+	
 
 	
 	

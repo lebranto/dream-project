@@ -7,9 +7,10 @@
 		SELECT *
 		FROM (
 			SELECT ROWNUM AS RNUM, T1.*
+			
 			FROM (
 				SELECT
-				O.ORDER_TOTAL_PRICE,O.ORDER_DATE,O.ORDER_ID, P.PRODUCT_NAME,P.PRODUCT_PHOTO1,S.DELIVERY_STATUS 
+				O.ORDER_TOTAL_PRICE,O.ORDER_DATE,O.ORDER_ID, P.PRODUCT_NAME,P.PRODUCT_PHOTO1,S.DELIVERY_STATUS,OD.DETAIL_PRICE 
 				FROM ORDERS O
 				JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
 				JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
@@ -146,18 +147,59 @@
 	
 	
 	<!-- 구매 취소 부분 -->
-	
-	<select id="canclePage" resultType="OrderDetailResponse">
+
+<select id="canclePage" resultType="OrderDetailResponse">
     SELECT O.ORDER_ID,
            P.PRODUCT_NAME
       FROM ORDERS O
-      JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
-      JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
+      JOIN ORDER_DETAIL OD 
+       ON O.ORDER_ID = OD.ORDER_ID
+      JOIN PRODUCT P 
+       ON OD.PRODUCT_ID = P.PRODUCT_ID
      WHERE O.ORDER_ID = #{orderId}
+       AND OD.DETAIL_ID = #{detailId}
 </select>
 
+<select id="checkDetailCanceled" parameterType="orders" resultType="int">
+    SELECT COUNT(*)
+      FROM ORDER_DETAIL
+     WHERE DETAIL_ID = #{detailId}
+       AND ORDER_ID = #{orderId}
+       AND NVL(CANCEL_YN, 'N') = 'Y'
+</select>
 
-	<update id="canclePurchase">
+<select id="selectCancelAmount" parameterType="orders" resultType="int">
+    SELECT DETAIL_PRICE
+      FROM ORDER_DETAIL
+     WHERE DETAIL_ID = #{detailId}
+       AND ORDER_ID = #{orderId}
+</select>
+
+<update id="updateDetailCancel" parameterType="orders">
+    UPDATE ORDER_DETAIL
+       SET CANCEL_YN = 'Y'
+     WHERE DETAIL_ID = #{detailId}
+       AND ORDER_ID = #{orderId}
+       AND NVL(CANCEL_YN, 'N') = 'N'
+</update>
+
+<update id="updateOrderTotalPrice" parameterType="map">
+    UPDATE ORDERS
+       SET ORDER_TOTAL_PRICE = 
+       CASE WHEN ORDER_TOTAL_PRICE - #{cancelAmount} &lt; 0 THEN 0
+            ELSE ORDER_TOTAL_PRICE - #{cancelAmount}
+       END
+     WHERE ORDER_ID = #{orderId}
+</update>
+
+<select id="countRemainDetails" parameterType="int" resultType="int">
+    SELECT COUNT(*)
+      FROM ORDER_DETAIL
+     WHERE ORDER_ID = #{orderId}
+       AND NVL(CANCEL_YN, 'N') = 'N'
+</select>
+
+<update id="updateOrderCancelComplete" parameterType="orders">
     UPDATE ORDERS
        SET ORDER_CANCEL_YN = 'Y',
            CANCEL_REQUEST_DATE = SYSDATE,
@@ -165,8 +207,15 @@
            CANCEL_STATUS = 'PENDING'
      WHERE MEMBER_NO = #{memberNo}
        AND ORDER_ID = #{orderId}
+       AND NOT EXISTS (
+            SELECT 1
+              FROM ORDER_DETAIL
+             WHERE ORDER_ID = #{orderId}
+               AND NVL(CANCEL_YN, 'N') = 'N'
+       )
 </update>
-	
+
+
 	
 	<!-- 회원 탈퇴 부분 -->
 	

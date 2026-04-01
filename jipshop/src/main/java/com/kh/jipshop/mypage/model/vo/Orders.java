@@ -33,6 +33,9 @@ public class Orders {
     private String cancelReason;
     private String cancelStatus;
 	
+    //디테일 아이디 관련
+    private int detailId;
+    
     
     // 주문 상세 리스트
     private List<OrderDetail> detailList;

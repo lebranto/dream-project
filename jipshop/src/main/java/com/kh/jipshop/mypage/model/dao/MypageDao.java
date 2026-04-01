@@ -31,13 +31,26 @@ public interface MypageDao {
 
 	OrderDetailResponse canclePage(Integer orderId);
 
-	int canclePurchase(Orders orders);
+	int checkDetailCanceled(Orders orders);
+	
+	int selectCancelAmount(Orders orders);
+	
+	int updateDetailCancel(Orders orders);
+	
+	int updateOrderTotalPrice(int orderId, int cancelAmount);
+	
+	int countRemainDetails(int orderId);
+	
+	int updateOrderCancelComplete(Orders orders);
 
 	int memberDeleteOk(Member m);
 
 	int updateMember(Member m);
 
 	int updatePet(Pet p);
+
+	
+	
 	
 
 
