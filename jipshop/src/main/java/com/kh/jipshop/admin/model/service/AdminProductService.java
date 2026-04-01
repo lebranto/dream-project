@@ -16,6 +16,10 @@ public interface AdminProductService {
 
 	int insertProduct(AdminProduct product);
 
+	int insertCompany(String name, String phone, String address);
+
+	int selectLastCompanyCode();
+
 	
 
 }

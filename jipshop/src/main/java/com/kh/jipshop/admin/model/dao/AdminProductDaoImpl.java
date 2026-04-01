@@ -1,5 +1,6 @@
 package com.kh.jipshop.admin.model.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,19 @@ public class AdminProductDaoImpl implements AdminProductDao {
 	@Override
 	public int insertProduct(AdminProduct product) {
 		return session.insert("adminProduct.insertProduct", product);
+	}
+	@Override
+	public int insertCompany(String name, String phone, String address) {
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("name", name);
+	    map.put("phone", phone);
+	    map.put("address", address);
+	    return session.insert("adminProduct.insertCompany", map);
+	}
+
+	@Override
+	public int selectLastCompanyCode() {
+	    return session.selectOne("adminProduct.selectLastCompanyCode");
 	}
 
 }

@@ -82,6 +82,18 @@ public class AdminProductController {
             @RequestParam(value = "photo2", required = false) MultipartFile photo2,
             RedirectAttributes ra) {
  
+    	 // 신규 회사 처리
+    	if ("new".equals(product.getCompanyMode())) {
+
+    	    int companyCode = adminProductService.insertCompany(
+    	        product.getNewCompanyName(),
+    	        product.getCompanyPhone(),
+    	        product.getCompanyAddress()
+    	    );
+
+    	    product.setCompanyCode(companyCode);
+    	}
+
         // 사진1 업로드 (필수)
         if (photo1 != null && !photo1.isEmpty()) {
             String savedName = Utils.saveFile(photo1, application, "product");
@@ -107,4 +119,5 @@ public class AdminProductController {
             return "redirect:/admin/productRegist";
         }
     }
+    
 }

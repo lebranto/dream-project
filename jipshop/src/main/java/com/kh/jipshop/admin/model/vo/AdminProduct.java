@@ -21,4 +21,8 @@ public class AdminProduct {
     private String productActiveYn; // 'Y' 판매중 | 'N' 판매중지
     private String petType;
     private String ageGroup;
+    private String companyMode;       // select / new
+    private String newCompanyName;    // 신규 회사명
+    private String companyPhone; 
+    private String companyAddress;
 }

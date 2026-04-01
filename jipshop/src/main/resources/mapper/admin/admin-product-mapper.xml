@@ -116,4 +116,21 @@
             #{petType}, #{ageGroup}
         )
     </insert>
+    <insert id="insertCompany" parameterType="map">
+    INSERT INTO COMPANY (
+        COMPANY_CODE,
+        COMPANY_NAME,
+        COMPANY_PHONE,
+        ADDRESS_ADDRESS
+    ) VALUES (
+        SEQ_COMPANY.NEXTVAL,
+        #{name},
+        #{phone},
+        #{address}
+    )
+</insert>
+
+<select id="selectLastCompanyCode" resultType="int">
+    SELECT MAX(COMPANY_CODE) FROM COMPANY
+</select>
 </mapper>

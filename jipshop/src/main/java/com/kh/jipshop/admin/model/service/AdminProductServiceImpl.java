@@ -38,5 +38,14 @@ public class AdminProductServiceImpl implements AdminProductService {
 	public int insertProduct(AdminProduct product) {
 		return adminProductDao.insertProduct(product);
 	}
+	@Override
+	public int insertCompany(String name, String phone, String address) {
+	    adminProductDao.insertCompany(name, phone, address);
+	    return adminProductDao.selectLastCompanyCode();
+	}
+	@Override
+	public int selectLastCompanyCode() {
+	    return adminProductDao.selectLastCompanyCode();
+	}
 
 }
