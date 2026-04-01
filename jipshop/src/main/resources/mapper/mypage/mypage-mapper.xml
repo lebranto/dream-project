@@ -10,7 +10,13 @@
 			
 			FROM (
 				SELECT
-				O.ORDER_TOTAL_PRICE,O.ORDER_DATE,O.ORDER_ID, P.PRODUCT_NAME,P.PRODUCT_PHOTO1,S.DELIVERY_STATUS,OD.DETAIL_PRICE 
+				O.ORDER_TOTAL_PRICE,
+				O.ORDER_DATE,O.ORDER_ID, 
+				P.PRODUCT_NAME,
+				P.PRODUCT_PHOTO1,
+				S.DELIVERY_STATUS,
+				OD.DETAIL_PRICE,
+				OD.DETAIL_ID AS detailId 
 				FROM ORDERS O
 				JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
 				JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
@@ -18,6 +24,7 @@
 		        LEFT JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID	  
 				WHERE O.MEMBER_NO =#{memberNo}
 				AND O.ORDER_CANCEL_YN = 'N'
+				AND OD.CANCEL_YN = 'N'
 				<if test="period != null">
 					AND O.ORDER_DATE >= SYSDATE - #{period}
 				</if>
@@ -150,7 +157,8 @@
 
 <select id="canclePage" resultType="OrderDetailResponse">
     SELECT O.ORDER_ID,
-           P.PRODUCT_NAME
+           P.PRODUCT_NAME,
+           OD.DETAIL_ID
       FROM ORDERS O
       JOIN ORDER_DETAIL OD 
        ON O.ORDER_ID = OD.ORDER_ID
@@ -237,20 +245,51 @@
 		WHERE MEMBER_NO = ${memberNo} 
 	</update>
 	
-	<update id="updatePet" parameterType="pet">
-    UPDATE PET
-    <set>
-        PET_TYPE = #{petType},
-        PET_NAME = #{petName},
-        PET_AGE = #{petBirth},
-        PET_WEIGHT = #{petWeight}
 
-        <if test="petPhoto != null and petPhoto != ''">
-            , PET_PHOTO = #{petPhoto}
-        </if>
-    </set>
-    WHERE PET_NO = #{petNo}
-</update>
+    <select id="selectPetByMemberNo" parameterType="int"
+            resultType="pet">
+        SELECT
+            PET_NO      AS petNo,
+            MEMBER_NO   AS memberNo,
+            PET_TYPE    AS petType,
+            PET_NAME    AS petName,
+            PET_AGE     AS petAge,
+            PET_WEIGHT  AS petWeight,
+            PET_PHOTO   AS petPhoto
+        FROM PET
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
+
+    <insert id="insertPet" parameterType="pet">
+        INSERT INTO PET (
+            PET_NO,
+            MEMBER_NO,
+            PET_TYPE,
+            PET_NAME,
+            PET_AGE,
+            PET_WEIGHT,
+            PET_PHOTO
+        ) VALUES (
+            SEQ_PET.NEXTVAL,
+            #{memberNo},
+            #{petType},
+            #{petName},
+            #{petAge},
+            #{petWeight},
+            #{petPhoto}
+        )
+    </insert>
+
+    <update id="updatePet" parameterType="pet">
+        UPDATE PET
+        SET
+            PET_TYPE   = #{petType},
+            PET_NAME   = #{petName},
+            PET_AGE    = #{petAge},
+            PET_WEIGHT = #{petWeight},
+            PET_PHOTO  = #{petPhoto}
+        WHERE PET_NO = #{petNo}
+    </update>
 	
 
 </mapper>

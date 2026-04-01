@@ -85,9 +85,9 @@ public class MypageServiceImpl implements MypageService {
 	// 구매 취소페이지
 	
 	@Override
-	public OrderDetailResponse canclePage(Integer orderId) {
+	public OrderDetailResponse canclePage(Map<String, Object> paramMap) {
 		
-		return mDao.canclePage(orderId);
+		return mDao.canclePage(paramMap);
 	}
 
 	    @Override
@@ -148,20 +148,25 @@ public class MypageServiceImpl implements MypageService {
 		
 		return mDao.updatePet(p);
 	}
-	
 
-	
-	
+	@Override
+	public int saveOrUpdatePet(Pet p) {
 
-	
+        Pet existingPet = mDao.selectPetByMemberNo(p.getMemberNo());
 
-	
-	
-	
+        if (existingPet == null) {
+            return mDao.insertPet(p);
+        } else {
+            p.setPetNo(existingPet.getPetNo());
 
+            // 새 사진 안 올렸으면 기존 사진 유지
+            if (p.getPetPhoto() == null || "".equals(p.getPetPhoto())) {
+                p.setPetPhoto(existingPet.getPetPhoto());
+            }
 
-	
-
+            return mDao.updatePet(p);
+        }
+    }
 
 
 }

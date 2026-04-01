@@ -19,8 +19,8 @@
         PET_TYPE AS petType,
         AGE_GROUP AS ageGroup
 	 FROM PRODUCT
-	 WHERE PRODUCT_ID = #{productId}
-	
+	 WHERE PRODUCT_ID IN (1,2)
+	<!-- = #{productId} -->
 	</select>
 
 

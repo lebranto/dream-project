@@ -132,9 +132,9 @@ public class MypageDaoImpl implements MypageDao {
 	// 구매 취소 관련
 	
 	@Override
-	public OrderDetailResponse canclePage(Integer orderId) {
+	public OrderDetailResponse canclePage(Map<String, Object> paramMap) {
 		
-		return session.selectOne("mypage.canclePage",orderId);
+		return session.selectOne("mypage.canclePage",paramMap);
 	}
 
 	
@@ -187,11 +187,20 @@ public class MypageDaoImpl implements MypageDao {
 		return session.update("mypage.updateMember",m);
 	}
 
-	@Override
-	public int updatePet(Pet p) {
-		
-		return session.update("mypage.updatePet",p);
-	}
+	  @Override
+	    public Pet selectPetByMemberNo(int memberNo) {
+	        return session.selectOne("mypage.selectPetByMemberNo", memberNo);
+	    }
+
+	    @Override
+	    public int insertPet(Pet p) {
+	        return session.insert("mypage.insertPet", p);
+	    }
+
+	    @Override
+	    public int updatePet(Pet p) {
+	        return session.update("mypage.updatePet", p);
+	    }
 
 	
 

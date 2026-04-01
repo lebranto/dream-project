@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 	    public String orderNew(
 	            Authentication auth,
 	            Model model,
-	            @RequestParam Integer productId,
+	            @RequestParam(required = false) Integer productId,
 	            @RequestParam Map<String, Object> paramMap
 	    ) {
 	        String memberName = ((MemberExt) auth.getPrincipal()).getMemberName();

@@ -29,7 +29,7 @@ public interface MypageDao {
 
 	int delectInquiry(MyInqury mi);
 
-	OrderDetailResponse canclePage(Integer orderId);
+	OrderDetailResponse canclePage(Map<String, Object> paramMap);
 
 	int checkDetailCanceled(Orders orders);
 	
@@ -48,6 +48,10 @@ public interface MypageDao {
 	int updateMember(Member m);
 
 	int updatePet(Pet p);
+
+	Pet selectPetByMemberNo(int memberNo);
+
+	int insertPet(Pet p);
 
 	
 	

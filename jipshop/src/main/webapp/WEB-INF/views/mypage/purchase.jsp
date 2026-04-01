@@ -96,7 +96,7 @@
                 </div>
 
                 <div class="info-cell">
-                  <a href="${contextPath}/mypage/cancle?orderId=${o.orderId}" class="cancel-btn">구매 취소</a>
+                  <a href="${contextPath}/mypage/cancle?orderId=${o.orderId}&detailId=${o.detailId}" class="cancel-btn">구매 취소</a>
                 </div>
               </div>
             </c:forEach>

@@ -29,7 +29,7 @@ public interface MypageService {
 
 	int delectInquiry(MyInqury mi);
 
-	OrderDetailResponse canclePage(Integer orderId);
+	OrderDetailResponse canclePage(Map<String, Object> paramMap);
 
 	int canclePurchase(Orders orders);
 
@@ -38,6 +38,8 @@ public interface MypageService {
 	int updateMember(Member m);
 
 	int updatePet(Pet p);
+
+	int saveOrUpdatePet(Pet p);
 
 
 
