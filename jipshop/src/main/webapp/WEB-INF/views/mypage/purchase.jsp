@@ -17,13 +17,9 @@
 <body>
 
   <jsp:include page="/WEB-INF/views/common/header.jsp" />
-  
-  
 
   <aside class="sidebar">
-  
-  <jsp:include page="/WEB-INF/views/common/myPageSidebar.jsp" />
-    
+    <jsp:include page="/WEB-INF/views/common/myPageSidebar.jsp" />
   </aside>
 
   <div class="content-wrap">
@@ -60,7 +56,7 @@
         <div>상품명/가격</div>
         <div>주문일</div>
         <div>주문 번호</div>
-        <div>배송 상황</div>
+        <div>배송 상태</div>
         <div>구매 취소</div>
       </div>
 
@@ -75,11 +71,14 @@
           <div class="purchase-list">
             <c:forEach var="o" items="${orderlist}">
               <div class="purchase-card">
+
                 <div class="product-cell">
-                 <img class="product-thumb" src="${o.photo1}" alt="${o.productName}">
+                  <img class="product-thumb" src="${o.photo1}" alt="${o.productName}">
                   <div class="product-info">
                     <div class="product-name">${o.productName}</div>
-                    <div><fmt:formatNumber value="${o.detailPrice}" pattern="#,##0원" /></div>
+                    <div>
+                      <fmt:formatNumber value="${o.detailPrice}" pattern="#,##0원" />
+                    </div>
                   </div>
                 </div>
 
@@ -90,94 +89,137 @@
                 <div class="info-cell">${o.orderId}</div>
 
                 <div class="info-cell">
+                  <c:choose>
+                    <c:when test="${o.detailCancelStatusLabel eq '취소요청'}">
+                      <div style="color:orange;">취소요청</div>
+                    </c:when>
+                    <c:when test="${o.detailCancelStatusLabel eq '취소완료'}">
+                      <div style="color:red;">취소완료</div>
+                    </c:when>
+                    <c:when test="${o.detailCancelStatusLabel eq '취소반려'}">
+                      <div style="color:blue;">취소반려</div>
+                    </c:when>
+                    <c:otherwise>
+                      <div>${o.deliveryStatus}</div>
+                    </c:otherwise>
+                  </c:choose>
+
+                  <a href="#" class="status-badge">상세보기</a>
                  
                   <div>${o.deliveryStatus}</div>
                   <a href="${contextPath}/mypage/orderDetail?orderId=${o.orderId}&detailId=${o.detailId}" class="status-badge">상세보기</a>
+>>>>>>> origin/main
                 </div>
 
                 <div class="info-cell">
-                  <a href="${contextPath}/mypage/cancle?orderId=${o.orderId}&detailId=${o.detailId}" class="cancel-btn">구매 취소</a>
+                  <c:choose>
+                    <c:when test="${empty o.cancelStatus or o.cancelStatus eq 'NONE'}">
+                      <a href="${contextPath}/mypage/cancle?orderId=${o.orderId}&detailId=${o.detailId}" class="cancel-btn">
+                        구매 취소
+                      </a>
+                    </c:when>
+
+                    <c:when test="${o.cancelStatus eq 'PENDING'}">
+                      <span class="cancel-btn" style="background:#eee; color:#999; cursor:default;">
+                        취소 요청중
+                      </span>
+                    </c:when>
+
+                    <c:when test="${o.cancelStatus eq 'APPROVED'}">
+                      <span class="cancel-btn" style="background:#f8d7da; color:#b02a37; cursor:default;">
+                        취소 완료
+                      </span>
+                    </c:when>
+
+                    <c:when test="${o.cancelStatus eq 'REJECTED'}">
+                      <span class="cancel-btn" style="background:#cfe2ff; color:#084298; cursor:default;">
+                        취소 반려
+                      </span>
+                    </c:when>
+                  </c:choose>
                 </div>
+
               </div>
             </c:forEach>
           </div>
-
-<div class="pagination">
-  <c:choose>
- 
-    <c:when test="${not empty param.period}">
-
-      <c:if test="${pi.currentPage > 1}">
-        <a class="page-arrow"
-           href="${contextPath}/mypage/purchase?cpage=${pi.currentPage - 1}&period=${param.period}">
-          ◀
-        </a>
-      </c:if>
-      <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-        <a class="page-btn ${p == pi.currentPage ? 'active' : ''}"
-           href="${contextPath}/mypage/purchase?cpage=${p}&period=${param.period}">
-          ${p}
-        </a>
-      </c:forEach>
-      <c:if test="${pi.currentPage < pi.maxPage}">
-        <a class="page-arrow"
-           href="${contextPath}/mypage/purchase?cpage=${pi.currentPage + 1}&period=${param.period}">
-          ▶
-        </a>
-      </c:if>
-    </c:when>
-
- 
-    <c:when test="${not empty param.startDate and not empty param.endDate}">
-      <c:if test="${pi.currentPage > 1}">
-        <a class="page-arrow"
-           href="${contextPath}/mypage/purchase?cpage=${pi.currentPage - 1}&startDate=${param.startDate}&endDate=${param.endDate}">
-          ◀
-        </a>
-      </c:if>
-      <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-        <a class="page-btn ${p == pi.currentPage ? 'active' : ''}"
-           href="${contextPath}/mypage/purchase?cpage=${p}&startDate=${param.startDate}&endDate=${param.endDate}">
-          ${p}
-        </a>
-      </c:forEach>
-
-      <c:if test="${pi.currentPage < pi.maxPage}">
-        <a class="page-arrow"
-           href="${contextPath}/mypage/purchase?cpage=${pi.currentPage + 1}&startDate=${param.startDate}&endDate=${param.endDate}">
-          ▶
-        </a>
-      </c:if>
-    </c:when>
- 
-    <c:otherwise>
-      <c:if test="${pi.currentPage > 1}">
-        <a class="page-arrow"
-           href="${contextPath}/mypage/purchase?cpage=${pi.currentPage - 1}">
-          ◀
-        </a>
-      </c:if>
-
-      <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-        <a class="page-btn ${p == pi.currentPage ? 'active' : ''}"
-           href="${contextPath}/mypage/purchase?cpage=${p}">
-          ${p}
-        </a>
-      </c:forEach>
-
-      <c:if test="${pi.currentPage < pi.maxPage}">
-        <a class="page-arrow"
-           href="${contextPath}/mypage/purchase?cpage=${pi.currentPage + 1}">
-          ▶
-        </a>
-      </c:if>
-   </c:otherwise>
-  </c:choose>
-</div>
-		 
-		 
         </c:otherwise>
       </c:choose>
+
+      <div class="pagination">
+        <c:choose>
+
+          <c:when test="${not empty param.period}">
+            <c:if test="${pi.currentPage > 1}">
+              <a class="page-arrow"
+                 href="${contextPath}/mypage/purchase?cpage=${pi.currentPage - 1}&period=${param.period}">
+                ◀
+              </a>
+            </c:if>
+
+            <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+              <a class="page-btn ${p == pi.currentPage ? 'active' : ''}"
+                 href="${contextPath}/mypage/purchase?cpage=${p}&period=${param.period}">
+                ${p}
+              </a>
+            </c:forEach>
+
+            <c:if test="${pi.currentPage < pi.maxPage}">
+              <a class="page-arrow"
+                 href="${contextPath}/mypage/purchase?cpage=${pi.currentPage + 1}&period=${param.period}">
+                ▶
+              </a>
+            </c:if>
+          </c:when>
+
+          <c:when test="${not empty param.startDate and not empty param.endDate}">
+            <c:if test="${pi.currentPage > 1}">
+              <a class="page-arrow"
+                 href="${contextPath}/mypage/purchase?cpage=${pi.currentPage - 1}&startDate=${param.startDate}&endDate=${param.endDate}">
+                ◀
+              </a>
+            </c:if>
+
+            <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+              <a class="page-btn ${p == pi.currentPage ? 'active' : ''}"
+                 href="${contextPath}/mypage/purchase?cpage=${p}&startDate=${param.startDate}&endDate=${param.endDate}">
+                ${p}
+              </a>
+            </c:forEach>
+
+            <c:if test="${pi.currentPage < pi.maxPage}">
+              <a class="page-arrow"
+                 href="${contextPath}/mypage/purchase?cpage=${pi.currentPage + 1}&startDate=${param.startDate}&endDate=${param.endDate}">
+                ▶
+              </a>
+            </c:if>
+          </c:when>
+
+          <c:otherwise>
+            <c:if test="${pi.currentPage > 1}">
+              <a class="page-arrow"
+                 href="${contextPath}/mypage/purchase?cpage=${pi.currentPage - 1}">
+                ◀
+              </a>
+            </c:if>
+
+            <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+              <a class="page-btn ${p == pi.currentPage ? 'active' : ''}"
+                 href="${contextPath}/mypage/purchase?cpage=${p}">
+                ${p}
+              </a>
+            </c:forEach>
+
+            <c:if test="${pi.currentPage < pi.maxPage}">
+              <a class="page-arrow"
+                 href="${contextPath}/mypage/purchase?cpage=${pi.currentPage + 1}">
+                ▶
+              </a>
+            </c:if>
+          </c:otherwise>
+
+        </c:choose>
+      </div>
+
     </main>
   </div>
   

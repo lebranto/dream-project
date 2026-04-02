@@ -19,5 +19,13 @@ public interface AdminOrderService {
 
     AdminOrder selectOrderDetail(int orderId);
 
+    ArrayList<AdminOrder> selectOrderDetailList(int orderId);
+
     int updateOrderStatus(int orderId, String orderStatus);
+
+    int updateCancelStatusApproved(int detailId);
+
+    int updateCancelStatusRejected(int detailId);
+
+    int clearCancelStatus(int detailId);
 }

@@ -222,27 +222,25 @@ public class MypageController {
 	) {
 
 	    String password = ((MemberExt) auth.getPrincipal()).getPassword();
-
 	    int memberNo = ((MemberExt) auth.getPrincipal()).getMemberNo();
-	    orders.setMemberNo(memberNo);
 
-	    // 취소 사유 세팅
+	    orders.setMemberNo(memberNo);
 	    orders.setCancelReason(cancelReason);
 
 	    PasswordEncoder pe = new BCryptPasswordEncoder();
 	    boolean ch = pe.matches(check, password);
 
-	    if (ch) {
-	        int result = mService.canclePurchase(orders);
+	    if (!ch) {
+	        return "redirect:/mypage/cancle?orderId="
+	                + orders.getOrderId()
+	                + "&detailId="
+	                + orders.getDetailId();
+	    }
 
-	        if (result != 0) {
-	            return "redirect:/mypage/purchase";
-	        } else {
-	            return "redirect:/mypage/cancle?orderId=" 
-	                    + orders.getOrderId()
-	                    + "&detailId="
-	                    + orders.getDetailId();
-	        }
+	    int result = mService.requestCancel(orders);
+
+	    if (result > 0) {
+	        return "redirect:/mypage/purchase";
 	    } else {
 	        return "redirect:/mypage/cancle?orderId="
 	                + orders.getOrderId()
@@ -250,7 +248,6 @@ public class MypageController {
 	                + orders.getDetailId();
 	    }
 	}
-	
 
 	 
 	 

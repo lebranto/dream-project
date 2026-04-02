@@ -88,6 +88,11 @@ public class AdminOrderServiceImpl implements AdminOrderService {
     }
 
     @Override
+    public ArrayList<AdminOrder> selectOrderDetailList(int orderId) {
+        return adminOrderDao.selectOrderDetailList(sqlSession, orderId);
+    }
+
+    @Override
     @Transactional
     public int updateOrderStatus(int orderId, String orderStatus) {
 
@@ -139,5 +144,23 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         } else {
             return adminOrderDao.insertStatus(sqlSession, map);
         }
+    }
+
+    @Override
+    @Transactional
+    public int updateCancelStatusApproved(int detailId) {
+        return adminOrderDao.updateCancelStatusApproved(sqlSession, detailId);
+    }
+
+    @Override
+    @Transactional
+    public int updateCancelStatusRejected(int detailId) {
+        return adminOrderDao.updateCancelStatusRejected(sqlSession, detailId);
+    }
+
+    @Override
+    @Transactional
+    public int clearCancelStatus(int detailId) {
+        return adminOrderDao.clearCancelStatus(sqlSession, detailId);
     }
 }

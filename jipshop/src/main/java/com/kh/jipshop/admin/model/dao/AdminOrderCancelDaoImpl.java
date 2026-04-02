@@ -26,10 +26,12 @@ public class AdminOrderCancelDaoImpl implements AdminOrderCancelDao {
 
         RowBounds rowBounds = new RowBounds(offset, limit);
 
-        return (ArrayList)sqlSession.selectList(
-                "adminOrderMapper.selectOrderCancelList",
-                search,
-                rowBounds
+        return new ArrayList<AdminOrderCancel>(
+                sqlSession.selectList(
+                        "adminOrderMapper.selectOrderCancelList",
+                        search,
+                        rowBounds
+                )
         );
     }
 
