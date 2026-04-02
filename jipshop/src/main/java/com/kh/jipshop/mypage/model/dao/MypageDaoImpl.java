@@ -204,13 +204,13 @@ public class MypageDaoImpl implements MypageDao {
 	    }
 
 	    @Override
-	    public int checkDetailCancelRequest(SqlSessionTemplate sqlSession, Orders orders) {
-	        return sqlSession.selectOne("mypage.checkDetailCancelRequest", orders);
+	    public int checkDetailCancelRequest(Orders orders) {
+	        return session.selectOne("mypage.checkDetailCancelRequest", orders);
 	    }
 
 	    @Override
-	    public int requestDetailCancel(SqlSessionTemplate sqlSession, Orders orders) {
-	        return sqlSession.update("mypage.requestDetailCancel", orders);
+	    public int requestDetailCancel(Orders orders) {
+	        return session.update("mypage.requestDetailCancel", orders);
 	    }
 		@Override
 		public OrderDetailResponse orderDetail(Map<String, Object> paramMap) {
