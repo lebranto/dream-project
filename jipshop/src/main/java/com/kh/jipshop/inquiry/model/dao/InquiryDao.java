@@ -10,4 +10,7 @@ public interface InquiryDao {
     int selectInquiryListCount();
 
     ArrayList<Inquiry> selectInquiryList(PageInfo pi);
+
+    // 🔥 추가 (문의 등록)
+    int insertInquiry(Inquiry inquiry);
 }

@@ -5,12 +5,25 @@
 
 <mapper namespace="inquiryMapper">
 
+    <resultMap id="inquiryResultMap" type="com.kh.jipshop.inquiry.model.vo.Inquiry">
+        <id property="inquiryId" column="INQUIRY_ID"/>
+        <result property="memberNo" column="MEMBER_NO"/>
+        <result property="inquiryType" column="INQUIRY_TYPE"/>
+        <result property="inquiryContent" column="INQUIRY_CONTENT"/>
+        <result property="inquiryPhoto" column="INQUIRY_PHOTO"/>
+        <result property="inquiryPw" column="INQUIRY_PW"/>
+        <result property="inquiryRegDate" column="INQUIRY_REG_DATE"/>
+        <result property="replyContent" column="REPLY_CONTENT"/>
+        <result property="replyDate" column="REPLY_DATE"/>
+        <result property="replyYn" column="REPLY_YN"/>
+    </resultMap>
+
     <select id="selectInquiryListCount" resultType="_int">
         SELECT COUNT(*)
           FROM INQUIRY
     </select>
 
-    <select id="selectInquiryList" resultType="Inquiry">
+    <select id="selectInquiryList" resultMap="inquiryResultMap">
         SELECT
                INQUIRY_ID,
                MEMBER_NO,
@@ -25,5 +38,32 @@
           FROM INQUIRY
          ORDER BY INQUIRY_ID DESC
     </select>
+
+    <insert id="insertInquiry" parameterType="com.kh.jipshop.inquiry.model.vo.Inquiry">
+        INSERT INTO INQUIRY (
+            INQUIRY_ID,
+            MEMBER_NO,
+            INQUIRY_TYPE,
+            INQUIRY_CONTENT,
+            INQUIRY_PHOTO,
+            INQUIRY_PW,
+            INQUIRY_REG_DATE,
+            REPLY_CONTENT,
+            REPLY_DATE,
+            REPLY_YN
+        )
+        VALUES (
+            SEQ_INQUIRY_ID.NEXTVAL,
+            #{memberNo},
+            #{inquiryType},
+            #{inquiryContent},
+            #{inquiryPhoto},
+            #{inquiryPw},
+            SYSDATE,
+            NULL,
+            NULL,
+            #{replyYn}
+        )
+    </insert>
 
 </mapper>

@@ -34,4 +34,10 @@ public class InquiryDaoImpl implements InquiryDao {
 
         return new ArrayList<>(list);
     }
+
+    // 🔥 추가 (문의 등록)
+    @Override
+    public int insertInquiry(Inquiry inquiry) {
+        return sqlSession.insert("inquiryMapper.insertInquiry", inquiry);
+    }
 }
