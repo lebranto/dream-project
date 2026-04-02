@@ -42,7 +42,7 @@
             </c:choose>
 
             <div class="write-btn-area">
-                <a href="${pageContext.request.contextPath}/inquiry/write" class="write-btn">글쓰기</a>
+                <a href="${pageContext.request.contextPath}/product/inquiryWrite" class="write-btn">글쓰기</a>
             </div>
 
             <div class="paging-area">

@@ -31,12 +31,4 @@ public class ProductServiceImpl implements ProductService {
     public int selectProductListCount(ProductSearch search) {
         return productDao.selectProductListCount(search);
     }
-
-
-
-
-
-
-	
-	
 }
