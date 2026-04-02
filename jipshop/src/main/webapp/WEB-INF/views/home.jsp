@@ -289,8 +289,8 @@
             </a>
           </div>
           <div class="frame-20">
-            <div class="rectangle-7"></div>
             <a href="${contextPath }/mypage/purchase">
+            <div class="rectangle-7"></div>
 	            <span class="text-wrapper-14">마이페이지</span>
 	            <div class="group-11" aria-hidden="true">
 	              <div class="ellipse-3"></div>
@@ -301,8 +301,8 @@
 	      	</a>
           </div>
           <div class="frame-20">
-            <div class="rectangle-7"></div>
             <a href="${contextPath }/orders/cart">
+            <div class="rectangle-7"></div>
 	            <span class="text-wrapper-14">장바구니</span>
 	            <div class="group-11" aria-hidden="true">
 	              <div class="ellipse-3"></div>
@@ -313,8 +313,8 @@
 	      	</a>
           </div>
           <div class="frame-20">
-            <div class="rectangle-7"></div>
             <a href="${contextPath }/product/inquiryList">
+            <div class="rectangle-7"></div>
 	            <span class="text-wrapper-14">고객센터</span>
 	            <div class="group-11" aria-hidden="true">
 	              <div class="ellipse-3"></div>
