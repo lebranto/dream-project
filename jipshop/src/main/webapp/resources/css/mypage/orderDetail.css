@@ -25,7 +25,6 @@ body {
 .content-inner {
   width: 760px;
   min-height: 730px;
-  border: 2px solid red;   /* 작업 끝나면 지워도 됨 */
   padding: 40px 20px;
   background-color: #efefef;
 }
