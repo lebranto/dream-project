@@ -234,7 +234,8 @@ body{
         <input type="hidden" name="orderDeliveryFee" id="orderDeliveryFee" value="${totalDelivery}">
         <input type="hidden" name="ordererEmail" id="ordererEmail">
         <input type="hidden" name="payMethod" id="payMethod" value="무통장입금">
-
+		<input type="hidden" name="qty" value="${qty}">
+		
         <h4>주문상세내역</h4>
 
         <table class="order-table">
@@ -260,7 +261,7 @@ body{
                 <input type="number"
                        class="qty-input"
                        id="qty_${st.index}"
-                       value="1"
+                       value="${p.qty}"
                        min="1"
                        data-index="${st.index}"
                        data-unit-price="${p.price}"

@@ -32,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 	    public String orderNew(
 	            Authentication auth,
 	            Model model,
+	            @RequestParam(defaultValue = "1") int qty,
 	            @RequestParam(required = false) Integer productId,
 	            @RequestParam Map<String, Object> paramMap
 	    ) {
@@ -42,6 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 	        
 	        paramMap.put("productId",productId);
 	        paramMap.put("memberNo", memberNo);
+	        paramMap.put("qty", qty);
 	        
 	        List<Product> list = oService.productList(paramMap);
 	        
