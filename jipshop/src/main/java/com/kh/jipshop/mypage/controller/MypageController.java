@@ -479,17 +479,30 @@ public class MypageController {
 	    	 return "mypage/memberDelete";
 	   	 
 	     	} 
-		
 	}
+		
 	
 	
 	// 배송 상세 관련
 
    @GetMapping("/orderDetail")
    public String orderDetail(
-		   Model model
+		   Model model,
+		   Authentication auth,
+		   @RequestParam int orderId,
+		   @RequestParam int detailId,
+		   @RequestParam Map<String,Object> paramMap
 		   ) {
 	   
+	   int memberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
+	   
+	   paramMap.put("memberNo",memberNo);
+	   paramMap.put("orderId",orderId);
+	   paramMap.put("detailId",detailId);
+	   
+	   OrderDetailResponse od = mService.orderDetail(paramMap);
+	   
+	   model.addAttribute("od",od);
 	   
 	   
 	   return "mypage/orderDetail";

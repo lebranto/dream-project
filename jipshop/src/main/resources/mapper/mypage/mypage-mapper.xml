@@ -291,5 +291,31 @@
         WHERE PET_NO = #{petNo}
     </update>
 	
+<!-- 배송 상세 정보 -->
+
+	<select id="orderDetail" parameterType="OrderDetailResponse" resultType="OrderDetailResponse">
+	
+	SELECT
+	 P.PRODUCT_NAME      AS productName,
+    P.PRODUCT_PHOTO1    AS photo1,
+    OD.DETAIL_PRICE     AS detailPrice,
+    O.ORDER_ID          AS orderId,
+    O.RECV_ADDRESS      AS recvAddress,
+    S.DELIVERY_STATUS   AS deliveryStatus,
+    C.ADDRESS_ADDRESS   AS addressAddress
+
+	FROM ORDERS O
+	JOIN MEMBER M ON M.MEMBER_NO = O.MEMBER_NO
+	JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
+	JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
+	JOIN COMPANY C ON P.COMPANY_CODE = C.COMPANY_CODE
+	LEFT JOIN DELIVERY D ON O.ORDER_ID = D.ORDER_ID
+    LEFT JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID
+    WHERE M.MEMBER_NO = #{memberNo}
+    AND OD.DETAIL_ID = #{detailId}
+    AND O.ORDER_ID = #{orderId}
+	
+	</select>	
+	
 
 </mapper>

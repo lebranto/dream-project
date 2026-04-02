@@ -203,6 +203,12 @@ public class MypageDaoImpl implements MypageDao {
 	        return session.update("mypage.updatePet", p);
 	    }
 
+		@Override
+		public OrderDetailResponse orderDetail(Map<String, Object> paramMap) {
+			
+			return session.selectOne("mypage.orderDetail",paramMap);
+		}
+
 	
 
 	

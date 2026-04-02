@@ -14,10 +14,10 @@ body {
 
 /* 전체 본문 */
 .content-wrap {
-  margin-left: 220px;   /* 사이드바 너비만큼 띄우기 */
-  padding: 40px 0 80px;
+  margin-left: 350px;   /* 사이드바 너비만큼 띄우기 */
+  padding: 40px 0px 80px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 800px;
 }
 
@@ -100,6 +100,7 @@ body {
 }
 
 /* 배송 상태 영역 */
+/* 배송 상태 영역 */
 .order-status {
   background-color: #e7c48c;
   height: 95px;
@@ -108,14 +109,80 @@ body {
   align-items: center;
   gap: 28px;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   color: #222;
 }
 
+.status-text {
+  font-size: 22px;
+  font-weight: 400;
+  color: #444;
+  transition: all 0.3s ease;
+}
+
+.status-text.active {
+  font-weight: 700;
+  color: #000;
+}
+
+/* 점 그룹 */
 .dot-group {
-  font-size: 30px;
-  letter-spacing: 8px;
-  color: #8f6b2e;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 기본 점 */
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #8f6b2e;
+  opacity: 0.25;
+  transform: scale(1);
+}
+
+/* 배송중일 때 순차 점멸 */
+.status-shipping .dot1 {
+  animation: blinkFlow 1.2s infinite;
+}
+.status-shipping .dot2 {
+  animation: blinkFlow 1.2s infinite 0.2s;
+}
+.status-shipping .dot3 {
+  animation: blinkFlow 1.2s infinite 0.4s;
+}
+.status-shipping .dot4 {
+  animation: blinkFlow 1.2s infinite 0.6s;
+}
+.status-shipping .dot5 {
+  animation: blinkFlow 1.2s infinite 0.8s;
+}
+
+/* 배송완료일 때 점멸 멈춤 + 모두 켜진 상태 */
+.status-complete .dot {
+  animation: none;
+  opacity: 1;
+  background-color: #8f6b2e;
+}
+
+/* 점멸 애니메이션 */
+@keyframes blinkFlow {
+  0% {
+    opacity: 0.25;
+    transform: scale(1);
+    background-color: #8f6b2e;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+    background-color: #d89a2b;
+  }
+  100% {
+    opacity: 0.25;
+    transform: scale(1);
+    background-color: #8f6b2e;
+  }
 }
 
 /* 배송 상세 정보 */

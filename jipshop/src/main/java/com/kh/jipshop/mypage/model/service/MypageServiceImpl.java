@@ -173,5 +173,11 @@ public class MypageServiceImpl implements MypageService {
         }
     }
 
+	@Override
+	public OrderDetailResponse orderDetail(Map<String, Object> paramMap) {
+	
+		return mDao.orderDetail(paramMap);
+	}
+
 
 }

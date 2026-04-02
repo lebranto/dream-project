@@ -43,6 +43,8 @@ public interface MypageService {
 
 	Pet selectPetByMemberNo(int memberNo);
 
+	OrderDetailResponse orderDetail(Map<String, Object> paramMap);
+
 
 
 
