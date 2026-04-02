@@ -150,55 +150,8 @@
 
 
     <!-- 구매 취소 페이지 -->
-    <select id="canclePage" resultType="OrderDetailResponse">
+  
 
-	<!-- 문의 부분 -->
-
-	<select id="selectListinquiry" resultType="myinqury">
-
-		SELECT *
-		FROM (
-		SELECT
-		ROWNUM AS RNUM, T1.*
-		FROM (
-		SELECT *
-		FROM INQUIRY
-		WHERE MEMBER_NO =
-		#{memberNo}
-		ORDER BY INQUIRY_REG_DATE
-
-		) T1
-		)
-		WHERE RNUM BETWEEN #{offset}
-		AND #{limit}
-
-
-	</select>
-
-	<select id="inquiryListCount" resultType="int">
-
-		SELECT COUNT(*)
-		FROM
-		INQUIRY
-		WHERE MEMBER_NO = #{memberNo}
-
-	</select>
-
-
-	<select id="inquiryDetail" resultType="myinqury">
-
-		SELECT *
-		FROM INQUIRY
-		WHERE
-		INQUIRY_ID = #{inquiryId}
-
-	</select>
-	
-	<delete id="delectInquiry">
-		DELETE INQUIRY
-		WHERE INQUIRY_ID = #{inquiryId}
-	</delete>
-	
 	
 	<!-- 구매 취소 부분 -->
 
@@ -281,34 +234,7 @@
 	</update>
 	
 	
-	<!-- 정보 수정 부분 -->
-	
-	<update id="updateMember">
-		UPDATE MEMBER
-		SET EMAIL = #{email}, 
-		MEMBER_NAME= #{memberName}, 
-		MEMBER_ADDRESS =  #{address},
-		PHONE = #{phone}
-		WHERE MEMBER_NO = #{memberNo} 
-	</update>
-	
 
-    <select id="selectPetByMemberNo" parameterType="int"
-            resultType="pet">
->>>>>>> origin/main
-        SELECT
-            O.ORDER_ID,
-            P.PRODUCT_NAME,
-            OD.DETAIL_ID AS DETAIL_ID,
-            NVL(OD.CANCEL_STATUS, 'NONE') AS CANCEL_STATUS
-        FROM ORDERS O
-        JOIN ORDER_DETAIL OD
-          ON O.ORDER_ID = OD.ORDER_ID
-        JOIN PRODUCT P
-          ON OD.PRODUCT_ID = P.PRODUCT_ID
-        WHERE O.ORDER_ID = #{orderId}
-          AND OD.DETAIL_ID = #{detailId}
-    </select>
 
     <!-- 이미 취소요청/취소완료 건인지 확인 -->
     <select id="checkDetailCancelRequest" parameterType="orders" resultType="int">
@@ -328,14 +254,6 @@
         WHERE DETAIL_ID = #{detailId}
           AND ORDER_ID = #{orderId}
           AND NVL(CANCEL_STATUS, 'NONE') NOT IN ('PENDING', 'APPROVED')
-    </update>
-
-
-    <!-- 회원 탈퇴 부분 -->
-    <update id="memberDeleteOk">
-        UPDATE MEMBER
-        SET MEMBER_ACTIVE_YN = 'N'
-        WHERE MEMBER_NO = #{memberNo}
     </update>
 
 

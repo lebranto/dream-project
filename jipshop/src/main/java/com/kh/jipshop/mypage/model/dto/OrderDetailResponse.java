@@ -12,16 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderDetailResponse {
 	
-	private int orderTotalPrice;
-    private Date orderDate;
-    private int orderId;
-
-    private String productName;
-    private String photo1;
-    private String deliveryStatus;
-
-    private int detailPrice;
-    private int detailId;
 
     private String cancelYn;
     private String cancelStatus;
