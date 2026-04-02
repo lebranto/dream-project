@@ -55,9 +55,9 @@ public interface MypageDao {
 
 	int insertPet(Pet p);
 
-	int checkDetailCancelRequest(SqlSessionTemplate sqlSession, Orders orders);
+	int checkDetailCancelRequest(Orders orders);
 
-	int requestDetailCancel(SqlSessionTemplate sqlSession, Orders orders);
+	int requestDetailCancel(Orders orders);
 	OrderDetailResponse orderDetail(Map<String, Object> paramMap);
 
 	
