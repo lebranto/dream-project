@@ -82,13 +82,10 @@
     <!-- 카테고리 목록 (부모명 포함, 그룹 표시용) -->
     <select id="getCategoryList" resultType="map">
         SELECT
-            C.CATEGORY_ID        AS categoryId,
-            C.CATEGORY_NAME      AS categoryName,
-            P.CATEGORY_NAME      AS parentName
-        FROM PRODUCT_CATEGORY C
-        JOIN PRODUCT_CATEGORY P ON C.CATEGORY_PARENT_ID = P.CATEGORY_ID
-        WHERE C.CATEGORY_PARENT_ID IS NOT NULL
-        ORDER BY C.CATEGORY_PARENT_ID, C.CATEGORY_ID
+	        CATEGORY_ID   AS categoryId,
+	        CATEGORY_NAME AS categoryName
+	    FROM PRODUCT_CATEGORY
+	    ORDER BY CATEGORY_ID
     </select>
  
     <!-- 업체 목록 (등록/수정 폼 드롭다운) -->
@@ -101,7 +98,7 @@
     </select>
     
     <!-- 상품 등록 -->
-   <insert id="insertProduct" parameterType="com.kh.jipshop.admin.model.vo.AdminProduct">
+    <insert id="insertProduct" parameterType="com.kh.jipshop.admin.model.vo.AdminProduct">
     <selectKey keyProperty="productId" resultType="_int" order="BEFORE">
         SELECT SEQ_PRODUCT.NEXTVAL FROM DUAL
     </selectKey>
@@ -133,27 +130,27 @@
         #{petType},
         #{ageGroup}
     )
-</insert>
+    </insert>
     <insert id="insertCompany" parameterType="map">
-    INSERT INTO COMPANY (
-        COMPANY_CODE,
-        COMPANY_NAME,
-        COMPANY_PHONE,
-        ADDRESS_ADDRESS
-    ) VALUES (
-        SEQ_COMPANY.NEXTVAL,
-        #{name},
-        #{phone},
-        #{address}
-    )
-</insert>
+	    INSERT INTO COMPANY (
+	        COMPANY_CODE,
+	        COMPANY_NAME,
+	        COMPANY_PHONE,
+	        ADDRESS_ADDRESS
+	    ) VALUES (
+	        SEQ_COMPANY.NEXTVAL,
+	        #{name},
+	        #{phone},
+	        #{address}
+	    )
+	</insert>
 
-<select id="selectLastCompanyCode" resultType="int">
-    SELECT MAX(COMPANY_CODE) FROM COMPANY
-</select>
+	<select id="selectLastCompanyCode" resultType="int">
+	    SELECT MAX(COMPANY_CODE) FROM COMPANY
+	</select>
 
-<!-- 상품상세 -->
- <select id="selectProductDetail" parameterType="_int" resultMap="productRM">
+	<!-- 상품상세 -->
+	 <select id="selectProductDetail" parameterType="_int" resultMap="productRM">
         SELECT
                P.PRODUCT_ID,
                P.CATEGORY_ID,
@@ -203,5 +200,4 @@
            SET PRODUCT_ACTIVE_YN = #{productActiveYn}
          WHERE PRODUCT_ID = #{productId}
     </update>
-
 </mapper>
