@@ -3,7 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
 <mapper namespace="reviewMapper">
 
     <resultMap id="reviewableOrderDetailMap" type="com.kh.jipshop.review.model.vo.ReviewableOrderDetail">
@@ -48,7 +47,6 @@
              AND NVL(R.REVIEW_ACTIVE_YN, 'Y') = 'Y'
             WHERE O.MEMBER_NO = #{memberNo}
               AND OD.PRODUCT_ID = #{productId}
-              AND NVL(OD.CANCEL_YN, 'N') = 'N'
               AND R.REVIEW_ID IS NULL
             ORDER BY OD.DETAIL_ID DESC
         )
@@ -81,31 +79,29 @@
          AND NVL(R.REVIEW_ACTIVE_YN, 'Y') = 'Y'
         WHERE O.MEMBER_NO = #{memberNo}
           AND OD.DETAIL_ID = #{detailId}
-          AND NVL(OD.CANCEL_YN, 'N') = 'N'
           AND R.REVIEW_ID IS NULL
     </select>
     
     <insert id="insertReview" parameterType="com.kh.jipshop.review.model.vo.Review">
-    INSERT INTO REVIEW (
-        REVIEW_ID,
-        MEMBER_NO,
-        DETAIL_ID,
-        REVIEW_RATING,
-        REVIEW_CONTENT,
-        REVIEW_PHOTO,
-        REVIEW_REG_DATE,
-        REVIEW_ACTIVE_YN
-    ) VALUES (
-        SEQ_REVIEW_ID.NEXTVAL,
-        #{memberNo},
-        #{detailId},
-        #{reviewRating},
-        #{reviewContent},
-        #{reviewPhoto},
-        SYSDATE,
-        'Y'
-    )
-</insert>
+        INSERT INTO REVIEW (
+            REVIEW_ID,
+            MEMBER_NO,
+            DETAIL_ID,
+            REVIEW_RATING,
+            REVIEW_CONTENT,
+            REVIEW_PHOTO,
+            REVIEW_REG_DATE,
+            REVIEW_ACTIVE_YN
+        ) VALUES (
+            SEQ_REVIEW_ID.NEXTVAL,
+            #{memberNo},
+            #{detailId},
+            #{reviewRating},
+            #{reviewContent},
+            #{reviewPhoto},
+            SYSDATE,
+            'Y'
+        )
+    </insert>
 
 </mapper>
-
