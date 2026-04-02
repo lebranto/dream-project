@@ -6,7 +6,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <head>
     <meta charset="UTF-8">
-    <title>상품 등록 - 집사상권</title>
+    <title>상품 등록 - 집사상점</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/product/productRegist.css">
 </head>
@@ -89,12 +89,14 @@
         <div class="form-row">
             <label class="form-label required">카테고리</label>
             <select name="categoryId" id="categoryId" class="form-select w-lg" required>
-                <option value="">선택</option>
-                <option value="1">사료</option>
-                <option value="2">장난감</option>
-                <option value="3">외출용품</option>
-                <option value="4">미용용품</option>
-            </select>
+			    <option value="">선택</option>
+			    <c:forEach var="c" items="${categoryList}">
+			        <option value="${c.CATEGORYID}"
+			            <c:if test="${param.categoryId == c.CATEGORYID}">selected</c:if>>
+			            ${c.CATEGORYNAME}
+			        </option>
+			    </c:forEach>
+			</select>
         </div>
 <!-- 연령 -->
 <div class="form-row">
