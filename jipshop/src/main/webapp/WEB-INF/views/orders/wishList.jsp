@@ -15,16 +15,10 @@
 .content-wrapper { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
 .mypage-container { display:flex; gap:40px; align-items:flex-start; }
 
-.mypage-sidebar {
-    width:220px; flex-shrink:0;
-    position: sticky; top:100px;
-}
-
+.mypage-sidebar { width:220px; flex-shrink:0; position: sticky; top:100px; }
 .mypage-content { flex:1; }
 
-input[type="checkbox"] {
-    width:20px; height:20px; cursor:pointer;
-}
+input[type="checkbox"] { width:20px; height:20px; cursor:pointer; }
 
 .mypage-banner {
     background:#fdf5e6;
@@ -75,10 +69,7 @@ input[type="checkbox"] {
     gap:5px;
 }
 
-.quantity-control input {
-    width:40px;
-    text-align:center;
-}
+.quantity-control input { width:40px; text-align:center; }
 
 .qty-btn-stack {
     display:flex;
@@ -142,23 +133,24 @@ input[type="checkbox"] {
 <h2 class="page-title">찜리스트</h2>
 
 <div class="list-header">
-    <!-- ✅ id 추가 -->
     <div class="header-chk"><input type="checkbox" id="allCheck"></div>
     <div class="header-info">상품/옵션 정보</div>
     <div class="header-qty">수량</div>
 </div>
 
-<!-- 리스트 -->
-<c:forEach begin="1" end="5">
-<div class="wish-item">
+<!-- ⭐ 실제 데이터 출력 -->
+<c:choose>
+<c:when test="${not empty sessionScope.wishList}">
+<c:forEach var="w" items="${sessionScope.wishList}">
+<div class="wish-item" data-id="${w.productId}">
     <input type="checkbox" class="item-check">
 
     <div class="item-card">
-        <img src="${pageContext.request.contextPath}/resources/images/강아지.png" class="item-img">
+        <img src="${pageContext.request.contextPath}${w.productPhoto1}" class="item-img">
 
         <div class="item-details">
-            <div>상품명</div>
-            <div>가격</div>
+            <div>${w.productName}</div>
+            <div>${w.productPrice}원</div>
         </div>
 
         <div class="quantity-control">
@@ -178,8 +170,15 @@ input[type="checkbox"] {
     </div>
 </div>
 </c:forEach>
+</c:when>
 
-<!-- 하단 버튼 -->
+<c:otherwise>
+<div style="text-align:center; padding:40px;">
+    찜한 상품이 없습니다 ❤️
+</div>
+</c:otherwise>
+</c:choose>
+
 <div class="action-btns">
     <button class="btn-action delete-selected">선택 삭제</button>
     <button class="btn-action add-cart-selected">장바구니</button>
@@ -191,73 +190,89 @@ input[type="checkbox"] {
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
-<!-- ================= JS ================= -->
 <script>
-// ✅ 전체 선택
-const allCheck = document.getElementById("allCheck");
-const itemChecks = document.querySelectorAll(".item-check");
+const contextPath = "${pageContext.request.contextPath}";
 
-allCheck.addEventListener("change", () => {
-    itemChecks.forEach(chk => chk.checked = allCheck.checked);
+// 전체 선택
+document.getElementById("allCheck").addEventListener("change", function(){
+    document.querySelectorAll(".item-check")
+    .forEach(chk => chk.checked = this.checked);
 });
 
-itemChecks.forEach(chk => {
-    chk.addEventListener("change", () => {
-        const total = itemChecks.length;
-        const checked = document.querySelectorAll(".item-check:checked").length;
-        allCheck.checked = (total === checked);
-    });
-});
-
-// ✅ 수량 버튼
+// 수량
 document.querySelectorAll(".wish-item").forEach(item => {
     const plus = item.querySelector(".plus");
     const minus = item.querySelector(".minus");
     const input = item.querySelector(".qty-input");
 
-    plus.addEventListener("click", () => {
-        input.value = parseInt(input.value) + 1;
-    });
-
+    plus.addEventListener("click", () => input.value++);
     minus.addEventListener("click", () => {
-        let val = parseInt(input.value);
-        if(val > 1) input.value = val - 1;
+        if(input.value > 1) input.value--;
     });
 });
 
-// ✅ 선택 삭제
-document.querySelector(".delete-selected").addEventListener("click", () => {
-    document.querySelectorAll(".wish-item").forEach(item => {
-        if(item.querySelector(".item-check").checked){
-            item.remove();
-        }
-    });
-});
-
-// ✅ 개별 삭제
+// ⭐ 개별 삭제 (AJAX)
 document.querySelectorAll(".single-delete").forEach(btn => {
-    btn.addEventListener("click", () => {
-        btn.closest(".wish-item").remove();
+    btn.addEventListener("click", function(){
+
+        const row = this.closest(".wish-item");
+        const productId = row.dataset.id;
+
+        fetch(contextPath + "/wishList/delete", {
+            method:"POST",
+            headers:{"Content-Type":"application/x-www-form-urlencoded"},
+            body:"productId=" + productId
+        })
+        .then(res => res.text())
+        .then(() => {
+            row.remove();
+        });
     });
 });
 
-// ✅ 장바구니 (개별)
-document.querySelectorAll(".cart-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        alert("장바구니에 추가되었습니다");
-    });
-});
+// ⭐ 선택 삭제
+document.querySelector(".delete-selected").addEventListener("click", () => {
 
-// ✅ 선택 장바구니
-document.querySelector(".add-cart-selected").addEventListener("click", () => {
     const checked = document.querySelectorAll(".item-check:checked");
 
-    if(checked.length === 0){
-        alert("상품을 선택하세요");
-        return;
-    }
+    let ids = [];
+    checked.forEach(chk => {
+        ids.push(chk.closest(".wish-item").dataset.id);
+    });
 
-    alert("선택 상품이 장바구니에 추가되었습니다");
+    fetch(contextPath + "/wishList/deleteAll", {
+        method:"POST",
+        headers:{"Content-Type":"application/x-www-form-urlencoded"},
+        body:"ids=" + ids.join(",")
+    })
+    .then(() => {
+        checked.forEach(chk => chk.closest(".wish-item").remove());
+    });
+});
+
+// ⭐ 장바구니 추가
+document.querySelectorAll(".cart-btn").forEach(btn => {
+    btn.addEventListener("click", function(){
+
+        const row = this.closest(".wish-item");
+        const qty = row.querySelector(".qty-input").value;
+
+        const productId = row.dataset.id;
+        const name = row.querySelector(".item-details div:nth-child(1)").innerText;
+        const price = row.querySelector(".item-details div:nth-child(2)").innerText.replace("원","");
+        const photo = row.querySelector("img").getAttribute("src").replace(contextPath, "");
+
+        fetch(contextPath + "/cartList/addAjax", {
+            method:"POST",
+            headers:{"Content-Type":"application/x-www-form-urlencoded"},
+            body:`productId=${productId}&productName=${name}&productPrice=${price}&productPhoto=${photo}&qty=${qty}`
+        })
+        .then(res => res.text())
+        .then(count => {
+            alert("장바구니에 추가되었습니다");
+            updateCartCountUI(parseInt(count));
+        });
+    });
 });
 </script>
 

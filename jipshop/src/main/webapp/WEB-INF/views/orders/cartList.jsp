@@ -301,35 +301,31 @@ document.querySelector(".delete-btn").addEventListener("click", function(){
     const checked = document.querySelectorAll(".itemCheck:checked");
 
     if(checked.length === 0){
-        alert("삭제할 상품을 선택하세요");
-        return;
-    }
-
-    if(!confirm("선택한 상품을 삭제하시겠습니까?")){
+        alert("선택하세요");
         return;
     }
 
     let ids = [];
 
     checked.forEach(chk => {
-        const row = chk.closest("tr");
-        const cartId = row.dataset.id;
-
-        if(cartId){
-            ids.push(cartId);
-        }
+        ids.push(chk.closest("tr").dataset.id);
     });
 
-    // ⭐ 여기 중요 (빈값 방지)
-    if(ids.length === 0){
-        alert("삭제할 상품이 없습니다.");
-        return;
-    }
+    fetch("${pageContext.request.contextPath}/cartList/deleteAllAjax", {
+        method:"POST",
+        headers: {"Content-Type":"application/x-www-form-urlencoded"},
+        body: "ids=" + ids.join(",")
+    })
+    .then(res => res.text())
+    .then(count => {
 
-    location.href = contextPath + "/cartList/deleteAll?ids=" + ids.join(",");
+        // 화면 제거
+        checked.forEach(chk => chk.closest("tr").remove());
+
+        // 헤더 반영
+        updateCartCountUI(parseInt(count));
+    });
 });
-
-updateTotal();
 </script>
 
 </body>

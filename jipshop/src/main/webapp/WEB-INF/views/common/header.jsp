@@ -6,7 +6,51 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/header.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
+<style>
+/* 카트 뱃지 추가 */
+.cart-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-count-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+
+    background: orange;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+
+    transition: transform 0.2s ease;
+}
+
+/* ⭐ 팡 튀는 효과 */
+.cart-count-badge.pop {
+    animation: popAnim 0.3s ease;
+}
+
+@keyframes popAnim {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
+</style>
+
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="application" />
+
 <header class="site-header">
     <!-- 상단 유틸 메뉴 -->
     <div class="top-bar">
@@ -52,10 +96,12 @@
                     </button>
                 </div>
                 <div class="icon-area">
-                    <a href="${pageContext.request.contextPath}/orders/favorites"><i class="bi bi-heart"></i></a>
-                    <a href="${pageContext.request.contextPath}/orders/cartList">
-                        <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
-                    </a>
+                    <a href="${pageContext.request.contextPath}/orders/wishList"><i class="bi bi-heart"></i></a>
+                    <a href="${pageContext.request.contextPath}/orders/cartList" class="cart-icon-wrapper">
+    					<img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
+    					<span id="cartCount" class="cart-count-badge">0</span>
+					</a>
+					
                 </div>
             </div>
 
@@ -119,3 +165,27 @@
     </nav>
 
 </header>
+
+<!-- ⭐ 장바구니 숫자 관리 -->
+<script>
+function updateCartCountUI(count) {
+    const badge = document.querySelector(".cart-count-badge");
+
+    if (!badge) return;
+
+    let display = count > 99 ? "99+" : count;
+
+    if (count > 0) {
+        badge.style.display = "flex";
+        badge.innerText = display;
+
+        // 애니메이션
+        badge.classList.remove("pop");
+        void badge.offsetWidth;
+        badge.classList.add("pop");
+
+    } else {
+        badge.style.display = "none";
+    }
+}
+</script>

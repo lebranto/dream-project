@@ -8,6 +8,29 @@
     <meta charset="UTF-8">
     <title>상품 목록 - 집사상점</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product/productList.css">
+    
+    <style>
+/* ⭐ 찜 하트 */
+.wish-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.2s;
+}
+
+.wish-icon:hover {
+    transform: scale(1.2);
+}
+.product-image-box {
+    position: relative;
+}
+
+</style>
+
 </head>
 <body>
 
@@ -91,6 +114,13 @@
 
                             <a href="${pageContext.request.contextPath}/product/detail?productId=${p.productId}" class="product-image-link">
                                 <div class="product-image-box">
+                                <!-- ⭐ 찜 버튼 -->
+    							<img class="wish-icon"
+         						src="${pageContext.request.contextPath}/resources/images/empty-heart.png"
+         						data-id="${p.productId}"
+         						data-name="${p.productName}"
+         						data-price="${p.productPrice}"
+         						data-photo="${p.productPhoto1}">
                                     <img src="${pageContext.request.contextPath}${p.productPhoto1}" alt="${p.productName}">
                                 </div>
                             </a>
@@ -131,7 +161,7 @@
     
     									<input type="hidden" name="qty" value="1">
     
-    									<button type="submit" class="cart-btn">장바구니</button>
+    									<button type="button" class="cart-btn">장바구니</button>
 									</form>
 									
                                 </div>
@@ -161,12 +191,97 @@
 </c:choose>
     </div>
 </main>
+
 <script>
 document.querySelectorAll(".cart-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        alert("장바구니에 추가되었습니다");
+
+    btn.addEventListener("click", function(e) {
+        e.preventDefault();
+
+        const form = this.closest("form");
+        const formData = new FormData(form);
+
+        fetch("${pageContext.request.contextPath}/cartList/addAjax", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(count => {
+            alert("장바구니에 추가되었습니다");
+
+            console.log("카트개수:", count);
+
+            updateCartCountUI(parseInt(count));
+        });
     });
+
 });
+</script>
+
+<script>
+//===============================
+//✅ 2. 찜 클릭 이벤트
+//===============================
+document.querySelectorAll(".wish-icon").forEach(icon => {
+
+ icon.addEventListener("click", function(e){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+     const productId = this.dataset.id;
+     const productName = this.dataset.name;
+     const productPrice = this.dataset.price;
+     const productPhoto = this.dataset.photo;
+
+     fetch("${pageContext.request.contextPath}/wishList/toggle", {
+         method:"POST",
+         headers:{"Content-Type":"application/x-www-form-urlencoded"},
+         body:
+             "productId=" + productId +
+             "&productName=" + encodeURIComponent(productName) +
+             "&productPrice=" + productPrice +
+             "&productPhoto=" + encodeURIComponent(productPhoto)
+     })
+     .then(res => res.text())
+     .then(result => {
+
+         if(result.trim() === "add"){
+
+             // ❤️ 찜 추가
+             this.src = "${pageContext.request.contextPath}/resources/images/heart.png";
+             this.classList.add("active");
+
+             animateHeart(this);
+
+         } else {
+
+             // 🤍 찜 해제
+             this.src = "${pageContext.request.contextPath}/resources/images/empty-heart.png";
+             this.classList.remove("active");
+
+             animateHeart(this);
+         }
+
+     });
+
+ });
+
+});
+
+
+//===============================
+//✅ 3. 하트 애니메이션
+//===============================
+function animateHeart(el){
+
+ el.style.transition = "transform 0.2s ease";
+ el.style.transform = "scale(1.4)";
+
+ setTimeout(() => {
+     el.style.transform = "scale(1)";
+ }, 200);
+}
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
