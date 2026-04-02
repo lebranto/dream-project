@@ -53,7 +53,7 @@
                 </div>
                 <div class="icon-area">
                     <a href="${pageContext.request.contextPath}/orders/favorites"><i class="bi bi-heart"></i></a>
-                    <a href="${pageContext.request.contextPath}/orders/cart">
+                    <a href="${pageContext.request.contextPath}/orders/cartList">
                         <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
                     </a>
                 </div>

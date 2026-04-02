@@ -107,14 +107,29 @@ import lombok.extern.slf4j.Slf4j;
 		return "orders/cart";
 	}
 	
+	@RequestMapping("/cartList")
+	public String cartList() {
+		return "orders/cartList";
+	}
+	
 	@RequestMapping("/favorites")
 	public String favorites() {
 		return "orders/favorites";
 	}
 	
+	@RequestMapping("/wishList")
+	public String wishList() {
+		return "orders/wishList";
+	}
+	
 	@RequestMapping("/order")
 	public String order() {
 		return "orders/order";
+	}
+	
+	@RequestMapping("/orderPage")
+	public String orderPage() {
+		return "orders/orderPage";
 	}
 	
 	@RequestMapping("/FAQ")

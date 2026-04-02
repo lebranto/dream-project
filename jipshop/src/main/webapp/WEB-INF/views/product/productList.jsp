@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>상품 목록 - 집사상권</title>
+    <title>상품 목록 - 집사상점</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product/productList.css">
 </head>
 <body>
@@ -161,6 +161,14 @@
 </c:choose>
     </div>
 </main>
+<script>
+document.querySelectorAll(".cart-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        alert("장바구니에 추가되었습니다");
+    });
+});
+</script>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

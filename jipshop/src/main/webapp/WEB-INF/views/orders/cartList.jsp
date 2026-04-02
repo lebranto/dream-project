@@ -13,7 +13,7 @@
 * { box-sizing:border-box; margin:0; padding:0; font-family:'Pretendard', sans-serif; }
 body { background:#f5f5f5; }
 
-.cart-container { max-width:1100px; margin:0 auto; background:#fff; padding:30px; }
+.cart-container { max-width:1440px; margin:0 auto; background:#fff; padding:30px; }
 
 .cart-header {
     display:flex; justify-content:space-between; align-items:flex-end;
@@ -23,6 +23,9 @@ body { background:#f5f5f5; }
 .cart-header h1 { font-size:24px; }
 
 .table-wrapper { overflow-x:auto; border-bottom:1px solid #ddd; }
+
+.steps { font-size:14px; color:#ccc; }
+.steps .active { color:#333; font-weight:bold; }
 
 .cart-table {
     width:100%; min-width:800px;
@@ -102,6 +105,16 @@ body { background:#f5f5f5; }
     cursor:pointer;
 }
 
+.order-btn {
+    padding:15px 60px;
+    background:#ffda79;
+    border:none;
+    font-size:16px;
+    font-weight:bold;
+    border-radius:4px;
+    cursor:pointer;
+}
+
 .cart-table input[type="checkbox"]{
     transform: scale(1.5);
     cursor: pointer;
@@ -118,6 +131,11 @@ body { background:#f5f5f5; }
 
 <header class="cart-header">
     <h1>장바구니</h1>
+    <div class="steps">
+        <span class="active">01 장바구니</span> &gt;
+        <span>02 주문서작성/결제</span> &gt;
+        <span>03 주문완료</span>
+    </div>
 </header>
 
 <div class="table-wrapper">
@@ -196,9 +214,12 @@ body { background:#f5f5f5; }
 
 <div class="cart-actions">
     <button class="delete-btn">선택 상품 삭제</button>
+    <button class="order-btn">선택 상품 주문</button>
 </div>
 
 </div>
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 <script>
 const contextPath = "${pageContext.request.contextPath}";
