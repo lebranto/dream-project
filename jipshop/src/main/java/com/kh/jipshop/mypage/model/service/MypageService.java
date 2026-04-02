@@ -41,6 +41,10 @@ public interface MypageService {
 
 	int saveOrUpdatePet(Pet p);
 
+	Pet selectPetByMemberNo(int memberNo);
+
+	OrderDetailResponse orderDetail(Map<String, Object> paramMap);
+
 
 
 

@@ -53,6 +53,8 @@ public interface MypageDao {
 
 	int insertPet(Pet p);
 
+	OrderDetailResponse orderDetail(Map<String, Object> paramMap);
+
 	
 	
 	

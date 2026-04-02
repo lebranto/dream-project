@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
@@ -301,62 +302,73 @@ public class MypageController {
 
 	@PostMapping("/updateMember")
 	public String updateMember(
-			Model model,
-			Authentication auth,
-		    Member m
-			) {
-			
-			m.setMemberNo(((MemberExt)auth.getPrincipal()).getMemberNo());
-			int result = mService.updateMember(m);
-			
-			if(result!=0) {
-				model.addAttribute("msg", "회원 정보가 수정되었습니다.");
-				return "redirect:/";
-			}else {
-			
-			model.addAttribute("errorMsg","정보를 다시 입력해주세요");
-			return "mypage/updateMember"; 
-			}
-		
+	        Member m,
+	        RedirectAttributes ra,
+	        Authentication auth,
+	        Model model
+	) {
+	    m.setMemberNo(((MemberExt)auth.getPrincipal()).getMemberNo());
+
+	    if (m.getEmail() == null || m.getEmail().trim().isEmpty()
+	            || m.getMemberName() == null || m.getMemberName().trim().isEmpty()
+	            || m.getAddress() == null || m.getAddress().trim().isEmpty()
+	            || m.getPhone() == null || m.getPhone().trim().isEmpty()) {
+	    	
+	    	System.out.println(m.getAddress());
+	    	
+	        model.addAttribute("msg", "모든 정보를 입력해주세요.");
+	        model.addAttribute("memberName", m.getMemberName());
+	        model.addAttribute("memberEmail", m.getEmail());
+	        model.addAttribute("phone", m.getPhone());
+	        return "mypage/updateMember";
+	    }
+
+	    int result = mService.updateMember(m);
+
+	    if (result > 0) {
+	    	ra.addAttribute("msg","수정이 완료되었습니다.");
+	        return "redirect:/mypage/purchase";
+	        
+	    } else {
+	        model.addAttribute("msg", "수정에 실패했습니다.");
+	        model.addAttribute("memberName", m.getMemberName());
+	        model.addAttribute("memberEmail", m.getEmail());
+	        model.addAttribute("phone", m.getPhone());
+	        return "mypage/updateMember";
+	    }
 	}
 	
 	
 	
 // 반려동물 정보 수정	
 	
-	@GetMapping("/checkPet")
-	public String checkPet() {
+	 @GetMapping("/checkPet")
+	    public String checkPet() {
+	        return "mypage/checkPet";
+	    }
 
-		return "mypage/checkPet";
-	}
+	    @PostMapping("/checkPet")
+	    public String checkPet(String userPwd, Authentication auth, Model model) {
 
-	
-	
-	@PostMapping("/checkPet")
-	public String checkPet(
-			@RequestParam("userPwd") String check,
-			Authentication auth,
-			Model model) {
-			
-		String password = ((MemberExt)auth.getPrincipal()).getPassword();
-	     
-		
-	     // 암호화된 코드를 비교해 일치하는지 보는 코드
-	     PasswordEncoder pe = new BCryptPasswordEncoder();
-	     
-	     boolean ch = pe.matches(check, password);
-	     
-	     if(ch) {
-	    	 return "mypage/updatePet";
-	     }else {
-	    	 model.addAttribute("errorMsg","비밀번호를 다시 입력해주세요");
-			return "mypage/checkPet"; 
-	     }
-	}
-	
-	
-	
-	 @PostMapping("/updatePet")
+	        String password = ((MemberExt) auth.getPrincipal()).getPassword();
+	        PasswordEncoder pe = new BCryptPasswordEncoder();
+
+	        boolean ch = pe.matches(userPwd, password);
+
+	        if (ch) {
+	            int memberNo = ((MemberExt) auth.getPrincipal()).getMemberNo();
+
+	            Pet pet = mService.selectPetByMemberNo(memberNo);
+	            model.addAttribute("pet", pet);
+
+	            return "mypage/updatePet";
+	        } else {
+	            model.addAttribute("errorMsg", "비밀번호를 다시 입력해주세요");
+	            return "mypage/checkPet";
+	        }
+	    }
+
+	    @PostMapping("/updatePet")
 	    public String updatePet(Pet p,
 	                            MultipartFile petPhotoFile,
 	                            Authentication auth,
@@ -467,7 +479,34 @@ public class MypageController {
 	    	 return "mypage/memberDelete";
 	   	 
 	     	} 
-		
 	}
+		
+	
+	
+	// 배송 상세 관련
+
+   @GetMapping("/orderDetail")
+   public String orderDetail(
+		   Model model,
+		   Authentication auth,
+		   @RequestParam int orderId,
+		   @RequestParam int detailId,
+		   @RequestParam Map<String,Object> paramMap
+		   ) {
+	   
+	   int memberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
+	   
+	   paramMap.put("memberNo",memberNo);
+	   paramMap.put("orderId",orderId);
+	   paramMap.put("detailId",detailId);
+	   
+	   OrderDetailResponse od = mService.orderDetail(paramMap);
+	   
+	   model.addAttribute("od",od);
+	   
+	   
+	   return "mypage/orderDetail";
+	   
+   }
 
 }

@@ -92,7 +92,7 @@
                 <div class="info-cell">
                  
                   <div>${o.deliveryStatus}</div>
-                  <a href="#" class="status-badge">상세보기</a>
+                  <a href="${contextPath}/mypage/orderDetail?orderId=${o.orderId}&detailId=${o.detailId}" class="status-badge">상세보기</a>
                 </div>
 
                 <div class="info-cell">
@@ -180,6 +180,12 @@
       </c:choose>
     </main>
   </div>
+  
+<c:if test="${not empty msg}">
+  		<script>
+    		alert("${msg}");
+  		</script>
+</c:if>
 
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 

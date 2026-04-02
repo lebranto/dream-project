@@ -148,6 +148,11 @@ public class MypageServiceImpl implements MypageService {
 		
 		return mDao.updatePet(p);
 	}
+	
+	@Override
+    public Pet selectPetByMemberNo(int memberNo) {
+        return mDao.selectPetByMemberNo(memberNo);
+	}
 
 	@Override
 	public int saveOrUpdatePet(Pet p) {
@@ -167,6 +172,12 @@ public class MypageServiceImpl implements MypageService {
             return mDao.updatePet(p);
         }
     }
+
+	@Override
+	public OrderDetailResponse orderDetail(Map<String, Object> paramMap) {
+	
+		return mDao.orderDetail(paramMap);
+	}
 
 
 }

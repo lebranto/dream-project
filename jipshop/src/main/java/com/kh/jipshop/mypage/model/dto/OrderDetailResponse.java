@@ -12,12 +12,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderDetailResponse {
 	
+	
+	// 멤버쪽 필드
+	private String address;
+	
+	
 	// 주문쪽 필드
 	private int orderTotalPrice;
 	private Date orderDate;
 	private int orderId;
+	private String recvAddress;
 	
 	// 상품쪽 필드
+	private String productId;
 	private String productName;
 	private String photo1;
 	private int productPrice;
@@ -36,6 +43,7 @@ public class OrderDetailResponse {
 	// 업체 필드
 	private String companyCode;
 	private String companyName;
+	private String addressAddress;
 	
 	
 }
