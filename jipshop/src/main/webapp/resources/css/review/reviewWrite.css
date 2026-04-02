@@ -1,0 +1,227 @@
+@charset "UTF-8";
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #f7f7f7;
+    font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+    color: #222;
+}
+
+.review-write-page {
+    width: 100%;
+    padding: 50px 0 80px;
+}
+
+.review-write-wrap {
+    width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    padding: 40px 50px 50px;
+    box-sizing: border-box;
+}
+
+.review-page-title {
+    margin: 0 0 35px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+}
+
+.review-product-box {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 25px 0 30px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.review-product-image {
+    width: 120px;
+    height: 120px;
+    border: 1px solid #ddd;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.review-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.no-image {
+    font-size: 14px;
+    color: #999;
+}
+
+.review-product-info {
+    flex: 1;
+}
+
+.product-name {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.product-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.product-meta span {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #f2f2f2;
+    font-size: 13px;
+    color: #555;
+}
+
+.review-section {
+    display: flex;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 30px 0;
+}
+
+.review-label {
+    width: 160px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+    flex-shrink: 0;
+}
+
+.review-content-box {
+    flex: 1;
+}
+
+.star-rating-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.star-rating {
+    display: flex;
+    gap: 10px;
+}
+
+.star {
+    font-size: 42px;
+    color: #d9d9d9;
+    cursor: pointer;
+    transition: 0.2s;
+    user-select: none;
+}
+
+.star.active {
+    color: #ff9d00;
+}
+
+.star-text {
+    font-size: 18px;
+    color: #444;
+    font-weight: 600;
+}
+
+.review-textarea {
+    width: 100%;
+    height: 240px;
+    resize: none;
+    border: 1px solid #ccc;
+    padding: 16px;
+    box-sizing: border-box;
+    font-size: 15px;
+    line-height: 1.6;
+    outline: none;
+}
+
+.review-textarea:focus {
+    border-color: #d4b25f;
+}
+
+.text-count {
+    margin-top: 10px;
+    text-align: right;
+    font-size: 14px;
+    color: #666;
+}
+
+.file-upload-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.file-upload-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border: 1px solid #d4b25f;
+    background: #fff8e8;
+    color: #8b6b1f;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#uploadFiles {
+    display: none;
+}
+
+.file-count {
+    font-size: 15px;
+    color: #333;
+    font-weight: 600;
+}
+
+.file-guide {
+    margin-top: 14px;
+    font-size: 14px;
+    color: #777;
+}
+
+.file-name-list {
+    margin: 16px 0 0;
+    padding-left: 18px;
+    color: #444;
+    font-size: 14px;
+}
+
+.file-name-list li {
+    margin-bottom: 6px;
+}
+
+.review-btn-area {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 40px;
+}
+
+.cancel-btn,
+.submit-btn {
+    min-width: 150px;
+    height: 50px;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background: #f1f1f1;
+    color: #333;
+}
+
+.submit-btn {
+    background: #d9b75d;
+    color: #fff;
+}

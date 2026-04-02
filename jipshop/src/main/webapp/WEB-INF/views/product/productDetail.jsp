@@ -135,7 +135,8 @@
                 <a href="#productInfoSection" class="tab-link">상품정보</a>
                 <a href="#detailInfoSection" class="tab-link">상세정보</a>
                 <a href="#reviewListSection" class="tab-link">리뷰목록</a>
-                <a href="${pageContext.request.contextPath}/review/write?productId=${product.productId}" class="tab-link review-write-link">리뷰작성</a>
+                <a href="${pageContext.request.contextPath}/review/write/check?productId=${product.productId}"
+                   class="tab-link review-write-link">리뷰작성</a>
             </nav>
 
             <!-- 상세 설명 -->
@@ -158,7 +159,8 @@
             <section class="product-review-section section-anchor" id="reviewListSection">
                 <div class="review-header">
                     <div class="section-title">리뷰 목록</div>
-                    <a href="${pageContext.request.contextPath}/review/write?productId=${product.productId}" class="review-write-btn">
+                    <a href="${pageContext.request.contextPath}/review/write/check?productId=${product.productId}"
+                       class="review-write-btn">
                         리뷰작성
                     </a>
                 </div>
@@ -167,7 +169,6 @@
                     총 <strong>${reviewCount}</strong>개의 리뷰가 있습니다.
                 </div>
 
-                <!-- 아직 리뷰 기능 전 -->
                 <div class="review-empty-box">
                     등록된 리뷰가 없습니다.
                 </div>
@@ -246,6 +247,7 @@
             });
         });
     </script>
-<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
+    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>
