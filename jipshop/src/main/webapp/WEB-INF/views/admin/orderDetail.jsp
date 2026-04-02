@@ -249,19 +249,19 @@
                                             </c:choose>
                                         </td>
                                         <td class="center">
-    <c:choose>
-        <c:when test="${d.cancelStatus == 'PENDING'}">
-            <button type="button"
-                    class="btn btn-outline btn-sm"
-                    onclick="location.href='${contextPath}/admin/orderCancel/list?keyword=${order.orderId}'">
-                취소관리 이동
-            </button>
-        </c:when>
-        <c:otherwise>
-            <span class="action-empty">-</span>
-        </c:otherwise>
-    </c:choose>
-</td>
+                                            <c:choose>
+                                                <c:when test="${d.cancelStatus == 'PENDING'}">
+                                                    <button type="button"
+                                                            class="btn btn-outline btn-sm"
+                                                            onclick="location.href='${contextPath}/admin/orderCancel/list?keyword=${order.orderId}'">
+                                                        취소관리 이동
+                                                    </button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="action-empty">-</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </c:otherwise>
