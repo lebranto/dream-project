@@ -22,10 +22,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MypageServiceImpl implements MypageService {
 	
-	private final MypageDao mDao;
-
 	@Autowired
-	private SqlSessionTemplate sqlSession;
+	private final MypageDao mDao;
 	
 	// 구매 내역 조회 관련 
 	
@@ -139,12 +137,12 @@ public class MypageServiceImpl implements MypageService {
 	    @Transactional
 	    public int requestCancel(Orders orders) {
 
-	        int alreadyRequested = mDao.checkDetailCancelRequest(sqlSession, orders);
+	        int alreadyRequested = mDao.checkDetailCancelRequest(orders);
 	        if (alreadyRequested > 0) {
 	            return 0;
 	        }
 
-	        return mDao.requestDetailCancel(sqlSession, orders);
+	        return mDao.requestDetailCancel(orders);
 	    }
 	    
 
