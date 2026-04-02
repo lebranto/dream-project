@@ -13,10 +13,27 @@
 <style>
 /* ===== 기존 UI 그대로 ===== */
 .content-wrapper { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
-.mypage-container { display:flex; gap:40px; align-items:flex-start; }
 
-.mypage-sidebar { width:220px; flex-shrink:0; position: sticky; top:100px; }
-.mypage-content { flex:1; }
+/* ⭐ 핵심 수정 */
+.mypage-container { 
+    display:flex; 
+    gap:40px; 
+    align-items:flex-start;
+    flex-wrap: wrap; /* ⭐ 추가 (겹침 방지) */
+}
+
+/* ⭐ 사이드바 */
+.mypage-sidebar { 
+    width:130px; 
+    flex-shrink:0; 
+    position: sticky; 
+    top:100px; 
+}
+
+.mypage-content { 
+    flex:1; 
+    min-width:600px; /* ⭐ 추가 (너무 줄어들지 않게) */
+}
 
 input[type="checkbox"] { width:20px; height:20px; cursor:pointer; }
 
@@ -58,6 +75,7 @@ input[type="checkbox"] { width:20px; height:20px; cursor:pointer; }
     border-radius:20px;
     padding:20px;
     background:#fff;
+    min-width:500px; /* ⭐ 추가 */
 }
 
 .item-img { width:120px; margin-right:30px; }
@@ -114,6 +132,43 @@ input[type="checkbox"] { width:20px; height:20px; cursor:pointer; }
     background:#fff;
     cursor:pointer;
 }
+
+/* ========================= */
+/* ⭐ UI깨짐 방지 반응형 (핵심 해결) */
+/* ========================= */
+@media (max-width: 900px){
+
+    .mypage-container {
+        flex-direction: column; /* ⭐ 세로 배치 */
+    }
+
+    .mypage-sidebar {
+        width:100%;
+        position:relative; /* sticky 해제 */
+        top:auto;
+    }
+
+    .mypage-content {
+        width:100%;
+        min-width:unset;
+    }
+
+    .item-card {
+        flex-direction: column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .item-img {
+        margin-right:0;
+    }
+
+    .item-btns {
+        flex-direction: row;
+        margin-left:0;
+    }
+}
+
 </style>
 </head>
 
@@ -123,7 +178,7 @@ input[type="checkbox"] { width:20px; height:20px; cursor:pointer; }
 
 <div class="content-wrapper">
 <div class="mypage-container">
-<aside class="sidebar">
+<aside class="mypage-sidebar">
 <jsp:include page="/WEB-INF/views/common/myPageSidebar.jsp" />
 </aside>
 

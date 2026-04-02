@@ -76,6 +76,22 @@ body { background:#f5f5f5; }
     text-align:center;
 }
 
+/* ⭐ 쇼핑 계속하기 추가 */
+.continue-shopping {
+    margin-top:15px;
+}
+
+.continue-shopping a {
+    font-size:13px;
+    color:#777;
+    text-decoration:none;
+}
+
+.continue-shopping a:hover {
+    text-decoration:underline;
+}
+/* ⭐ 끝 */
+
 .total-summary {
     display:flex; justify-content:flex-end; align-items:center;
     border:1px solid #eee; padding:30px;
@@ -195,6 +211,11 @@ body { background:#f5f5f5; }
 
 </tbody>
 </table>
+</div>
+
+<!-- ⭐ 쇼핑 계속하기 링크 -->
+<div class="continue-shopping">
+    <a href="${contextPath}/product/list">&lt; 쇼핑 계속하기</a>
 </div>
 
 <div class="total-summary">
@@ -325,6 +346,28 @@ document.querySelector(".delete-btn").addEventListener("click", function(){
         // 헤더 반영
         updateCartCountUI(parseInt(count));
     });
+});
+
+//✅ 선택 상품 주문
+document.querySelector(".order-btn").addEventListener("click", function() {
+    const checked = document.querySelectorAll(".itemCheck:checked");
+
+    if (checked.length === 0) {
+        alert("주문할 상품을 선택해주세요.");
+        return;
+    }
+
+    // 선택된 cartId들을 배열에 담기
+    let cartIds = [];
+    checked.forEach(chk => {
+        cartIds.push(chk.closest("tr").dataset.id);
+    });
+
+    // 배열을 쉼표(,)로 구분된 문자열로 변환 (예: "1,5,12")
+    const idParam = cartIds.join(",");
+
+    // 주문 페이지로 이동 (GET 방식 예시)
+    location.href = contextPath + "/orders/orderNew?cartIds=" + idParam;
 });
 </script>
 

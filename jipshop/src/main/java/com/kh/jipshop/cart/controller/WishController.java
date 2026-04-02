@@ -1,7 +1,8 @@
-package com.kh.jipshop.controller;
+package com.kh.jipshop.cart.controller;
 
-import com.kh.jipshop.dto.CartDTO;
 import org.springframework.web.bind.annotation.*;
+
+import com.kh.jipshop.cart.model.vo.CartDTO;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;

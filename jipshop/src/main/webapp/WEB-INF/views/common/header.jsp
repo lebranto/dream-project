@@ -99,7 +99,7 @@
                     <a href="${pageContext.request.contextPath}/orders/wishList"><i class="bi bi-heart"></i></a>
                     <a href="${pageContext.request.contextPath}/orders/cartList" class="cart-icon-wrapper">
     					<img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
-    					<span id="cartCount" class="cart-count-badge">0</span>
+    					<span id="cartCount" class="cart-count-badge">${cartCount}</span>
 					</a>
 					
                 </div>
