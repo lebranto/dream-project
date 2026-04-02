@@ -301,7 +301,7 @@
 	      	</a>
           </div>
           <div class="frame-20">
-            <a href="${contextPath }/orders/cart">
+            <a href="${contextPath }/orders/cartList">
             <div class="rectangle-7"></div>
 	            <span class="text-wrapper-14">장바구니</span>
 	            <div class="group-11" aria-hidden="true">

@@ -115,7 +115,7 @@
                                 </div>
 
                                 <div class="product-btn-area">
-                                    <form action="${pageContext.request.contextPath}/product/buyNow" method="post" class="inline-form">
+                                    <form action="${pageContext.request.contextPath}/orders/orderNew" method="post" class="inline-form">
                                         <input type="hidden" name="productId" value="${p.productId}">
                                         <input type="hidden" name="qty" value="1">
                                         <button type="submit" class="buy-btn">바로구매</button>

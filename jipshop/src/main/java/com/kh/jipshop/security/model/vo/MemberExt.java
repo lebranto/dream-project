@@ -60,8 +60,12 @@ public class MemberExt extends Member implements UserDetails, Serializable{
 
 	@Override
 	public boolean isEnabled() {
+		/*
+		 * System.out.println("activeYn = " + getActiveYn()); return
+		 * "Y".equals(getActiveYn());
+		 */
 		
-      return "Y".equals(getActiveYn());
+		return true;
 	}
 	
 }
