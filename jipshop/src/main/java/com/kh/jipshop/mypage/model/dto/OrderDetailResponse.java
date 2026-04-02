@@ -28,7 +28,6 @@ public class OrderDetailResponse {
     private String cancelRequestDateStr;
     private String cancelReason;
     private String detailCancelStatusLabel;
-=======
 	
 	// 멤버쪽 필드
 	private String address;
