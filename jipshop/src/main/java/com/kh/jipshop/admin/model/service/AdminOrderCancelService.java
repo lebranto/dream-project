@@ -17,8 +17,6 @@ public interface AdminOrderCancelService {
     int approveCancel(int orderId);
 
     int rejectCancel(int orderId);
-    
-    
-    
-    
+
+    int approveSelectedOrderCancel(int[] detailId);
 }

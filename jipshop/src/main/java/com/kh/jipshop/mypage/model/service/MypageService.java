@@ -41,8 +41,8 @@ public interface MypageService {
 
 	int saveOrUpdatePet(Pet p);
 
+	int requestCancel(Orders orders);
 	Pet selectPetByMemberNo(int memberNo);
-
 	OrderDetailResponse orderDetail(Map<String, Object> paramMap);
 
 

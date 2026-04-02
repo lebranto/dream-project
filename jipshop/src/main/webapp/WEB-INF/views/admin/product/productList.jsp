@@ -34,6 +34,15 @@
 
                 <!-- 카테고리 -->
                 <select name="categoryId" class="filter-select">
+                    <option value="">전체 카테고리</option>
+                    	
+                    <c:forEach var="c" items="${categoryList}">
+                        <option value="${c.categoryId}"
+                            <c:if test="${param.categoryId == c.categoryId || param.categoryId == c.categoryId.toString()}">selected</c:if>>
+                            ${c.categoryName}
+                        </option>
+                    </c:forEach>
+                </select>
 				    <option value="">전체 카테고리</option>
 				    <c:forEach var="c" items="${categoryList}">
 				        <option value="${c.CATEGORYID}"

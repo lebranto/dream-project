@@ -27,7 +27,7 @@
         <div class="cancel-box">
             <div class="top-area">
                 <div class="product-image">
-                    <img src="https://images.unsplash.com/photo-1561037404-61cd46aa615b?auto=format&fit=crop&w=400&q=80" alt="상품 이미지">
+                    <img src="${contextPath}/resources/uploadFiles/product/${orderList.photo1}" alt="${orderList.productName}">
                 </div>
 
                 <div class="top-text">

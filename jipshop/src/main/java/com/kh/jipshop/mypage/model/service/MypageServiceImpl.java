@@ -3,6 +3,8 @@ package com.kh.jipshop.mypage.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +22,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MypageServiceImpl implements MypageService {
 	
+	@Autowired
 	private final MypageDao mDao;
-
 	
 	// 구매 내역 조회 관련 
 	
@@ -130,6 +132,17 @@ public class MypageServiceImpl implements MypageService {
 	        }
 
 	        return 1;
+	    }
+	    @Override
+	    @Transactional
+	    public int requestCancel(Orders orders) {
+
+	        int alreadyRequested = mDao.checkDetailCancelRequest(orders);
+	        if (alreadyRequested > 0) {
+	            return 0;
+	        }
+
+	        return mDao.requestDetailCancel(orders);
 	    }
 	    
 
