@@ -145,49 +145,58 @@
                                         </c:choose>
                                     </td>
                                     <td class="center">
-                                        <c:choose>
-                                            <c:when test="${order.orderCancelYn == 'Y' and order.cancelStatus == 'PENDING'}">
-                                                <span class="badge badge-cancel">요청</span>
-                                            </c:when>
-                                            <c:when test="${order.orderCancelYn == 'Y' and order.cancelStatus == 'APPROVED'}">
-                                                <span class="badge badge-cancel">완료</span>
-                                            </c:when>
-                                            <c:when test="${order.orderCancelYn == 'Y' and order.cancelStatus == 'REJECTED'}">
-                                                <span class="badge badge-waiting">반려</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="badge badge-done">없음</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
+    <c:choose>
+        <c:when test="${order.cancelStatusLabel == '부분취소'}">
+            <span class="badge badge-cancel">부분취소</span>
+        </c:when>
+        <c:when test="${order.cancelStatusLabel == '전체취소'}">
+            <span class="badge badge-cancel">전체취소</span>
+        </c:when>
+        <c:when test="${order.orderCancelYn == 'Y' and order.cancelStatus == 'PENDING'}">
+            <span class="badge badge-cancel">요청</span>
+        </c:when>
+        <c:when test="${order.orderCancelYn == 'Y' and order.cancelStatus == 'APPROVED'}">
+            <span class="badge badge-cancel">완료</span>
+        </c:when>
+        <c:when test="${order.orderCancelYn == 'Y' and order.cancelStatus == 'REJECTED'}">
+            <span class="badge badge-waiting">반려</span>
+        </c:when>
+        <c:otherwise>
+            <span class="badge badge-done">없음</span>
+        </c:otherwise>
+    </c:choose>
+</td>
                                     <td class="center">
-                                        <c:choose>
-                                            <c:when test="${order.orderStatusLabel == '결제 완료'}">
-                                                <span class="badge badge-waiting">결제 완료</span>
-                                            </c:when>
-                                            <c:when test="${order.orderStatusLabel == '출고 완료'}">
-                                                <span class="badge badge-out">출고 완료</span>
-                                            </c:when>
-                                            <c:when test="${order.orderStatusLabel == '배송 중'}">
-                                                <span class="badge badge-shipping">배송 중</span>
-                                            </c:when>
-                                            <c:when test="${order.orderStatusLabel == '배송완료'}">
-                                                <span class="badge badge-done">배송완료</span>
-                                            </c:when>
-                                            <c:when test="${order.orderStatusLabel == '취소 요청'}">
-                                                <span class="badge badge-cancel">취소 요청</span>
-                                            </c:when>
-                                            <c:when test="${order.orderStatusLabel == '취소 완료'}">
-                                                <span class="badge badge-cancel">취소 완료</span>
-                                            </c:when>
-                                            <c:when test="${order.orderStatusLabel == '취소 반려'}">
-                                                <span class="badge badge-waiting">취소 반려</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="badge badge-waiting">${order.orderStatusLabel}</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
+    <c:choose>
+        <c:when test="${order.orderStatusLabel == '결제 완료'}">
+            <span class="badge badge-waiting">결제 완료</span>
+        </c:when>
+        <c:when test="${order.orderStatusLabel == '출고 완료'}">
+            <span class="badge badge-out">출고 완료</span>
+        </c:when>
+        <c:when test="${order.orderStatusLabel == '배송 중'}">
+            <span class="badge badge-shipping">배송 중</span>
+        </c:when>
+        <c:when test="${order.orderStatusLabel == '배송완료'}">
+            <span class="badge badge-done">배송완료</span>
+        </c:when>
+        <c:when test="${order.orderStatusLabel == '부분취소 요청'}">
+            <span class="badge badge-cancel">부분취소 요청</span>
+        </c:when>
+        <c:when test="${order.orderStatusLabel == '부분취소 완료'}">
+            <span class="badge badge-cancel">부분취소 완료</span>
+        </c:when>
+        <c:when test="${order.orderStatusLabel == '부분취소 반려'}">
+            <span class="badge badge-waiting">부분취소 반려</span>
+        </c:when>
+        <c:when test="${order.orderStatusLabel == '전체취소 완료'}">
+            <span class="badge badge-cancel">전체취소 완료</span>
+        </c:when>
+        <c:otherwise>
+            <span class="badge badge-waiting">${order.orderStatusLabel}</span>
+        </c:otherwise>
+    </c:choose>
+</td>
                                     <td class="center">
                                         <button type="button" class="btn btn-outline btn-sm"
                                                 onclick="location.href='${contextPath}/admin/order/orderDetail?orderId=${order.orderId}'">

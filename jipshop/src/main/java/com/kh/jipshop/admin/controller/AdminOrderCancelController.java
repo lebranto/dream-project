@@ -78,4 +78,23 @@ public class AdminOrderCancelController {
 
         return "redirect:/admin/orderCancel/list";
     }
+    // 추가 : 일괄 승인
+    @PostMapping("/approveSelected")
+    public String approveSelectedOrderCancel(int[] detailId, RedirectAttributes ra) {
+
+        if(detailId == null || detailId.length == 0) {
+            ra.addFlashAttribute("alertMsg", "선택된 항목이 없습니다.");
+            return "redirect:/admin/orderCancel/list";
+        }
+
+        int result = adminOrderCancelService.approveSelectedOrderCancel(detailId);
+
+        if(result > 0) {
+            ra.addFlashAttribute("alertMsg", detailId.length + "건 취소 승인 완료");
+        } else {
+            ra.addFlashAttribute("alertMsg", "일괄 취소 승인 실패");
+        }
+
+        return "redirect:/admin/orderCancel/list";
+    }
 }

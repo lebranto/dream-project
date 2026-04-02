@@ -47,5 +47,21 @@ public class AdminOrderCancelServiceImpl implements AdminOrderCancelService {
     public int rejectCancel(int orderId) {
         return adminOrderCancelDao.updateCancelStatusRejected(sqlSession, orderId);
     }
-    
+
+    @Override
+    @Transactional
+    public int approveSelectedOrderCancel(int[] detailId) {
+
+        int result = 0;
+
+        if (detailId == null || detailId.length == 0) {
+            return 0;
+        }
+
+        for (int id : detailId) {
+            result += adminOrderCancelDao.updateCancelStatusApproved(sqlSession, id);
+        }
+
+        return result;
+    }
 }

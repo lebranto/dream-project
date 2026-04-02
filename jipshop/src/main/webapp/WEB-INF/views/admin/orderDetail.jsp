@@ -183,6 +183,95 @@
         </div>
     </div>
 
+    <div class="detail-card">
+        <div class="detail-card-header">📦 주문 상품 / 개별 취소 관리</div>
+        <div class="detail-card-body">
+            <div class="detail-table-wrap">
+                <table class="detail-table">
+                    <thead>
+                        <tr>
+                            <th class="center">상세번호</th>
+                            <th>상품명</th>
+                            <th class="right">상품금액</th>
+                            <th class="center">취소여부</th>
+                            <th class="center">취소상태</th>
+                            <th>취소사유</th>
+                            <th class="center">요청일</th>
+                            <th class="center">처리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:choose>
+                            <c:when test="${empty detailList}">
+                                <tr class="empty-row">
+                                    <td colspan="8">주문 상품 정보가 없습니다.</td>
+                                </tr>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="d" items="${detailList}">
+                                    <tr>
+                                        <td class="center">${d.detailId}</td>
+                                        <td>${d.productName}</td>
+                                        <td class="right">
+                                            <fmt:formatNumber value="${d.productPrice}" pattern="#,###"/>원
+                                        </td>
+                                        <td class="center">
+                                            <c:choose>
+                                                <c:when test="${d.cancelYn == 'Y'}">
+                                                    <span class="badge badge-cancel">취소</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="badge badge-done">정상</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td class="center">
+                                            <c:choose>
+                                                <c:when test="${d.cancelStatus == 'PENDING'}">
+                                                    <span class="badge badge-cancel">승인 대기</span>
+                                                </c:when>
+                                                <c:when test="${d.cancelStatus == 'APPROVED'}">
+                                                    <span class="badge badge-cancel">취소 승인</span>
+                                                </c:when>
+                                                <c:when test="${d.cancelStatus == 'REJECTED'}">
+                                                    <span class="badge badge-waiting">취소 반려</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="badge badge-done">없음</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>${d.cancelReason}</td>
+                                        <td class="center">
+                                            <c:choose>
+                                                <c:when test="${empty d.cancelRequestDateStr}">-</c:when>
+                                                <c:otherwise>${d.cancelRequestDateStr}</c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td class="center">
+    <c:choose>
+        <c:when test="${d.cancelStatus == 'PENDING'}">
+            <button type="button"
+                    class="btn btn-outline btn-sm"
+                    onclick="location.href='${contextPath}/admin/orderCancel/list?keyword=${order.orderId}'">
+                취소관리 이동
+            </button>
+        </c:when>
+        <c:otherwise>
+            <span class="action-empty">-</span>
+        </c:otherwise>
+    </c:choose>
+</td>
+                                    </tr>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div class="btn-group">
         <button type="button" class="btn btn-outline"
                 onclick="location.href='${contextPath}/admin/order/list'">목록</button>
