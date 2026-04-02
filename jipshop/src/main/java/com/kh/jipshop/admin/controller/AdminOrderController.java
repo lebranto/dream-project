@@ -61,7 +61,7 @@ public class AdminOrderController {
         model.addAttribute("cancelReqCount", cancelReqCount);
         model.addAttribute("outCount", outCount);
 
-        return "admin/orderList";
+        return "admin/order/orderList";
     }
 
     @PostMapping("/delete")
@@ -93,7 +93,7 @@ public class AdminOrderController {
 
         model.addAttribute("order", order);
         model.addAttribute("detailList", detailList);
-        return "admin/orderDetail";
+        return "admin/order/orderDetail";
     }
 
     @PostMapping("/deliveryStatusUpdate")

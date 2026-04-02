@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <title>주문 상세 - 집사상권</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/admin/orderDetail.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/admin/order/orderDetail.css">
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/admin/common/sidebar.jsp"/>

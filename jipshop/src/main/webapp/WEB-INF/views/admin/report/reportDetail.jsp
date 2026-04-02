@@ -10,7 +10,7 @@
     <title>댓글 신고 상세</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/reportDetail.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/report/reportDetail.css">
 </head>
 <body>
 

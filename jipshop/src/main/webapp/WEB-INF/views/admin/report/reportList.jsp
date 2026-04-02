@@ -10,7 +10,7 @@
     <title>신고 사항 - 집사상점</title>
 
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/admin/reportList.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/admin/report/reportList.css">
 </head>
 <body>
 

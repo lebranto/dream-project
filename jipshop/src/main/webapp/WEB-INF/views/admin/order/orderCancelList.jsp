@@ -11,7 +11,7 @@
     <title>주문취소 관리</title>
 
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/admin/orderCancelList.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/admin/order/orderCancelList.css">
 
     <style>
         .reason-cell {

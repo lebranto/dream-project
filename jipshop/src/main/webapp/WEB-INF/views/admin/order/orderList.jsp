@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 관리 - 집사상권</title>
     <link rel="stylesheet" href="${contextPath}/resources/css/admin/admin.css">
-    <link rel="stylesheet" href="${contextPath}/resources/css/admin/orderList.css">
+    <link rel="stylesheet" href="${contextPath}/resources/css/admin/order/orderList.css">
 </head>
 <body>
 
