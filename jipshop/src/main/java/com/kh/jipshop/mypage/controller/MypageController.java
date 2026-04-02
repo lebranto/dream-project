@@ -323,7 +323,7 @@ public class MypageController {
 	    int result = mService.updateMember(m);
 
 	    if (result > 0) {
-	    	ra.addAttribute("msg","수정이 완료되었습니다.");
+	    	ra.addFlashAttribute("msg","정보가 수정되었습니다.");
 	        return "redirect:/mypage/purchase";
 	        
 	    } else {
@@ -370,6 +370,7 @@ public class MypageController {
 	                            MultipartFile petPhotoFile,
 	                            Authentication auth,
 	                            HttpSession session,
+	                            RedirectAttributes ra,
 	                            Model model) {
 
 	        try {
@@ -402,7 +403,8 @@ public class MypageController {
 	            int result = mService.saveOrUpdatePet(p);
 
 	            if (result > 0) {
-	                return "redirect:/mypage/checkPet";
+	            	ra.addFlashAttribute("msg","정보가 수정되었습니다.");
+	    	        return "redirect:/mypage/purchase";
 	            } else {
 	                model.addAttribute("errorMsg", "반려동물 정보 저장 실패");
 	                model.addAttribute("pet", p);

@@ -36,11 +36,19 @@
 	</select>
 	
 	<select id="loginMember" resultType="member">
-		SELECT *
+		SELECT 
+		MEMBER_NO       AS memberNo,
+        MEMBER_ID       AS memberId,
+        MEMBER_PWD      AS memberPwd,
+        MEMBER_NAME     AS memberName,
+        MEMBER_ADDRESS  AS address,
+        PHONE           AS phone,
+        EMAIL           AS email,
+        MEMBER_JOIN_DATE AS joinDate,
+        MEMBER_ACTIVE_YN AS activeYn
 		FROM MEMBER
 		WHERE MEMBER_ID  = #{memberId}
-			AND MEMBER_PWD = #{memberPwd}
-			AND MEMBER_ACTIVE_YN = 'Y'
+	    AND MEMBER_PWD = #{memberPwd}
 	</select>
 	
 	<insert id="insertAuthority">
