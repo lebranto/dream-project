@@ -43,6 +43,14 @@
                         </option>
                     </c:forEach>
                 </select>
+				    <option value="">전체 카테고리</option>
+				    <c:forEach var="c" items="${categoryList}">
+				        <option value="${c.CATEGORYID}"
+				            <c:if test="${param.categoryId == c.CATEGORYID}">selected</c:if>>
+				            ${c.CATEGORYNAME}
+				        </option>
+				    </c:forEach>
+				</select>
 
                 <!-- 상태 -->
                 <select name="productActiveYn" class="filter-select">

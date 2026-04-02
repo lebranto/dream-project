@@ -58,6 +58,7 @@ public interface MypageDao {
 	int checkDetailCancelRequest(SqlSessionTemplate sqlSession, Orders orders);
 
 	int requestDetailCancel(SqlSessionTemplate sqlSession, Orders orders);
+	OrderDetailResponse orderDetail(Map<String, Object> paramMap);
 
 	
 	

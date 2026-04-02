@@ -187,6 +187,7 @@ public class MypageDaoImpl implements MypageDao {
 		return session.update("mypage.updateMember",m);
 	}
 
+	
 	  @Override
 	    public Pet selectPetByMemberNo(int memberNo) {
 	        return session.selectOne("mypage.selectPetByMemberNo", memberNo);
@@ -211,6 +212,11 @@ public class MypageDaoImpl implements MypageDao {
 	    public int requestDetailCancel(SqlSessionTemplate sqlSession, Orders orders) {
 	        return sqlSession.update("mypage.requestDetailCancel", orders);
 	    }
+		@Override
+		public OrderDetailResponse orderDetail(Map<String, Object> paramMap) {
+			
+			return session.selectOne("mypage.orderDetail",paramMap);
+		}
 
 	
 

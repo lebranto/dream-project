@@ -26,7 +26,7 @@
     <div class="content-wrap">
         <main class="content">
         
-        <form action="${contextPath}/mypage/updateMember" method="post">
+        <form action="${contextPath}/mypage/updateMember" method="post" onsubmit="return checkUpdate();">
         
          <div class="reg-field-group">
             <div class="reg-field-label">이메일 <span class="reg-required-dot"></span></div>
@@ -69,7 +69,7 @@
             </div>
             <input type="hidden" id="phoneVerified" name="phoneVerified" value="N" />
           </div>
-           <button type="submit" class=updateBtn onclick="checkUpdate()">수정하기</button>
+           <button type="submit" class="updateBtn">수정하기</button>
         </form>
         
           <c:if test="${not empty errorMsg}">
@@ -89,101 +89,84 @@
 
 <script>
 
-
-/* ── 다음 주소 API ── */
 function sample4_execDaumPostcode() {
-  new daum.Postcode({
-    oncomplete: function(data) {
-      // 도로명 주소 우선, 없으면 지번 주소
-      var roadAddr = data.roadAddress || data.jibunAddress;
-      document.getElementById('zipCode').value   = data.zonecode;
-      document.getElementById('streetAdr').value = roadAddr;
-      // 상세주소로 포커스 이동
-      document.getElementById('detailAdr').focus();
-    }
-  }).open();
-}
+	  new daum.Postcode({
+	    oncomplete: function(data) {
+	      // 도로명 주소 우선, 없으면 지번 주소
+	      var roadAddr = data.roadAddress || data.jibunAddress;
+	      document.getElementById('zipCode').value   = data.zonecode;
+	      document.getElementById('streetAdr').value = roadAddr;
+	      // 상세주소로 포커스 이동
+	      document.getElementById('detailAdr').focus();
+	    }
+	  }).open();
+	}
 
-/* ── 상세주소 입력 전 도로명 주소 선택 여부 확인 ── */
-function addrCheck() {
-  if (document.getElementById('streetAdr').value === '') {
-    alert('주소 검색 버튼을 눌러 도로명 주소를 선택해주세요.');
-    return false;
-  }
-}
+	/* ── 상세주소 입력 전 도로명 주소 선택 여부 확인 ── */
+	function addrCheck() {
+	  if (document.getElementById('streetAdr').value === '') {
+	    alert('주소 검색 버튼을 눌러 도로명 주소를 선택해주세요.');
+	    return false;
+	  }
+	}
 
-/* ── 정보 수정 유효 검사 ── */
 function checkUpdate() {
-const email           = document.getElementById('email').value.trim();
-const memberName      = document.getElementById('memberName').value.trim();
-const zipCode         = document.getElementById('zipCode').value.trim();
-const streetAdr       = document.getElementById('streetAdr').value.trim();
-const detailAdr       = document.getElementById('detailAdr').value.trim();
-const phone           = document.getElementById('phone').value.trim();
+	  const email      = document.getElementById('email').value.trim();
+	  const memberName = document.getElementById('memberName').value.trim();
+	  const zipCode    = document.getElementById('zipCode').value.trim();
+	  const streetAdr  = document.getElementById('streetAdr').value.trim();
+	  const detailAdr  = document.getElementById('detailAdr').value.trim();
+	  const phone      = document.getElementById('phone').value.trim();
 
+	  if (email === '') {
+	    alert('이메일을 입력해주세요.');
+	    document.getElementById('email').focus();
+	    return false;
+	  }
 
+	  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	  if (!emailRegex.test(email)) {
+	    alert('이메일 형식이 올바르지 않습니다. (예: example@email.com)');
+	    document.getElementById('email').focus();
+	    return false;
+	  }
 
-// 이메일
-if (email === '') {
-  alert('이메일을 입력해주세요.');
-  document.getElementById('email').focus();
-  return;
-}
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-if (!emailRegex.test(email)) {
-  alert('이메일 형식이 올바르지 않습니다. (예: example@email.com)');
-  document.getElementById('email').focus();
-  return;
-}
+	  if (memberName === '') {
+	    alert('이름을 입력해주세요.');
+	    document.getElementById('memberName').focus();
+	    return false;
+	  }
 
-// 이름
-if (memberName === '') {
-  alert('이름을 입력해주세요.');
-  document.getElementById('memberName').focus();
-  return;
-}
+	  if (zipCode === '' || streetAdr === '') {
+	    alert('주소 검색 버튼을 눌러 주소를 입력해주세요.');
+	    return false;
+	  }
 
+	  if (detailAdr === '') {
+	    alert('상세 주소를 입력해주세요.');
+	    document.getElementById('detailAdr').focus();
+	    return false;
+	  }
 
-//주소 — 우편번호 & 도로명 주소
-if (zipCode === '' || streetAdr === '') {
-alert('주소 검색 버튼을 눌러 주소를 입력해주세요.');
-return;
-}
+	  if (phone === '') {
+	    alert('전화번호를 입력해주세요.');
+	    document.getElementById('phone').focus();
+	    return false;
+	  }
 
-//상세 주소
-if (detailAdr === '') {
-  alert('상세 주소를 입력해주세요.');
-  document.getElementById('detailAdr').focus();
-  return;
-}
+	  const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
+	  if (!phoneRegex.test(phone)) {
+	    alert('전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)');
+	    document.getElementById('phone').focus();
+	    return false;
+	  }
 
-//모든 검사 통과 → address 합산 후 폼 제출
-const fullAddress = zipCode + ' ' + streetAdr + ' ' + detailAdr;
-document.getElementById('address').value = fullAddress;
+	  const fullAddress = zipCode + ' ' + streetAdr + ' ' + detailAdr;
+	  document.getElementById('address').value = fullAddress;
 
-
-// 전화번호
-if (phone === '') {
-  alert('전화번호를 입력해주세요.');
-  document.getElementById('phone').focus();
-  return;
-}
-
-// 전화번호 형식 (010-0000-0000 또는 01000000000)
-const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
-if (!phoneRegex.test(phone)) {
-  alert('전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)');
-  document.getElementById('phone').focus();
-  return;
-}
-
-
-}
-
-
-
-
-
+	  return true;
+	}
+	
 </script>
 
 </html>
