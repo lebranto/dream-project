@@ -87,6 +87,8 @@ public class ProductController {
     public String privacy() {
         return "product/privacy";
     }
+    
+    
     @GetMapping("/list")
     public String productList(
             @RequestParam(value = "petType", required = false) String petType,

@@ -86,12 +86,27 @@ public class AdminOrderDaoImpl implements AdminOrderDao {
     }
 
     @Override
-    public int updateCancelStatus(SqlSessionTemplate sqlSession, int orderId) {
-        return sqlSession.update("adminOrderMapper.updateCancelStatus", orderId);
+    public ArrayList<AdminOrder> selectOrderDetailList(SqlSessionTemplate sqlSession, int orderId) {
+        return new ArrayList<>(sqlSession.selectList("adminOrderMapper.selectOrderDetailList", orderId));
     }
 
     @Override
-    public int clearCancelStatus(SqlSessionTemplate sqlSession, int orderId) {
-        return sqlSession.update("adminOrderMapper.clearCancelStatus", orderId);
+    public int updateCancelStatus(SqlSessionTemplate sqlSession, int detailId) {
+        return sqlSession.update("adminOrderMapper.updateCancelStatus", detailId);
+    }
+
+    @Override
+    public int clearCancelStatus(SqlSessionTemplate sqlSession, int detailId) {
+        return sqlSession.update("adminOrderMapper.clearCancelStatus", detailId);
+    }
+
+    @Override
+    public int updateCancelStatusApproved(SqlSessionTemplate sqlSession, int detailId) {
+        return sqlSession.update("adminOrderMapper.updateCancelStatusApproved", detailId);
+    }
+
+    @Override
+    public int updateCancelStatusRejected(SqlSessionTemplate sqlSession, int detailId) {
+        return sqlSession.update("adminOrderMapper.updateCancelStatusRejected", detailId);
     }
 }

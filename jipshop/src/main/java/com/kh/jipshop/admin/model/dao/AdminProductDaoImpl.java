@@ -71,5 +71,6 @@ public class AdminProductDaoImpl implements AdminProductDao {
 	public int updateProductActiveYn(SqlSessionTemplate sqlSession, AdminProduct product) {
 	    return sqlSession.update("adminProduct.updateProductActiveYn", product);
 	}
+	
 
 }

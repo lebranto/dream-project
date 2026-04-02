@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.jipshop.member.model.vo.Member;
 import com.kh.jipshop.review.model.service.ReviewService;
 import com.kh.jipshop.review.model.vo.Review;
 import com.kh.jipshop.review.model.vo.ReviewableOrderDetail;
+import com.kh.jipshop.security.model.vo.MemberExt;
 
 @Controller
 @RequestMapping("/review")
@@ -33,16 +34,32 @@ public class ReviewController {
     private ServletContext application;
 
     /**
+     * UI 확인 전용 테스트 페이지
+     */
+    @GetMapping("/write/test")
+    public String reviewWriteTest(Model model) {
+
+        ReviewableOrderDetail reviewTarget = new ReviewableOrderDetail();
+        reviewTarget.setDetailId(999);
+        reviewTarget.setProductId(1);
+        reviewTarget.setProductName("UI 테스트용 상품");
+        reviewTarget.setProductPhoto1(null);
+        reviewTarget.setCategoryName("사료");
+        reviewTarget.setPetType("강아지");
+        reviewTarget.setAgeGroup("전연령");
+
+        model.addAttribute("reviewTarget", reviewTarget);
+
+        return "review/reviewWrite";
+    }
+
+    /**
      * 상품상세에서 리뷰작성 버튼 클릭
-     * productId로 들어오면 로그인 회원의 주문상세(detailId)를 찾은 후
-     * 실제 리뷰작성 페이지로 이동시킨다.
      */
     @GetMapping("/write/check")
     public String checkWritableReview(@RequestParam("productId") int productId,
-                                      HttpSession session,
+                                      @AuthenticationPrincipal MemberExt loginUser,
                                       RedirectAttributes ra) {
-
-        Member loginUser = (Member) session.getAttribute("loginUser");
 
         if (loginUser == null) {
             ra.addFlashAttribute("alertMsg", "로그인 후 리뷰를 작성할 수 있습니다.");
@@ -69,15 +86,12 @@ public class ReviewController {
 
     /**
      * 실제 리뷰작성 페이지 진입
-     * detailId 기준으로 본인 주문상세인지, 리뷰 작성 가능한 건인지 다시 검사
      */
     @GetMapping("/write")
     public String reviewWriteForm(@RequestParam("detailId") int detailId,
-                                  HttpSession session,
+                                  @AuthenticationPrincipal MemberExt loginUser,
                                   RedirectAttributes ra,
                                   Model model) {
-
-        Member loginUser = (Member) session.getAttribute("loginUser");
 
         if (loginUser == null) {
             ra.addFlashAttribute("alertMsg", "로그인 후 리뷰를 작성할 수 있습니다.");
@@ -113,24 +127,23 @@ public class ReviewController {
                                @RequestParam("reviewRating") int reviewRating,
                                @RequestParam("reviewContent") String reviewContent,
                                @RequestParam(value = "uploadFiles", required = false) MultipartFile[] uploadFiles,
+                               @AuthenticationPrincipal MemberExt loginUser,
                                HttpSession session,
                                RedirectAttributes ra) {
 
-        Member loginUser = (Member) session.getAttribute("loginUser");
+      if (loginUser == null) {
+           ra.addFlashAttribute("alertMsg", "로그인 후 리뷰를 작성할 수 있습니다.");
+           return "redirect:/member/login";
+      }
 
-        if (loginUser == null) {
-            ra.addFlashAttribute("alertMsg", "로그인 후 리뷰를 작성할 수 있습니다.");
-            return "redirect:/member/login";
-        }
-
-        int memberNo = loginUser.getMemberNo();
+      int memberNo = loginUser.getMemberNo();
 
         ReviewableOrderDetail target = reviewService.selectWritableDetailByDetailId(memberNo, detailId);
 
-        if (target == null) {
-            ra.addFlashAttribute("alertMsg", "리뷰 등록 권한이 없습니다.");
-            return "redirect:/mypage/purchase";
-        }
+      if (target == null) {
+           ra.addFlashAttribute("alertMsg", "리뷰 등록 권한이 없습니다.");
+           return "redirect:/mypage/purchase";
+      }
 
         String reviewPhoto = null;
 
@@ -143,7 +156,7 @@ public class ReviewController {
             for (MultipartFile file : uploadFiles) {
                 if (file != null && !file.isEmpty()) {
                     reviewPhoto = saveFile(file);
-                    break; // REVIEW_PHOTO 컬럼 1개라 첫 번째 파일만 저장
+                    break;
                 }
             }
         }
@@ -166,9 +179,6 @@ public class ReviewController {
         return "redirect:/product/detail?productId=" + productId;
     }
 
-    /**
-     * 파일 저장
-     */
     private String saveFile(MultipartFile upfile) {
 
         String savePath = application.getRealPath("/resources/upload/review/");

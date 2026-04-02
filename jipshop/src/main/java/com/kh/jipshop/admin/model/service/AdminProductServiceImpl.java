@@ -66,5 +66,6 @@ public class AdminProductServiceImpl implements AdminProductService {
 	public int updateProductActiveYn(AdminProduct product) {
 	    return adminProductDao.updateProductActiveYn(sqlSession, product);
 	}
+	
 
 }

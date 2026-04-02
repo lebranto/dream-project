@@ -222,27 +222,25 @@ public class MypageController {
 	) {
 
 	    String password = ((MemberExt) auth.getPrincipal()).getPassword();
-
 	    int memberNo = ((MemberExt) auth.getPrincipal()).getMemberNo();
-	    orders.setMemberNo(memberNo);
 
-	    // 취소 사유 세팅
+	    orders.setMemberNo(memberNo);
 	    orders.setCancelReason(cancelReason);
 
 	    PasswordEncoder pe = new BCryptPasswordEncoder();
 	    boolean ch = pe.matches(check, password);
 
-	    if (ch) {
-	        int result = mService.canclePurchase(orders);
+	    if (!ch) {
+	        return "redirect:/mypage/cancle?orderId="
+	                + orders.getOrderId()
+	                + "&detailId="
+	                + orders.getDetailId();
+	    }
 
-	        if (result != 0) {
-	            return "redirect:/mypage/purchase";
-	        } else {
-	            return "redirect:/mypage/cancle?orderId=" 
-	                    + orders.getOrderId()
-	                    + "&detailId="
-	                    + orders.getDetailId();
-	        }
+	    int result = mService.requestCancel(orders);
+
+	    if (result > 0) {
+	        return "redirect:/mypage/purchase";
 	    } else {
 	        return "redirect:/mypage/cancle?orderId="
 	                + orders.getOrderId()
@@ -250,7 +248,6 @@ public class MypageController {
 	                + orders.getDetailId();
 	    }
 	}
-	
 
 	 
 	 
@@ -326,7 +323,7 @@ public class MypageController {
 	    int result = mService.updateMember(m);
 
 	    if (result > 0) {
-	    	ra.addAttribute("msg","수정이 완료되었습니다.");
+	    	ra.addFlashAttribute("msg","정보가 수정되었습니다.");
 	        return "redirect:/mypage/purchase";
 	        
 	    } else {
@@ -373,6 +370,7 @@ public class MypageController {
 	                            MultipartFile petPhotoFile,
 	                            Authentication auth,
 	                            HttpSession session,
+	                            RedirectAttributes ra,
 	                            Model model) {
 
 	        try {
@@ -405,7 +403,8 @@ public class MypageController {
 	            int result = mService.saveOrUpdatePet(p);
 
 	            if (result > 0) {
-	                return "redirect:/mypage/checkPet";
+	            	ra.addFlashAttribute("msg","정보가 수정되었습니다.");
+	    	        return "redirect:/mypage/purchase";
 	            } else {
 	                model.addAttribute("errorMsg", "반려동물 정보 저장 실패");
 	                model.addAttribute("pet", p);

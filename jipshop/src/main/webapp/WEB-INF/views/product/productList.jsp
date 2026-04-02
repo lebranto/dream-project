@@ -115,7 +115,7 @@
                                 </div>
 
                                 <div class="product-btn-area">
-                                    <form action="${pageContext.request.contextPath}/product/buyNow" method="post" class="inline-form">
+                                    <form action="${pageContext.request.contextPath}/orders/orderNew" method="post" class="inline-form">
                                         <input type="hidden" name="productId" value="${p.productId}">
                                         <input type="hidden" name="qty" value="1">
                                         <button type="submit" class="buy-btn">바로구매</button>
@@ -139,19 +139,39 @@
                 </c:otherwise>
             </c:choose>
         </section>
-<c:choose>
-    <c:when test="${p == pi.currentPage}">
-        <a href="${pageContext.request.contextPath}/product/list?currentPage=${p}&petType=${petType}&categoryName=${categoryName}&sort=${sort}" class="active">
-            ${p}
-        </a>
-    </c:when>
-    <c:otherwise>
-        <a href="${pageContext.request.contextPath}/product/list?currentPage=${p}&petType=${petType}&categoryName=${categoryName}&sort=${sort}">
-            ${p}
-        </a>
-    </c:otherwise>
-</c:choose>
-    </div>
+ <div class="pagination">
+
+            <!-- 이전 -->
+            <c:if test="${pi.currentPage > 1}">
+                <a href="${pageContext.request.contextPath}/product/list?currentPage=${pi.currentPage - 1}&petType=${petType}&categoryName=${categoryName}&sort=${sort}">
+                    &lt;
+                </a>
+            </c:if>
+
+            <!-- 페이지 번호 -->
+            <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+                <c:choose>
+                    <c:when test="${p == pi.currentPage}">
+                        <a href="${pageContext.request.contextPath}/product/list?currentPage=${p}&petType=${petType}&categoryName=${categoryName}&sort=${sort}" class="active">
+                            ${p}
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/product/list?currentPage=${p}&petType=${petType}&categoryName=${categoryName}&sort=${sort}">
+                            ${p}
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+
+            <!-- 다음 -->
+            <c:if test="${pi.currentPage < pi.maxPage}">
+                <a href="${pageContext.request.contextPath}/product/list?currentPage=${pi.currentPage + 1}&petType=${petType}&categoryName=${categoryName}&sort=${sort}">
+                    &gt;
+                </a>
+            </c:if>
+
+        </div>
 </main>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

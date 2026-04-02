@@ -2,156 +2,156 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="mypage">
 
-	<!-- 구매내역 부분 -->
-	<select id="selectListOrder" resultType="OrderDetailResponse">
-		SELECT *
-		FROM (
-			SELECT ROWNUM AS RNUM, T1.*
-			
-			FROM (
-				SELECT
-				O.ORDER_TOTAL_PRICE,
-				O.ORDER_DATE,O.ORDER_ID, 
-				P.PRODUCT_NAME,
-				P.PRODUCT_PHOTO1,
-				S.DELIVERY_STATUS,
-				OD.DETAIL_PRICE,
-				OD.DETAIL_ID AS detailId 
-				FROM ORDERS O
-				JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
-				JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID
-				LEFT JOIN DELIVERY D  ON O.ORDER_ID = D.ORDER_ID
-		        LEFT JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID	  
-				WHERE O.MEMBER_NO =#{memberNo}
-				AND O.ORDER_CANCEL_YN = 'N'
-				AND OD.CANCEL_YN = 'N'
-				<if test="period != null">
-					AND O.ORDER_DATE >= SYSDATE - #{period}
-				</if>
-				<if test="startDate != null and endDate != null">
-					AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
-				</if>
-				ORDER BY O.ORDER_DATE
-				) T1
-		)
-		WHERE RNUM BETWEEN #{offset} AND #{limit}
-	</select>
+    <!-- 구매내역 부분 -->
+    <select id="selectListOrder" resultType="OrderDetailResponse">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS RNUM, T1.*
+            FROM (
+                SELECT
+                    O.ORDER_TOTAL_PRICE,
+                    O.ORDER_DATE,
+                    O.ORDER_ID,
+                    P.PRODUCT_NAME,
+                    P.PRODUCT_PHOTO1 AS PHOTO1,
+                    NVL(S.DELIVERY_STATUS, '결제완료') AS DELIVERY_STATUS,
+                    OD.DETAIL_PRICE,
+                    OD.DETAIL_ID AS DETAIL_ID,
+                    NVL(OD.CANCEL_YN, 'N') AS CANCEL_YN,
+                    NVL(OD.CANCEL_STATUS, 'NONE') AS CANCEL_STATUS,
+                    TO_CHAR(OD.CANCEL_REQUEST_DATE, 'YYYY-MM-DD') AS CANCEL_REQUEST_DATE_STR,
+                    OD.CANCEL_REASON,
+                    CASE
+                        WHEN NVL(OD.CANCEL_STATUS, 'NONE') = 'PENDING' THEN '취소요청'
+                        WHEN NVL(OD.CANCEL_STATUS, 'NONE') = 'APPROVED' THEN '취소완료'
+                        WHEN NVL(OD.CANCEL_STATUS, 'NONE') = 'REJECTED' THEN '취소반려'
+                        ELSE '정상'
+                    END AS DETAIL_CANCEL_STATUS_LABEL
+                FROM ORDERS O
+                JOIN ORDER_DETAIL OD
+                  ON O.ORDER_ID = OD.ORDER_ID
+                JOIN PRODUCT P
+                  ON OD.PRODUCT_ID = P.PRODUCT_ID
+                LEFT JOIN DELIVERY D
+                  ON O.ORDER_ID = D.ORDER_ID
+                LEFT JOIN (
+                    SELECT S1.DELIVERY_ID,
+                           S1.DELIVERY_STATUS
+                    FROM STATUS S1
+                    WHERE S1.DNUM = (
+                        SELECT MAX(S2.DNUM)
+                        FROM STATUS S2
+                        WHERE S2.DELIVERY_ID = S1.DELIVERY_ID
+                    )
+                ) S
+                  ON D.DELIVERY_ID = S.DELIVERY_ID
+                WHERE O.MEMBER_NO = #{memberNo}
+                <if test="period != null">
+                    AND O.ORDER_DATE >= SYSDATE - #{period}
+                </if>
+                <if test="startDate != null and endDate != null">
+                    AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+                </if>
+                ORDER BY O.ORDER_DATE DESC, OD.DETAIL_ID DESC
+            ) T1
+        )
+        WHERE RNUM BETWEEN #{offset} AND #{limit}
+    </select>
 
-	<select id="orderListCount" resultType="int">
-		SELECT COUNT(*)
-		FROM ORDERS O
-		JOIN ORDER_DETAIL OD ON O.ORDER_ID = OD.ORDER_ID
-		JOIN PRODUCT P ON OD.PRODUCT_ID = P.PRODUCT_ID 
-		JOIN DELIVERY D ON O.ORDER_ID = D.ORDER_ID
-		JOIN STATUS S ON D.DELIVERY_ID = S.DELIVERY_ID	
-		WHERE MEMBER_NO = #{memberNo}
-		AND ORDER_CANCEL_YN = 'N'
-
-		<if test="period != null">
-			AND ORDER_DATE >= SYSDATE - #{period}
-		</if>
-
-		<if test="startDate != null and endDate != null">
-			AND ORDER_DATE BETWEEN #{startDate} AND #{endDate}
-		</if>
-
-	</select>
-
-
-	<!-- 최근 본 상품 부분 -->
-
-	<select id="selectListrecently" resultType="OrderDetailResponse">
-		SELECT *
-		FROM (
-			SELECT ROWNUM AS RNUM, T1.*
-		FROM (
-		SELECT R.PRODUCT_ID, R.VIEWED_DATE, P.PRODUCT_NAME, P.PRODUCT_PHOTO1, P.PRODUCT_PRICE
-		FROM RECENTLY_VIEWED R
-		JOIN PRODUCT P ON P.PRODUCT_ID = R.PRODUCT_ID
-		WHERE MEMBER_NO = #{memberNo}
-		
-
-		<if test="period != null">
-			AND VIEWED_DATE >= SYSDATE - #{period}
-		</if>
-
-		<if test="startDate != null and endDate != null">
-			AND VIEWED_DATE BETWEEN #{startDate} AND #{endDate}
-		</if>
-		ORDER BY VIEWED_DATE
-
-		) T1
-		)
-		WHERE RNUM BETWEEN #{offset} AND #{limit}
-
-	</select>
+    <select id="orderListCount" resultType="int">
+        SELECT COUNT(*)
+        FROM ORDERS O
+        JOIN ORDER_DETAIL OD
+          ON O.ORDER_ID = OD.ORDER_ID
+        JOIN PRODUCT P
+          ON OD.PRODUCT_ID = P.PRODUCT_ID
+        WHERE O.MEMBER_NO = #{memberNo}
+        <if test="period != null">
+            AND O.ORDER_DATE >= SYSDATE - #{period}
+        </if>
+        <if test="startDate != null and endDate != null">
+            AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+        </if>
+    </select>
 
 
-	<select id="recentlyListCount" resultType="int">
+    <!-- 최근 본 상품 부분 -->
+    <select id="selectListrecently" resultType="OrderDetailResponse">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS RNUM, T1.*
+            FROM (
+                SELECT
+                    R.PRODUCT_ID,
+                    R.VIEWED_DATE,
+                    P.PRODUCT_NAME,
+                    P.PRODUCT_PHOTO1,
+                    P.PRODUCT_PRICE
+                FROM RECENTLY_VIEWED R
+                JOIN PRODUCT P
+                  ON P.PRODUCT_ID = R.PRODUCT_ID
+                WHERE MEMBER_NO = #{memberNo}
+                <if test="period != null">
+                    AND VIEWED_DATE >= SYSDATE - #{period}
+                </if>
+                <if test="startDate != null and endDate != null">
+                    AND VIEWED_DATE BETWEEN #{startDate} AND #{endDate}
+                </if>
+                ORDER BY VIEWED_DATE DESC
+            ) T1
+        )
+        WHERE RNUM BETWEEN #{offset} AND #{limit}
+    </select>
 
-		SELECT COUNT(*)
-		FROM RECENTLY_VIEWED
-		WHERE MEMBER_NO = #{memberNo}
-
-		<if test="period != null">
-			AND VIEWED_DATE >= SYSDATE - #{period}
-		</if>
-
-		<if test="startDate != null and endDate != null">
-			AND VIEWED_DATE BETWEEN #{startDate} AND #{endDate}
-		</if>
-
-	</select>
-
-
-
-	<!-- 문의 부분 -->
-
-	<select id="selectListinquiry" resultType="myinqury">
-
-		SELECT *
-		FROM (
-		SELECT
-		ROWNUM AS RNUM, T1.*
-		FROM (
-		SELECT *
-		FROM INQUIRY
-		WHERE MEMBER_NO =
-		#{memberNo}
-		ORDER BY INQUIRY_REG_DATE
-
-		) T1
-		)
-		WHERE RNUM BETWEEN #{offset}
-		AND #{limit}
-
-
-	</select>
-
-	<select id="inquiryListCount" resultType="int">
-
-		SELECT COUNT(*)
-		FROM
-		INQUIRY
-		WHERE MEMBER_NO = #{memberNo}
-
-	</select>
+    <select id="recentlyListCount" resultType="int">
+        SELECT COUNT(*)
+        FROM RECENTLY_VIEWED
+        WHERE MEMBER_NO = #{memberNo}
+        <if test="period != null">
+            AND VIEWED_DATE >= SYSDATE - #{period}
+        </if>
+        <if test="startDate != null and endDate != null">
+            AND VIEWED_DATE BETWEEN #{startDate} AND #{endDate}
+        </if>
+    </select>
 
 
-	<select id="inquiryDetail" resultType="myinqury">
+    <!-- 문의 부분 -->
+    <select id="selectListinquiry" resultType="myinqury">
+        SELECT *
+        FROM (
+            SELECT ROWNUM AS RNUM, T1.*
+            FROM (
+                SELECT *
+                FROM INQUIRY
+                WHERE MEMBER_NO = #{memberNo}
+                ORDER BY INQUIRY_REG_DATE DESC
+            ) T1
+        )
+        WHERE RNUM BETWEEN #{offset} AND #{limit}
+    </select>
 
-		SELECT *
-		FROM INQUIRY
-		WHERE
-		INQUIRY_ID = #{inquiryId}
+    <select id="inquiryListCount" resultType="int">
+        SELECT COUNT(*)
+        FROM INQUIRY
+        WHERE MEMBER_NO = #{memberNo}
+    </select>
 
-	</select>
-	
-	<delete id="delectInquiry">
-		DELETE INQUIRY
-		WHERE INQUIRY_ID = #{inquiryId}
-	</delete>
-	
+    <select id="inquiryDetail" resultType="myinqury">
+        SELECT *
+        FROM INQUIRY
+        WHERE INQUIRY_ID = #{inquiryId}
+    </select>
+
+    <delete id="delectInquiry">
+        DELETE FROM INQUIRY
+        WHERE INQUIRY_ID = #{inquiryId}
+    </delete>
+
+
+    <!-- 구매 취소 페이지 -->
+  
+
 	
 	<!-- 구매 취소 부분 -->
 
@@ -234,28 +234,49 @@
 	</update>
 	
 	
-	<!-- 정보 수정 부분 -->
-	
-	<update id="updateMember">
-		UPDATE MEMBER
-		SET EMAIL = #{email}, 
-		MEMBER_NAME= #{memberName}, 
-		MEMBER_ADDRESS =  #{address},
-		PHONE = #{phone}
-		WHERE MEMBER_NO = #{memberNo} 
-	</update>
-	
 
-    <select id="selectPetByMemberNo" parameterType="int"
-            resultType="pet">
+
+    <!-- 이미 취소요청/취소완료 건인지 확인 -->
+    <select id="checkDetailCancelRequest" parameterType="orders" resultType="int">
+        SELECT COUNT(*)
+        FROM ORDER_DETAIL
+        WHERE DETAIL_ID = #{detailId}
+          AND ORDER_ID = #{orderId}
+          AND NVL(CANCEL_STATUS, 'NONE') IN ('PENDING', 'APPROVED')
+    </select>
+
+    <!-- 사용자 취소요청 등록 -->
+    <update id="requestDetailCancel" parameterType="orders">
+        UPDATE ORDER_DETAIL
+        SET CANCEL_STATUS = 'PENDING',
+            CANCEL_REQUEST_DATE = SYSDATE,
+            CANCEL_REASON = #{cancelReason}
+        WHERE DETAIL_ID = #{detailId}
+          AND ORDER_ID = #{orderId}
+          AND NVL(CANCEL_STATUS, 'NONE') NOT IN ('PENDING', 'APPROVED')
+    </update>
+
+
+    <!-- 정보 수정 부분 -->
+    <update id="updateMember">
+        UPDATE MEMBER
+        SET EMAIL = #{email},
+            MEMBER_NAME = #{memberName},
+            MEMBER_ADDRESS = #{address},
+            PHONE = #{phone}
+        WHERE MEMBER_NO = #{memberNo}
+    </update>
+
+
+    <select id="selectPetByMemberNo" parameterType="int" resultType="pet">
         SELECT
-            PET_NO      AS petNo,
-            MEMBER_NO   AS memberNo,
-            PET_TYPE    AS petType,
-            PET_NAME    AS petName,
-            PET_AGE     AS petAge,
-            PET_WEIGHT  AS petWeight,
-            PET_PHOTO   AS petPhoto
+            PET_NO     AS petNo,
+            MEMBER_NO  AS memberNo,
+            PET_TYPE   AS petType,
+            PET_NAME   AS petName,
+            PET_AGE    AS petAge,
+            PET_WEIGHT AS petWeight,
+            PET_PHOTO  AS petPhoto
         FROM PET
         WHERE MEMBER_NO = #{memberNo}
     </select>
@@ -282,12 +303,11 @@
 
     <update id="updatePet" parameterType="pet">
         UPDATE PET
-        SET
-            PET_TYPE   = #{petType},
-            PET_NAME   = #{petName},
-            PET_AGE    = #{petAge},
+        SET PET_TYPE = #{petType},
+            PET_NAME = #{petName},
+            PET_AGE = #{petAge},
             PET_WEIGHT = #{petWeight},
-            PET_PHOTO  = #{petPhoto}
+            PET_PHOTO = #{petPhoto}
         WHERE PET_NO = #{petNo}
     </update>
 	
