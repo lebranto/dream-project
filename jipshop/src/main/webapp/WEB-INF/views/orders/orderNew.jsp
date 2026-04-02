@@ -251,7 +251,7 @@ body{
         <tr>
             <td>
                 <div class="product">
-                    <%-- <img src="${contextPath}${p.photo1}" alt="${p.productName}"> --%>
+                    <img src="${contextPath}${p.photo1}" alt="${p.productName}">
                     <div>${p.productName}</div>
                 </div>
             </td>

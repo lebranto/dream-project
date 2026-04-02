@@ -103,12 +103,7 @@
                       <div>${o.deliveryStatus}</div>
                     </c:otherwise>
                   </c:choose>
-
-                  <a href="#" class="status-badge">상세보기</a>
-                 
-                  <div>${o.deliveryStatus}</div>
                   <a href="${contextPath}/mypage/orderDetail?orderId=${o.orderId}&detailId=${o.detailId}" class="status-badge">상세보기</a>
->>>>>>> origin/main
                 </div>
 
                 <div class="info-cell">
