@@ -60,7 +60,8 @@ public class MemberExt extends Member implements UserDetails, Serializable{
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		
+      return "Y".equals(getActiveYn());
 	}
 	
 }
