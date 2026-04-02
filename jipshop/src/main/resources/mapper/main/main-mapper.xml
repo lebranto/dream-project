@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main">
+
+    <!-- 1. 강아지 추천상품 (주문량 많은 순 4개)-->
+    <select id="selectDogRecommend" resultType="com.kh.jipshop.product.model.vo.Products">
+        SELECT *
+        FROM (
+            SELECT P.PRODUCT_ID   AS productId,
+                   P.PRODUCT_NAME AS productName,
+                   P.PRODUCT_PRICE AS productPrice,
+                   P.PRODUCT_PHOTO1 AS productPhoto1,
+                   P.PET_TYPE     AS petType,
+                   P.AGE_GROUP    AS ageGroup,
+                   NVL(SUM(OD.DETAIL_QTY), 0) AS totalQty
+            FROM PRODUCT P
+            LEFT JOIN ORDER_DETAIL OD ON P.PRODUCT_ID = OD.PRODUCT_ID
+            WHERE P.PET_TYPE = '강아지'
+              AND P.PRODUCT_ACTIVE_YN = 'Y'
+            GROUP BY P.PRODUCT_ID, P.PRODUCT_NAME, P.PRODUCT_PRICE,
+                     P.PRODUCT_PHOTO1, P.PET_TYPE, P.AGE_GROUP
+            ORDER BY totalQty DESC
+        )
+        WHERE ROWNUM &lt;= 4
+    </select>
+
+    <!-- 2. 고양이 추천상품 (주문량 많은 순 4개)-->
+    <select id="selectCatRecommend" resultType="com.kh.jipshop.product.model.vo.Products">
+        SELECT *
+        FROM (
+            SELECT P.PRODUCT_ID   AS productId,
+                   P.PRODUCT_NAME AS productName,
+                   P.PRODUCT_PRICE AS productPrice,
+                   P.PRODUCT_PHOTO1 AS productPhoto1,
+                   P.PET_TYPE     AS petType,
+                   P.AGE_GROUP    AS ageGroup,
+                   NVL(SUM(OD.DETAIL_QTY), 0) AS totalQty
+            FROM PRODUCT P
+            LEFT JOIN ORDER_DETAIL OD ON P.PRODUCT_ID = OD.PRODUCT_ID
+            WHERE P.PET_TYPE = '고양이'
+              AND P.PRODUCT_ACTIVE_YN = 'Y'
+            GROUP BY P.PRODUCT_ID, P.PRODUCT_NAME, P.PRODUCT_PRICE,
+                     P.PRODUCT_PHOTO1, P.PET_TYPE, P.AGE_GROUP
+            ORDER BY totalQty DESC
+        )
+        WHERE ROWNUM &lt;= 4
+    </select>
+
+    <!-- 3. 추천템 - 비로그인/펫 미등록
+            (강아지+고양이 합쳐서 주문량 많은 순 4개)-->
+    <select id="selectDefaultRecommend" resultType="com.kh.jipshop.product.model.vo.Products">
+        SELECT *
+        FROM (
+            SELECT P.PRODUCT_ID    AS productId,
+                   P.PRODUCT_NAME  AS productName,
+                   P.PRODUCT_PRICE AS productPrice,
+                   P.PRODUCT_PHOTO1 AS productPhoto1,
+                   P.PET_TYPE      AS petType,
+                   P.AGE_GROUP     AS ageGroup,
+                   NVL(SUM(OD.DETAIL_QTY), 0) AS totalQty
+            FROM PRODUCT P
+            LEFT JOIN ORDER_DETAIL OD ON P.PRODUCT_ID = OD.PRODUCT_ID
+            WHERE P.PRODUCT_ACTIVE_YN = 'Y'
+            GROUP BY P.PRODUCT_ID, P.PRODUCT_NAME, P.PRODUCT_PRICE,
+                     P.PRODUCT_PHOTO1, P.PET_TYPE, P.AGE_GROUP
+            ORDER BY totalQty DESC
+        )
+        WHERE ROWNUM &lt;= 4
+    </select>
+
+    <!--4. 추천템 - 펫 등록 있는 회원
+            (petType + ageGroup 매칭, 전연령 포함, 주문량 많은 순 4개)
+            파라미터: petType(강아지/고양이), ageGroup(키드/어덜트/시니어) -->
+    <select id="selectPetRecommend" parameterType="map" resultType="com.kh.jipshop.product.model.vo.Products">
+        SELECT *
+        FROM (
+            SELECT P.PRODUCT_ID    AS productId,
+                   P.PRODUCT_NAME  AS productName,
+                   P.PRODUCT_PRICE AS productPrice,
+                   P.PRODUCT_PHOTO1 AS productPhoto1,
+                   P.PET_TYPE      AS petType,
+                   P.AGE_GROUP     AS ageGroup,
+                   NVL(SUM(OD.DETAIL_QTY), 0) AS totalQty
+            FROM PRODUCT P
+            LEFT JOIN ORDER_DETAIL OD ON P.PRODUCT_ID = OD.PRODUCT_ID
+            WHERE P.PRODUCT_ACTIVE_YN = 'Y'
+              AND P.PET_TYPE = #{petType}
+              AND (P.AGE_GROUP = #{ageGroup} OR P.AGE_GROUP = '전연령')
+            GROUP BY P.PRODUCT_ID, P.PRODUCT_NAME, P.PRODUCT_PRICE,
+                     P.PRODUCT_PHOTO1, P.PET_TYPE, P.AGE_GROUP
+            ORDER BY totalQty DESC
+        )
+        WHERE ROWNUM &lt;= 4
+    </select>
+
+    <!-- 5. 신상품 (최신 등록순 5개)-->
+    <select id="selectNewProducts" resultType="com.kh.jipshop.product.model.vo.Products">
+        SELECT *
+        FROM (
+            SELECT P.PRODUCT_ID    AS productId,
+                   P.PRODUCT_NAME  AS productName,
+                   P.PRODUCT_PRICE AS productPrice,
+                   P.PRODUCT_PHOTO1 AS productPhoto1,
+                   P.PET_TYPE      AS petType,
+                   P.AGE_GROUP     AS ageGroup,
+                   P.PRODUCT_REG_DATE AS productRegDate
+            FROM PRODUCT P
+            WHERE P.PRODUCT_ACTIVE_YN = 'Y'
+            ORDER BY P.PRODUCT_REG_DATE DESC
+        )
+        WHERE ROWNUM &lt;= 5
+    </select>
+
+    <!-- 6. 꿀템 상품 (가격 낮은 순 5개)-->
+    <select id="selectHoneyProducts" resultType="com.kh.jipshop.product.model.vo.Products">
+        SELECT *
+        FROM (
+            SELECT P.PRODUCT_ID    AS productId,
+                   P.PRODUCT_NAME  AS productName,
+                   P.PRODUCT_PRICE AS productPrice,
+                   P.PRODUCT_PHOTO1 AS productPhoto1,
+                   P.PET_TYPE      AS petType,
+                   P.AGE_GROUP     AS ageGroup
+            FROM PRODUCT P
+            WHERE P.PRODUCT_ACTIVE_YN = 'Y'
+            ORDER BY P.PRODUCT_PRICE ASC
+        )
+        WHERE ROWNUM &lt;= 5
+    </select>
+
+    <!-- 7. 로그인한 회원의 펫 정보 조회 -->
+    <select id="selectPetByMemberNo" parameterType="int" resultType="com.kh.jipshop.member.model.vo.Pet">
+        SELECT PET_NO    AS petNo,
+               MEMBER_NO AS memberNo,
+               PET_TYPE  AS petType,
+               PET_NAME  AS petName,
+               PET_AGE   AS petAge,
+               PET_PHOTO AS petPhoto
+        FROM PET
+        WHERE MEMBER_NO = #{memberNo}
+        AND ROWNUM = 1
+    </select>
+
+</mapper>

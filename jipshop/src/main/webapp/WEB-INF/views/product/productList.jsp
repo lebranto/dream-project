@@ -115,11 +115,13 @@
                                 </div>
 
                                 <div class="product-btn-area">
-                                    <form action="${pageContext.request.contextPath}/orders/orderNew" method="post" class="inline-form">
-                                        <input type="hidden" name="productId" value="${p.productId}">
-                                        <input type="hidden" name="qty" value="1">
-                                        <button type="submit" class="buy-btn">바로구매</button>
-                                    </form>
+                                    <div class="product-btn-area">
+    									<form action="${pageContext.request.contextPath}/orders/orderNew" method="get" class="inline-form">
+       									 <input type="hidden" name="productId" value="${p.productId}">
+        								<input type="hidden" name="qty" value="1">
+        								<button type="submit" class="buy-btn">바로구매</button>
+    									</form>
+									</div>
 
                                     <form action="${pageContext.request.contextPath}/product/cart" method="post" class="inline-form">
                                         <input type="hidden" name="productId" value="${p.productId}">
@@ -170,7 +172,7 @@
                     &gt;
                 </a>
             </c:if>
-
+			</div>
         </div>
 </main>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

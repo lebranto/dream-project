@@ -86,7 +86,7 @@
                     </div>
 
                     <!-- 구매하기 -->
-                    <form action="${pageContext.request.contextPath}/product/buyNow" method="post" class="buy-form">
+                    <form action="${pageContext.request.contextPath}/orders/orderNew" method="Get" class="buy-form">
                         <input type="hidden" name="productId" value="${product.productId}">
 
                         <div class="qty-row">
