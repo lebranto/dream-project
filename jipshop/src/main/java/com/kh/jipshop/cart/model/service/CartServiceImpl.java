@@ -1,8 +1,14 @@
 package com.kh.jipshop.cart.model.service;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.kh.jipshop.cart.model.dao.CartDao;
 import com.kh.jipshop.cart.model.vo.CartDTO;
 
@@ -31,4 +37,17 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO findByUserAndProduct(CartDTO dto) { return cartDao.findByUserAndProduct(dto); }
+
+	@Override
+	public List<CartDTO> selectCartItemsByIds(String cartIds, int memberNo) {
+		List<Integer> idList = Arrays.stream(cartIds.split(","))
+		                .map(Integer::parseInt)
+		                .collect(Collectors.toList());
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("idList", idList);
+		param.put("memberNo", memberNo);
+		
+		return cartDao.selectCartItemsByIds(param);
+	}
 }
