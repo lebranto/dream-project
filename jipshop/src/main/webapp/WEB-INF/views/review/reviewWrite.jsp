@@ -99,13 +99,12 @@
                                     <input type="file"
                                            id="uploadFiles"
                                            name="uploadFiles"
-                                           multiple
                                            accept=".jpg,.jpeg,.png,.gif">
-                                    <span class="file-count"><span id="fileCount">0</span> / 3</span>
+                                    <span class="file-count"><span id="fileCount">0</span> / 1</span>
                                 </div>
 
                                 <div class="file-guide">
-                                    사진은 최대 3장까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF)
+                                    사진은 최대 1장까지 첨부 가능합니다. (JPG, JPEG, PNG, GIF)
                                 </div>
 
                                 <ul class="file-name-list" id="fileNameList"></ul>
@@ -141,7 +140,7 @@
                 return;
             }
 
-            stars.forEach(function(별) {
+            stars.forEach(function(star) {
                 star.addEventListener("click", function() {
                     const value = Number(this.dataset.value);
                     reviewRatingInput.value = value;
@@ -166,8 +165,8 @@
                 uploadFiles.addEventListener("change", function() {
                     const files = Array.from(this.files);
 
-                    if (files.length > 3) {
-                        alert("사진은 최대 3장까지 첨부할 수 있습니다.");
+                    if (files.length > 1) {
+                        alert("사진은 최대 1장까지 첨부할 수 있습니다.");
                         this.value = "";
                         fileCount.textContent = 0;
                         fileNameList.innerHTML = "";
