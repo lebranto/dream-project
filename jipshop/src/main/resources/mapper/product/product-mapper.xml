@@ -25,9 +25,20 @@
 
     <sql id="productWhere">
         WHERE P.PRODUCT_ACTIVE_YN = 'Y'
+
+        <if test="keyword != null and keyword != ''">
+            AND (
+                   P.PRODUCT_NAME LIKE '%' || #{keyword} || '%'
+                OR P.PRODUCT_DETAIL LIKE '%' || #{keyword} || '%'
+                OR PC.CATEGORY_NAME LIKE '%' || #{keyword} || '%'
+                OR C.COMPANY_NAME LIKE '%' || #{keyword} || '%'
+            )
+        </if>
+
         <if test="petType != null and petType != ''">
             AND P.PET_TYPE = #{petType}
         </if>
+
         <if test="categoryName != null and categoryName != ''">
             AND PC.CATEGORY_NAME = #{categoryName}
         </if>
@@ -115,20 +126,20 @@
           AND P.PRODUCT_ACTIVE_YN = 'Y'
     </select>
 
-<insert id="insertCompany" parameterType="string">
-    INSERT INTO COMPANY (
-        COMPANY_CODE,
-        COMPANY_NAME,
-        STATUS
-    ) VALUES (
-        SEQ_COMPANY.NEXTVAL,
-        #{value},
-        'Y'
-    )
-</insert>
+    <insert id="insertCompany" parameterType="string">
+        INSERT INTO COMPANY (
+            COMPANY_CODE,
+            COMPANY_NAME,
+            STATUS
+        ) VALUES (
+            SEQ_COMPANY.NEXTVAL,
+            #{value},
+            'Y'
+        )
+    </insert>
 
-<select id="selectLastCompanyCode" resultType="int">
-    SELECT MAX(COMPANY_CODE) FROM COMPANY
-</select>
+    <select id="selectLastCompanyCode" resultType="int">
+        SELECT MAX(COMPANY_CODE) FROM COMPANY
+    </select>
 
 </mapper>

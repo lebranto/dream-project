@@ -43,7 +43,7 @@ public class AdminOrderCancelController {
         model.addAttribute("search", search);
         model.addAttribute("pendingCount", pendingCount);
 
-        return "admin/orderCancelList";
+        return "admin/order/orderCancelList";
     }
 
     @PostMapping("/approve")

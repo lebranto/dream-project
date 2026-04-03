@@ -68,9 +68,9 @@
         <div class="modify-category-wrap">
             <div class="modify-category-label">카테고리 선택 *</div>
             <div class="modify-category-group">
-                <button type="button" class="modify-category-btn" data-code="201">강아지</button>
-                <button type="button" class="modify-category-btn" data-code="202">고양이</button>
-                <button type="button" class="modify-category-btn" data-code="203">공통</button>
+                <button type="button" class="modify-category-btn" data-code="101">강아지</button>
+                <button type="button" class="modify-category-btn" data-code="102">고양이</button>
+                <button type="button" class="modify-category-btn" data-code="103">공통</button>
             </div>
         </div>
     </c:if>
@@ -79,9 +79,9 @@
         <div class="modify-category-wrap">
             <div class="modify-category-label">카테고리 선택 *</div>
             <div class="modify-category-group">
-                <button type="button" class="modify-category-btn" data-code="301">질문</button>
-                <button type="button" class="modify-category-btn" data-code="302">고민</button>
-                <button type="button" class="modify-category-btn" data-code="303">자유</button>
+                <button type="button" class="modify-category-btn" data-code="201">질문</button>
+                <button type="button" class="modify-category-btn" data-code="202">고민</button>
+                <button type="button" class="modify-category-btn" data-code="203">자유</button>
             </div>
         </div>
     </c:if>

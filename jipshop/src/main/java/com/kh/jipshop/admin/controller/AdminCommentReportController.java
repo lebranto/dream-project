@@ -62,7 +62,7 @@ public class AdminCommentReportController {
         model.addAttribute("reportStatus", reportStatus);
         model.addAttribute("keyword", keyword);
 
-        return "admin/reportList";
+        return "admin/report/reportList";
     }
 
     @GetMapping("/admin/reportDetail.do")
@@ -72,7 +72,7 @@ public class AdminCommentReportController {
         AdminCommentReport report = adminCommentReportService.selectReportDetail(reportId);
         model.addAttribute("report", report);
 
-        return "admin/reportDetail";
+        return "admin/report/reportDetail";
     }
 
     @PostMapping("/admin/reportProcess.do")

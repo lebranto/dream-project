@@ -106,9 +106,9 @@
                 </div>
 
                 <div class="select-btn-group">
-                    <button type="button" class="select-btn category-btn" data-code="201">강아지</button>
-                    <button type="button" class="select-btn category-btn" data-code="202">고양이</button>
-                    <button type="button" class="select-btn category-btn" data-code="203">공통</button>
+                    <button type="button" class="select-btn category-btn" data-code="101">강아지</button>
+                    <button type="button" class="select-btn category-btn" data-code="102">고양이</button>
+                    <button type="button" class="select-btn category-btn" data-code="103">공통</button>
                 </div>
             </div>
         </c:if>
@@ -120,9 +120,9 @@
                 </div>
 
                 <div class="select-btn-group">
-                    <button type="button" class="select-btn category-btn" data-code="301">질문</button>
-                    <button type="button" class="select-btn category-btn" data-code="302">고민</button>
-                    <button type="button" class="select-btn category-btn" data-code="303">자유</button>
+                    <button type="button" class="select-btn category-btn" data-code="201">질문</button>
+                    <button type="button" class="select-btn category-btn" data-code="202">고민</button>
+                    <button type="button" class="select-btn category-btn" data-code="203">자유</button>
                 </div>
             </div>
         </c:if>
@@ -174,7 +174,11 @@
 </div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+
     const boardType = "${param.boardType}";
+    const loginMemberNo = "${empty loginUser ? '' : loginUser.memberNo}";
+
     const categoryButtons = document.querySelectorAll(".category-btn");
     const categoryCodeInput = document.getElementById("categoryCode");
 
@@ -186,6 +190,7 @@
     const imageCountText = document.getElementById("imageCountText");
 
     const writeForm = document.getElementById("writeForm");
+    const submitBtn = document.getElementById("submitBtn");
 
     const customModal = document.getElementById("customModal");
     const customModalMessage = document.getElementById("customModalMessage");
@@ -195,25 +200,39 @@
     let focusTarget = null;
 
     function showModal(message, target) {
-        customModalMessage.textContent = message;
+        if (customModalMessage) {
+            customModalMessage.textContent = message;
+        } else {
+            alert(message);
+        }
+
         focusTarget = target || null;
-        customModal.classList.add("show");
+
+        if (customModal) {
+            customModal.classList.add("show");
+        }
     }
 
     function closeModal() {
-        customModal.classList.remove("show");
+        if (customModal) {
+            customModal.classList.remove("show");
+        }
         if (focusTarget) {
             focusTarget.focus();
         }
     }
 
-    customModalConfirm.addEventListener("click", closeModal);
+    if (customModalConfirm) {
+        customModalConfirm.addEventListener("click", closeModal);
+    }
 
-    customModal.addEventListener("click", function(e) {
-        if (e.target === customModal) {
-            closeModal();
-        }
-    });
+    if (customModal) {
+        customModal.addEventListener("click", function(e) {
+            if (e.target === customModal) {
+                closeModal();
+            }
+        });
+    }
 
     if (categoryButtons.length > 0) {
         categoryButtons.forEach(function(btn) {
@@ -222,34 +241,41 @@
                     item.classList.remove("active");
                 });
                 this.classList.add("active");
-                categoryCodeInput.value = this.dataset.code;
+
+                if (categoryCodeInput) {
+                    categoryCodeInput.value = this.dataset.code;
+                }
             });
         });
     }
 
-    if (boardType === "myKidBoard") {
+    if (boardType === "myKidBoard" && categoryCodeInput) {
         categoryCodeInput.value = "101";
     }
 
-    imageInput.addEventListener("change", function(e) {
-        const files = Array.from(e.target.files);
+    if (imageInput) {
+        imageInput.addEventListener("change", function(e) {
+            const files = Array.from(e.target.files);
 
-        if (files.length === 0) return;
+            if (files.length === 0) return;
 
-        const mergedFiles = selectedImages.concat(files);
+            const mergedFiles = selectedImages.concat(files);
 
-        if (mergedFiles.length > 3) {
-            showModal("사진은 최대 3개까지만 첨부할 수 있습니다.");
-            imageInput.value = "";
-            return;
-        }
+            if (mergedFiles.length > 3) {
+                showModal("사진은 최대 3개까지만 첨부할 수 있습니다.");
+                imageInput.value = "";
+                return;
+            }
 
-        selectedImages = mergedFiles;
-        updateImageInput();
-        renderImagePreview();
-    });
+            selectedImages = mergedFiles;
+            updateImageInput();
+            renderImagePreview();
+        });
+    }
 
     function updateImageInput() {
+        if (!imageInput || !imageCountText) return;
+
         const dt = new DataTransfer();
 
         selectedImages.forEach(function(file) {
@@ -261,6 +287,8 @@
     }
 
     function renderImagePreview() {
+        if (!imagePreviewArea || !imageCountText) return;
+
         imagePreviewArea.innerHTML = "";
 
         if (selectedImages.length === 0) {
@@ -299,32 +327,39 @@
         });
     }
 
-    writeForm.addEventListener("submit", function(e) {
-        const title = titleInput ? titleInput.value.trim() : "";
-        const content = contentInput ? contentInput.value.trim() : "";
-        const categoryCode = categoryCodeInput ? categoryCodeInput.value : "";
+    if (submitBtn && writeForm) {
+        submitBtn.addEventListener("click", function(e) {
+            const title = titleInput ? titleInput.value.trim() : "";
+            const content = contentInput ? contentInput.value.trim() : "";
+            const categoryCode = categoryCodeInput ? categoryCodeInput.value : "";
 
-        if (boardType === "tip" || boardType === "free") {
-            if (!categoryCode) {
-                e.preventDefault();
+            console.log("버튼 클릭");
+            console.log("loginMemberNo =", loginMemberNo);
+
+
+            if ((boardType === "tip" || boardType === "free") && (!categoryCode || categoryCode === "0")) {
                 showModal("카테고리를 선택해주세요.");
                 return;
             }
-        }
 
-        if (title === "") {
-            e.preventDefault();
-            showModal("제목을 입력해주세요.", titleInput);
-            return;
-        }
+            if (title === "") {
+                showModal("제목을 입력해주세요.", titleInput);
+                return;
+            }
 
-        if (content.length < 5) {
-            e.preventDefault();
-            showModal("내용은 5자 이상 입력해주세요.", contentInput);
-            return;
-        }
-    });
+            if (content.length < 5) {
+                showModal("내용은 5자 이상 입력해주세요.", contentInput);
+                return;
+            }
+
+            writeForm.submit();
+        });
+    } else {
+        console.log("submitBtn 또는 writeForm 못 찾음");
+    }
+});
 </script>
+
 <c:if test="${not empty alertMsg}">
     <script>
         alert("${alertMsg}");

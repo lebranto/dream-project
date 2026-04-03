@@ -73,27 +73,28 @@ public class ProductController {
         session.setAttribute("alertMsg", "구매하기 기능은 연결 전입니다. 현재는 버튼 동작만 확인용입니다.");
         return "redirect:/product/detail?productId=" + productId;
     }
+
     @RequestMapping("/")
     public String home() {
-       return "product/home";
-     }
+        return "product/home";
+    }
 
-     @RequestMapping("/terms")
-     public String terms() {
-         return "product/terms";
-     }
+    @RequestMapping("/terms")
+    public String terms() {
+        return "product/terms";
+    }
 
     @RequestMapping("/privacy")
     public String privacy() {
         return "product/privacy";
     }
-    
-    
+
     @GetMapping("/list")
     public String productList(
             @RequestParam(value = "petType", required = false) String petType,
             @RequestParam(value = "categoryName", required = false) String categoryName,
             @RequestParam(value = "sort", defaultValue = "latest") String sort,
+            @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
             Model model) {
 
@@ -101,6 +102,7 @@ public class ProductController {
         search.setPetType(petType);
         search.setCategoryName(categoryName);
         search.setSort(sort);
+        search.setKeyword(keyword);
 
         int listCount = productService.selectProductListCount(search);
 
@@ -115,6 +117,7 @@ public class ProductController {
         model.addAttribute("petType", petType);
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("sort", sort);
+        model.addAttribute("keyword", keyword);
 
         return "product/productList";
     }
