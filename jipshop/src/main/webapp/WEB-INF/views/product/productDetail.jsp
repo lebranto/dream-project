@@ -116,17 +116,22 @@
                     </form>
 
                     <!-- 장바구니 -->
-                    <form action="${pageContext.request.contextPath}/product/cart" method="post" class="cart-form">
-                        <input type="hidden" name="productId" value="${product.productId}">
-                        <input type="hidden" name="qty" id="cartQty" value="1">
+                    <form action="${pageContext.request.contextPath}/cartList/addAjax" method="post" class="cart-form">
+    
+    <input type="hidden" name="productId" value="${product.productId}">
+    <input type="hidden" name="productName" value="${product.productName}">
+    <input type="hidden" name="productPrice" value="${product.productPrice}">
+    <input type="hidden" name="productPhoto" value="${product.productPhoto1}">
+    
+    <input type="hidden" name="qty" id="cartQty" value="1">
 
-                        <div class="btn-area second-btn-area">
-                            <button type="submit" class="cart-btn"
-                                <c:if test="${product.productStock <= 0}">disabled</c:if>>
-                                장바구니
-                            </button>
-                        </div>
-                    </form>
+    <div class="btn-area second-btn-area">
+        <button type="button" class="cart-btn"
+            <c:if test="${product.productStock <= 0}">disabled</c:if>>
+            장바구니
+        </button>
+    </div>
+</form>
                 </div>
             </section>
 
@@ -246,6 +251,33 @@
                 });
             });
         });
+        
+     // =========== 추가 ===========
+     // ⭐ 상품 상세 장바구니 AJAX
+     document.querySelector(".cart-btn").addEventListener("click", function() {
+
+         const form = document.querySelector(".cart-form");
+         const formData = new FormData(form);
+
+         fetch(form.action, {
+             method: "POST",
+             body: formData
+         })
+         .then(res => res.text())
+         .then(count => {
+
+             alert("장바구니에 추가되었습니다");
+
+             console.log("카트 개수:", count);
+
+             // ⭐ 헤더 숫자 반영
+             updateCartCountUI(parseInt(count));
+         })
+         .catch(err => {
+             console.error(err);
+         });
+     });
+
     </script>
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
