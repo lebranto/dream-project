@@ -1,6 +1,7 @@
 package com.kh.jipshop.cart.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,4 +73,9 @@ public class CartDaoImpl implements CartDao {
     public CartDTO findByUserAndProduct(CartDTO dto) {
         return sqlSession.selectOne(namespace + "findByUserAndProduct", dto);
     }
+
+	@Override
+	public List<CartDTO> selectCartItemsByIds(Map<String, Object> param) {
+		return sqlSession.selectList("cartMapper.selectCartItemsByIds", param);
+	}
 }

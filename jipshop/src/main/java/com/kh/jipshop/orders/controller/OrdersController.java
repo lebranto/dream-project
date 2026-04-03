@@ -1,5 +1,6 @@
 package com.kh.jipshop.orders.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.jipshop.cart.model.service.CartService;
-import com.kh.jipshop.cart.model.service.CartService;
-import com.kh.jipshop.cart.model.vo.CartDTO;
 import com.kh.jipshop.cart.model.vo.CartDTO;
 import com.kh.jipshop.mypage.model.vo.Orders;
 import com.kh.jipshop.mypage.model.vo.Product;
@@ -37,44 +36,55 @@ import lombok.extern.slf4j.Slf4j;
 	    public String orderNew(
 	            Authentication auth,
 	            Model model,
-	            @RequestParam(defaultValue = "1") int qty,
-	            @RequestParam(required = false) Integer productId,
+	            @RequestParam(name = "qty", defaultValue = "1") int qty,
+	            @RequestParam(name = "productId", required = false) Integer productId,
+	            @RequestParam(name = "cartIds", required = false) String cartIds,
 	            @RequestParam Map<String, Object> paramMap
 	    ) {
-	        String memberName = ((MemberExt) auth.getPrincipal()).getMemberName();
-	        String phone = ((MemberExt) auth.getPrincipal()).getPhone();
-	        int memberNo = ((MemberExt) auth.getPrincipal()).getMemberNo();
-	        String email = ((MemberExt) auth.getPrincipal()).getEmail();
-	        
-	        paramMap.put("productId",productId);
-	        paramMap.put("memberNo", memberNo);
-	        paramMap.put("qty", qty);
-	        
-	        List<Product> list = oService.productList(paramMap);
-	        
-	        int totalPrice = 0;
-	        int totalCount = 0;
-	        
-	        for (Product p : list) {
-	            totalPrice += p.getPrice(); // 처음 진입 시 수량 1 기준
-	            totalCount++;
+	        MemberExt loginMember = (MemberExt) auth.getPrincipal();
+	        int memberNo = loginMember.getMemberNo();
+
+	        List<CartDTO> list = new ArrayList<>();
+
+	        // 장바구니에서 온 경우
+	        if (cartIds != null && !cartIds.isEmpty()) {
+	            list = cartService.selectCartItemsByIds(cartIds, memberNo);
 	        }
-	        
+	        // 바로구매에서 온 경우
+	        else {
+	            paramMap.put("productId", productId);
+	            paramMap.put("memberNo", memberNo);
+	            paramMap.put("qty", qty);
+
+	            List<Product> productList = oService.productList(paramMap);
+	            for (Product p : productList) {
+	                CartDTO dto = new CartDTO();
+	                dto.setProductId(p.getProductId());
+	                dto.setProductName(p.getProductName());
+	                dto.setProductPrice(p.getPrice());      
+	                dto.setProductPhoto1(p.getPhoto1());  
+	                dto.setCartQty(qty);
+	                list.add(dto);
+	            }
+	        }
+
+	        int totalPrice = 0;
+	        for (CartDTO c : list) {
+	            totalPrice += c.getProductPrice() * c.getCartQty();
+	        }
+
 	        int totalDelivery = (totalPrice == 0 || totalPrice >= 30000) ? 0 : 3000;
 	        int finalPrice = totalPrice + totalDelivery;
-	        
+
 	        model.addAttribute("productList", list);
-	        model.addAttribute("phone", phone);
-	        model.addAttribute("memberName", memberName);
+	        model.addAttribute("memberName", loginMember.getMemberName());
+	        model.addAttribute("phone", loginMember.getPhone());
+	        model.addAttribute("email", loginMember.getEmail());
 	        model.addAttribute("memberNo", memberNo);
-	        model.addAttribute("email",email);
-	        
-	        
 	        model.addAttribute("totalPrice", totalPrice);
-	        model.addAttribute("totalCount", totalCount);
 	        model.addAttribute("totalDelivery", totalDelivery);
 	        model.addAttribute("finalPrice", finalPrice);
-	        
+
 	        return "orders/orderNew";
 	    }
 
