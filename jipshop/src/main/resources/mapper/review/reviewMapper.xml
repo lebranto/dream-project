@@ -105,7 +105,7 @@
             REVIEW_REG_DATE,
             REVIEW_ACTIVE_YN
         ) VALUES (
-            SEQ_REVIEW_ID.NEXTVAL,
+            SEQ_REVIEW.NEXTVAL,
             #{memberNo},
             #{detailId},
             #{reviewRating},
