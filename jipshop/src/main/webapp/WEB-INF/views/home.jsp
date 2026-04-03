@@ -54,7 +54,7 @@
 </div>
 
 <div class="banner-slide">
-    <a href="${pageContext.request.contextPath}/product/detail?productId=17" class="banner-link">
+    <a href="${pageContext.request.contextPath}/product/detail?productId=4" class="banner-link">
         <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_03.png" alt="배너4">
         <div class="banner-overlay">
             <span class="badge">CAT</span>
