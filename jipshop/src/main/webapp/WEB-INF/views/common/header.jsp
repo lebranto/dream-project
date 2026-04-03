@@ -157,8 +157,9 @@
                     </div>
                 </li>
                 <li class="menu-item">
-                    <a href="#" class="nav-link">추천</a>
-                </li>
+  					  <a href="${pageContext.request.contextPath}/#recommend-section"
+ 							  class="nav-link"  id="recommendLink">추천</a>
+				</li>
                 <li class="menu-item">
                     <a href="${pageContext.request.contextPath}/community/main" class="nav-link">커뮤니티</a>
                 </li>
@@ -190,4 +191,37 @@ function updateCartCountUI(count) {
         badge.style.display = "none";
     }
 }
+
+function smoothScrollTo(targetY, duration = 600) {
+    const startY = window.scrollY;
+    const diff = targetY - startY;
+    let start;
+
+    function step(timestamp) {
+        if (!start) start = timestamp;
+        const time = timestamp - start;
+        const percent = Math.min(time / duration, 1);
+
+        // easeOut (부드럽게 감속)
+        const ease = 1 - Math.pow(1 - percent, 3);
+
+        window.scrollTo(0, startY + diff * ease);
+
+        if (time < duration) {
+            requestAnimationFrame(step);
+        }
+    }
+
+    requestAnimationFrame(step);
+}
+
+document.getElementById("recommendLink")?.addEventListener("click", function(e) {
+
+    const el = document.getElementById("recommend-section");
+
+    if (el) {
+        e.preventDefault();
+        smoothScrollTo(el.offsetTop, 700); // 속도 조절 가능
+    }
+});
 </script>

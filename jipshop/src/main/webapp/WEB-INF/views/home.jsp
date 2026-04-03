@@ -22,28 +22,29 @@
 <section class="main-banner-wrap">
     <div class="main-banner" id="mainBanner">
         <div class="banner-track" id="bannerTrack">
+
             <div class="banner-slide">
-    <a href="${pageContext.request.contextPath}/product/detail?productId=164" class="banner-link">
-        <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309.png" alt="배너1">
-        <div class="banner-overlay">
-            <span class="badge">BEST</span>
-            <p>인기 사료와 간식을 한눈에 만나보세요</p>
-        </div>
-    </a>
-</div>
+                <a href="${pageContext.request.contextPath}/product/list" class="banner-link">
+                    <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309.png">
+                    <div class="banner-overlay">
+                        <span class="badge">BEST</span>
+                        <p>인기 사료와 간식을 한눈에 만나보세요</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="banner-slide">
+                <a href="${pageContext.request.contextPath}/product/list?petType=강아지&categoryName=사료" class="banner-link">
+                    <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_01.png">
+                    <div class="banner-overlay">
+                        <span class="badge">LIVING</span>
+                        <p>생활용품과 위생용품도 편리하게 쇼핑</p>
+                    </div>
+                </a>
+            </div>
 
 <div class="banner-slide">
-    <a href="${pageContext.request.contextPath}/product/detail?productId=165" class="banner-link">
-        <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_01.png" alt="배너2">
-        <div class="banner-overlay">
-            <span class="badge">LIVING</span>
-            <p>생활용품과 위생용품도 편리하게 쇼핑</p>
-        </div>
-    </a>
-</div>
-
-<div class="banner-slide">
-    <a href="${pageContext.request.contextPath}/product/detail?productId=166" class="banner-link">
+    <a href="${pageContext.request.contextPath}/product/detail?productId=16" class="banner-link">
         <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_02.png" alt="배너3">
         <div class="banner-overlay">
             <span class="badge">CARE</span>
@@ -53,7 +54,7 @@
 </div>
 
 <div class="banner-slide">
-    <a href="${pageContext.request.contextPath}/product/detail?productId=167" class="banner-link">
+    <a href="${pageContext.request.contextPath}/product/detail?productId=4" class="banner-link">
         <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_03.png" alt="배너4">
         <div class="banner-overlay">
             <span class="badge">CAT</span>
@@ -80,7 +81,7 @@
   <div class="inner">
 
     <!-- ══ 추천상품 ══ -->
-    <section class="recommend-section">
+    <section class="recommend-section" id="recommend-section">
       <h2 class="section-title">추천상품</h2>
       <div class="recommend-content">
 
