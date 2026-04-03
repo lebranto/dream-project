@@ -23,33 +23,44 @@
     <div class="main-banner" id="mainBanner">
         <div class="banner-track" id="bannerTrack">
             <div class="banner-slide">
-                <img src="${contextPath}/resources/img/KakaoTalk_20260318_120256309.png" alt="배너1">
-                <div class="banner-overlay">
-                    <span class="badge">BEST</span>
-                    <p>인기 사료와 간식을 한눈에 만나보세요</p>
-                </div>
-            </div>
-            <div class="banner-slide">
-                <img src="${contextPath}/resources/img/KakaoTalk_20260318_120256309_01.png" alt="배너2">
-                <div class="banner-overlay">
-                    <span class="badge">LIVING</span>
-                    <p>생활용품과 위생용품도 편리하게 쇼핑</p>
-                </div>
-            </div>
-            <div class="banner-slide">
-                <img src="${contextPath}/resources/img/KakaoTalk_20260318_120256309_02.png" alt="배너3">
-                <div class="banner-overlay">
-                    <span class="badge">CARE</span>
-                    <p>칫솔 · 위생용품 · 데일리 케어 추천</p>
-                </div>
-            </div>
-            <div class="banner-slide">
-                <img src="${contextPath}/resources/img/KakaoTalk_20260318_120256309_03.png" alt="배너4">
-                <div class="banner-overlay">
-                    <span class="badge">CAT</span>
-                    <p>체질을 생각한 고양이 맞춤 상품</p>
-                </div>
-            </div>
+    <a href="${pageContext.request.contextPath}/product/detail?productId=164" class="banner-link">
+        <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309.png" alt="배너1">
+        <div class="banner-overlay">
+            <span class="badge">BEST</span>
+            <p>인기 사료와 간식을 한눈에 만나보세요</p>
+        </div>
+    </a>
+</div>
+
+<div class="banner-slide">
+    <a href="${pageContext.request.contextPath}/product/detail?productId=165" class="banner-link">
+        <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_01.png" alt="배너2">
+        <div class="banner-overlay">
+            <span class="badge">LIVING</span>
+            <p>생활용품과 위생용품도 편리하게 쇼핑</p>
+        </div>
+    </a>
+</div>
+
+<div class="banner-slide">
+    <a href="${pageContext.request.contextPath}/product/detail?productId=166" class="banner-link">
+        <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_02.png" alt="배너3">
+        <div class="banner-overlay">
+            <span class="badge">CARE</span>
+            <p>칫솔 · 위생용품 · 데일리 케어 추천</p>
+        </div>
+    </a>
+</div>
+
+<div class="banner-slide">
+    <a href="${pageContext.request.contextPath}/product/detail?productId=167" class="banner-link">
+        <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_03.png" alt="배너4">
+        <div class="banner-overlay">
+            <span class="badge">CAT</span>
+            <p>체질을 생각한 고양이 맞춤 상품</p>
+        </div>
+    </a>
+</div>
         </div>
         <button type="button" class="banner-btn banner-prev" id="prevBtn">&#10094;</button>
         <button type="button" class="banner-btn banner-next" id="nextBtn">&#10095;</button>
