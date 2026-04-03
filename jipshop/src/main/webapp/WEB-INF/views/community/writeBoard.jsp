@@ -106,9 +106,9 @@
                 </div>
 
                 <div class="select-btn-group">
-                    <button type="button" class="select-btn category-btn" data-code="201">강아지</button>
-                    <button type="button" class="select-btn category-btn" data-code="202">고양이</button>
-                    <button type="button" class="select-btn category-btn" data-code="203">공통</button>
+                    <button type="button" class="select-btn category-btn" data-code="101">강아지</button>
+                    <button type="button" class="select-btn category-btn" data-code="102">고양이</button>
+                    <button type="button" class="select-btn category-btn" data-code="103">공통</button>
                 </div>
             </div>
         </c:if>
@@ -120,9 +120,9 @@
                 </div>
 
                 <div class="select-btn-group">
-                    <button type="button" class="select-btn category-btn" data-code="301">질문</button>
-                    <button type="button" class="select-btn category-btn" data-code="302">고민</button>
-                    <button type="button" class="select-btn category-btn" data-code="303">자유</button>
+                    <button type="button" class="select-btn category-btn" data-code="201">질문</button>
+                    <button type="button" class="select-btn category-btn" data-code="202">고민</button>
+                    <button type="button" class="select-btn category-btn" data-code="203">자유</button>
                 </div>
             </div>
         </c:if>
@@ -336,11 +336,6 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("버튼 클릭");
             console.log("loginMemberNo =", loginMemberNo);
 
-            if (!loginMemberNo || loginMemberNo === "" || loginMemberNo === "0") {
-                alert("로그인 후 사용 가능합니다.");
-                location.href = "${pageContext.request.contextPath}/member/login";
-                return;
-            }
 
             if ((boardType === "tip" || boardType === "free") && (!categoryCode || categoryCode === "0")) {
                 showModal("카테고리를 선택해주세요.");
