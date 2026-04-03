@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.jipshop.cart.model.service.CartService;
+import com.kh.jipshop.cart.model.service.CartService;
+import com.kh.jipshop.cart.model.vo.CartDTO;
 import com.kh.jipshop.cart.model.vo.CartDTO;
 import com.kh.jipshop.mypage.model.vo.Orders;
 import com.kh.jipshop.mypage.model.vo.Product;
@@ -104,24 +106,12 @@ import lombok.extern.slf4j.Slf4j;
 	    }
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@RequestMapping("/cart")
 	public String cart() {
 		return "orders/cart";
 	}
 	
 	@RequestMapping("/cartList")
-	public String cartList() {
-		return "orders/cartList";
-	}
 	public String cartList(Model model, Authentication auth) {
         // 1. 인증 정보 자체가 없는 경우 체크
         if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
