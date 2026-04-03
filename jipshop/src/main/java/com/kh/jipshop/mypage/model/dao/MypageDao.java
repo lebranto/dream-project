@@ -3,6 +3,8 @@ package com.kh.jipshop.mypage.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.mybatis.spring.SqlSessionTemplate;
+
 import com.kh.jipshop.member.model.vo.Member;
 import com.kh.jipshop.member.model.vo.Pet;
 import com.kh.jipshop.mypage.model.dto.OrderDetailResponse;
@@ -52,6 +54,11 @@ public interface MypageDao {
 	Pet selectPetByMemberNo(int memberNo);
 
 	int insertPet(Pet p);
+
+	int checkDetailCancelRequest(Orders orders);
+
+	int requestDetailCancel(Orders orders);
+	OrderDetailResponse orderDetail(Map<String, Object> paramMap);
 
 	
 	

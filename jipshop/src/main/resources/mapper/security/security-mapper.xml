@@ -11,6 +11,7 @@
 		<result column="MEMBER_ID" property="memberId"/>
 		<result column="MEMBER_PWD" property="memberPwd"/>
 		<result column="MEMBER_NAME" property="memberName"/>
+		<result column="MEMBER_ACTIVE_YN" property="activeYn"/>
 		
 		<collection property="authorities"
 			javaType="arrayList"

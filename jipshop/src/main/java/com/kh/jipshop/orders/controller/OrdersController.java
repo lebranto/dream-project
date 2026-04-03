@@ -35,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 	    public String orderNew(
 	            Authentication auth,
 	            Model model,
+	            @RequestParam(defaultValue = "1") int qty,
 	            @RequestParam(required = false) Integer productId,
 	            @RequestParam Map<String, Object> paramMap
 	    ) {
@@ -45,6 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 	        
 	        paramMap.put("productId",productId);
 	        paramMap.put("memberNo", memberNo);
+	        paramMap.put("qty", qty);
 	        
 	        List<Product> list = oService.productList(paramMap);
 	        
@@ -81,8 +83,14 @@ import lombok.extern.slf4j.Slf4j;
 	            Authentication auth,
 	            RedirectAttributes ra
 	    ) {
-	        int memberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
-	        order.setMemberNo(memberNo);
+	    	 MemberExt loginMember = (MemberExt) auth.getPrincipal();
+
+	    	
+	    	order.setMemberNo(loginMember.getMemberNo());
+	    	order.setOrdererName(loginMember.getMemberName());
+	    	order.setOrdererPhone(loginMember.getPhone());
+	    	order.setOrdererEmail(loginMember.getEmail());
+
 
 	        int result = oService.insertOrder(order);
 

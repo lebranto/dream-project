@@ -37,6 +37,8 @@
 		  <!-- 커뮤니티 작성 및 수정삭제 권한  -->
 		 <security:intercept-url pattern="/community/**" access="isAuthenticated()" />
 		 <security:intercept-url pattern="/mypage/**" access="isAuthenticated()" />
+		 <security:intercept-url pattern="/product/inquiryList" access="isAuthenticated()" />
+		 <security:intercept-url pattern="/product/inquiryWrite" access="isAuthenticated()" />
 		 
 		 <security:intercept-url pattern="/" access="permitAll" />
 		 <security:intercept-url pattern="/security/insert" access="permitAll" />

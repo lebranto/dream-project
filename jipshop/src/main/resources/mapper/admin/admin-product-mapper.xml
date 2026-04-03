@@ -98,36 +98,106 @@
     </select>
     
     <!-- 상품 등록 -->
-    <insert id="insertProduct" parameterType="AdminProduct">
-        INSERT INTO PRODUCT (
-            PRODUCT_ID, CATEGORY_ID, COMPANY_CODE,
-            PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_STOCK,
-            PRODUCT_DETAIL, PRODUCT_PHOTO1, PRODUCT_PHOTO2,
-            PRODUCT_REG_DATE, PRODUCT_ACTIVE_YN,
-            PET_TYPE, AGE_GROUP
-        ) VALUES (
-            SEQ_PRODUCT.NEXTVAL, #{categoryId}, #{companyCode},
-            #{productName}, #{productPrice}, #{productStock},
-            #{productDetail}, #{productPhoto1}, #{productPhoto2},
-            SYSDATE, 'Y',
-            #{petType}, #{ageGroup}
-        )
+    <insert id="insertProduct" parameterType="com.kh.jipshop.admin.model.vo.AdminProduct">
+    <selectKey keyProperty="productId" resultType="_int" order="BEFORE">
+        SELECT SEQ_PRODUCT.NEXTVAL FROM DUAL
+    </selectKey>
+
+    INSERT INTO PRODUCT (
+        PRODUCT_ID,
+        CATEGORY_ID,
+        COMPANY_CODE,
+        PRODUCT_NAME,
+        PRODUCT_PRICE,
+        PRODUCT_STOCK,
+        PRODUCT_DETAIL,
+        PRODUCT_PHOTO1,
+        PRODUCT_PHOTO2,
+        PRODUCT_ACTIVE_YN,
+        PET_TYPE,
+        AGE_GROUP
+    ) VALUES (
+        #{productId},
+        #{categoryId},
+        #{companyCode},
+        #{productName},
+        #{productPrice},
+        #{productStock},
+        #{productDetail},
+        #{productPhoto1},
+        #{productPhoto2},
+        'Y',
+        #{petType},
+        #{ageGroup}
+    )
     </insert>
     <insert id="insertCompany" parameterType="map">
-    INSERT INTO COMPANY (
-        COMPANY_CODE,
-        COMPANY_NAME,
-        COMPANY_PHONE,
-        ADDRESS_ADDRESS
-    ) VALUES (
-        SEQ_COMPANY.NEXTVAL,
-        #{name},
-        #{phone},
-        #{address}
-    )
-</insert>
+	    INSERT INTO COMPANY (
+	        COMPANY_CODE,
+	        COMPANY_NAME,
+	        COMPANY_PHONE,
+	        ADDRESS_ADDRESS
+	    ) VALUES (
+	        SEQ_COMPANY.NEXTVAL,
+	        #{name},
+	        #{phone},
+	        #{address}
+	    )
+	</insert>
 
-<select id="selectLastCompanyCode" resultType="int">
-    SELECT MAX(COMPANY_CODE) FROM COMPANY
-</select>
+	<select id="selectLastCompanyCode" resultType="int">
+	    SELECT MAX(COMPANY_CODE) FROM COMPANY
+	</select>
+
+	<!-- 상품상세 -->
+	 <select id="selectProductDetail" parameterType="_int" resultMap="productRM">
+        SELECT
+               P.PRODUCT_ID,
+               P.CATEGORY_ID,
+               PC.CATEGORY_NAME,
+               P.COMPANY_CODE,
+               C.COMPANY_NAME,
+               P.PRODUCT_NAME,
+               P.PRODUCT_PRICE,
+               P.PRODUCT_STOCK,
+               P.PRODUCT_DETAIL,
+               P.PRODUCT_PHOTO1,
+               P.PRODUCT_PHOTO2,
+               P.PRODUCT_REG_DATE,
+               P.PRODUCT_ACTIVE_YN,
+               P.PET_TYPE,
+               P.AGE_GROUP
+          FROM PRODUCT P
+          JOIN COMPANY C
+            ON P.COMPANY_CODE = C.COMPANY_CODE
+          JOIN PRODUCT_CATEGORY PC
+            ON P.CATEGORY_ID = PC.CATEGORY_ID
+         WHERE P.PRODUCT_ID = #{productId}
+    </select>
+
+    
+    <!-- 🔥 상품 수정 -->
+   
+    <update id="updateProduct" parameterType="AdminProduct">
+        UPDATE PRODUCT
+           SET CATEGORY_ID      = #{categoryId},
+               COMPANY_CODE     = #{companyCode},
+               PRODUCT_NAME     = #{productName},
+               PRODUCT_PRICE    = #{productPrice},
+               PRODUCT_STOCK    = #{productStock},
+               PRODUCT_DETAIL   = #{productDetail},
+               PRODUCT_PHOTO1   = #{productPhoto1},
+               PRODUCT_PHOTO2   = #{productPhoto2},
+               PET_TYPE         = #{petType},
+               AGE_GROUP        = #{ageGroup}
+         WHERE PRODUCT_ID = #{productId}
+    </update>
+
+    
+    <!-- 판매중지 / 판매재개 -->
+    <update id="updateProductActiveYn" parameterType="AdminProduct">
+        UPDATE PRODUCT
+           SET PRODUCT_ACTIVE_YN = #{productActiveYn}
+         WHERE PRODUCT_ID = #{productId}
+    </update>
 </mapper>

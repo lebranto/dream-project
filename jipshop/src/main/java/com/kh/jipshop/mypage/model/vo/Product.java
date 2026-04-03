@@ -23,6 +23,8 @@ public class Product {
 	private String petType;
 	private String ageGroup;
 	
+	private int qty;
+	
 	
 	
 	

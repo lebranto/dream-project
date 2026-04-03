@@ -38,7 +38,13 @@ public interface AdminOrderDao {
 
     AdminOrder selectOrderDetail(SqlSessionTemplate sqlSession, int orderId);
 
-    int updateCancelStatus(SqlSessionTemplate sqlSession, int orderId);
+    ArrayList<AdminOrder> selectOrderDetailList(SqlSessionTemplate sqlSession, int orderId);
 
-    int clearCancelStatus(SqlSessionTemplate sqlSession, int orderId);
+    int updateCancelStatus(SqlSessionTemplate sqlSession, int detailId);
+
+    int clearCancelStatus(SqlSessionTemplate sqlSession, int detailId);
+
+    int updateCancelStatusApproved(SqlSessionTemplate sqlSession, int detailId);
+
+    int updateCancelStatusRejected(SqlSessionTemplate sqlSession, int detailId);
 }

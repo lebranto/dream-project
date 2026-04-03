@@ -1,10 +1,12 @@
 package com.kh.jipshop.security.model.service;
 
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.kh.jipshop.security.model.dao.SecurityDao;
+import com.kh.jipshop.security.model.vo.MemberExt;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +29,13 @@ public class SecurityServiceImpl implements SecurityService{
 		if(member == null) {
 			throw new UsernameNotFoundException(username);
 		}
+		
+		 MemberExt m = (MemberExt) member;
+
+		    if ("N".equals(m.getActiveYn())) {
+		        throw new DisabledException("탈퇴한 회원입니다.");
+		    }
+		
 		return member;
 	}
 	

@@ -84,6 +84,7 @@ public class AdminOrderController {
     public String selectOrderDetail(@RequestParam("orderId") int orderId, Model model) {
 
         AdminOrder order = adminOrderService.selectOrderDetail(orderId);
+        List<AdminOrder> detailList = adminOrderService.selectOrderDetailList(orderId);
 
         if (order == null) {
             model.addAttribute("errorMsg", "주문 상세 조회 실패");
@@ -91,6 +92,7 @@ public class AdminOrderController {
         }
 
         model.addAttribute("order", order);
+        model.addAttribute("detailList", detailList);
         return "admin/orderDetail";
     }
 
@@ -108,13 +110,63 @@ public class AdminOrderController {
             return "redirect:/admin/order/orderDetail?orderId=" + orderId;
         }
 
-        // 기존 서비스 메서드 재사용
         int result = adminOrderService.updateOrderStatus(orderId, deliveryStatus);
 
         if (result > 0) {
             ra.addFlashAttribute("successMsg", "배송 상태 변경이 완료되었습니다.");
         } else {
             ra.addFlashAttribute("successMsg", "배송 상태 변경에 실패했습니다.");
+        }
+
+        return "redirect:/admin/order/orderDetail?orderId=" + orderId;
+    }
+
+    @PostMapping("/approveCancel")
+    public String approveCancel(
+            @RequestParam("orderId") int orderId,
+            @RequestParam("detailId") int detailId,
+            RedirectAttributes ra) {
+
+        int result = adminOrderService.updateCancelStatusApproved(detailId);
+
+        if (result > 0) {
+            ra.addFlashAttribute("successMsg", "개별 취소 승인이 완료되었습니다.");
+        } else {
+            ra.addFlashAttribute("successMsg", "개별 취소 승인에 실패했습니다.");
+        }
+
+        return "redirect:/admin/order/orderDetail?orderId=" + orderId;
+    }
+
+    @PostMapping("/rejectCancel")
+    public String rejectCancel(
+            @RequestParam("orderId") int orderId,
+            @RequestParam("detailId") int detailId,
+            RedirectAttributes ra) {
+
+        int result = adminOrderService.updateCancelStatusRejected(detailId);
+
+        if (result > 0) {
+            ra.addFlashAttribute("successMsg", "개별 취소 반려가 완료되었습니다.");
+        } else {
+            ra.addFlashAttribute("successMsg", "개별 취소 반려에 실패했습니다.");
+        }
+
+        return "redirect:/admin/order/orderDetail?orderId=" + orderId;
+    }
+
+    @PostMapping("/resetCancel")
+    public String resetCancel(
+            @RequestParam("orderId") int orderId,
+            @RequestParam("detailId") int detailId,
+            RedirectAttributes ra) {
+
+        int result = adminOrderService.clearCancelStatus(detailId);
+
+        if (result > 0) {
+            ra.addFlashAttribute("successMsg", "개별 취소 상태 초기화가 완료되었습니다.");
+        } else {
+            ra.addFlashAttribute("successMsg", "개별 취소 상태 초기화에 실패했습니다.");
         }
 
         return "redirect:/admin/order/orderDetail?orderId=" + orderId;
