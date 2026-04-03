@@ -21,7 +21,18 @@
 
     <!-- productId로 작성 가능한 주문상세 1건 찾기 -->
     <select id="selectWritableDetailByProduct" parameterType="map" resultMap="reviewableOrderDetailMap">
-        SELECT *
+        SELECT
+            DETAIL_ID,
+            ORDER_ID,
+            PRODUCT_ID,
+            MEMBER_NO,
+            PRODUCT_NAME,
+            PRODUCT_PHOTO1,
+            PRODUCT_PRICE,
+            COMPANY_NAME,
+            PET_TYPE,
+            AGE_GROUP,
+            CATEGORY_NAME
         FROM (
             SELECT
                 OD.DETAIL_ID,
@@ -81,7 +92,8 @@
           AND OD.DETAIL_ID = #{detailId}
           AND R.REVIEW_ID IS NULL
     </select>
-    
+
+    <!-- 리뷰 등록 -->
     <insert id="insertReview" parameterType="com.kh.jipshop.review.model.vo.Review">
         INSERT INTO REVIEW (
             REVIEW_ID,

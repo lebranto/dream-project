@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="security">
+
 	<select id="loadUserByUsername" resultMap="userDetailResultMap">
-		SELECT * FROM MEMBER
-		WHERE MEMBER_ID = #{memberId}
+    SELECT
+        MEMBER_NO,
+        MEMBER_ID,
+        MEMBER_PWD,
+        MEMBER_NAME,
+        MEMBER_ACTIVE_YN
+    FROM MEMBER
+    WHERE MEMBER_ID = #{value}
 	</select>
 	
-	<resultMap id="userDetailResultMap" type="memberExt" >
+	
+	<resultMap id="userDetailResultMap" type="com.kh.jipshop.security.model.vo.MemberExt" >
 		<id column="MEMBER_NO" property="memberNo"/>
 		<result column="MEMBER_ID" property="memberId"/>
 		<result column="MEMBER_PWD" property="memberPwd"/>
