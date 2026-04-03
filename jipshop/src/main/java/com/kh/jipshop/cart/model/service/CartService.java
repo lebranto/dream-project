@@ -11,4 +11,5 @@ public interface CartService {
     int deleteAll(int[] ids);
     int selectCount(int memberNo);
     CartDTO findByUserAndProduct(CartDTO dto);
+	List<CartDTO> selectCartItemsByIds(String cartIds, int memberNo);
 }

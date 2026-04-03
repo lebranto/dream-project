@@ -249,43 +249,38 @@ body{
             <c:choose>
                 <c:when test="${not empty productList}">
     <c:forEach var="p" items="${productList}" varStatus="st">
-        <tr>
-            <td>
-                <div class="product">
-                    <img src="${contextPath}${p.photo1}" alt="${p.productName}">
-                    <div>${p.productName}</div>
-                </div>
-            </td>
-
-            <td>
-                <input type="number"
-                       class="qty-input"
-                       id="qty_${st.index}"
-                       value="${p.qty}"
-                       min="1"
-                       data-index="${st.index}"
-                       data-unit-price="${p.price}"
-                       onchange="changeQty(${st.index})">
-            </td>
-
-            <td>
-                <span class="row-price" id="rowPrice_${st.index}">
-                    <fmt:formatNumber value="${p.price}" pattern="#,###" />
-                </span>원
-            </td>
-
-            <td>0원</td>
-        </tr>
-
-        <!-- ORDER_DETAIL insert용 hidden -->
-        <tr class="hidden-area">
-            <td colspan="4">
-                <input type="hidden" name="detailList[${st.index}].productId" value="${p.productId}">
-                <input type="hidden" name="detailList[${st.index}].detailQty" id="hiddenQty_${st.index}" value="1">
-                <input type="hidden" name="detailList[${st.index}].detailPrice" id="hiddenPrice_${st.index}" value="${p.price}">
-            </td>
-        </tr>
-    </c:forEach>
+	    <tr>
+	        <td>
+	            <div class="product">
+	                <img src="${contextPath}${p.productPhoto1}" alt="${p.productName}">
+	                <div>${p.productName}</div>
+	            </div>
+	        </td>
+	        <td>
+	            <input type="number"
+	                   class="qty-input"
+	                   id="qty_${st.index}"
+	                   value="${p.cartQty}"
+	                   min="1"
+	                   data-index="${st.index}"
+	                   data-unit-price="${p.productPrice}"
+	                   onchange="changeQty(${st.index})">
+	        </td>
+	        <td>
+	            <span class="row-price" id="rowPrice_${st.index}">
+	                <fmt:formatNumber value="${p.productPrice}" pattern="#,###"/>
+	            </span>원
+	        </td>
+	        <td>0원</td>
+	    </tr>
+	    <tr class="hidden-area">
+	        <td colspan="4">
+	            <input type="hidden" name="detailList[${st.index}].productId"   value="${p.productId}">
+	            <input type="hidden" name="detailList[${st.index}].detailQty"   id="hiddenQty_${st.index}"   value="${p.cartQty}">
+	            <input type="hidden" name="detailList[${st.index}].detailPrice" id="hiddenPrice_${st.index}" value="${p.productPrice}">
+	        </td>
+	    </tr>
+	</c:forEach>
 </c:when>
 <c:otherwise>
     <tr>

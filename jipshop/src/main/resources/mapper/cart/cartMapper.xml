@@ -52,5 +52,23 @@
     <select id="findByUserAndProduct" parameterType="com.kh.jipshop.cart.model.vo.CartDTO" resultMap="cartMap">
         SELECT * FROM CART WHERE MEMBER_NO = #{memberNo} AND PRODUCT_ID = #{productId}
     </select>
-
+	
+	
+	<select id="selectCartItemsByIds" resultType="com.kh.jipshop.cart.model.vo.CartDTO">
+    SELECT 
+        c.CART_ID,
+        c.MEMBER_NO,
+        c.PRODUCT_ID,
+        c.CART_QTY,
+        p.PRODUCT_NAME,
+        p.PRODUCT_PRICE,
+        p.PRODUCT_PHOTO1
+    FROM CART c
+    JOIN PRODUCT p ON c.PRODUCT_ID = p.PRODUCT_ID
+    WHERE c.CART_ID IN
+    <foreach collection="idList" item="id" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+    AND c.MEMBER_NO = #{memberNo}
+</select>
 </mapper>
