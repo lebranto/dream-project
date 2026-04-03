@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cartMapper">
+
+    <resultMap id="cartMap" type="com.kh.jipshop.cart.model.vo.CartDTO">
+        <id     property="cartId"        column="CART_ID"/>
+        <result property="memberNo"      column="MEMBER_NO"/>
+        <result property="productId"     column="PRODUCT_ID"/>
+        <result property="cartQty"       column="CART_QTY"/>
+        <result property="productName"   column="PRODUCT_NAME"/>
+        <result property="productPrice"  column="PRODUCT_PRICE"/>
+        <result property="productPhoto1" column="PRODUCT_PHOTO1"/>
+    </resultMap>
+
+    <insert id="insertCart" parameterType="com.kh.jipshop.cart.model.vo.CartDTO">
+        INSERT INTO CART (
+            CART_ID, MEMBER_NO, PRODUCT_ID, CART_QTY
+        ) VALUES (
+            SEQ_CART.NEXTVAL, #{memberNo}, #{productId}, #{cartQty}
+        )
+    </insert>
+
+    <select id="selectCartList" parameterType="int" resultMap="cartMap">
+        SELECT 
+            C.CART_ID, C.MEMBER_NO, C.PRODUCT_ID, C.CART_QTY,
+            P.PRODUCT_NAME, P.PRODUCT_PRICE, P.PRODUCT_PHOTO1
+        FROM CART C
+        JOIN PRODUCT P ON (C.PRODUCT_ID = P.PRODUCT_ID)
+        WHERE C.MEMBER_NO = #{memberNo}
+        ORDER BY C.CART_ID DESC
+    </select>
+
+    <update id="updateQty" parameterType="com.kh.jipshop.cart.model.vo.CartDTO">
+        UPDATE CART SET CART_QTY = #{cartQty} WHERE CART_ID = #{cartId}
+    </update>
+
+    <delete id="deleteCart" parameterType="int">
+        DELETE FROM CART WHERE CART_ID = #{cartId}
+    </delete>
+
+    <delete id="deleteAll">
+        DELETE FROM CART WHERE CART_ID IN
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCount" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM CART WHERE MEMBER_NO = #{memberNo}
+    </select>
+
+    <select id="findByUserAndProduct" parameterType="com.kh.jipshop.cart.model.vo.CartDTO" resultMap="cartMap">
+        SELECT * FROM CART WHERE MEMBER_NO = #{memberNo} AND PRODUCT_ID = #{productId}
+    </select>
+
+</mapper>
