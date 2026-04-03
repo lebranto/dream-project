@@ -10,4 +10,7 @@ public interface InquiryService {
     int selectInquiryListCount();
 
     ArrayList<Inquiry> selectInquiryList(PageInfo pi);
+
+    // 🔥 추가
+    int insertInquiry(Inquiry inquiry);
 }

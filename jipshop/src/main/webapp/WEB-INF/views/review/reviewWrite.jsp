@@ -141,7 +141,7 @@
                 return;
             }
 
-            stars.forEach(function(star) {
+            stars.forEach(function(별) {
                 star.addEventListener("click", function() {
                     const value = Number(this.dataset.value);
                     reviewRatingInput.value = value;
