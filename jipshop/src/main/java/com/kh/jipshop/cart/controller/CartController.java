@@ -120,6 +120,7 @@ public class CartController {
         return cartService.selectCount(memberNo);
     }
 
+   
     @PostMapping("/deleteAllAjax")
     @ResponseBody
     public int deleteAllAjax(
