@@ -90,15 +90,16 @@ public class MainPageController {
                     result.put("imgType", "dog");
                     result.put("petPhoto", null);
                 } else {
-                    String petType  = pet.getPetType();
-                    String ageGroup = pet.getAgeGroup();
+                	String petType   = pet.getPetType();
+                	String ageGroup  = pet.getAgeGroup();
+                	String dbPetType = "cat".equals(petType) ? "고양이" : "강아지"; 
 
-                    result.put("imgType",  "강아지".equals(petType) ? "dog" : "cat");
-                    result.put("petPhoto", pet.getPetPhoto());
+                	result.put("imgType",  "cat".equals(petType) ? "cat" : "dog");  
+                	result.put("petPhoto", pet.getPetPhoto());
 
                     if (ageGroup != null) {
                         Map<String, String> params = new HashMap<>();
-                        params.put("petType",  petType);
+                        params.put("petType",  dbPetType);
                         params.put("ageGroup", ageGroup);
                         products = mainService.selectPetRecommend(params);
                     } else {
