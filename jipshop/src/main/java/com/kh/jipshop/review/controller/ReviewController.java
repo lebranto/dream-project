@@ -8,7 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,16 +34,20 @@ public class ReviewController {
     private ServletContext application;
 
     /**
-     * UI 확인 전용 테스트 페이지
+     * UI 확인용 테스트 페이지
      */
     @GetMapping("/write/test")
     public String reviewWriteTest(Model model) {
 
         ReviewableOrderDetail reviewTarget = new ReviewableOrderDetail();
         reviewTarget.setDetailId(999);
+        reviewTarget.setOrderId(1);
         reviewTarget.setProductId(1);
+        reviewTarget.setMemberNo(10000);
         reviewTarget.setProductName("UI 테스트용 상품");
         reviewTarget.setProductPhoto1(null);
+        reviewTarget.setProductPrice(12500);
+        reviewTarget.setCompanyName("냥냥컴퍼니");
         reviewTarget.setCategoryName("사료");
         reviewTarget.setPetType("강아지");
         reviewTarget.setAgeGroup("전연령");
@@ -54,13 +58,15 @@ public class ReviewController {
     }
 
     /**
-     * 상품상세에서 리뷰작성 버튼 클릭
+     * 상품 상세페이지에서 리뷰작성 버튼 클릭
+     * 구매 여부 / 미작성 여부 확인 후 리뷰작성 페이지로 이동
      */
     @GetMapping("/write/check")
     public String checkWritableReview(@RequestParam("productId") int productId,
-                                      @AuthenticationPrincipal MemberExt loginUser,
+                                      Authentication auth,
                                       RedirectAttributes ra) {
 
+        MemberExt loginUser = getLoginUser(auth);
         if (loginUser == null) {
             ra.addFlashAttribute("alertMsg", "로그인 후 리뷰를 작성할 수 있습니다.");
             return "redirect:/member/login";
@@ -69,6 +75,9 @@ public class ReviewController {
         int memberNo = loginUser.getMemberNo();
 
         System.out.println("=== 리뷰작성 가능 여부 체크 ===");
+        System.out.println("loginUser = " + loginUser);
+        System.out.println("loginUser.getMemberId() : " + loginUser.getMemberId());
+        System.out.println("loginUser.getMemberNo() : " + loginUser.getMemberNo());
         System.out.println("memberNo : " + memberNo);
         System.out.println("productId : " + productId);
 
@@ -89,10 +98,11 @@ public class ReviewController {
      */
     @GetMapping("/write")
     public String reviewWriteForm(@RequestParam("detailId") int detailId,
-                                  @AuthenticationPrincipal MemberExt loginUser,
+                                  Authentication auth,
                                   RedirectAttributes ra,
                                   Model model) {
 
+        MemberExt loginUser = getLoginUser(auth);
         if (loginUser == null) {
             ra.addFlashAttribute("alertMsg", "로그인 후 리뷰를 작성할 수 있습니다.");
             return "redirect:/member/login";
@@ -101,6 +111,7 @@ public class ReviewController {
         int memberNo = loginUser.getMemberNo();
 
         System.out.println("=== 리뷰작성 페이지 진입 ===");
+        System.out.println("memberId : " + loginUser.getMemberId());
         System.out.println("memberNo : " + memberNo);
         System.out.println("detailId : " + detailId);
 
@@ -114,7 +125,6 @@ public class ReviewController {
         }
 
         model.addAttribute("reviewTarget", target);
-
         return "review/reviewWrite";
     }
 
@@ -127,38 +137,46 @@ public class ReviewController {
                                @RequestParam("reviewRating") int reviewRating,
                                @RequestParam("reviewContent") String reviewContent,
                                @RequestParam(value = "uploadFiles", required = false) MultipartFile[] uploadFiles,
-                               @AuthenticationPrincipal MemberExt loginUser,
+                               Authentication auth,
                                HttpSession session,
                                RedirectAttributes ra) {
 
-      if (loginUser == null) {
-           ra.addFlashAttribute("alertMsg", "로그인 후 리뷰를 작성할 수 있습니다.");
-           return "redirect:/member/login";
-      }
+        MemberExt loginUser = getLoginUser(auth);
+        if (loginUser == null) {
+            ra.addFlashAttribute("alertMsg", "로그인 후 리뷰를 작성할 수 있습니다.");
+            return "redirect:/member/login";
+        }
 
-      int memberNo = loginUser.getMemberNo();
+        int memberNo = loginUser.getMemberNo();
+
+        System.out.println("=== 리뷰 등록 ===");
+        System.out.println("memberId : " + loginUser.getMemberId());
+        System.out.println("memberNo : " + memberNo);
+        System.out.println("detailId : " + detailId);
+        System.out.println("productId : " + productId);
 
         ReviewableOrderDetail target = reviewService.selectWritableDetailByDetailId(memberNo, detailId);
 
-      if (target == null) {
-           ra.addFlashAttribute("alertMsg", "리뷰 등록 권한이 없습니다.");
-           return "redirect:/mypage/purchase";
-      }
+        if (target == null) {
+            ra.addFlashAttribute("alertMsg", "리뷰 등록 권한이 없습니다.");
+            return "redirect:/mypage/purchase";
+        }
 
-        String reviewPhoto = null;
+        reviewContent = reviewContent == null ? "" : reviewContent.trim();
 
-        if (uploadFiles != null) {
-            if (uploadFiles.length > 3) {
-                session.setAttribute("alertMsg", "사진은 최대 3장까지 업로드 가능합니다.");
-                return "redirect:/review/write?detailId=" + detailId;
-            }
+        if (reviewRating < 1 || reviewRating > 5) {
+            ra.addFlashAttribute("alertMsg", "별점을 올바르게 선택해주세요.");
+            return "redirect:/review/write?detailId=" + detailId;
+        }
 
-            for (MultipartFile file : uploadFiles) {
-                if (file != null && !file.isEmpty()) {
-                    reviewPhoto = saveFile(file);
-                    break;
-                }
-            }
+        if (reviewContent.length() < 5) {
+            ra.addFlashAttribute("alertMsg", "상세리뷰를 5자 이상 입력해주세요.");
+            return "redirect:/review/write?detailId=" + detailId;
+        }
+
+        String reviewPhoto = extractSingleUpload(uploadFiles, detailId, ra);
+        if ("__INVALID__".equals(reviewPhoto)) {
+            return "redirect:/review/write?detailId=" + detailId;
         }
 
         Review review = new Review();
@@ -179,6 +197,55 @@ public class ReviewController {
         return "redirect:/product/detail?productId=" + productId;
     }
 
+    /**
+     * 로그인 사용자 꺼내기
+     */
+    private MemberExt getLoginUser(Authentication auth) {
+        if (auth == null || auth.getPrincipal() == null) {
+            return null;
+        }
+
+        if (!(auth.getPrincipal() instanceof MemberExt)) {
+            return null;
+        }
+
+        return (MemberExt) auth.getPrincipal();
+    }
+
+    /**
+     * 업로드 파일 1개만 허용
+     * 업로드 실패/다중 업로드 시 "__INVALID__" 반환
+     */
+    private String extractSingleUpload(MultipartFile[] uploadFiles, int detailId, RedirectAttributes ra) {
+        if (uploadFiles == null || uploadFiles.length == 0) {
+            return null;
+        }
+
+        MultipartFile selectedFile = null;
+        int fileCount = 0;
+
+        for (MultipartFile file : uploadFiles) {
+            if (file != null && !file.isEmpty()) {
+                fileCount++;
+                selectedFile = file;
+            }
+        }
+
+        if (fileCount == 0) {
+            return null;
+        }
+
+        if (fileCount > 1) {
+            ra.addFlashAttribute("alertMsg", "사진은 1장만 업로드 가능합니다.");
+            return "__INVALID__";
+        }
+
+        return saveFile(selectedFile);
+    }
+
+    /**
+     * 실제 파일 저장
+     */
     private String saveFile(MultipartFile upfile) {
 
         String savePath = application.getRealPath("/resources/upload/review/");
@@ -189,11 +256,17 @@ public class ReviewController {
         }
 
         String originName = upfile.getOriginalFilename();
+
+        if (originName == null || originName.lastIndexOf(".") == -1) {
+            originName = "review.jpg";
+        }
+
         String ext = originName.substring(originName.lastIndexOf("."));
         String changeName = UUID.randomUUID().toString() + ext;
 
         try {
-            upfile.transferTo(new File(savePath + changeName));
+            File saveFile = new File(savePath, changeName);
+            upfile.transferTo(saveFile);
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }

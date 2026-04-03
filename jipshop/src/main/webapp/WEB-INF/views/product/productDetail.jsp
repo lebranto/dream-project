@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>${product.productName} - 집사상권</title>
+    <title>${product.productName} - 집사상점</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product/productDetail.css">
 </head>
