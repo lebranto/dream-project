@@ -12,6 +12,10 @@
 <title>우리아이 자랑 게시판</title>
 <link rel="stylesheet" href="${contextPath}/resources/css/community/myKidBoard.css">
 <link rel="stylesheet" href="${contextPath}/resources/css/common/paging.css">
+<style type="text/css">
+
+</style>
+
 </head>
 <body>
 

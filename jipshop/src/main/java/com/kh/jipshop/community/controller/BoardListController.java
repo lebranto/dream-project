@@ -57,6 +57,7 @@ public class BoardListController {
 
         System.out.println("loginUser = " + loginUser);
         System.out.println("memberNo = " + loginUser.getMemberNo());
+        System.out.println("👉 authorities = " + loginUser.getAuthorities());
 
         Board board = new Board();
         board.setMemberNo(loginUser.getMemberNo());

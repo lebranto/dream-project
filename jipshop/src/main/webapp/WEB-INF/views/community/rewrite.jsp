@@ -12,38 +12,293 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/community/rewrite.css">
 
 <style>
-    .modify-category-wrap{
-        margin-bottom: 24px;
+    * {
+        box-sizing: border-box;
     }
 
-    .modify-category-label{
-        font-size: 15px;
-        font-weight: 700;
-        margin-bottom: 12px;
-        color: #222;
+    :root {
+        --bg-main: #fbf6ee;
+        --bg-soft: #fffaf2;
+        --bg-card: #fffdf9;
+        --bg-input: #fffdfa;
+        --line: #eadcc2;
+        --line-soft: #f1e7d4;
+        --text-main: #3f3427;
+        --text-sub: #8a7762;
+        --point: #efc85c;
+        --point-deep: #e0b347;
+        --point-soft: #fff2c9;
+        --shadow: 0 14px 30px rgba(120, 93, 52, 0.08);
     }
 
-    .modify-category-group{
+    body {
+        margin: 0;
+        background: linear-gradient(180deg, #fbf6ee 0%, #f8f1e6 100%);
+        color: var(--text-main);
+        font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+    }
+
+    .modify-wrap {
+        width: min(1180px, 92%);
+        margin: 0 auto;
+        padding: 42px 0 84px;
+    }
+
+    #modifyForm {
+        width: 100%;
+    }
+
+    .modify-category-wrap,
+    .modify-form-block {
+        margin-bottom: 18px;
+        padding: 24px 24px 22px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--bg-card);
+        box-shadow: var(--shadow);
+    }
+
+    .modify-category-label,
+    .modify-form-label {
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--text-main);
+        margin-bottom: 14px;
+    }
+
+    .modify-category-group {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
     }
 
-    .modify-category-btn{
-        min-width: 90px;
-        height: 40px;
-        border: 1px solid #ddd;
-        background: #fff;
-        border-radius: 8px;
-        cursor: pointer;
+    .modify-category-btn {
+        min-width: 96px;
+        height: 42px;
+        padding: 0 16px;
+        border: 1px solid #eadab7;
+        border-radius: 999px;
+        background: #fffaf0;
+        color: var(--text-main);
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.18s ease;
     }
 
-    .modify-category-btn.active{
-        background: #efc24f;
-        border-color: #efc24f;
-        color: #222;
+    .modify-category-btn:hover {
+        border-color: var(--point-deep);
+        background: #fff4d7;
+        transform: translateY(-1px);
+    }
+
+    .modify-category-btn.active {
+        background: linear-gradient(135deg, #f7d978 0%, #e8bd55 100%);
+        border-color: #e2b245;
+        color: #3b2d16;
+        box-shadow: 0 10px 18px rgba(224, 179, 71, 0.20);
+    }
+
+    .modify-text-input,
+    .modify-textarea-input {
+        width: 100%;
+        border: 1px solid var(--line-soft);
+        border-radius: 22px;
+        background: var(--bg-input);
+        color: var(--text-main);
+        outline: none;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .modify-text-input {
+        height: 58px;
+        padding: 0 18px;
+        font-size: 15px;
+    }
+
+    .modify-textarea-input {
+        min-height: 280px;
+        padding: 18px 20px;
+        font-size: 15px;
+        line-height: 1.7;
+        resize: none;
+    }
+
+    .modify-text-input::placeholder,
+    .modify-textarea-input::placeholder {
+        color: #b19d86;
+    }
+
+    .modify-text-input:focus,
+    .modify-textarea-input:focus {
+        border-color: #e3bb5a;
+        background: #fffdf8;
+        box-shadow: 0 0 0 6px rgba(239, 200, 92, 0.14);
+    }
+
+    .modify-upload-box {
+        width: 100%;
+        min-height: 320px;
+        border: 2px dashed #ecd79e;
+        border-radius: 28px;
+        background: linear-gradient(180deg, #fffdf8 0%, #fff8ea 100%);
+        padding: 20px;
+    }
+
+    .rewrite-old-upload-title,
+    .rewrite-new-upload-title {
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--text-main);
+        margin-bottom: 14px;
+    }
+
+    .rewrite-new-upload-title {
+        margin-top: 28px;
+    }
+
+    .modify-preview-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        min-height: 120px;
+    }
+
+    .modify-preview-item {
+        position: relative;
+        width: 170px;
+        height: 170px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+        background: linear-gradient(180deg, #fffefb 0%, #faf4e8 100%);
+        box-shadow: 0 10px 22px rgba(103, 80, 42, 0.08);
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .modify-preview-item:hover {
+        transform: translateY(-2px);
+        border-color: #e1b654;
+        box-shadow: 0 14px 28px rgba(103, 80, 42, 0.11);
+    }
+
+    .modify-preview-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .modify-remove-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(59, 45, 22, 0.72);
+        color: #fff;
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+        transition: background 0.18s ease, transform 0.18s ease;
+    }
+
+    .modify-remove-btn:hover {
+        background: #de6767;
+        transform: scale(1.05);
+    }
+
+    .rewrite-upload-control {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+    }
+
+    .rewrite-file-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 110px;
+        height: 42px;
+        padding: 0 18px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fffaf0;
+        color: var(--text-main);
+        font-size: 13px;
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.18s ease;
+    }
+
+    .rewrite-file-btn:hover {
+        background: #fff2d4;
+        border-color: #e0b347;
+    }
+
+    .rewrite-file-count-text,
+    #modifyImageCountText {
+        color: var(--text-sub);
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .modify-submit-area {
+        display: flex;
+        justify-content: center;
+        margin-top: 26px;
+    }
+
+    .rewrite-submit-btn {
+        min-width: 170px;
+        height: 54px;
+        padding: 0 28px;
+        border: none;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #f4d271 0%, #e8bb50 100%);
+        color: #3d2e15;
+        font-size: 16px;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 14px 26px rgba(224, 179, 71, 0.24);
+        transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+    }
+
+    .rewrite-submit-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 1024px) {
+        .modify-preview-item {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .modify-wrap {
+            padding: 26px 0 64px;
+        }
+
+        .modify-category-wrap,
+        .modify-form-block {
+            padding: 20px 18px;
+            border-radius: 22px;
+        }
+
+        .modify-preview-item {
+            width: calc(50% - 7px);
+            height: 150px;
+        }
     }
 </style>
 </head>
@@ -143,148 +398,167 @@
 
 </form>
 </div>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
 <script>
-const modifyImageInput = document.getElementById("modifyImageInput");
-const modifyNewImageArea = document.getElementById("modifyNewImageArea");
-const modifyExistingImageArea = document.getElementById("modifyExistingImageArea");
-const modifyImageCountText = document.getElementById("modifyImageCountText");
-const deleteImageInputArea = document.getElementById("deleteImageInputArea");
-const modifyCategoryCode = document.getElementById("modifyCategoryCode");
-const categoryButtons = document.querySelectorAll(".modify-category-btn");
+document.addEventListener("DOMContentLoaded", function() {
 
-let modifySelectedImages = [];
-let deletedImageNos = [];
+    const modifyForm = document.getElementById("modifyForm");
+    const modifyImageInput = document.getElementById("modifyImageInput");
+    const modifyNewImageArea = document.getElementById("modifyNewImageArea");
+    const modifyExistingImageArea = document.getElementById("modifyExistingImageArea");
+    const modifyImageCountText = document.getElementById("modifyImageCountText");
+    const deleteImageInputArea = document.getElementById("deleteImageInputArea");
+    const modifyCategoryCode = document.getElementById("modifyCategoryCode");
+    const categoryButtons = document.querySelectorAll(".modify-category-btn");
 
-categoryButtons.forEach(btn => {
-    if (btn.dataset.code === modifyCategoryCode.value) {
-        btn.classList.add("active");
-    }
+    let modifySelectedImages = [];
+    let deletedImageNos = [];
 
-    btn.addEventListener("click", function(){
-        categoryButtons.forEach(item => item.classList.remove("active"));
-        this.classList.add("active");
-        modifyCategoryCode.value = this.dataset.code;
-    });
-});
-
-document.querySelectorAll(".modify-existing-remove-btn").forEach(btn => {
-    btn.onclick = function(){
-        const imgNo = this.dataset.imgNo;
-
-        if(!deletedImageNos.includes(imgNo)){
-            deletedImageNos.push(imgNo);
+    categoryButtons.forEach(function(btn) {
+        if (btn.dataset.code === modifyCategoryCode.value) {
+            btn.classList.add("active");
         }
 
-        this.parentElement.remove();
-        renderDeleteInputs();
-    };
-});
+        btn.addEventListener("click", function() {
+            categoryButtons.forEach(function(item) {
+                item.classList.remove("active");
+            });
 
-function renderDeleteInputs(){
-    deleteImageInputArea.innerHTML = "";
-
-    deletedImageNos.forEach(no => {
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "deleteImageNos";
-        input.value = no;
-        deleteImageInputArea.appendChild(input);
+            this.classList.add("active");
+            modifyCategoryCode.value = this.dataset.code;
+        });
     });
-}
 
-modifyImageInput.addEventListener("change", function(e){
-    const files = Array.from(e.target.files);
-    if(files.length === 0) return;
+    document.querySelectorAll(".modify-existing-remove-btn").forEach(function(btn) {
+        btn.onclick = function() {
+            const imgNo = this.dataset.imgNo;
 
-    const existingCount = modifyExistingImageArea.querySelectorAll(".modify-existing-item").length;
-    const newCount = modifySelectedImages.length;
+            if (!deletedImageNos.includes(imgNo)) {
+                deletedImageNos.push(imgNo);
+            }
 
-    if(existingCount + newCount + files.length > 3){
-        alert("이미지는 최대 3개까지만 가능합니다.");
-        return;
+            this.parentElement.remove();
+            renderDeleteInputs();
+        };
+    });
+
+    function renderDeleteInputs() {
+        deleteImageInputArea.innerHTML = "";
+
+        deletedImageNos.forEach(function(no) {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "deleteImageNos";
+            input.value = no;
+            deleteImageInputArea.appendChild(input);
+        });
     }
 
-    modifySelectedImages = modifySelectedImages.concat(files);
-    updateInputFiles();
-    renderPreview();
-});
+    if (modifyImageInput) {
+        modifyImageInput.addEventListener("change", function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
 
-function updateInputFiles(){
-    const dt = new DataTransfer();
+            const existingCount = modifyExistingImageArea
+                ? modifyExistingImageArea.querySelectorAll(".modify-existing-item").length
+                : 0;
+            const newCount = modifySelectedImages.length;
 
-    modifySelectedImages.forEach(file => {
-        dt.items.add(file);
-    });
+            if (existingCount + newCount + files.length > 3) {
+                alert("이미지는 최대 3개까지만 가능합니다.");
+                modifyImageInput.value = "";
+                return;
+            }
 
-    modifyImageInput.files = dt.files;
-}
-
-function renderPreview(){
-    modifyNewImageArea.innerHTML = "";
-
-    modifySelectedImages.forEach((file, index) => {
-        const reader = new FileReader();
-
-        reader.onload = function(e){
-            const div = document.createElement("div");
-            div.className = "modify-preview-item";
-
-            div.innerHTML =
-                '<img src="' + e.target.result + '">' +
-                '<button type="button" class="modify-remove-btn" data-index="' + index + '">×</button>';
-
-            modifyNewImageArea.appendChild(div);
-            bindRemove();
-        };
-
-        reader.readAsDataURL(file);
-    });
-
-    modifyImageCountText.innerText = modifySelectedImages.length + "개";
-}
-
-function bindRemove(){
-    document.querySelectorAll("#modifyNewImageArea .modify-remove-btn").forEach(btn => {
-        btn.onclick = function(){
-            const index = parseInt(this.dataset.index);
-            modifySelectedImages.splice(index, 1);
+            modifySelectedImages = modifySelectedImages.concat(files);
             updateInputFiles();
             renderPreview();
-        };
-    });
-}
-
-document.getElementById("modifyForm").addEventListener("submit", function(e){
-    const title = document.getElementById("modifyBoardTitle").value.trim();
-    const content = document.getElementById("modifyBoardContent").value.trim();
-
-    const boardCode = "${board.boardCode}";
-    const categoryCode = modifyCategoryCode.value;
-
-    if ((boardCode === "2" || boardCode === "3") && !categoryCode) {
-        alert("카테고리를 선택해주세요.");
-        e.preventDefault();
-        return;
+        });
     }
 
-    if(title === ""){
-        alert("제목을 입력해주세요.");
-        e.preventDefault();
-        return;
+    function updateInputFiles() {
+        const dt = new DataTransfer();
+
+        modifySelectedImages.forEach(function(file) {
+            dt.items.add(file);
+        });
+
+        modifyImageInput.files = dt.files;
+        modifyImageCountText.innerText = modifySelectedImages.length + "개";
     }
 
-    if(content.length < 5){
-        alert("내용은 5자 이상 입력해주세요.");
-        e.preventDefault();
-        return;
+    function renderPreview() {
+        modifyNewImageArea.innerHTML = "";
+
+        modifySelectedImages.forEach(function(file, index) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const div = document.createElement("div");
+                div.className = "modify-preview-item";
+
+                div.innerHTML =
+                    '<img src="' + e.target.result + '">' +
+                    '<button type="button" class="modify-remove-btn" data-index="' + index + '">×</button>';
+
+                modifyNewImageArea.appendChild(div);
+                bindRemove();
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        modifyImageCountText.innerText = modifySelectedImages.length + "개";
     }
+
+    function bindRemove() {
+        document.querySelectorAll("#modifyNewImageArea .modify-remove-btn").forEach(function(btn) {
+            btn.onclick = function() {
+                const index = parseInt(this.dataset.index, 10);
+                modifySelectedImages.splice(index, 1);
+                updateInputFiles();
+                renderPreview();
+            };
+        });
+    }
+
+    if (modifyForm) {
+        modifyForm.addEventListener("submit", function(e) {
+            const title = document.getElementById("modifyBoardTitle").value.trim();
+            const content = document.getElementById("modifyBoardContent").value.trim();
+            const boardCode = "${board.boardCode}";
+            const categoryCode = modifyCategoryCode.value;
+
+            if ((boardCode === "2" || boardCode === "3") && (!categoryCode || categoryCode === "0")) {
+                alert("카테고리를 선택해주세요.");
+                e.preventDefault();
+                return;
+            }
+
+            if (title === "") {
+                alert("제목을 입력해주세요.");
+                e.preventDefault();
+                return;
+            }
+
+            if (content.length < 5) {
+                alert("내용은 5자 이상 입력해주세요.");
+                e.preventDefault();
+                return;
+            }
+        });
+    }
+
 });
 </script>
+
 <c:if test="${not empty alertMsg}">
     <script>
         alert("${alertMsg}");
     </script>
 </c:if>
+
 </body>
 </html>

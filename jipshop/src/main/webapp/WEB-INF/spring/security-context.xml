@@ -22,35 +22,26 @@
 	<!-- SMS 인증 경로 보안 제외 -->
 	<security:http security="none" pattern="/sms/**"/>
 	<security:http auto-config="true">
-	
+	<security:csrf disabled="true"/>
 	<!-- 커뮤니티 읽기 허용 -->
-	<security:intercept-url pattern="/community/main" access="permitAll" />
-	<security:intercept-url pattern="/community/detail/**" access="permitAll" />
+<security:intercept-url pattern="/community/main" access="permitAll" />
+<security:intercept-url pattern="/community/myKidBoard" access="permitAll" />
+<security:intercept-url pattern="/community/tipFreeBoard" access="permitAll" />
+<security:intercept-url pattern="/community/detail" access="permitAll" />
+<security:intercept-url pattern="/community/detail/**" access="permitAll" />
 
+<!-- 커뮤니티 작성/수정/삭제/댓글/좋아요/신고 등만 로그인 필요 -->
+<security:intercept-url pattern="/community/writeBoard" access="isAuthenticated()" />
+<security:intercept-url pattern="/community/rewrite" access="isAuthenticated()" />
+<security:intercept-url pattern="/community/insert**" access="isAuthenticated()" />
+<security:intercept-url pattern="/community/update**" access="isAuthenticated()" />
+<security:intercept-url pattern="/community/delete**" access="isAuthenticated()" />
+<security:intercept-url pattern="/community/like**" access="isAuthenticated()" />
+<security:intercept-url pattern="/community/comment**" access="isAuthenticated()" />
+<security:intercept-url pattern="/community/report**" access="isAuthenticated()" />
 
-<!-- 나머지 커뮤니티 기능은 로그인 필요 -->
-
-	<security:intercept-url pattern="/community/**" access="isAuthenticated()" />
-		<!-- 
-			메인페이지, 회원가입페이지, 로그인페이지, 아이디 중복 체크 기능은
-			모든 사용자가 이용 가능하도록 설정.
-		 -->
-		  <!-- 커뮤니티 작성 및 수정삭제 권한  -->
-		 <security:intercept-url pattern="/mypage/**" access="isAuthenticated()" />
-		 <security:intercept-url pattern="/product/inquiryList" access="isAuthenticated()" />
-		 <security:intercept-url pattern="/product/inquiryWrite" access="isAuthenticated()" />
-		 
-		 <security:intercept-url pattern="/" access="permitAll" />
-		 <security:intercept-url pattern="/security/insert" access="permitAll" />
-		 <security:intercept-url pattern="/member/login" access="permitAll" />
-		 <security:intercept-url pattern="/member/idCheck" access="permitAll" />
-		 <security:intercept-url pattern="/sms/**" access="permitAll" />
-		 <security:csrf disabled="true"/>
-		 <security:intercept-url pattern="/member/findId" access="permitAll" />
-		 <security:intercept-url pattern="/security/resetPwd" access="permitAll" />
-		 <security:intercept-url pattern="/member/enrollComplete" access="permitAll" />
-		 
-		 <security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')"/>
+<!-- 그 외 커뮤니티 나머지 -->
+<security:intercept-url pattern="/community/**" access="permitAll" />
 		 
 		 
 		 <!-- 
