@@ -106,7 +106,7 @@ public class ProductController {
 
         int listCount = productService.selectProductListCount(search);
 
-        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 12, 5);
+        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 12);
 
         List<Products> productList = productService.selectProductList(search, pi);
 

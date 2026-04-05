@@ -68,31 +68,66 @@
         WHERE ROWNUM &lt;= 4
     </select>
 
-    <!--4. 추천템 - 펫 등록 있는 회원
-            (petType + ageGroup 매칭, 전연령 포함, 주문량 많은 순 4개)
-            파라미터: petType(강아지/고양이), ageGroup(키드/어덜트/시니어) -->
-    <select id="selectPetRecommend" parameterType="map" resultType="com.kh.jipshop.product.model.vo.Products">
-        SELECT *
-        FROM (
-            SELECT P.PRODUCT_ID    AS productId,
-                   P.PRODUCT_NAME  AS productName,
-                   P.PRODUCT_PRICE AS productPrice,
-                   P.PRODUCT_PHOTO1 AS productPhoto1,
-                   P.PET_TYPE      AS petType,
-                   P.AGE_GROUP     AS ageGroup,
-                   NVL(SUM(OD.DETAIL_QTY), 0) AS totalQty
-            FROM PRODUCT P
-            LEFT JOIN ORDER_DETAIL OD ON P.PRODUCT_ID = OD.PRODUCT_ID
-            WHERE P.PRODUCT_ACTIVE_YN = 'Y'
-              AND P.PET_TYPE = #{petType}
-              AND (P.AGE_GROUP = #{ageGroup} OR P.AGE_GROUP = '전연령')
-            GROUP BY P.PRODUCT_ID, P.PRODUCT_NAME, P.PRODUCT_PRICE,
-                     P.PRODUCT_PHOTO1, P.PET_TYPE, P.AGE_GROUP
-            ORDER BY totalQty DESC
-        )
-        WHERE ROWNUM &lt;= 4
-    </select>
+    <!-- 추천템 - 펫 등록 있는 회원
+     petType + ageGroup 매칭, 전연령 포함
+     카테고리별(사료/장난감/미용용품/외출용품) 주문량 1위씩 총 4개 -->
+<select id="selectPetRecommend"
+        parameterType="map"
+        resultType="com.kh.jipshop.product.model.vo.Products">
 
+    SELECT
+        productId,
+        productName,
+        productPrice,
+        productPhoto1,
+        petType,
+        ageGroup,
+        categoryId,
+        categoryName
+    FROM (
+        SELECT
+            P.PRODUCT_ID AS productId,
+            P.PRODUCT_NAME AS productName,
+            P.PRODUCT_PRICE AS productPrice,
+            P.PRODUCT_PHOTO1 AS productPhoto1,
+            P.PET_TYPE AS petType,
+            P.AGE_GROUP AS ageGroup,
+            P.CATEGORY_ID AS categoryId,
+            PC.CATEGORY_NAME AS categoryName,
+            NVL(SUM(OD.DETAIL_QTY), 0) AS totalQty,
+            ROW_NUMBER() OVER (
+                PARTITION BY PC.CATEGORY_NAME
+                ORDER BY NVL(SUM(OD.DETAIL_QTY), 0) DESC, P.PRODUCT_ID DESC
+            ) AS rn
+        FROM PRODUCT P
+        JOIN PRODUCT_CATEGORY PC
+          ON P.CATEGORY_ID = PC.CATEGORY_ID
+        LEFT JOIN ORDER_DETAIL OD
+          ON P.PRODUCT_ID = OD.PRODUCT_ID
+        WHERE P.PRODUCT_ACTIVE_YN = 'Y'
+          AND P.PET_TYPE = #{petType}
+          AND (P.AGE_GROUP = #{ageGroup} OR P.AGE_GROUP = '전연령')
+          AND PC.CATEGORY_NAME IN ('사료', '장난감', '미용용품', '외출용품')
+        GROUP BY
+            P.PRODUCT_ID,
+            P.PRODUCT_NAME,
+            P.PRODUCT_PRICE,
+            P.PRODUCT_PHOTO1,
+            P.PET_TYPE,
+            P.AGE_GROUP,
+            P.CATEGORY_ID,
+            PC.CATEGORY_NAME
+    )
+    WHERE rn = 1
+    ORDER BY CASE categoryName
+        WHEN '사료' THEN 1
+        WHEN '장난감' THEN 2
+        WHEN '미용용품' THEN 3
+        WHEN '외출용품' THEN 4
+        ELSE 5
+    END
+
+</select>
     <!-- 5. 신상품 (최신 등록순 5개)-->
     <select id="selectNewProducts" resultType="com.kh.jipshop.product.model.vo.Products">
         SELECT *

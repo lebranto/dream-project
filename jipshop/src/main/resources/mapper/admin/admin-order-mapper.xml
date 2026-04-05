@@ -366,7 +366,7 @@
             )
         ) ST
           ON D.DELIVERY_ID = ST.DELIVERY_ID
-        WHERE NVL(OD.CANCEL_STATUS, 'NONE') = 'PENDING'
+       WHERE NVL(OD.CANCEL_STATUS, 'NONE') IN ('PENDING', 'APPROVED', 'REJECTED')
         <if test="startDate != null and startDate != ''">
             AND OD.CANCEL_REQUEST_DATE <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
         </if>
@@ -437,7 +437,7 @@
             )
         ) ST
           ON D.DELIVERY_ID = ST.DELIVERY_ID
-        WHERE NVL(OD.CANCEL_STATUS, 'NONE') = 'PENDING'
+        WHERE NVL(OD.CANCEL_STATUS, 'NONE') IN ('PENDING', 'APPROVED', 'REJECTED')
         <if test="startDate != null and startDate != ''">
             AND OD.CANCEL_REQUEST_DATE <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
         </if>
