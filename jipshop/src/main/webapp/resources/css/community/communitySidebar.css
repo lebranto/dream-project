@@ -1,22 +1,23 @@
+@charset "UTF-8";
+
+/* 전체 커뮤니티 기준 영역 */
 .community-layout {
-    width: 1200px;
+    width: 1240px;
     max-width: 95%;
     margin: 30px auto;
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
     position: relative;
-    overflow: visible;
 }
 
+/* 사이드바: 화면에 고정 */
 .community-sidebar {
-    width: 220px;
-    flex-shrink: 0;
-    align-self: flex-start;
-    position: sticky;
-    top: 140px;
+    position: fixed;
+    top: 300px;
+    left: calc(50% - 620px - 230px);
+    width: 210px;
+    z-index: 100;
 }
 
+/* 사이드바 카드 */
 .community-sidebar-card {
     background: #fffdf8;
     border: 1px solid #eadfcb;
@@ -25,6 +26,7 @@
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
 }
 
+/* 제목 */
 .community-sidebar-title {
     font-size: 18px;
     font-weight: 800;
@@ -35,6 +37,7 @@
     text-align: center;
 }
 
+/* 메뉴 */
 .community-sidebar-menu {
     list-style: none;
     margin: 0;
@@ -82,23 +85,27 @@
     text-align: center;
 }
 
+/* 본문은 폭 그대로 */
 .community-content {
-    flex: 1;
+    width: 100%;
     min-width: 0;
 }
 
-@media (max-width: 900px) {
+/* 모바일/작은 화면 대응 */
+@media (max-width: 1500px) {
+    .community-sidebar {
+        left: 20px;
+    }
+}
+
+@media (max-width: 1280px) {
     .community-layout {
-        flex-direction: column;
+        width: 96%;
     }
 
     .community-sidebar {
+        position: static;
         width: 100%;
-        position: static;
-        top: auto;
-    }
-
-    .community-sidebar-card {
-        position: static;
+        margin-bottom: 18px;
     }
 }

@@ -35,7 +35,6 @@ public class BoardListController {
     public String writeBoard() {
         return "community/writeBoard";
     }
-
     @PostMapping("/insertBoard")
     public String insertBoard(
             @RequestParam("boardCode") int boardCode,
@@ -53,6 +52,7 @@ public class BoardListController {
             ra.addFlashAttribute("alertMsg", "로그인 후 사용 가능합니다.");
             return "redirect:/member/login";
         }
+
         MemberExt loginUser = (MemberExt) auth.getPrincipal();
 
         System.out.println("loginUser = " + loginUser);
@@ -72,18 +72,22 @@ public class BoardListController {
             ra.addFlashAttribute("alertMsg", "게시글 작성에 실패했습니다.");
             return "redirect:/community/writeBoard";
         }
-        if (result <= 0) {
-            return "redirect:/community/writeBoard";
-        }
 
         int boardNo = board.getBoardNo();
         saveBoardImages(boardNo, imageFiles, session);
-        
+
         ra.addFlashAttribute("alertMsg", "게시글이 등록되었습니다.");
 
-        return "redirect:/community/main";
+        if (boardCode == 1) {
+            return "redirect:/community/myKidBoard";
+        } else if (boardCode == 2) {
+            return "redirect:/community/tipFreeBoard?boardType=tip";
+        } else if (boardCode == 3) {
+            return "redirect:/community/tipFreeBoard?boardType=free";
+        } else {
+            return "redirect:/community/main";
+        }
     }
-
     @GetMapping("/rewrite")
     public String rewriteForm(@RequestParam("boardNo") int boardNo,
                               Model model,
