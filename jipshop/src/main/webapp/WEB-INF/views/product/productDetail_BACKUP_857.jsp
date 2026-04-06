@@ -60,13 +60,22 @@
                         <span class="value">${product.productId}</span>
                     </div>
 
+<<<<<<< HEAD
                     <div class="product-brand-row">
                         <span class="value">
                             <c:if test="${product.productStock <= 0}">품절</c:if>
                         </span>
                     </div>
+=======
+					<div class="product-brand-row">
+>>>>>>> main
 
-                    <div class="product-price-box">
+						<span class="value"> 
+						<c:if test="${product.productStock <= 0}">품절</c:if>
+						</span>
+					</div>
+
+					<div class="product-price-box">
                         <span class="price-label">판매가</span>
                         <span class="price-value">
                             <fmt:formatNumber value="${product.productPrice}" pattern="#,###"/>원
@@ -219,6 +228,7 @@
 
         </div>
     </main>
+<<<<<<< HEAD
 
     <!-- 위로 가기 버튼 -->
     <button id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})"
@@ -243,6 +253,60 @@
 
     <script>
     document.querySelector(".cart-btn").addEventListener("click", function() {
+=======
+	<!-- ⭐ 위로 가기 버튼 -->
+	<button id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})"
+	    style="
+	        position: fixed;
+	        bottom: 40px;
+	        right: 40px;
+	        width: 50px;
+	        height: 50px;
+	        border-radius: 50%;
+	        border: none;
+	        background: #ffda79;
+	        font-size: 22px;
+	        cursor: pointer;
+	        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+	        display: none;
+	        z-index: 999;
+	        transition: opacity 0.3s;
+	    ">
+	    ▲
+	</button>
+    <script>
+    document.querySelector(".cart-btn").addEventListener("click", function() {
+
+        const stock = ${product.productStock};
+
+        if (stock <= 0) {
+            alert("품절된 상품입니다");
+            return;
+        }
+
+        const form = document.querySelector(".cart-form");
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(count => {
+            alert("장바구니에 추가되었습니다");
+            updateCartCountUI(parseInt(count));
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    });
+    
+        document.addEventListener("DOMContentLoaded", function() {
+            const qtyInput = document.getElementById("qty");
+            const totalPriceEl = document.getElementById("totalPrice");
+            const cartQty = document.getElementById("cartQty");
+            const tabLinks = document.querySelectorAll(".tab-link[href^='#']");
+>>>>>>> main
 
         const stock = ${product.productStock};
 
@@ -315,6 +379,7 @@
                 }
             });
         });
+<<<<<<< HEAD
     });
 
     // 위로 가기 버튼 표시/숨김
@@ -326,6 +391,44 @@
             btn.style.display = "none";
         }
     });
+=======
+        
+     // =========== 추가 ===========
+     // ⭐ 상품 상세 장바구니 AJAX
+     document.querySelector(".cart-btn").addEventListener("click", function() {
+
+         const form = document.querySelector(".cart-form");
+         const formData = new FormData(form);
+
+         fetch(form.action, {
+             method: "POST",
+             body: formData
+         })
+         .then(res => res.text())
+         .then(count => {
+
+             alert("장바구니에 추가되었습니다");
+
+             console.log("카트 개수:", count);
+
+             // ⭐ 헤더 숫자 반영
+             updateCartCountUI(parseInt(count));
+         })
+         .catch(err => {
+             console.error(err);
+         });
+     });
+	
+  	// 위로 가기 버튼 표시/숨김
+     window.addEventListener("scroll", function() {
+         const btn = document.getElementById("scrollTopBtn");
+         if (window.scrollY > 300) {
+             btn.style.display = "block";
+         } else {
+             btn.style.display = "none";
+         }
+     });
+>>>>>>> main
     </script>
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />

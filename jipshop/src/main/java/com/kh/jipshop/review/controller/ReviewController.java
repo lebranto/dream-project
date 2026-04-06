@@ -174,7 +174,7 @@ public class ReviewController {
             return "redirect:/review/write?detailId=" + detailId;
         }
 
-        String reviewPhoto = extractSingleUpload(uploadFiles, detailId, ra);
+        String reviewPhoto = extractSingleUpload(uploadFiles, ra);
         if ("__INVALID__".equals(reviewPhoto)) {
             return "redirect:/review/write?detailId=" + detailId;
         }
@@ -216,7 +216,7 @@ public class ReviewController {
      * 업로드 파일 1개만 허용
      * 업로드 실패/다중 업로드 시 "__INVALID__" 반환
      */
-    private String extractSingleUpload(MultipartFile[] uploadFiles, int detailId, RedirectAttributes ra) {
+    private String extractSingleUpload(MultipartFile[] uploadFiles, RedirectAttributes ra) {
         if (uploadFiles == null || uploadFiles.length == 0) {
             return null;
         }

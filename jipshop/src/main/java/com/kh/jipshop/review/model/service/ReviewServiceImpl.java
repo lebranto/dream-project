@@ -1,5 +1,7 @@
 package com.kh.jipshop.review.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,7 @@ import com.kh.jipshop.review.model.vo.ReviewableOrderDetail;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    @Autowired
+	@Autowired
     private ReviewDao reviewDao;
 
     @Override
@@ -26,5 +28,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public int insertReview(Review review) {
         return reviewDao.insertReview(review);
+    }
+
+    @Override
+    public List<Review> selectReviewListByProductId(int productId) {
+        return reviewDao.selectReviewListByProductId(productId);
     }
 }

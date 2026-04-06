@@ -331,6 +331,47 @@ a {
     font-size: 16px;
 }
 
+/* 리뷰 목록 카드 */
+.review-item-box {
+    padding: 24px;
+    border: 1px solid #eee;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.review-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.review-rating {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f08b2d;
+}
+
+.review-content-box {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.8;
+    white-space: pre-line;
+}
+
+.review-photo-box {
+    margin-top: 18px;
+}
+
+.review-photo {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    display: block;
+}
+
 .info-content {
     padding: 25px 30px;
     border: 1px solid #eee;
