@@ -61,16 +61,8 @@
                     </div>
 
                     <div class="product-brand-row">
-                        <span class="label">재고</span>
                         <span class="value">
-                            <c:choose>
-                                <c:when test="${product.productStock > 0}">
-                                    ${product.productStock}개
-                                </c:when>
-                                <c:otherwise>
-                                    품절
-                                </c:otherwise>
-                            </c:choose>
+                            <c:if test="${product.productStock <= 0}">품절</c:if>
                         </span>
                     </div>
 
@@ -117,21 +109,19 @@
 
                     <!-- 장바구니 -->
                     <form action="${pageContext.request.contextPath}/cartList/addAjax" method="post" class="cart-form">
-    
-    <input type="hidden" name="productId" value="${product.productId}">
-    <input type="hidden" name="productName" value="${product.productName}">
-    <input type="hidden" name="productPrice" value="${product.productPrice}">
-    <input type="hidden" name="productPhoto" value="${product.productPhoto1}">
-    
-    <input type="hidden" name="qty" id="cartQty" value="1">
+                        <input type="hidden" name="productId" value="${product.productId}">
+                        <input type="hidden" name="productName" value="${product.productName}">
+                        <input type="hidden" name="productPrice" value="${product.productPrice}">
+                        <input type="hidden" name="productPhoto" value="${product.productPhoto1}">
+                        <input type="hidden" name="qty" id="cartQty" value="1">
 
-    <div class="btn-area second-btn-area">
-        <button type="button" class="cart-btn"
-            <c:if test="${product.productStock <= 0}">disabled</c:if>>
-            장바구니
-        </button>
-    </div>
-</form>
+                        <div class="btn-area second-btn-area">
+                            <button type="button" class="cart-btn"
+                                <c:if test="${product.productStock <= 0}">disabled</c:if>>
+                                장바구니
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </section>
 
@@ -174,9 +164,37 @@
                     총 <strong>${reviewCount}</strong>개의 리뷰가 있습니다.
                 </div>
 
-                <div class="review-empty-box">
-                    등록된 리뷰가 없습니다.
-                </div>
+                <c:choose>
+                    <c:when test="${empty reviewList}">
+                        <div class="review-empty-box">
+                            등록된 리뷰가 없습니다.
+                        </div>
+                    </c:when>
+
+                    <c:otherwise>
+                        <c:forEach var="review" items="${reviewList}">
+                            <div class="review-item-box">
+                                <div class="review-top-row">
+                                    <div class="review-rating">
+                                        평점 ${review.reviewRating}점
+                                    </div>
+                                </div>
+
+                                <div class="review-content-box">
+                                    <c:out value="${review.reviewContent}" />
+                                </div>
+
+                                <c:if test="${not empty review.reviewPhoto}">
+                                    <div class="review-photo-box">
+                                        <img src="${pageContext.request.contextPath}${review.reviewPhoto}"
+                                             alt="리뷰 사진"
+                                             class="review-photo">
+                                    </div>
+                                </c:if>
+                            </div>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </section>
 
             <!-- 배송안내 -->
@@ -202,82 +220,112 @@
         </div>
     </main>
 
+    <!-- 위로 가기 버튼 -->
+    <button id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})"
+       style="
+           position: fixed;
+           bottom: 40px;
+           right: 40px;
+           width: 50px;
+           height: 50px;
+           border-radius: 50%;
+           border: none;
+           background: #ffda79;
+           font-size: 22px;
+           cursor: pointer;
+           box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+           display: none;
+           z-index: 999;
+           transition: opacity 0.3s;
+       ">
+       ▲
+   </button>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const qtyInput = document.getElementById("qty");
-            const totalPriceEl = document.getElementById("totalPrice");
-            const cartQty = document.getElementById("cartQty");
-            const tabLinks = document.querySelectorAll(".tab-link[href^='#']");
+    document.querySelector(".cart-btn").addEventListener("click", function() {
 
-            if (qtyInput && totalPriceEl) {
-                const price = Number(totalPriceEl.dataset.price || 0);
+        const stock = ${product.productStock};
 
-                function updateTotal() {
-                    let qty = Number(qtyInput.value || 1);
+        if (stock <= 0) {
+            alert("품절된 상품입니다");
+            return;
+        }
 
-                    if (qty < 1) {
-                        qty = 1;
-                        qtyInput.value = 1;
-                    }
+        const form = document.querySelector(".cart-form");
+        const formData = new FormData(form);
 
-                    const total = price * qty;
-                    totalPriceEl.innerText = total.toLocaleString() + "원";
+        fetch(form.action, {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(count => {
+            alert("장바구니에 추가되었습니다");
+            updateCartCountUI(parseInt(count));
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    });
 
-                    if (cartQty) {
-                        cartQty.value = qty;
-                    }
+    document.addEventListener("DOMContentLoaded", function() {
+        const qtyInput = document.getElementById("qty");
+        const totalPriceEl = document.getElementById("totalPrice");
+        const cartQty = document.getElementById("cartQty");
+        const tabLinks = document.querySelectorAll(".tab-link[href^='#']");
+
+        if (qtyInput && totalPriceEl) {
+            const price = Number(totalPriceEl.dataset.price || 0);
+
+            function updateTotal() {
+                let qty = Number(qtyInput.value || 1);
+
+                if (qty < 1) {
+                    qty = 1;
+                    qtyInput.value = 1;
                 }
 
-                qtyInput.addEventListener("input", updateTotal);
-                updateTotal();
+                const total = price * qty;
+                totalPriceEl.innerText = total.toLocaleString() + "원";
+
+                if (cartQty) {
+                    cartQty.value = qty;
+                }
             }
 
-            tabLinks.forEach(function(link) {
-                link.addEventListener("click", function(e) {
-                    e.preventDefault();
+            qtyInput.addEventListener("input", updateTotal);
+            updateTotal();
+        }
 
-                    const targetId = this.getAttribute("href");
-                    const target = document.querySelector(targetId);
+        tabLinks.forEach(function(link) {
+            link.addEventListener("click", function(e) {
+                e.preventDefault();
 
-                    if (target) {
-                        const navHeight = document.getElementById("productTabNav").offsetHeight;
-                        const targetTop = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+                const targetId = this.getAttribute("href");
+                const target = document.querySelector(targetId);
 
-                        window.scrollTo({
-                            top: targetTop,
-                            behavior: "smooth"
-                        });
-                    }
-                });
+                if (target) {
+                    const navHeight = document.getElementById("productTabNav").offsetHeight;
+                    const targetTop = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+
+                    window.scrollTo({
+                        top: targetTop,
+                        behavior: "smooth"
+                    });
+                }
             });
         });
-        
-     // =========== 추가 ===========
-     // ⭐ 상품 상세 장바구니 AJAX
-     document.querySelector(".cart-btn").addEventListener("click", function() {
+    });
 
-         const form = document.querySelector(".cart-form");
-         const formData = new FormData(form);
-
-         fetch(form.action, {
-             method: "POST",
-             body: formData
-         })
-         .then(res => res.text())
-         .then(count => {
-
-             alert("장바구니에 추가되었습니다");
-
-             console.log("카트 개수:", count);
-
-             // ⭐ 헤더 숫자 반영
-             updateCartCountUI(parseInt(count));
-         })
-         .catch(err => {
-             console.error(err);
-         });
-     });
-
+    // 위로 가기 버튼 표시/숨김
+    window.addEventListener("scroll", function() {
+        const btn = document.getElementById("scrollTopBtn");
+        if (window.scrollY > 300) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    });
     </script>
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />

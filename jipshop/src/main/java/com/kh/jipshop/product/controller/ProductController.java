@@ -17,6 +17,8 @@ import com.kh.jipshop.common.template.Pagination;
 import com.kh.jipshop.product.model.service.ProductServiceImpl;
 import com.kh.jipshop.product.model.vo.ProductSearch;
 import com.kh.jipshop.product.model.vo.Products;
+import com.kh.jipshop.review.model.service.ReviewService;
+import com.kh.jipshop.review.model.vo.Review;
 
 @Controller
 @RequestMapping("/product")
@@ -24,6 +26,9 @@ public class ProductController {
 
     @Autowired
     private ProductServiceImpl productService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping("/detail")
     public String productDetail(@RequestParam("productId") int productId, Model model) {
@@ -40,10 +45,13 @@ public class ProductController {
             return "common/errorPage";
         }
 
-        model.addAttribute("product", product);
+        List<Review> reviewList = reviewService.selectReviewListByProductId(productId);
 
-        // 아직 리뷰기능 전이라 임시값
-        model.addAttribute("reviewCount", 0);
+        System.out.println("조회된 reviewList size : " + (reviewList == null ? 0 : reviewList.size()));
+
+        model.addAttribute("product", product);
+        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("reviewCount", reviewList == null ? 0 : reviewList.size());
 
         return "product/productDetail";
     }
@@ -106,7 +114,7 @@ public class ProductController {
 
         int listCount = productService.selectProductListCount(search);
 
-        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 12, 5);
+        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 12);
 
         List<Products> productList = productService.selectProductList(search, pi);
 

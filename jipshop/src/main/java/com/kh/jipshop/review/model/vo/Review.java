@@ -5,16 +5,15 @@ import java.sql.Date;
 public class Review {
 
     private int reviewId;
-    private int memberNo;
     private int detailId;
-    private int reviewRating;
-    private String reviewContent;
-    private String reviewPhoto;
-    private Date reviewRegDate;
-    private String reviewActiveYn;
+    private int memberNo;
 
-    public Review() {
-    }
+    private int reviewRating;     // ⭐ DB: REVIEW_RATING
+    private String reviewContent; // ⭐ DB: REVIEW_CONTENT
+    private String reviewPhoto;   // ⭐ DB: REVIEW_PHOTO
+    private Date reviewRegDate;   // ⭐ DB: REVIEW_REG_DATE
+
+    public Review() {}
 
     public int getReviewId() {
         return reviewId;
@@ -24,20 +23,20 @@ public class Review {
         this.reviewId = reviewId;
     }
 
-    public int getMemberNo() {
-        return memberNo;
-    }
-
-    public void setMemberNo(int memberNo) {
-        this.memberNo = memberNo;
-    }
-
     public int getDetailId() {
         return detailId;
     }
 
     public void setDetailId(int detailId) {
         this.detailId = detailId;
+    }
+
+    public int getMemberNo() {
+        return memberNo;
+    }
+
+    public void setMemberNo(int memberNo) {
+        this.memberNo = memberNo;
     }
 
     public int getReviewRating() {
@@ -72,18 +71,10 @@ public class Review {
         this.reviewRegDate = reviewRegDate;
     }
 
-    public String getReviewActiveYn() {
-        return reviewActiveYn;
-    }
-
-    public void setReviewActiveYn(String reviewActiveYn) {
-        this.reviewActiveYn = reviewActiveYn;
-    }
-
     @Override
     public String toString() {
-        return "Review [reviewId=" + reviewId + ", memberNo=" + memberNo + ", detailId=" + detailId
-                + ", reviewRating=" + reviewRating + ", reviewContent=" + reviewContent + ", reviewPhoto="
-                + reviewPhoto + ", reviewRegDate=" + reviewRegDate + ", reviewActiveYn=" + reviewActiveYn + "]";
+        return "Review [reviewId=" + reviewId + ", detailId=" + detailId + ", memberNo=" + memberNo
+                + ", reviewRating=" + reviewRating + ", reviewContent=" + reviewContent
+                + ", reviewPhoto=" + reviewPhoto + ", reviewRegDate=" + reviewRegDate + "]";
     }
 }
