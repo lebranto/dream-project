@@ -45,6 +45,7 @@ public class OrderDetailResponse {
 	
 	// 배송 상태
 	private String deliveryStatus;
+	private Date deliveryExpectedDate; // 배송일 계산을 위한 필드
 	
 	// 업체 필드
 	private String companyCode;

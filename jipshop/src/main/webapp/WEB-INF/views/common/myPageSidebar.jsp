@@ -41,8 +41,8 @@
      <div class="menu-group">
       <div class="menu-title">고객 센터</div>
       <ul class="menu-list">
-        <a href="${contextPath}/mypage/purchase">1:1문의</a><br>
-        <a href="${contextPath}/mypage/recent">FAQ</a><br>
+        <a href="${contextPath}/product/inquiryList">1:1문의</a><br>
+        <a href="${contextPath}/orders/FAQ">FAQ</a><br>
       </ul>
     </div>
 
