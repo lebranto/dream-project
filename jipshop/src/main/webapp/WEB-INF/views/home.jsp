@@ -113,7 +113,9 @@
       <div class="product-grid">
         <c:forEach items="${newProducts}" var="p">
         	<div class="product-card">
-			 	<a href="${contextPath}/product/detail?productId=${p.productId}" class="product-link">
+			 	<a href="${contextPath}/product/detail?productId=${p.productId}" 
+			 	class="product-link"
+			 	data-product-id="${p.productId}">
 					<img src="${contextPath}${p.productPhoto1}" alt="${p.productName}"
 				         onerror="this.src='${contextPath}/resources/img/no_image.png'" />
 				    <div class="product-name">${p.productName}</div>
@@ -132,7 +134,9 @@
       <div class="product-grid">
         <c:forEach items="${honeyProducts}" var="p">
           <div class="product-card">
-		 	<a href="${contextPath}/product/detail?productId=${p.productId}" class="product-link">
+		 	<a href="${contextPath}/product/detail?productId=${p.productId}" 
+		 	   class="product-link"
+		 	   data-product-id="${p.productId}">
 				<img src="${contextPath}${p.productPhoto1}" alt="${p.productName}"
 			         onerror="this.src='${contextPath}/resources/img/no_image.png'" />
 			    <div class="product-name">${p.productName}</div>
@@ -304,6 +308,34 @@
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+  
+  // 최근 본 뷰
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('.product-link');
+    if (!link) return;
+
+    const productId = link.dataset.productId;
+    if (!productId) return;
+
+    e.preventDefault();
+
+    const moveUrl = link.href;
+
+    fetch('${contextPath}/product/view/insert', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'productId=' + encodeURIComponent(productId)
+    })
+    .then(() => {
+        location.href = moveUrl;
+    })
+    .catch(() => {
+        location.href = moveUrl;
+    });
+});
+  
 </script>
 
 </body>
