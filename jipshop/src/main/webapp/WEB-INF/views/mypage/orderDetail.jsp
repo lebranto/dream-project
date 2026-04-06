@@ -46,7 +46,6 @@
             </div>
 
             <div class="order-info">
-            상품
               <div>${od.productName}</div>
               <div>
                 <fmt:formatNumber value="${od.detailPrice}" pattern="#,###"/>원
@@ -83,11 +82,9 @@
             <div>출발지 : ${od.addressAddress}</div>
             <div>도착지 : ${od.recvAddress}</div>
             <div>
-              도착 예정일 : 2026-03-02
-              <%-- <fmt:formatDate value="20260321" pattern="MM월 dd일 HH시"/> --%>
+              예상 도착일 : <fmt:formatDate value="${od.deliveryExpectedDate}" pattern="MM월 dd일 HH시"/> 
             </div>
           </div>
-
         </div>
      
 

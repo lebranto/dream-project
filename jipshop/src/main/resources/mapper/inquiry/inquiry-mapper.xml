@@ -53,7 +53,7 @@
             REPLY_YN
         )
         VALUES (
-            SEQ_INQUIRY_ID.NEXTVAL,
+            SEQ_INQUIRY.NEXTVAL,
             #{memberNo},
             #{inquiryType},
             #{inquiryContent},
@@ -64,6 +64,7 @@
             NULL,
             #{replyYn}
         )
+ 
     </insert>
 
 </mapper>

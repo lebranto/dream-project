@@ -158,7 +158,8 @@
 <select id="canclePage" resultType="OrderDetailResponse">
     SELECT O.ORDER_ID,
            P.PRODUCT_NAME,
-           OD.DETAIL_ID
+           OD.DETAIL_ID,
+           P.PRODUCT_PHOTO1 AS photo1
       FROM ORDERS O
       JOIN ORDER_DETAIL OD 
        ON O.ORDER_ID = OD.ORDER_ID
@@ -316,13 +317,14 @@
 	<select id="orderDetail" parameterType="OrderDetailResponse" resultType="OrderDetailResponse">
 	
 	SELECT
-	 P.PRODUCT_NAME      AS productName,
+	P.PRODUCT_NAME      AS productName,
     P.PRODUCT_PHOTO1    AS photo1,
     OD.DETAIL_PRICE     AS detailPrice,
     O.ORDER_ID          AS orderId,
     O.RECV_ADDRESS      AS recvAddress,
     S.DELIVERY_STATUS   AS deliveryStatus,
-    C.ADDRESS_ADDRESS   AS addressAddress
+    C.ADDRESS_ADDRESS   AS addressAddress,
+    O.ORDER_DATE        AS orderDate
 
 	FROM ORDERS O
 	JOIN MEMBER M ON M.MEMBER_NO = O.MEMBER_NO

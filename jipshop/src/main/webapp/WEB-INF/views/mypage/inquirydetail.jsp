@@ -21,7 +21,7 @@
     <main class="content">
       <div class="page-title">마이페이지</div>
 
-      <div class="detail-summary">${loginUser.userName} 님의 조회 내역</div>
+      <div class="detail-summary">${loginUser.memberName} 님의 조회 내역</div>
 
       <section class="detail-box">
         <div class="detail-head">
@@ -38,7 +38,7 @@
             <div class="photo-box">
               <c:choose>
                 <c:when test="${not empty myinquiry.inquiryPhoto}">
-                  <img src="${pageContext.request.contextPath}${myinquiry.inquiryPhoto}" alt="문의 첨부 사진">
+                  <img src="${contextPath}${myinquiry.inquiryPhoto}" alt="문의 첨부 사진">
                 </c:when>
                 <c:otherwise>
                   사진<br>(선택사항)
