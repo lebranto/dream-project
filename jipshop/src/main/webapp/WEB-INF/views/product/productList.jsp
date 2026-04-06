@@ -217,7 +217,9 @@
                     <c:forEach var="p" items="${productList}">
                         <div class="product-card">
 
-                            <a href="${pageContext.request.contextPath}/product/detail?productId=${p.productId}" class="product-image-link">
+                            <a href="${pageContext.request.contextPath}/product/detail?productId=${p.productId}" 
+                            class="product-image-link"
+                            data-product-id="${p.productId}">
                                 <div class="product-image-box">
                                     <img class="wish-icon"
                                          src="${pageContext.request.contextPath}/resources/images/empty-heart.png"
@@ -418,6 +420,37 @@ window.addEventListener("scroll", function() {
         btn.style.display = "none";
     }
 });
+
+//최근 본 상품
+document.querySelectorAll('.product-image-link').forEach(link => {
+link.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const productId = this.dataset.productId;
+    const moveUrl = this.href;
+
+    fetch('${pageContext.request.contextPath}/product/view/insert', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'productId=' + productId
+    })
+    .then(res => res.text())
+    .then(result => {
+        console.log("최근 본 상품 저장 결과:", result);
+        location.href = moveUrl;
+    })
+    .catch(err => {
+        console.error("최근 본 상품 저장 실패:", err);
+        location.href = moveUrl;
+    });
+});
+});
+
+
+
+
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

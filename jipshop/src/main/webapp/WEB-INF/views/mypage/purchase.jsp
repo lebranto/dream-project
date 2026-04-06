@@ -73,7 +73,7 @@
               <div class="purchase-card">
 
                 <div class="product-cell">
-                  <img class="product-thumb" src="${o.photo1}" alt="${o.productName}">
+                  <img class="product-thumb" src="${contextPath}${o.photo1}" alt="${o.productName}">
                   <div class="product-info">
                     <div class="product-name">${o.productName}</div>
                     <div>

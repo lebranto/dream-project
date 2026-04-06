@@ -1,6 +1,7 @@
 package com.kh.jipshop.product.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -35,4 +36,11 @@ public class ProductDaoImpl implements ProductDao {
     public Products selectProductDetail(int productId) {
         return sqlSession.selectOne("productMapper.selectProductDetail", productId);
     }
+    
+    public int insertView(Map<String, Object> param) {
+
+        return sqlSession.insert("productMapper.insertView", param);
+    }
+    
+    
 }

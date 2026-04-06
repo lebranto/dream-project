@@ -27,7 +27,7 @@
         <div class="cancel-box">
             <div class="top-area">
                 <div class="product-image">
-                    <img src="${contextPath}/resources/uploadFiles/product/${orderList.photo1}" alt="${orderList.productName}">
+                    <img src="${contextPath}${orderList.photo1}" alt="${orderList.productName}">
                 </div>
 
                 <div class="top-text">

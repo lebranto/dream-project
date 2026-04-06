@@ -71,7 +71,7 @@
                             <div class="recent-card">
                                 <div class="product-cell">
                                    <img class="product-thumb"
-                                         src="${l.photo1}"
+                                         src="${contextPath}${l.photo1}"
                                          alt="${l.productName}"> 
                                     <div class="product-info">
                                         <div class="product-name">${l.productName}</div> 
@@ -88,7 +88,7 @@
                                 <div class="go-cell">
                                     <button class="go-btn"
                                             type="button"
-                                            onclick="location.href='${contextPath}/product/detail?productNo=${item.productNo}'">
+                                            onclick="location.href='${contextPath}/product/detail?productId=${l.productId}'">
                                         상품 보러가기
                                     </button>
                                 </div>

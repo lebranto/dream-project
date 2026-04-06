@@ -141,5 +141,17 @@
     <select id="selectLastCompanyCode" resultType="int">
         SELECT MAX(COMPANY_CODE) FROM COMPANY
     </select>
+    
+    
+	<insert id="insertView"> 
+	MERGE INTO RECENTLY_VIEWED V 
+	USING (SELECT #{memberNo} AS MEMBER_NO, #{productId} AS PRODUCT_ID FROM DUAL) T 
+	ON (V.MEMBER_NO = T.MEMBER_NO AND V.PRODUCT_ID = T.PRODUCT_ID) 
+	WHEN MATCHED THEN UPDATE SET VIEWED_DATE = SYSDATE 
+	WHEN NOT MATCHED THEN 
+	INSERT (VIEW_ID, MEMBER_NO, PRODUCT_ID, VIEWED_DATE) 
+	VALUES (SEQ_VIEW.NEXTVAL, #{memberNo}, #{productId}, SYSDATE)
+    </insert>
+ 
 
 </mapper>

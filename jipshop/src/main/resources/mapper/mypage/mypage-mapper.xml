@@ -85,7 +85,7 @@
                     R.PRODUCT_ID,
                     R.VIEWED_DATE,
                     P.PRODUCT_NAME,
-                    P.PRODUCT_PHOTO1,
+                    P.PRODUCT_PHOTO1 AS photo1,
                     P.PRODUCT_PRICE
                 FROM RECENTLY_VIEWED R
                 JOIN PRODUCT P
