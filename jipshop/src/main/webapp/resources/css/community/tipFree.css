@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,7 +8,7 @@
 }
 
 body {
-    background-color: #efefef;
+    background-color: #f7f4ee;
     color: #222;
 }
 
@@ -16,79 +18,224 @@ a {
 }
 
 .board-wrap {
-    width: 80%;
+    width: min(1320px, 94%);
     max-width: 1320px;
     min-width: 1100px;
     margin: 0 auto;
-    padding: 35px 0 40px;
-    background-color: #efefef;
+    padding: 26px 0 50px;
 }
 
-/* 제목 */
+/* 제목 카드 - 자랑게시판이랑 같은 틀 */
 .board-title-box {
-    width: 720px;
-    height: 90px;
-    margin: 0 auto 25px;
-    background-color: #F8E6C1;
+    width: 100%;
+    max-width: 1160px;
+    min-height: 150px;
+    margin: 0 auto 22px;
+    padding: 22px 30px;
+    background-color: #fff4f4;
+    border: 1px solid #ead7d7;
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(120, 82, 92, 0.03);
+}
+
+.board-title-box::before {
+    content: "🐾 반려생활 이야기";
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #c58f8f;
+    margin-bottom: 8px;
+}
+
+.board-title-box h1 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #47363a;
+}
+
+/* 검색영역 - 자랑게시판 구조와 통일 */
+.board-search-area {
+    width: 100%;
+    max-width: 1160px;
+    margin: 0 auto 24px;
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr) 150px;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #e3d1c5;
+    border-radius: 24px;
+    background-color: #f0e3d7;
+}
+
+.board-search-select-wrap {
+    position: relative;
+    width: 100%;
+    height: 46px;
+    background-color: #fffaf6;
+    border: 1px solid #d9c9bb;
+    border-radius: 16px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.board-search-select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    padding: 0 35px 0 14px;
+    font-size: 14px;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    color: #5a4b40;
+}
+
+.board-search-select-wrap::after {
+    content: "▼";
+    position: absolute;
+    right: 12px;
+    top: 14px;
+    font-size: 10px;
+    color: #aa9685;
+    pointer-events: none;
+}
+
+.board-search-input-wrap {
+    width: 100%;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #d9c9bb;
+    border-radius: 16px;
+    background-color: #fffaf6;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.board-search-input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    padding: 0 14px;
+    font-size: 14px;
+    background: transparent;
+    outline: none;
+    color: #4f4036;
+}
+
+.board-search-input::placeholder {
+    color: #a08d80;
+}
+
+.board-search-btn {
+    width: 48px;
+    height: 100%;
+    border: none;
+    background-color: #ead8ca;
+    border-left: 1px solid #d9c9bb;
+    font-size: 22px;
+    cursor: pointer;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.board-title-box h1 {
-    font-size: 32px;
-    font-weight: 500;
-    color: #111;
+.board-write-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 46px;
+    background: linear-gradient(180deg, #f1d36f 0%, #e8c04a 100%);
+    border: none;
+    color: #4b3a27;
+    text-decoration: none;
+    border-radius: 18px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px rgba(226, 184, 70, 0.18);
 }
 
-
-/* 섹션 타이틀 */
+/* 섹션 제목 */
 .section-title {
     width: 100%;
-    max-width: 1080px;
-    margin: 0 auto 12px;
-    font-size: 18px;
-    font-weight: 500;
+    max-width: 1160px;
+    margin: 0 auto 10px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #3f3026;
 }
 
 /* 목록 */
 .board-list-box {
     width: 100%;
-    max-width: 1080px;
+    max-width: 1160px;
     margin: 0 auto;
-    border-top: 2px solid #d2b675;
-    background-color: transparent;
+    border: 1px solid #e7d8cb;
+    border-radius: 28px;
+    background-color: #fff;
+    overflow: hidden;
 }
 
 .board-list-header,
 .board-list-row {
     display: grid;
-    grid-template-columns: 90px 110px 1.8fr 120px 90px 90px 120px;
+    grid-template-columns: 90px 120px 1.8fr 120px 90px 90px 120px;
     align-items: center;
     text-align: center;
 }
 
 .board-list-header {
-    min-height: 48px;
-    border-bottom: 1px solid #888;
-    background-color: #e8b847;
-    font-size: 15px;
-    font-weight: 500;
+    min-height: 50px;
+    border-bottom: 1px solid #eadfd6;
+    background-color: #faf5ef;
+    font-size: 14px;
+    font-weight: 700;
+    color: #7a6554;
 }
 
 .board-list-row {
-    min-height: 52px;
-    border-bottom: 1px solid #b8b8b8;
+    min-height: 90px;
+    border-bottom: 1px solid #efe5dc;
     font-size: 14px;
     cursor: pointer;
+    background-color: #fff;
+}
+
+.board-list-row:last-child {
+    border-bottom: none;
 }
 
 .board-list-row:hover {
-    background-color: #f9f6ee;
+    background-color: #fffaf7;
+}
+
+.col-no,
+.col-category,
+.col-writer,
+.col-view,
+.col-like,
+.col-date {
+    text-align: center;
+    color: #57473b;
 }
 
 .col-title {
-    padding: 0 10px;
+    padding: 0 16px;
+    text-align: left;
+    color: #3f3127;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .title-ellipsis {
@@ -97,296 +244,134 @@ a {
     text-overflow: ellipsis;
 }
 
-/* 카테고리 pill */
 .category-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 68px;
-    height: 24px;
+    min-width: 72px;
+    height: 28px;
     padding: 0 12px;
     border-radius: 999px;
-    background-color: #efe6cf;
+    background-color: #f7efe7;
+    border: 1px solid #e3d5c9;
     font-size: 13px;
-    color: #333;
+    color: #6d5b4d;
+    font-weight: 700;
 }
 
-/* 빈 목록 */
 .empty-board-row {
-    height: 140px;
+    height: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #777;
+    color: #877568;
     font-size: 14px;
-    border-bottom: 1px solid #b8b8b8;
+    border-bottom: 1px solid #efe5dc;
 }
 
 /* 페이징 */
 .pet-paging {
     width: 100%;
-    max-width: 1080px;
+    max-width: 1160px;
     margin: 28px auto 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .pet-page-nav {
-    width: 28px;
-    height: 28px;
-    border: 1px solid #84c3a0;
-    background-color: #dff1e7;
-    color: #2f8d60;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #ded1c6;
+    background-color: #faf6f2;
+    color: #8a7767;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 15px;
     text-decoration: none;
 }
 
 .pet-page-nav.disabled {
-    border: 1px solid #ddd;
-    background-color: #f1f1f1;
-    color: #bbb;
+    background-color: #f4efea;
+    color: #c2b5a8;
 }
 
 .pet-page-num-wrap {
     display: flex;
+    gap: 6px;
 }
 
 .pet-page-num {
-    width: 33px;
-    height: 28px;
-    border: 1px solid #8d7d58;
-    border-right: none;
-    background-color: #efe6cf;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #ded1c6;
+    background-color: #faf6f2;
+    color: #6b594b;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 14px;
     text-decoration: none;
-    color: #222;
-}
-
-.pet-page-num:last-child {
-    border-right: 1px solid #8d7d58;
 }
 
 .pet-page-num.current {
-    background-color: #d9c37f;
+    background-color: #efd16e;
+    border-color: #efd16e;
+    color: #3f3124;
     font-weight: bold;
 }
 /* =========================
-   자유게시판/꿀팁게시판 폭 강제 고정
-   파일 맨 아래에 추가
-   ========================= */
+   팁/자유 게시판 길이/배경 최종 보정
+========================= */
+
+/* 페이지 안쪽 회색 느낌 제거 */
+body {
+    background: #f7f4ee !important;
+}
 
 .board-wrap {
-    width: 80% !important;
-    max-width: 1320px !important;
+    width: min(1400px, 96%) !important;
+    max-width: 1400px !important;
     min-width: 1100px !important;
-    margin: 0 auto !important;
-    padding: 35px 0 40px !important;
+    background: transparent !important;
+    padding: 26px 0 56px !important;
 }
 
+/* 제목 카드 자랑게시판과 같은 길이 */
 .board-title-box {
-    width: 700px !important;
-    margin: 0 auto 25px !important;
-}
-
-.search-area {
-    width: 720px !important;
-    margin: 0 auto 25px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-}
-
-.search-select-wrap {
-    width: 165px !important;
-    height: 38px !important;
-    flex-shrink: 0 !important;
-    border-radius: 0 !important;
-    overflow: hidden !important;
-}
-
-.search-select {
     width: 100% !important;
-    height: 100% !important;
-    border: none !important;
-    border-radius: 0 !important;
+    max-width: 1240px !important;
+    min-height: 150px !important;
+    margin: 0 auto 22px !important;
 }
 
-.search-input-wrap {
-    flex: 1 !important;
-    min-width: 0 !important;
-    height: 38px !important;
-    display: flex !important;
-    align-items: center !important;
-    border-radius: 0 !important;
-    overflow: hidden !important;
+/* 검색영역도 같은 길이 */
+.board-search-area,
+.bsearch-area {
+    width: 100% !important;
+    max-width: 1240px !important;
+    margin: 0 auto 24px !important;
 }
 
-.search-input {
-    flex: 1 !important;
-    min-width: 0 !important;
-    height: 100% !important;
-    border: none !important;
-    border-radius: 0 !important;
-}
-
-.search-btn {
-    width: 45px !important;
-    height: 100% !important;
-    flex-shrink: 0 !important;
-    border: none !important;
-    border-radius: 0 !important;
-}
-
-.write-btn {
-    width: 95px !important;
-    height: 38px !important;
-    flex-shrink: 0 !important;
-    white-space: nowrap !important;
-    border-radius: 0 !important;
-    writing-mode: horizontal-tb !important;
-}
-
+/* 섹션 타이틀 / 목록 / 페이징도 동일 폭 */
 .section-title {
     width: 100% !important;
-    max-width: 1080px !important;
-    margin: 0 auto 12px !important;
+    max-width: 1240px !important;
+    margin: 0 auto 10px !important;
 }
 
 .board-list-box {
     width: 100% !important;
-    max-width: 1080px !important;
+    max-width: 1240px !important;
     margin: 0 auto !important;
 }
 
 .pet-paging {
     width: 100% !important;
-    max-width: 1080px !important;
+    max-width: 1240px !important;
     margin: 28px auto 0 !important;
-}
-/* =========================
-   검색창만 원래 비주얼처럼 강제 고정
-   ========================= */
-
-.bsearch-area {
-    width: 720px !important;
-    margin: 0 auto 25px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-
-    border: none !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-}
-
-.bsearch-select-wrap {
-    position: relative !important;
-    width: 165px !important;
-    height: 38px !important;
-    flex-shrink: 0 !important;
-    background-color: #f8f5f2 !important;
-    border: 1px solid #ddd !important;
-    border-radius: 0 !important;
-    overflow: hidden !important;
-    box-shadow: none !important;
-}
-
-.bsearch-select {
-    width: 100% !important;
-    height: 100% !important;
-    padding: 0 35px 0 12px !important;
-    border: none !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    outline: none !important;
-    box-shadow: none !important;
-    font-size: 14px !important;
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    line-height: 38px !important;
-    cursor: pointer !important;
-}
-
-.bsearch-select-wrap::after {
-    content: "▲\A▼" !important;
-    white-space: pre !important;
-    position: absolute !important;
-    right: 10px !important;
-    top: 6px !important;
-    font-size: 10px !important;
-    color: #d6c89e !important;
-    line-height: 10px !important;
-    pointer-events: none !important;
-}
-
-.bsearch-input-wrap {
-    flex: 1 !important;
-    min-width: 0 !important;
-    height: 38px !important;
-    display: flex !important;
-    align-items: center !important;
-    background-color: #f8f5f2 !important;
-    border: 1px solid #ddd !important;
-    border-radius: 0 !important;
-    overflow: hidden !important;
-    box-shadow: none !important;
-}
-
-.bsearch-input {
-    flex: 1 !important;
-    min-width: 0 !important;
-    height: 100% !important;
-    border: none !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    outline: none !important;
-    box-shadow: none !important;
-    padding: 0 12px !important;
-    font-size: 14px !important;
-    line-height: 38px !important;
-}
-
-.bsearch-btn {
-    width: 45px !important;
-    height: 38px !important;
-    flex-shrink: 0 !important;
-    border: none !important;
-    border-left: 1px solid #ddd !important;
-    border-radius: 0 !important;
-    background-color: #f8f5f2 !important;
-    box-shadow: none !important;
-    font-size: 24px !important;
-    line-height: 1 !important;
-    cursor: pointer !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0 !important;
-}
-
-.bwrite-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 110px;
-    height: 40px;
-    background-color: #f9ead7;
-    color: #222;
-    text-decoration: none;
-    border-radius: 6px;
-    border: 1px solid #c0c0c0;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
 }

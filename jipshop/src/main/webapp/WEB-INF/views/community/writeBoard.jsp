@@ -8,69 +8,19 @@
 <head>
 <meta charset="UTF-8">
 <title>게시글 작성</title>
+
 <link rel="stylesheet" href="${contextPath}/resources/css/community/writeBoard.css">
-<link rel="stylesheet" href="./writeBoard.css">
 
-<style>
-    .custom-modal-overlay{
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.35);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    }
 
-    .custom-modal-overlay.show{
-        display: flex;
-    }
-
-    .custom-modal{
-        width: 320px;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        padding: 28px 24px 22px;
-        text-align: center;
-    }
-
-    .custom-modal-message{
-        font-size: 15px;
-        color: #222;
-        line-height: 1.6;
-        margin-bottom: 20px;
-        word-break: keep-all;
-    }
-
-    .custom-modal-btn{
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        min-width: 90px;
-        height: 38px;
-        border-radius: 6px;
-        background-color: #efc24f;
-        color: #222;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-        border: none;
-    }
-</style>
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 <div class="write-wrap">
-
     <form id="writeForm" action="${contextPath}/community/insertBoard" method="post" enctype="multipart/form-data">
-  		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
         <c:choose>
             <c:when test="${param.boardType eq 'myKidBoard'}">
                 <input type="hidden" name="boardCode" value="1">
@@ -131,7 +81,6 @@
             <div class="form-label">
                 제목 작성 <span class="required">*</span>
             </div>
-
             <input type="text" id="boardTitle" name="boardTitle" class="text-input" placeholder="제목을 입력해주세요">
         </div>
 
@@ -139,7 +88,6 @@
             <div class="form-label">
                 내용 작성 <span class="required">*</span>
             </div>
-
             <textarea id="boardContent" name="boardContent" class="textarea-input" placeholder="5글자 이상 작성해주세요"></textarea>
         </div>
 
@@ -162,7 +110,6 @@
         <div class="submit-area">
             <button type="submit" id="submitBtn" class="submit-link" style="border:none; cursor:pointer;">작성완료</button>
         </div>
-
     </form>
 </div>
 
@@ -172,26 +119,22 @@
         <button type="button" class="custom-modal-btn" id="customModalConfirm">확인</button>
     </div>
 </div>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-
     const boardType = "${param.boardType}";
     const loginMemberNo = "${empty loginUser ? '' : loginUser.memberNo}";
 
     const categoryButtons = document.querySelectorAll(".category-btn");
     const categoryCodeInput = document.getElementById("categoryCode");
-
     const titleInput = document.getElementById("boardTitle");
     const contentInput = document.getElementById("boardContent");
-
     const imageInput = document.getElementById("imageInput");
     const imagePreviewArea = document.getElementById("imagePreviewArea");
     const imageCountText = document.getElementById("imageCountText");
-
     const writeForm = document.getElementById("writeForm");
-    const submitBtn = document.getElementById("submitBtn");
-
     const customModal = document.getElementById("customModal");
     const customModalMessage = document.getElementById("customModalMessage");
     const customModalConfirm = document.getElementById("customModalConfirm");
@@ -217,6 +160,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (customModal) {
             customModal.classList.remove("show");
         }
+
         if (focusTarget) {
             focusTarget.focus();
         }
@@ -240,8 +184,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 categoryButtons.forEach(function(item) {
                     item.classList.remove("active");
                 });
-                this.classList.add("active");
 
+                this.classList.add("active");
                 if (categoryCodeInput) {
                     categoryCodeInput.value = this.dataset.code;
                 }
@@ -327,35 +271,32 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    if (submitBtn && writeForm) {
-        submitBtn.addEventListener("click", function(e) {
+    if (writeForm) {
+        writeForm.addEventListener("submit", function(e) {
             const title = titleInput ? titleInput.value.trim() : "";
             const content = contentInput ? contentInput.value.trim() : "";
             const categoryCode = categoryCodeInput ? categoryCodeInput.value : "";
 
-            console.log("버튼 클릭");
-            console.log("loginMemberNo =", loginMemberNo);
-
-
             if ((boardType === "tip" || boardType === "free") && (!categoryCode || categoryCode === "0")) {
+                e.preventDefault();
                 showModal("카테고리를 선택해주세요.");
                 return;
             }
 
             if (title === "") {
+                e.preventDefault();
                 showModal("제목을 입력해주세요.", titleInput);
                 return;
             }
 
             if (content.length < 5) {
+                e.preventDefault();
                 showModal("내용은 5자 이상 입력해주세요.", contentInput);
                 return;
             }
-
-            writeForm.submit();
         });
     } else {
-        console.log("submitBtn 또는 writeForm 못 찾음");
+        console.log("writeForm 못 찾음");
     }
 });
 </script>
@@ -365,5 +306,6 @@ document.addEventListener("DOMContentLoaded", function() {
         alert("${alertMsg}");
     </script>
 </c:if>
+
 </body>
 </html>

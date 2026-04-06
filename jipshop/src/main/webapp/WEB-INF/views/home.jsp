@@ -24,8 +24,8 @@
         <div class="banner-track" id="bannerTrack">
 
             <div class="banner-slide">
-                <a href="${pageContext.request.contextPath}/product/list" class="banner-link">
-                    <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309.png">
+                <a href="${pageContext.request.contextPath}/product/list?categoryName=사료" class="banner-link">
+                    <img src="${pageContext.request.contextPath}/resources/images/banner/강지고양이.png">
                     <div class="banner-overlay">
                         <span class="badge">BEST</span>
                         <p>인기 사료와 간식을 한눈에 만나보세요</p>
@@ -35,7 +35,7 @@
 
             <div class="banner-slide">
                 <a href="${pageContext.request.contextPath}/product/list?petType=강아지&categoryName=사료" class="banner-link">
-                    <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_01.png">
+                    <img src="${pageContext.request.contextPath}/resources/images/banner/KakaoTalk_20260318_120256309_01.png">
                     <div class="banner-overlay">
                         <span class="badge">LIVING</span>
                         <p>생활용품과 위생용품도 편리하게 쇼핑</p>
@@ -44,8 +44,8 @@
             </div>
 
 <div class="banner-slide">
-    <a href="${pageContext.request.contextPath}/product/detail?productId=16" class="banner-link">
-        <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_02.png" alt="배너3">
+    <a href="${pageContext.request.contextPath}/product/detail?productId=17" class="banner-link">
+        <img src="${pageContext.request.contextPath}/resources/images/banner/KakaoTalk_20260318_120256309_02.png" alt="배너3">
         <div class="banner-overlay">
             <span class="badge">CARE</span>
             <p>칫솔 · 위생용품 · 데일리 케어 추천</p>
@@ -54,8 +54,8 @@
 </div>
 
 <div class="banner-slide">
-    <a href="${pageContext.request.contextPath}/product/detail?productId=4" class="banner-link">
-        <img src="${pageContext.request.contextPath}/resources/img/KakaoTalk_20260318_120256309_03.png" alt="배너4">
+    <a href="${pageContext.request.contextPath}/product/detail?productId=11" class="banner-link">
+        <img src="${pageContext.request.contextPath}/resources/images/banner/KakaoTalk_20260318_120256309_03.png" alt="배너4">
         <div class="banner-overlay">
             <span class="badge">CAT</span>
             <p>체질을 생각한 고양이 맞춤 상품</p>

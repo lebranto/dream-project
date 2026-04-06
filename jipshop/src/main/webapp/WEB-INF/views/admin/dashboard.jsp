@@ -92,7 +92,7 @@
     <div class="dash-section">
         <div class="dash-section-title">
             🚨 최근 신고 사항
-            <a href="${contextPath}/admin/reportList" class="dash-more">전체보기 ›</a>
+            <a href="${contextPath}/admin/reportList.do" class="dash-more">전체보기 ›</a>
         </div>
         <div class="table-wrap">
             <table>

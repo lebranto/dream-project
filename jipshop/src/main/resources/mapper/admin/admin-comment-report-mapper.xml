@@ -13,6 +13,7 @@
         <result property="reportReason"     column="REPORT_REASON"/>
         <result property="reportDate"       column="REPORT_DATE"/>
         <result property="reportProcessYn"  column="REPORT_PROCESS_YN"/>
+        <result property="reportedMemberId" column="REPORTED_MEMBER_ID"/>
 
         <result property="reporterId"       column="REPORTER_ID"/>
         <result property="boardNo"          column="BOARD_NO"/>
@@ -69,73 +70,79 @@
     </select>
 
     <select id="selectReportList" parameterType="hashmap" resultMap="adminCommentReportResultMap">
-        SELECT
-               CR.REPORT_ID,
-               CR.REPORTER_MEMBER_NO,
-               CR.COMMENT_ID,
-               CR.REPORT_TYPE_ID,
-               CR.REPORT_REASON,
-               TO_CHAR(CR.REPORT_DATE, 'YYYY-MM-DD') AS REPORT_DATE,
-               CR.REPORT_PROCESS_YN,
+    SELECT
+           CR.REPORT_ID,
+           CR.REPORTER_MEMBER_NO,
+           CR.COMMENT_ID,
+           CR.REPORT_TYPE_ID,
+           CR.REPORT_REASON,
+           TO_CHAR(CR.REPORT_DATE, 'YYYY-MM-DD') AS REPORT_DATE,
+           CR.REPORT_PROCESS_YN,
 
-               M.MEMBER_ID AS REPORTER_ID,
-               BC.BOARD_NO,
-               NVL(RT.TYPE_NAME, '기타') AS TYPE_NAME,
-               BC.COMMENT_CONTENT,
+           M.MEMBER_ID AS REPORTER_ID,
+           CM.MEMBER_ID AS REPORTED_MEMBER_ID,
+           BC.BOARD_NO,
+           NVL(RT.TYPE_NAME, '기타') AS TYPE_NAME,
+           BC.COMMENT_CONTENT,
 
-               CASE
-                   WHEN CR.REPORT_PROCESS_YN = 'Y' THEN 'DONE'
-                   ELSE 'PENDING'
-               END AS REPORT_STATUS,
+           CASE
+               WHEN CR.REPORT_PROCESS_YN = 'Y' THEN 'DONE'
+               ELSE 'PENDING'
+           END AS REPORT_STATUS,
 
-               CASE
-                   WHEN CR.REPORT_PROCESS_YN = 'Y' THEN '처리 완료'
-                   ELSE '처리 대기'
-               END AS PROCESS_LABEL
-          FROM COMMENT_REPORT CR
-          JOIN MEMBER M
-            ON CR.REPORTER_MEMBER_NO = M.MEMBER_NO
-          JOIN BOARD_COMMENT BC
-            ON CR.COMMENT_ID = BC.COMMENT_ID
-          LEFT JOIN REPORT_TYPE RT
-            ON CR.REPORT_TYPE_ID = RT.REPORT_TYPE_ID
-        <include refid="searchCondition"/>
-         ORDER BY CR.REPORT_ID DESC
-    </select>
+           CASE
+               WHEN CR.REPORT_PROCESS_YN = 'Y' THEN '처리 완료'
+               ELSE '처리 대기'
+           END AS PROCESS_LABEL
+      FROM COMMENT_REPORT CR
+      JOIN MEMBER M
+        ON CR.REPORTER_MEMBER_NO = M.MEMBER_NO
+      JOIN BOARD_COMMENT BC
+        ON CR.COMMENT_ID = BC.COMMENT_ID
+      JOIN MEMBER CM
+        ON BC.MEMBER_NO = CM.MEMBER_NO
+      LEFT JOIN REPORT_TYPE RT
+        ON CR.REPORT_TYPE_ID = RT.REPORT_TYPE_ID
+    <include refid="searchCondition"/>
+     ORDER BY CR.REPORT_DATE DESC, CR.REPORT_ID DESC
+</select>
 
     <select id="selectReportDetail" parameterType="_int" resultMap="adminCommentReportResultMap">
-        SELECT
-               CR.REPORT_ID,
-               CR.REPORTER_MEMBER_NO,
-               CR.COMMENT_ID,
-               CR.REPORT_TYPE_ID,
-               CR.REPORT_REASON,
-               TO_CHAR(CR.REPORT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS REPORT_DATE,
-               CR.REPORT_PROCESS_YN,
+    SELECT
+           CR.REPORT_ID,
+           CR.REPORTER_MEMBER_NO,
+           CR.COMMENT_ID,
+           CR.REPORT_TYPE_ID,
+           CR.REPORT_REASON,
+           TO_CHAR(CR.REPORT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS REPORT_DATE,
+           CR.REPORT_PROCESS_YN,
 
-               M.MEMBER_ID AS REPORTER_ID,
-               BC.BOARD_NO,
-               NVL(RT.TYPE_NAME, '기타') AS TYPE_NAME,
-               BC.COMMENT_CONTENT,
+           M.MEMBER_ID AS REPORTER_ID,
+           CM.MEMBER_ID AS REPORTED_MEMBER_ID,
+           BC.BOARD_NO,
+           NVL(RT.TYPE_NAME, '기타') AS TYPE_NAME,
+           BC.COMMENT_CONTENT,
 
-               CASE
-                   WHEN CR.REPORT_PROCESS_YN = 'Y' THEN 'DONE'
-                   ELSE 'PENDING'
-               END AS REPORT_STATUS,
+           CASE
+               WHEN CR.REPORT_PROCESS_YN = 'Y' THEN 'DONE'
+               ELSE 'PENDING'
+           END AS REPORT_STATUS,
 
-               CASE
-                   WHEN CR.REPORT_PROCESS_YN = 'Y' THEN '처리 완료'
-                   ELSE '처리 대기'
-               END AS PROCESS_LABEL
-          FROM COMMENT_REPORT CR
-          JOIN MEMBER M
-            ON CR.REPORTER_MEMBER_NO = M.MEMBER_NO
-          JOIN BOARD_COMMENT BC
-            ON CR.COMMENT_ID = BC.COMMENT_ID
-          LEFT JOIN REPORT_TYPE RT
-            ON CR.REPORT_TYPE_ID = RT.REPORT_TYPE_ID
-         WHERE CR.REPORT_ID = #{reportId}
-    </select>
+           CASE
+               WHEN CR.REPORT_PROCESS_YN = 'Y' THEN '처리 완료'
+               ELSE '처리 대기'
+           END AS PROCESS_LABEL
+      FROM COMMENT_REPORT CR
+      JOIN MEMBER M
+        ON CR.REPORTER_MEMBER_NO = M.MEMBER_NO
+      JOIN BOARD_COMMENT BC
+        ON CR.COMMENT_ID = BC.COMMENT_ID
+      JOIN MEMBER CM
+        ON BC.MEMBER_NO = CM.MEMBER_NO
+      LEFT JOIN REPORT_TYPE RT
+        ON CR.REPORT_TYPE_ID = RT.REPORT_TYPE_ID
+     WHERE CR.REPORT_ID = #{reportId}
+</select>
 
     <update id="updateReportProcess" parameterType="_int">
         UPDATE COMMENT_REPORT

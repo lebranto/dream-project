@@ -27,8 +27,8 @@
                 <dt>신고자</dt>
                 <dd>${report.reporterId}</dd>
 
-                <dt>신고 대상</dt>
-                <dd>게시글 번호 ${report.boardNo}</dd>
+                <dt>신고 대상ID</dt>
+                <dd>${report.reportedMemberId}</dd>
 
                 <dt>신고일</dt>
                 <dd>${report.reportDate}</dd>

@@ -1,296 +1,290 @@
 @charset "UTF-8";
 
-* {
-    box-sizing: border-box;
-}
+  * {
+        box-sizing: border-box;
+    }
 
-body {
-    margin: 0;
-    background: #f5f5f5;
-    color: #222;
-    font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
-}
+    :root {
+        --bg-main: #fbf6ee;
+        --bg-soft: #fffaf2;
+        --bg-card: #fffdf9;
+        --bg-input: #fffdfa;
+        --line: #eadcc2;
+        --line-soft: #f1e7d4;
+        --text-main: #3f3427;
+        --text-sub: #8a7762;
+        --point: #efc85c;
+        --point-deep: #e0b347;
+        --point-soft: #fff2c9;
+        --shadow: 0 14px 30px rgba(120, 93, 52, 0.08);
+    }
 
-/* 전체 영역 */
-.modify-wrap {
-    width: 100%;
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 34px 32px 80px;
-}
+    body {
+        margin: 0;
+        background: linear-gradient(180deg, #fbf6ee 0%, #f8f1e6 100%);
+        color: var(--text-main);
+        font-family: "Malgun Gothic", "맑은 고딕", sans-serif;
+    }
 
-/* form 전체 */
-#modifyForm {
-    width: 100%;
-}
-
-/* 공통 블록 */
-.modify-form-block,
-.modify-category-wrap {
-    padding: 22px 0 26px;
-    border-top: 1px solid #d9d9d9;
-}
-
-.modify-category-wrap:first-child,
-.modify-form-block:first-of-type {
-    border-top: 1px solid #d9d9d9;
-}
-
-/* 제목 라벨 */
-.modify-form-label {
-    font-size: 17px;
-    font-weight: 800;
-    color: #202020;
-    margin-bottom: 14px;
-    letter-spacing: -0.2px;
-}
-
-/* 입력창 */
-.modify-text-input {
-    width: 100%;
-    height: 52px;
-    border: 1px solid #d9d9d9;
-    border-radius: 8px;
-    background: #fff;
-    padding: 0 16px;
-    font-size: 15px;
-    color: #222;
-    outline: none;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-}
-
-.modify-text-input::placeholder {
-    color: #aaa;
-}
-
-.modify-text-input:focus {
-    border-color: #e6b84a;
-    box-shadow: 0 0 0 4px rgba(230, 184, 74, 0.16);
-    background: #fffdf8;
-}
-
-/* textarea */
-.modify-textarea-input {
-    width: 100%;
-    min-height: 210px;
-    border: 1px solid #d9d9d9;
-    border-radius: 10px;
-    background: #fff;
-    padding: 16px 18px;
-    font-size: 15px;
-    color: #222;
-    line-height: 1.7;
-    resize: none;
-    outline: none;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-}
-
-.modify-textarea-input::placeholder {
-    color: #aaa;
-}
-
-.modify-textarea-input:focus {
-    border-color: #e6b84a;
-    box-shadow: 0 0 0 4px rgba(230, 184, 74, 0.16);
-    background: #fffdf8;
-}
-
-/* 업로드 박스 */
-.modify-upload-box {
-    width: 100%;
-    min-height: 285px;
-    border: 1px solid #d9d9d9;
-    border-radius: 18px;
-    background: #fff;
-    padding: 22px 22px 20px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
-}
-
-/* 업로드 제목 */
-.rewrite-old-upload-title,
-.rewrite-new-upload-title {
-    font-size: 18px;
-    font-weight: 800;
-    color: #2f2f2f;
-    margin-bottom: 14px;
-    letter-spacing: -0.2px;
-}
-
-.rewrite-new-upload-title {
-    margin-top: 26px;
-}
-
-/* 이미지 미리보기 행 */
-.modify-preview-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    min-height: 72px;
-}
-
-/* 미리보기 카드 */
-.modify-preview-item {
-    position: relative;
-    width: 170px;
-    height: 170px;
-    border: 1px solid #e2e2e2;
-    border-radius: 14px;
-    overflow: hidden;
-    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
-    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-}
-
-.modify-preview-item:hover {
-    transform: translateY(-2px);
-    border-color: #e6b84a;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-}
-
-.modify-preview-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* 삭제 버튼 */
-.modify-remove-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 34px;
-    height: 34px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(50, 50, 50, 0.78);
-    color: #fff;
-    font-size: 22px;
-    line-height: 1;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;
-    transition: background 0.18s ease, transform 0.18s ease;
-}
-
-.modify-remove-btn:hover {
-    background: #df5f5f;
-    transform: scale(1.06);
-}
-
-/* 첨부 버튼 영역 */
-.rewrite-upload-control {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 16px;
-}
-
-/* 파일 첨부 버튼 */
-.rewrite-file-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 102px;
-    height: 38px;
-    padding: 0 18px;
-    border: 1px solid #cfcfcf;
-    border-radius: 999px;
-    background: #fff;
-    color: #333;
-    font-size: 14px;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.18s ease;
-}
-
-.rewrite-file-btn:hover {
-    border-color: #e6b84a;
-    background: #fff8e8;
-    color: #6a511c;
-}
-
-/* 첨부 개수 */
-.rewrite-file-count-text,
-#modifyImageCountText {
-    color: #666;
-    font-size: 15px;
-    font-weight: 500;
-}
-
-/* 하단 버튼 영역 */
-.modify-submit-area {
-    display: flex;
-    justify-content: center;
-    margin-top: 42px;
-}
-
-/* 수정완료 버튼 */
-.rewrite-submit-btn {
-    min-width: 132px;
-    height: 44px;
-    border: none;
-    border-radius: 10px;
-    background: #e4b23f;
-    color: #111;
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: -0.2px;
-    cursor: pointer;
-    box-shadow: 0 8px 18px rgba(228, 178, 63, 0.28);
-    transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
-}
-
-.rewrite-submit-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 12px 22px rgba(228, 178, 63, 0.34);
-    opacity: 0.97;
-}
-
-/* 반응형 */
-@media (max-width: 1024px) {
     .modify-wrap {
-        padding: 28px 20px 64px;
+        width: min(1180px, 92%);
+        margin: 0 auto;
+        padding: 42px 0 84px;
     }
 
-    .modify-preview-item {
-        width: 150px;
-        height: 150px;
-    }
-}
-
-@media (max-width: 768px) {
-    .modify-wrap {
-        padding: 22px 14px 50px;
+    #modifyForm {
+        width: 100%;
     }
 
+    .modify-category-wrap,
+    .modify-form-block {
+        margin-bottom: 18px;
+        padding: 24px 24px 22px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--bg-card);
+        box-shadow: var(--shadow);
+    }
+
+    .modify-category-label,
     .modify-form-label {
         font-size: 16px;
+        font-weight: 800;
+        color: var(--text-main);
+        margin-bottom: 14px;
+    }
+
+    .modify-category-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .modify-category-btn {
+        min-width: 96px;
+        height: 42px;
+        padding: 0 16px;
+        border: 1px solid #eadab7;
+        border-radius: 999px;
+        background: #fffaf0;
+        color: var(--text-main);
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.18s ease;
+    }
+
+    .modify-category-btn:hover {
+        border-color: var(--point-deep);
+        background: #fff4d7;
+        transform: translateY(-1px);
+    }
+
+    .modify-category-btn.active {
+        background: linear-gradient(135deg, #f7d978 0%, #e8bd55 100%);
+        border-color: #e2b245;
+        color: #3b2d16;
+        box-shadow: 0 10px 18px rgba(224, 179, 71, 0.20);
     }
 
     .modify-text-input,
     .modify-textarea-input {
-        font-size: 14px;
+        width: 100%;
+        border: 1px solid var(--line-soft);
+        border-radius: 22px;
+        background: var(--bg-input);
+        color: var(--text-main);
+        outline: none;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .modify-text-input {
+        height: 58px;
+        padding: 0 18px;
+        font-size: 15px;
+    }
+
+    .modify-textarea-input {
+        min-height: 280px;
+        padding: 18px 20px;
+        font-size: 15px;
+        line-height: 1.7;
+        resize: none;
+    }
+
+    .modify-text-input::placeholder,
+    .modify-textarea-input::placeholder {
+        color: #b19d86;
+    }
+
+    .modify-text-input:focus,
+    .modify-textarea-input:focus {
+        border-color: #e3bb5a;
+        background: #fffdf8;
+        box-shadow: 0 0 0 6px rgba(239, 200, 92, 0.14);
+    }
+
+    .modify-upload-box {
+        width: 100%;
+        min-height: 320px;
+        border: 2px dashed #ecd79e;
+        border-radius: 28px;
+        background: linear-gradient(180deg, #fffdf8 0%, #fff8ea 100%);
+        padding: 20px;
+    }
+
+    .rewrite-old-upload-title,
+    .rewrite-new-upload-title {
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--text-main);
+        margin-bottom: 14px;
+    }
+
+    .rewrite-new-upload-title {
+        margin-top: 28px;
     }
 
     .modify-preview-row {
-        gap: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        min-height: 120px;
     }
 
     .modify-preview-item {
-        width: calc(50% - 6px);
-        height: 150px;
+        position: relative;
+        width: 170px;
+        height: 170px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+        background: linear-gradient(180deg, #fffefb 0%, #faf4e8 100%);
+        box-shadow: 0 10px 22px rgba(103, 80, 42, 0.08);
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .modify-preview-item:hover {
+        transform: translateY(-2px);
+        border-color: #e1b654;
+        box-shadow: 0 14px 28px rgba(103, 80, 42, 0.11);
+    }
+
+    .modify-preview-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .modify-remove-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(59, 45, 22, 0.72);
+        color: #fff;
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+        transition: background 0.18s ease, transform 0.18s ease;
+    }
+
+    .modify-remove-btn:hover {
+        background: #de6767;
+        transform: scale(1.05);
     }
 
     .rewrite-upload-control {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 16px;
         flex-wrap: wrap;
     }
 
-    .rewrite-submit-btn {
-        width: 100%;
-        max-width: 240px;
+    .rewrite-file-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 110px;
+        height: 42px;
+        padding: 0 18px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fffaf0;
+        color: var(--text-main);
+        font-size: 13px;
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.18s ease;
     }
-}
+
+    .rewrite-file-btn:hover {
+        background: #fff2d4;
+        border-color: #e0b347;
+    }
+
+    .rewrite-file-count-text,
+    #modifyImageCountText {
+        color: var(--text-sub);
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .modify-submit-area {
+        display: flex;
+        justify-content: center;
+        margin-top: 26px;
+    }
+
+    .rewrite-submit-btn {
+        min-width: 170px;
+        height: 54px;
+        padding: 0 28px;
+        border: none;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #f4d271 0%, #e8bb50 100%);
+        color: #3d2e15;
+        font-size: 16px;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 14px 26px rgba(224, 179, 71, 0.24);
+        transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+    }
+
+    .rewrite-submit-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 1024px) {
+        .modify-preview-item {
+            width: 150px;
+            height: 150px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .modify-wrap {
+            padding: 26px 0 64px;
+        }
+
+        .modify-category-wrap,
+        .modify-form-block {
+            padding: 20px 18px;
+            border-radius: 22px;
+        }
+
+        .modify-preview-item {
+            width: calc(50% - 7px);
+            height: 150px;
+        }
+    

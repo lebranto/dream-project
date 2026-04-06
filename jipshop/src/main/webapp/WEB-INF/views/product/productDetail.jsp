@@ -60,21 +60,14 @@
                         <span class="value">${product.productId}</span>
                     </div>
 
-                    <div class="product-brand-row">
-                        <span class="label">재고</span>
-                        <span class="value">
-                            <c:choose>
-                                <c:when test="${product.productStock > 0}">
-                                    ${product.productStock}개
-                                </c:when>
-                                <c:otherwise>
-                                    품절
-                                </c:otherwise>
-                            </c:choose>
-                        </span>
-                    </div>
+					<div class="product-brand-row">
 
-                    <div class="product-price-box">
+						<span class="value"> 
+						<c:if test="${product.productStock <= 0}">품절</c:if>
+						</span>
+					</div>
+
+					<div class="product-price-box">
                         <span class="price-label">판매가</span>
                         <span class="price-value">
                             <fmt:formatNumber value="${product.productPrice}" pattern="#,###"/>원
@@ -222,6 +215,32 @@
 	    ▲
 	</button>
     <script>
+    document.querySelector(".cart-btn").addEventListener("click", function() {
+
+        const stock = ${product.productStock};
+
+        if (stock <= 0) {
+            alert("품절된 상품입니다");
+            return;
+        }
+
+        const form = document.querySelector(".cart-form");
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(count => {
+            alert("장바구니에 추가되었습니다");
+            updateCartCountUI(parseInt(count));
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    });
+    
         document.addEventListener("DOMContentLoaded", function() {
             const qtyInput = document.getElementById("qty");
             const totalPriceEl = document.getElementById("totalPrice");
