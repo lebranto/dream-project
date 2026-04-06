@@ -102,7 +102,7 @@ import lombok.extern.slf4j.Slf4j;
 
 	        if(result > 0) {
 	            ra.addFlashAttribute("alertMsg", "주문이 완료되었습니다.");
-	            return "redirect:/mypage/purchase";
+	            return "redirect:/orders/completed";
 	        } else {
 	            ra.addFlashAttribute("alertMsg", "주문 처리에 실패했습니다.");
 	            return "redirect:/orders/orderNew";
@@ -160,6 +160,13 @@ import lombok.extern.slf4j.Slf4j;
 	public String FAQ() {
 		return "orders/FAQ";
 	}
+	
+	@RequestMapping("/completed")
+	public String completed() {
+		return "orders/completed";
+	}
+	
+	
 	
 	@GetMapping("/orders/orderNew")
 	public String orderNew(@RequestParam("cartIds") String cartIds, Model model) {
