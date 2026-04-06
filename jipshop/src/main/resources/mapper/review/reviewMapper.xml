@@ -19,7 +19,16 @@
         <result property="categoryName" column="CATEGORY_NAME"/>
     </resultMap>
 
-    <!-- productId로 작성 가능한 주문상세 1건 찾기 -->
+    <resultMap id="reviewMap" type="com.kh.jipshop.review.model.vo.Review">
+        <id property="reviewId" column="REVIEW_ID"/>
+        <result property="memberNo" column="MEMBER_NO"/>
+        <result property="detailId" column="DETAIL_ID"/>
+        <result property="reviewRating" column="REVIEW_RATING"/>
+        <result property="reviewContent" column="REVIEW_CONTENT"/>
+        <result property="reviewPhoto" column="REVIEW_PHOTO"/>
+        <result property="reviewRegDate" column="REVIEW_REG_DATE"/>
+    </resultMap>
+
     <select id="selectWritableDetailByProduct" parameterType="map" resultMap="reviewableOrderDetailMap">
         SELECT
             DETAIL_ID,
@@ -64,7 +73,6 @@
         WHERE ROWNUM = 1
     </select>
 
-    <!-- detailId로 작성 가능한 주문상세 찾기 -->
     <select id="selectWritableDetailByDetailId" parameterType="map" resultMap="reviewableOrderDetailMap">
         SELECT
             OD.DETAIL_ID,
@@ -93,7 +101,23 @@
           AND R.REVIEW_ID IS NULL
     </select>
 
-    <!-- 리뷰 등록 -->
+    <select id="selectReviewListByProductId" parameterType="int" resultMap="reviewMap">
+        SELECT
+            R.REVIEW_ID,
+            R.MEMBER_NO,
+            R.DETAIL_ID,
+            R.REVIEW_RATING,
+            R.REVIEW_CONTENT,
+            R.REVIEW_PHOTO,
+            R.REVIEW_REG_DATE
+        FROM REVIEW R
+        JOIN ORDER_DETAIL OD
+          ON OD.DETAIL_ID = R.DETAIL_ID
+        WHERE OD.PRODUCT_ID = #{productId}
+          AND NVL(R.REVIEW_ACTIVE_YN, 'Y') = 'Y'
+        ORDER BY R.REVIEW_ID DESC
+    </select>
+
     <insert id="insertReview" parameterType="com.kh.jipshop.review.model.vo.Review">
         INSERT INTO REVIEW (
             REVIEW_ID,

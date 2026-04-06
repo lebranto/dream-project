@@ -291,7 +291,7 @@ body{
         </table>
 
         <div class="go-cart">
-            <a href="${contextPath}/cart/list">&lt; 장바구니 가기</a>
+            <a href="${contextPath}/orders/cartList">&lt; 장바구니 가기</a>
         </div>
 
         <div class="total-box">

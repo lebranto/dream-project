@@ -43,6 +43,10 @@
 <!-- 그 외 커뮤니티 나머지 -->
 <security:intercept-url pattern="/community/**" access="permitAll" />
 		 
+<!-- 시큐리티 적용 분 -->	
+<security:intercept-url pattern="/mypage/**" access="isAuthenticated()" />
+<security:intercept-url pattern="/orders/cardList" access="isAuthenticated()" />
+		 
 		 
 		 <!-- 
 		 	form-login
