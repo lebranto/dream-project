@@ -14,7 +14,7 @@
         <ul class="community-sidebar-menu">
             <li>
                 <a href="${contextPath}/community/main"
-                   class="${empty param.boardType and empty boardType ? 'active' : ''}">
+                   class="${uri eq contextPath.concat('/community/myKidBoard') ? 'active' : ''}">
                     <span class="icon">🏠</span>
                     <span>커뮤니티 메인</span>
                 </a>
