@@ -1,20 +1,16 @@
 package com.kh.jipshop.product.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.jipshop.common.model.vo.PageInfo;
 import com.kh.jipshop.common.template.Pagination;
@@ -22,7 +18,12 @@ import com.kh.jipshop.product.model.service.ProductServiceImpl;
 import com.kh.jipshop.product.model.vo.ProductSearch;
 import com.kh.jipshop.product.model.vo.Products;
 
+
 import com.kh.jipshop.security.model.vo.MemberExt;
+
+import com.kh.jipshop.review.model.service.ReviewService;
+import com.kh.jipshop.review.model.vo.Review;
+
 
 import com.kh.jipshop.review.model.service.ReviewService;
 import com.kh.jipshop.review.model.vo.Review;
@@ -136,28 +137,5 @@ public class ProductController {
         model.addAttribute("keyword", keyword);
 
         return "product/productList";
-    }
-    
-    
-    
-    @PostMapping("/view/insert")
-    @ResponseBody
-    public String insertView(
-            @RequestParam("productId") int productId,
-            Authentication auth
-    ) {
-        if (auth == null || !(auth.getPrincipal() instanceof MemberExt)) {
-            return "fail";
-        }
-
-        int memberNo = ((MemberExt) auth.getPrincipal()).getMemberNo();
-       
-        Map<String, Object> param = new HashMap<>();
-        param.put("memberNo", memberNo);
-        param.put("productId", productId);
-        
-        productService.insertView(param);
-
-        return "ok";
     }
 }

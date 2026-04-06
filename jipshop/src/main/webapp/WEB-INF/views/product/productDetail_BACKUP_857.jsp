@@ -60,28 +60,22 @@
                         <span class="value">${product.productId}</span>
                     </div>
 
-
-
-					<div class="product-brand-row">
-
-
-
+<<<<<<< HEAD
                     <div class="product-brand-row">
                         <span class="value">
                             <c:if test="${product.productStock <= 0}">품절</c:if>
                         </span>
                     </div>
-
-
+=======
+					<div class="product-brand-row">
+>>>>>>> main
 
 						<span class="value"> 
 						<c:if test="${product.productStock <= 0}">품절</c:if>
 						</span>
 					</div>
 
-
-
-                    <div class="product-price-box">
+					<div class="product-price-box">
                         <span class="price-label">판매가</span>
                         <span class="price-value">
                             <fmt:formatNumber value="${product.productPrice}" pattern="#,###"/>원
@@ -234,6 +228,32 @@
 
         </div>
     </main>
+<<<<<<< HEAD
+
+    <!-- 위로 가기 버튼 -->
+    <button id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})"
+       style="
+           position: fixed;
+           bottom: 40px;
+           right: 40px;
+           width: 50px;
+           height: 50px;
+           border-radius: 50%;
+           border: none;
+           background: #ffda79;
+           font-size: 22px;
+           cursor: pointer;
+           box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+           display: none;
+           z-index: 999;
+           transition: opacity 0.3s;
+       ">
+       ▲
+   </button>
+
+    <script>
+    document.querySelector(".cart-btn").addEventListener("click", function() {
+=======
 	<!-- ⭐ 위로 가기 버튼 -->
 	<button id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})"
 	    style="
@@ -286,6 +306,7 @@
             const totalPriceEl = document.getElementById("totalPrice");
             const cartQty = document.getElementById("cartQty");
             const tabLinks = document.querySelectorAll(".tab-link[href^='#']");
+>>>>>>> main
 
         const stock = ${product.productStock};
 
@@ -310,7 +331,6 @@
             console.error(err);
         });
     });
-
 
     document.addEventListener("DOMContentLoaded", function() {
         const qtyInput = document.getElementById("qty");
@@ -341,20 +361,6 @@
             updateTotal();
         }
 
-
-        tabLinks.forEach(function(link) {
-            link.addEventListener("click", function(e) {
-                e.preventDefault();
-
-                const targetId = this.getAttribute("href");
-                const target = document.querySelector(targetId);
-
-                if (target) {
-                    const navHeight = document.getElementById("productTabNav").offsetHeight;
-                    const targetTop = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
-
-
-
         tabLinks.forEach(function(link) {
             link.addEventListener("click", function(e) {
                 e.preventDefault();
@@ -373,6 +379,19 @@
                 }
             });
         });
+<<<<<<< HEAD
+    });
+
+    // 위로 가기 버튼 표시/숨김
+    window.addEventListener("scroll", function() {
+        const btn = document.getElementById("scrollTopBtn");
+        if (window.scrollY > 300) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    });
+=======
         
      // =========== 추가 ===========
      // ⭐ 상품 상세 장바구니 AJAX
@@ -409,18 +428,7 @@
              btn.style.display = "none";
          }
      });
-    });
-
-    // 위로 가기 버튼 표시/숨김
-    window.addEventListener("scroll", function() {
-        const btn = document.getElementById("scrollTopBtn");
-        if (window.scrollY > 300) {
-            btn.style.display = "block";
-        } else {
-            btn.style.display = "none";
-        }
-    });
-
+>>>>>>> main
     </script>
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
