@@ -60,15 +60,15 @@
                         <span class="value">${product.productId}</span>
                     </div>
 
-<<<<<<< HEAD
+
 					<div class="product-brand-row">
-=======
+
                     <div class="product-brand-row">
                         <span class="value">
                             <c:if test="${product.productStock <= 0}">품절</c:if>
                         </span>
                     </div>
->>>>>>> origin/kjs
+
 
 						<span class="value"> 
 						<c:if test="${product.productStock <= 0}">품절</c:if>
