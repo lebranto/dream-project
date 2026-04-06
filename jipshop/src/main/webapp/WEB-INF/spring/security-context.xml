@@ -46,6 +46,7 @@
 <!-- 시큐리티 적용 분 -->	
 <security:intercept-url pattern="/mypage/**" access="isAuthenticated()" />
 <security:intercept-url pattern="/orders/cardList" access="isAuthenticated()" />
+<security:intercept-url pattern="/orders/wishList" access="isAuthenticated()" />
 		 
 		 
 		 <!-- 
