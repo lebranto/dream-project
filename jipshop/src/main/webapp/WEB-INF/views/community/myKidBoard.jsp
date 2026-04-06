@@ -12,11 +12,17 @@
 <title>우리아이 자랑 게시판</title>
 <link rel="stylesheet" href="${contextPath}/resources/css/community/myKidBoard.css">
 <link rel="stylesheet" href="${contextPath}/resources/css/common/paging.css">
+<link rel="stylesheet" href="${contextPath}/resources/css/community/communitySidebar.css">
+
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
+<div class="community-layout">
 
+    <jsp:include page="/WEB-INF/views/community/communitySidebar.jsp" />
+
+    <div class="community-content">
 <div class="pet-board-wrap">
 
     <div class="pet-board-title-box">
@@ -100,7 +106,8 @@
     <jsp:include page="/WEB-INF/views/common/paging.jsp" />
 
 </div>
-
+</div>
+</div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>

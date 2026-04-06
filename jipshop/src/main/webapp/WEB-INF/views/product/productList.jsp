@@ -217,7 +217,9 @@
                     <c:forEach var="p" items="${productList}">
                         <div class="product-card">
 
-                            <a href="${pageContext.request.contextPath}/product/detail?productId=${p.productId}" class="product-image-link">
+                            <a href="${pageContext.request.contextPath}/product/detail?productId=${p.productId}" 
+                            class="product-image-link"
+                            data-product-id="${p.productId}">
                                 <div class="product-image-box">
                                     <img class="wish-icon"
                                          src="${pageContext.request.contextPath}/resources/images/empty-heart.png"
@@ -320,7 +322,29 @@
             </c:if>
         </div>
     </div>
+
 </main>
+
+<!-- ⭐ 위로 가기 버튼 -->
+<button id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})"
+    style="
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        background: #ffda79;
+        font-size: 22px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        display: none;
+        z-index: 999;
+        transition: opacity 0.3s;
+    ">
+    ▲
+</button>
 
 <script>
 document.querySelectorAll(".cart-btn").forEach(btn => {
@@ -385,6 +409,48 @@ function animateHeart(el){
         el.style.transform = "scale(1)";
     }, 200);
 }
+</script>
+
+<script>
+window.addEventListener("scroll", function() {
+    const btn = document.getElementById("scrollTopBtn");
+    if (window.scrollY > 300) {
+        btn.style.display = "block";
+    } else {
+        btn.style.display = "none";
+    }
+});
+
+//최근 본 상품
+document.querySelectorAll('.product-image-link').forEach(link => {
+link.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const productId = this.dataset.productId;
+    const moveUrl = this.href;
+
+    fetch('${pageContext.request.contextPath}/product/view/insert', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'productId=' + productId
+    })
+    .then(res => res.text())
+    .then(result => {
+        console.log("최근 본 상품 저장 결과:", result);
+        location.href = moveUrl;
+    })
+    .catch(err => {
+        console.error("최근 본 상품 저장 실패:", err);
+        location.href = moveUrl;
+    });
+});
+});
+
+
+
+
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />

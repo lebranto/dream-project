@@ -11,15 +11,20 @@
 <title>${boardTypeName}</title>
 <link rel="stylesheet" href="${contextPath}/resources/css/community/tipFree.css">
 <link rel="stylesheet" href="${contextPath}/resources/css/common/paging.css">
+<link rel="stylesheet" href="${contextPath}/resources/css/community/communitySidebar.css">
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
+<div class="community-layout">
 
+    <jsp:include page="/WEB-INF/views/community/communitySidebar.jsp" />
+
+    <div class="community-content">
 <div class="board-wrap">
 
     <div class="board-title-box">
-        <h1 class="community-title">
+        <h1>
             <c:choose>
                 <c:when test="${param.boardType eq 'tip'}">육아 꿀팁 게시판</c:when>
                 <c:when test="${param.boardType eq 'free'}">자유 게시판</c:when>
@@ -28,11 +33,11 @@
         </h1>
     </div>
 
-    <form class="bsearch-area" action="${contextPath}/community/tipFreeBoard" method="get">
+    <form class="board-search-area" action="${contextPath}/community/tipFreeBoard" method="get">
         <input type="hidden" name="boardType" value="${boardType}">
 
-        <div class="bsearch-select-wrap">
-            <select name="searchType" class="bsearch-select">
+        <div class="board-search-select-wrap">
+            <select name="searchType" class="board-search-select">
                 <option value="all" ${empty param.searchType || param.searchType == 'all' ? 'selected' : ''}>제목 / 작성자 / 내용</option>
                 <option value="title" ${param.searchType == 'title' ? 'selected' : ''}>제목</option>
                 <option value="writer" ${param.searchType == 'writer' ? 'selected' : ''}>작성자</option>
@@ -40,16 +45,16 @@
             </select>
         </div>
 
-        <div class="bsearch-input-wrap">
+        <div class="board-search-input-wrap">
             <input type="text"
                    name="keyword"
-                   class="bsearch-input"
+                   class="board-search-input"
                    placeholder="검색어를 입력해주세요"
                    value="${param.keyword}">
-            <button type="submit" class="search-btn">🔍</button>
+            <button type="submit" class="board-search-btn">🔍</button>
         </div>
 
-        <a href="${contextPath}/community/writeBoard?boardType=${boardType}" class="bwrite-btn">게시글 작성</a>
+        <a href="${contextPath}/community/writeBoard?boardType=${boardType}" class="board-write-btn">게시글 작성</a>
     </form>
 
     <h2 class="section-title">최신게시물목록</h2>
@@ -100,7 +105,8 @@
     <jsp:include page="/WEB-INF/views/common/paging.jsp" />
 
 </div>
-
+</div>
+</div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>

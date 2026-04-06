@@ -1,6 +1,7 @@
 package com.kh.jipshop.product.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,4 +32,13 @@ public class ProductServiceImpl implements ProductService {
     public int selectProductListCount(ProductSearch search) {
         return productDao.selectProductListCount(search);
     }
+
+
+	public void insertView(Map<String, Object> param) {
+		productDao.insertView(param);
+		
+	}
+    
+ 
+    
 }

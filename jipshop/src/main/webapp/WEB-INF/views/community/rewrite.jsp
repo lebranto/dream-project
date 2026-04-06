@@ -11,41 +11,6 @@
 <title>게시글 수정</title>
 <link rel="stylesheet" href="${contextPath}/resources/css/community/rewrite.css">
 
-<style>
-    .modify-category-wrap{
-        margin-bottom: 24px;
-    }
-
-    .modify-category-label{
-        font-size: 15px;
-        font-weight: 700;
-        margin-bottom: 12px;
-        color: #222;
-    }
-
-    .modify-category-group{
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-
-    .modify-category-btn{
-        min-width: 90px;
-        height: 40px;
-        border: 1px solid #ddd;
-        background: #fff;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .modify-category-btn.active{
-        background: #efc24f;
-        border-color: #efc24f;
-        color: #222;
-    }
-</style>
 </head>
 <body>
 
@@ -143,148 +108,167 @@
 
 </form>
 </div>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
 <script>
-const modifyImageInput = document.getElementById("modifyImageInput");
-const modifyNewImageArea = document.getElementById("modifyNewImageArea");
-const modifyExistingImageArea = document.getElementById("modifyExistingImageArea");
-const modifyImageCountText = document.getElementById("modifyImageCountText");
-const deleteImageInputArea = document.getElementById("deleteImageInputArea");
-const modifyCategoryCode = document.getElementById("modifyCategoryCode");
-const categoryButtons = document.querySelectorAll(".modify-category-btn");
+document.addEventListener("DOMContentLoaded", function() {
 
-let modifySelectedImages = [];
-let deletedImageNos = [];
+    const modifyForm = document.getElementById("modifyForm");
+    const modifyImageInput = document.getElementById("modifyImageInput");
+    const modifyNewImageArea = document.getElementById("modifyNewImageArea");
+    const modifyExistingImageArea = document.getElementById("modifyExistingImageArea");
+    const modifyImageCountText = document.getElementById("modifyImageCountText");
+    const deleteImageInputArea = document.getElementById("deleteImageInputArea");
+    const modifyCategoryCode = document.getElementById("modifyCategoryCode");
+    const categoryButtons = document.querySelectorAll(".modify-category-btn");
 
-categoryButtons.forEach(btn => {
-    if (btn.dataset.code === modifyCategoryCode.value) {
-        btn.classList.add("active");
-    }
+    let modifySelectedImages = [];
+    let deletedImageNos = [];
 
-    btn.addEventListener("click", function(){
-        categoryButtons.forEach(item => item.classList.remove("active"));
-        this.classList.add("active");
-        modifyCategoryCode.value = this.dataset.code;
-    });
-});
-
-document.querySelectorAll(".modify-existing-remove-btn").forEach(btn => {
-    btn.onclick = function(){
-        const imgNo = this.dataset.imgNo;
-
-        if(!deletedImageNos.includes(imgNo)){
-            deletedImageNos.push(imgNo);
+    categoryButtons.forEach(function(btn) {
+        if (btn.dataset.code === modifyCategoryCode.value) {
+            btn.classList.add("active");
         }
 
-        this.parentElement.remove();
-        renderDeleteInputs();
-    };
-});
+        btn.addEventListener("click", function() {
+            categoryButtons.forEach(function(item) {
+                item.classList.remove("active");
+            });
 
-function renderDeleteInputs(){
-    deleteImageInputArea.innerHTML = "";
-
-    deletedImageNos.forEach(no => {
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "deleteImageNos";
-        input.value = no;
-        deleteImageInputArea.appendChild(input);
+            this.classList.add("active");
+            modifyCategoryCode.value = this.dataset.code;
+        });
     });
-}
 
-modifyImageInput.addEventListener("change", function(e){
-    const files = Array.from(e.target.files);
-    if(files.length === 0) return;
+    document.querySelectorAll(".modify-existing-remove-btn").forEach(function(btn) {
+        btn.onclick = function() {
+            const imgNo = this.dataset.imgNo;
 
-    const existingCount = modifyExistingImageArea.querySelectorAll(".modify-existing-item").length;
-    const newCount = modifySelectedImages.length;
+            if (!deletedImageNos.includes(imgNo)) {
+                deletedImageNos.push(imgNo);
+            }
 
-    if(existingCount + newCount + files.length > 3){
-        alert("이미지는 최대 3개까지만 가능합니다.");
-        return;
+            this.parentElement.remove();
+            renderDeleteInputs();
+        };
+    });
+
+    function renderDeleteInputs() {
+        deleteImageInputArea.innerHTML = "";
+
+        deletedImageNos.forEach(function(no) {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "deleteImageNos";
+            input.value = no;
+            deleteImageInputArea.appendChild(input);
+        });
     }
 
-    modifySelectedImages = modifySelectedImages.concat(files);
-    updateInputFiles();
-    renderPreview();
-});
+    if (modifyImageInput) {
+        modifyImageInput.addEventListener("change", function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
 
-function updateInputFiles(){
-    const dt = new DataTransfer();
+            const existingCount = modifyExistingImageArea
+                ? modifyExistingImageArea.querySelectorAll(".modify-existing-item").length
+                : 0;
+            const newCount = modifySelectedImages.length;
 
-    modifySelectedImages.forEach(file => {
-        dt.items.add(file);
-    });
+            if (existingCount + newCount + files.length > 3) {
+                alert("이미지는 최대 3개까지만 가능합니다.");
+                modifyImageInput.value = "";
+                return;
+            }
 
-    modifyImageInput.files = dt.files;
-}
-
-function renderPreview(){
-    modifyNewImageArea.innerHTML = "";
-
-    modifySelectedImages.forEach((file, index) => {
-        const reader = new FileReader();
-
-        reader.onload = function(e){
-            const div = document.createElement("div");
-            div.className = "modify-preview-item";
-
-            div.innerHTML =
-                '<img src="' + e.target.result + '">' +
-                '<button type="button" class="modify-remove-btn" data-index="' + index + '">×</button>';
-
-            modifyNewImageArea.appendChild(div);
-            bindRemove();
-        };
-
-        reader.readAsDataURL(file);
-    });
-
-    modifyImageCountText.innerText = modifySelectedImages.length + "개";
-}
-
-function bindRemove(){
-    document.querySelectorAll("#modifyNewImageArea .modify-remove-btn").forEach(btn => {
-        btn.onclick = function(){
-            const index = parseInt(this.dataset.index);
-            modifySelectedImages.splice(index, 1);
+            modifySelectedImages = modifySelectedImages.concat(files);
             updateInputFiles();
             renderPreview();
-        };
-    });
-}
-
-document.getElementById("modifyForm").addEventListener("submit", function(e){
-    const title = document.getElementById("modifyBoardTitle").value.trim();
-    const content = document.getElementById("modifyBoardContent").value.trim();
-
-    const boardCode = "${board.boardCode}";
-    const categoryCode = modifyCategoryCode.value;
-
-    if ((boardCode === "2" || boardCode === "3") && !categoryCode) {
-        alert("카테고리를 선택해주세요.");
-        e.preventDefault();
-        return;
+        });
     }
 
-    if(title === ""){
-        alert("제목을 입력해주세요.");
-        e.preventDefault();
-        return;
+    function updateInputFiles() {
+        const dt = new DataTransfer();
+
+        modifySelectedImages.forEach(function(file) {
+            dt.items.add(file);
+        });
+
+        modifyImageInput.files = dt.files;
+        modifyImageCountText.innerText = modifySelectedImages.length + "개";
     }
 
-    if(content.length < 5){
-        alert("내용은 5자 이상 입력해주세요.");
-        e.preventDefault();
-        return;
+    function renderPreview() {
+        modifyNewImageArea.innerHTML = "";
+
+        modifySelectedImages.forEach(function(file, index) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const div = document.createElement("div");
+                div.className = "modify-preview-item";
+
+                div.innerHTML =
+                    '<img src="' + e.target.result + '">' +
+                    '<button type="button" class="modify-remove-btn" data-index="' + index + '">×</button>';
+
+                modifyNewImageArea.appendChild(div);
+                bindRemove();
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        modifyImageCountText.innerText = modifySelectedImages.length + "개";
     }
+
+    function bindRemove() {
+        document.querySelectorAll("#modifyNewImageArea .modify-remove-btn").forEach(function(btn) {
+            btn.onclick = function() {
+                const index = parseInt(this.dataset.index, 10);
+                modifySelectedImages.splice(index, 1);
+                updateInputFiles();
+                renderPreview();
+            };
+        });
+    }
+
+    if (modifyForm) {
+        modifyForm.addEventListener("submit", function(e) {
+            const title = document.getElementById("modifyBoardTitle").value.trim();
+            const content = document.getElementById("modifyBoardContent").value.trim();
+            const boardCode = "${board.boardCode}";
+            const categoryCode = modifyCategoryCode.value;
+
+            if ((boardCode === "2" || boardCode === "3") && (!categoryCode || categoryCode === "0")) {
+                alert("카테고리를 선택해주세요.");
+                e.preventDefault();
+                return;
+            }
+
+            if (title === "") {
+                alert("제목을 입력해주세요.");
+                e.preventDefault();
+                return;
+            }
+
+            if (content.length < 5) {
+                alert("내용은 5자 이상 입력해주세요.");
+                e.preventDefault();
+                return;
+            }
+        });
+    }
+
 });
 </script>
+
 <c:if test="${not empty alertMsg}">
     <script>
         alert("${alertMsg}");
     </script>
 </c:if>
+
 </body>
 </html>

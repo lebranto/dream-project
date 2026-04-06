@@ -57,6 +57,7 @@
       
       cursor: pointer;
   	  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  	  border-radius: 10px;
     }
 	
 	.product-card:hover {

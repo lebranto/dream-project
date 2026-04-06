@@ -95,14 +95,8 @@ import lombok.extern.slf4j.Slf4j;
 	            Authentication auth,
 	            RedirectAttributes ra
 	    ) {
-	    	 MemberExt loginMember = (MemberExt) auth.getPrincipal();
-
-	    	
-	    	order.setMemberNo(loginMember.getMemberNo());
-	    	order.setOrdererName(loginMember.getMemberName());
-	    	order.setOrdererPhone(loginMember.getPhone());
-	    	order.setOrdererEmail(loginMember.getEmail());
-
+	        int memberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
+	        order.setMemberNo(memberNo);
 
 	        int result = oService.insertOrder(order);
 

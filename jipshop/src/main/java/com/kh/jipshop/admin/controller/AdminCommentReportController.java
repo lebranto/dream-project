@@ -25,7 +25,7 @@ public class AdminCommentReportController {
 
     @GetMapping("/admin/reportList.do")
     public String reportList(
-            @RequestParam(value = "page", defaultValue = "1") int currentPage,
+            @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
             @RequestParam(value = "startDate", required = false) String startDate,
             @RequestParam(value = "endDate", required = false) String endDate,
             @RequestParam(value = "reportStatus", required = false) String reportStatus,

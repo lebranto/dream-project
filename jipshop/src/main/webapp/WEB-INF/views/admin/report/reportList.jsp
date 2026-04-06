@@ -76,13 +76,7 @@
                 일괄 처리
             </button>
 
-            <button type="button"
-                    class="btn btn-danger btn-sm"
-                    id="btnBulkDel"
-                    style="display:none"
-                    onclick="bulkDelete()">
-                일괄 삭제
-            </button>
+            
         </div>
     </div>
 
