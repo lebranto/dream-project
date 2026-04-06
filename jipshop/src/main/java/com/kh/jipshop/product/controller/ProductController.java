@@ -42,12 +42,9 @@ public class ProductController {
     @GetMapping("/detail")
     public String productDetail(@RequestParam("productId") int productId, Model model) {
 
-        System.out.println("=== productDetail controller 진입 ===");
-        System.out.println("productId : " + productId);
 
         Products product = productService.selectProductDetail(productId);
 
-        System.out.println("조회된 product : " + product);
 
         if (product == null) {
             model.addAttribute("errorMsg", "상품 정보를 찾을 수 없습니다.");
@@ -56,7 +53,7 @@ public class ProductController {
 
         List<Review> reviewList = reviewService.selectReviewListByProductId(productId);
 
-        System.out.println("조회된 reviewList size : " + (reviewList == null ? 0 : reviewList.size()));
+        
 
         model.addAttribute("product", product);
         model.addAttribute("reviewList", reviewList);
@@ -70,9 +67,7 @@ public class ProductController {
                           @RequestParam("qty") int qty,
                           HttpSession session) {
 
-        System.out.println("=== addCart controller 진입 ===");
-        System.out.println("productId : " + productId);
-        System.out.println("qty : " + qty);
+      
 
         session.setAttribute("alertMsg", "장바구니 기능은 연결 전입니다. 현재는 버튼 동작만 확인용입니다.");
         return "redirect:/product/detail?productId=" + productId;
@@ -83,9 +78,7 @@ public class ProductController {
                          @RequestParam("qty") int qty,
                          HttpSession session) {
 
-        System.out.println("=== buyNow controller 진입 ===");
-        System.out.println("productId : " + productId);
-        System.out.println("qty : " + qty);
+       
 
         session.setAttribute("alertMsg", "구매하기 기능은 연결 전입니다. 현재는 버튼 동작만 확인용입니다.");
         return "redirect:/product/detail?productId=" + productId;
