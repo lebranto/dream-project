@@ -235,135 +235,73 @@
         </div>
     </main>
 	<!-- ⭐ 위로 가기 버튼 -->
-	<button id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})"
-	    style="
-	        position: fixed;
-	        bottom: 40px;
-	        right: 40px;
-	        width: 50px;
-	        height: 50px;
-	        border-radius: 50%;
-	        border: none;
-	        background: #ffda79;
-	        font-size: 22px;
-	        cursor: pointer;
-	        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-	        display: none;
-	        z-index: 999;
-	        transition: opacity 0.3s;
-	    ">
-	    ▲
-	</button>
-    <script>
-    document.querySelector(".cart-btn").addEventListener("click", function() {
+<button id="scrollTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})"
+    style="
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        background: #ffda79;
+        font-size: 22px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        display: none;
+        z-index: 999;
+        transition: opacity 0.3s;
+    ">
+    ▲
+</button>
 
-        const stock = ${product.productStock};
+<script>
+document.addEventListener("DOMContentLoaded", function() {
 
-        if (stock <= 0) {
-            alert("품절된 상품입니다");
-            return;
-        }
+    const qtyInput = document.getElementById("qty");
+    const totalPriceEl = document.getElementById("totalPrice");
+    const cartQty = document.getElementById("cartQty");
+    const tabLinks = document.querySelectorAll(".tab-link[href^='#']");
+    const cartBtn = document.querySelector(".cart-btn");
+    const form = document.querySelector(".cart-form");
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
 
-        const form = document.querySelector(".cart-form");
-        const formData = new FormData(form);
+    // 수량/총 가격 계산
+    if (qtyInput && totalPriceEl) {
+        const price = Number(totalPriceEl.dataset.price || 0);
 
-        fetch(form.action, {
-            method: "POST",
-            body: formData
-        })
-        .then(res => res.text())
-        .then(count => {
-            alert("장바구니에 추가되었습니다");
-            updateCartCountUI(parseInt(count));
-        })
-        .catch(err => {
-            console.error(err);
-        });
-    });
-    
-        document.addEventListener("DOMContentLoaded", function() {
-            const qtyInput = document.getElementById("qty");
-            const totalPriceEl = document.getElementById("totalPrice");
-            const cartQty = document.getElementById("cartQty");
-            const tabLinks = document.querySelectorAll(".tab-link[href^='#']");
+        function updateTotal() {
+            let qty = Number(qtyInput.value || 1);
 
-        const stock = ${product.productStock};
-
-        if (stock <= 0) {
-            alert("품절된 상품입니다");
-            return;
-        }
-
-        const form = document.querySelector(".cart-form");
-        const formData = new FormData(form);
-
-        fetch(form.action, {
-            method: "POST",
-            body: formData
-        })
-        .then(res => res.text())
-        .then(count => {
-            alert("장바구니에 추가되었습니다");
-            updateCartCountUI(parseInt(count));
-        })
-        .catch(err => {
-            console.error(err);
-        });
-    });
-
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const qtyInput = document.getElementById("qty");
-        const totalPriceEl = document.getElementById("totalPrice");
-        const cartQty = document.getElementById("cartQty");
-        const tabLinks = document.querySelectorAll(".tab-link[href^='#']");
-
-        if (qtyInput && totalPriceEl) {
-            const price = Number(totalPriceEl.dataset.price || 0);
-
-            function updateTotal() {
-                let qty = Number(qtyInput.value || 1);
-
-                if (qty < 1) {
-                    qty = 1;
-                    qtyInput.value = 1;
-                }
-
-                const total = price * qty;
-                totalPriceEl.innerText = total.toLocaleString() + "원";
-
-                if (cartQty) {
-                    cartQty.value = qty;
-                }
+            if (qty < 1) {
+                qty = 1;
+                qtyInput.value = 1;
             }
 
-            qtyInput.addEventListener("input", updateTotal);
-            updateTotal();
+            const total = price * qty;
+            totalPriceEl.innerText = total.toLocaleString() + "원";
+
+            if (cartQty) {
+                cartQty.value = qty;
+            }
         }
 
+        qtyInput.addEventListener("input", updateTotal);
+        updateTotal();
+    }
 
+    // 탭 스크롤 이동
+    if (tabLinks.length > 0) {
         tabLinks.forEach(function(link) {
             link.addEventListener("click", function(e) {
                 e.preventDefault();
 
                 const targetId = this.getAttribute("href");
                 const target = document.querySelector(targetId);
+                const tabNav = document.getElementById("productTabNav");
 
                 if (target) {
-                    const navHeight = document.getElementById("productTabNav").offsetHeight;
-                    const targetTop = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
-
-
-
-        tabLinks.forEach(function(link) {
-            link.addEventListener("click", function(e) {
-                e.preventDefault();
-
-                const targetId = this.getAttribute("href");
-                const target = document.querySelector(targetId);
-
-                if (target) {
-                    const navHeight = document.getElementById("productTabNav").offsetHeight;
+                    const navHeight = tabNav ? tabNav.offsetHeight : 0;
                     const targetTop = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
 
                     window.scrollTo({
@@ -373,55 +311,54 @@
                 }
             });
         });
-        
-     // =========== 추가 ===========
-     // ⭐ 상품 상세 장바구니 AJAX
-     document.querySelector(".cart-btn").addEventListener("click", function() {
+    }
 
-         const form = document.querySelector(".cart-form");
-         const formData = new FormData(form);
+    // 장바구니 AJAX
+    if (cartBtn && form) {
+        cartBtn.addEventListener("click", function(e) {
+            e.preventDefault();
 
-         fetch(form.action, {
-             method: "POST",
-             body: formData
-         })
-         .then(res => res.text())
-         .then(count => {
+            const stock = ${product.productStock};
 
-             alert("장바구니에 추가되었습니다");
+            if (stock <= 0) {
+                alert("품절된 상품입니다");
+                return;
+            }
 
-             console.log("카트 개수:", count);
+            const formData = new FormData(form);
 
-             // ⭐ 헤더 숫자 반영
-             updateCartCountUI(parseInt(count));
-         })
-         .catch(err => {
-             console.error(err);
-         });
-     });
-	
-  	// 위로 가기 버튼 표시/숨김
-     window.addEventListener("scroll", function() {
-         const btn = document.getElementById("scrollTopBtn");
-         if (window.scrollY > 300) {
-             btn.style.display = "block";
-         } else {
-             btn.style.display = "none";
-         }
-     });
-    });
+            fetch(form.action, {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.text())
+            .then(count => {
+                alert("장바구니에 추가되었습니다");
+
+                if (typeof updateCartCountUI === "function") {
+                    updateCartCountUI(parseInt(count));
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+        });
+    }
 
     // 위로 가기 버튼 표시/숨김
     window.addEventListener("scroll", function() {
-        const btn = document.getElementById("scrollTopBtn");
+        if (!scrollTopBtn) return;
+
         if (window.scrollY > 300) {
-            btn.style.display = "block";
+            scrollTopBtn.style.display = "block";
         } else {
-            btn.style.display = "none";
+            scrollTopBtn.style.display = "none";
         }
     });
 
-    </script>
+});
+</script>
+   
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

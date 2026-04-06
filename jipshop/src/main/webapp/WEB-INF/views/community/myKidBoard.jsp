@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-<c:set var="boardType" value="myKidBoard" />
+<c:set var="boardType" value="myKidBoard" scope="request" />
 
 <!DOCTYPE html>
 <html>

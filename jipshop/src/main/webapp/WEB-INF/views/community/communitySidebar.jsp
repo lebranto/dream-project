@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
+<c:set var="uri" value="${pageContext.request.requestURI}" />
 
 <div class="community-sidebar">
     <div class="community-sidebar-card">
@@ -14,21 +14,21 @@
         <ul class="community-sidebar-menu">
             <li>
                 <a href="${contextPath}/community/main"
-                   class="${empty param.boardType and empty boardType ? 'active' : ''}">
+                   class="${uri eq contextPath.concat('/community/main') ? 'active' : ''}">
                     <span class="icon">🏠</span>
                     <span>커뮤니티 메인</span>
                 </a>
             </li>
 
-            <li>
+			<li>
                 <a href="${contextPath}/community/myKidBoard"
-                   class="${param.boardType eq 'myKid' or boardType eq 'myKid' ? 'active' : ''}">
+                   class="${boardType eq 'myKidBoard' ? 'active' : ''}">
                     <span class="icon">📸</span>
                     <span>우리아이 자랑게시판</span>
                 </a>
             </li>
 
-            <li>
+			<li>
                 <a href="${contextPath}/community/tipFreeBoard?boardType=tip"
                    class="${param.boardType eq 'tip' or boardType eq 'tip' ? 'active' : ''}">
                     <span class="icon">🦴</span>

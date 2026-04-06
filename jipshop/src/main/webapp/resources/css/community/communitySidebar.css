@@ -108,3 +108,20 @@
         width: 100%;
         margin-bottom: 18px;
     }
+    .community-sidebar-menu a.active {
+    background: #f5d68a !important;
+    border-color: #e0b955 !important;
+    color: #4a341f !important;
+    font-weight: 800 !important;
+}
+.community-sidebar-menu a:hover {
+    background: #fff5df;
+    border-color: #e4c98f;
+    transform: translateY(-1px);
+}
+
+.community-sidebar-menu a.active:hover {
+    background: #f5d68a !important;
+    border-color: #e0b955 !important;
+    color: #4a341f !important;
+}
