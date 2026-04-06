@@ -115,10 +115,12 @@
         <div class="check-circle"></div>
         <div class="complete-text">주문완료 되었습니다</div>
     </div>
-
-    <div class="order-info">
+    
+	<a href="${contextPath}/mypage/purchase">
+     <div class="order-info">
         &lt; 주문 내역 확인
-    </div>
+     </div>
+	</a>
 
 </div>
 
