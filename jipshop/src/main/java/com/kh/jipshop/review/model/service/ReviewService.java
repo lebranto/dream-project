@@ -1,5 +1,7 @@
 package com.kh.jipshop.review.model.service;
 
+import java.util.List;
+
 import com.kh.jipshop.review.model.vo.Review;
 import com.kh.jipshop.review.model.vo.ReviewableOrderDetail;
 
@@ -10,4 +12,6 @@ public interface ReviewService {
     ReviewableOrderDetail selectWritableDetailByDetailId(int memberNo, int detailId);
 
     int insertReview(Review review);
+    
+    List<Review> selectReviewListByProductId(int productId);
 }
