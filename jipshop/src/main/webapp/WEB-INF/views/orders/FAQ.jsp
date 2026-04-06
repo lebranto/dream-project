@@ -124,7 +124,13 @@
     <div class="mypage-container">
 
         <!-- 사이드바 -->
-        <jsp:include page="/WEB-INF/views/common/myPageSidebar.jsp" />
+        
+        
+       	<aside class="sidebar">
+  
+  		<jsp:include page="/WEB-INF/views/common/myPageSidebar.jsp" />
+    
+  		</aside>
 
         <!-- 본문 -->
         <div class="mypage-content">

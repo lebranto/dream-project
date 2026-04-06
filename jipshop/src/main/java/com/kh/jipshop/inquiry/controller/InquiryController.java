@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import com.kh.jipshop.common.template.Pagination;
 import com.kh.jipshop.inquiry.model.service.InquiryService;
 import com.kh.jipshop.inquiry.model.vo.Inquiry;
 import com.kh.jipshop.member.model.vo.Member;
+import com.kh.jipshop.security.model.vo.MemberExt;
 
 @Controller
 @RequestMapping("/product")
@@ -52,10 +54,11 @@ public class InquiryController {
     public String insertInquiry(
             Inquiry inquiry,
             @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile,
+            Authentication auth,
             HttpSession session) {
     	
     	// 🔥 여기다가 넣어
-        inquiry.setMemberNo(2);
+        inquiry.setMemberNo(((MemberExt)auth.getPrincipal()).getMemberNo());
 
         Member loginUser = (Member) session.getAttribute("loginUser");
 
@@ -76,7 +79,7 @@ public class InquiryController {
 
             try {
                 uploadFile.transferTo(new File(savePath + changeName));
-                inquiry.setInquiryPhoto(changeName);
+                inquiry.setInquiryPhoto("/resources/uploadFiles/" + changeName);
             } catch (Exception e) {
                 e.printStackTrace();
             }

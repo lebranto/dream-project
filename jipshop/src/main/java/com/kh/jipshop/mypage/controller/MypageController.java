@@ -2,6 +2,7 @@ package com.kh.jipshop.mypage.controller;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -495,14 +496,21 @@ public class MypageController {
 	   
 	   int memberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
 	   
+	   
+	   
 	   paramMap.put("memberNo",memberNo);
 	   paramMap.put("orderId",orderId);
 	   paramMap.put("detailId",detailId);
 	   
+	   
 	   OrderDetailResponse od = mService.orderDetail(paramMap);
+	   Calendar cal = Calendar.getInstance();
+	   cal.setTime(od.getOrderDate());
+	   cal.add(Calendar.DATE, 3);
+
+	   od.setDeliveryExpectedDate(cal.getTime());
 	   
 	   model.addAttribute("od",od);
-	   
 	   
 	   return "mypage/orderDetail";
 	   
