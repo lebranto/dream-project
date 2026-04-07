@@ -47,6 +47,7 @@
 <security:intercept-url pattern="/mypage/**" access="isAuthenticated()" />
 <security:intercept-url pattern="/orders/cardList" access="isAuthenticated()" />
 <security:intercept-url pattern="/orders/wishList" access="isAuthenticated()" />
+<security:intercept-url pattern="/orders/orderNew**" access="isAuthenticated()" />
 		 
 		 
 		 <!-- 
