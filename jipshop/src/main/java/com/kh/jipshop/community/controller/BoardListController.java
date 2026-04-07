@@ -46,7 +46,7 @@ public class BoardListController {
             HttpSession session,
             RedirectAttributes ra) {
 
-        System.out.println("🔥 insertBoard 들어옴");
+        
 
         if (auth == null || !auth.isAuthenticated() || !(auth.getPrincipal() instanceof MemberExt)) {
             ra.addFlashAttribute("alertMsg", "로그인 후 사용 가능합니다.");
@@ -55,9 +55,7 @@ public class BoardListController {
 
         MemberExt loginUser = (MemberExt) auth.getPrincipal();
 
-        System.out.println("loginUser = " + loginUser);
-        System.out.println("memberNo = " + loginUser.getMemberNo());
-        System.out.println("👉 authorities = " + loginUser.getAuthorities());
+       
 
         Board board = new Board();
         board.setMemberNo(loginUser.getMemberNo());

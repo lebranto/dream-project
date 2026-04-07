@@ -354,7 +354,7 @@ body{
         <h4 style="margin-top:40px;">배송정보</h4>
 
         <table class="info-table">
-           <tr>
+           <tr style="display:none;">
                 <td><span class="label">배송지 확인</span></td>
                 <td>
                     <input type="radio" name="addrType" id="addrDefault" checked> 기본 배송지
@@ -405,9 +405,9 @@ body{
         <h4 style="margin-top:40px;">결제수단 선택 / 결제</h4>
 
         <div class="pay-box">
-           <label><input type="radio" name="payRadio" value="무통장입금" checked> 무통장 입금</label>
+         <!--   <label><input type="radio" name="payRadio" value="무통장입금" checked> 무통장 입금</label>
             <label><input type="radio" name="payRadio" value="신용카드"> 신용카드</label>
-            <label><input type="radio" name="payRadio" value="휴대폰결제"> 휴대폰결제</label>
+            <label><input type="radio" name="payRadio" value="휴대폰결제"> 휴대폰결제</label> -->
 
             <div style="margin-top:15px; color:#888; font-size:13px;">
                 (무통장 입금의 경우 입금 확인 후부터 배송단계가 진행됩니다.)
@@ -608,8 +608,12 @@ document.getElementById("payBtn").addEventListener("click", function(){
     document.getElementById("finalRecvAddress").value = baseAddr + " " + detailAddr;
 
     let checkedPay = document.querySelector("input[name='payRadio']:checked");
+
     if(checkedPay){
         document.getElementById("payMethod").value = checkedPay.value;
+    } else {
+        // 라디오 없을 때 기본값 유지
+        document.getElementById("payMethod").value = "무통장입금";
     }
 
     document.getElementById("orderForm").submit();

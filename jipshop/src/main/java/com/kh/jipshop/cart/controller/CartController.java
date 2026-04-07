@@ -58,7 +58,13 @@ public class CartController {
     @PostMapping("/addAjax")
     @ResponseBody
     public int addCartAjax(@RequestParam int productId, @RequestParam int qty, HttpSession session,Authentication auth) {
+    	// ⭐ 로그인 체크 (핵심)
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            return -1;
+        }
+    	
     	int memberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
+
         if (memberNo == -1) return -1;
 
         CartDTO check = new CartDTO();
@@ -75,8 +81,10 @@ public class CartController {
             dto.setProductId(productId);
             dto.setCartQty(qty);
             cartService.insertCart(dto);
-        }
-        return cartService.selectCount(memberNo);
+        }      
+        int cartCount = cartService.selectCount(memberNo);
+        session.setAttribute("cartCount", cartCount);
+        return cartCount;
     }
 
     @GetMapping("")
@@ -111,7 +119,7 @@ public class CartController {
         return cartService.updateQty(dto);
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/deleteAjax")
     @ResponseBody
     public int deleteCart(@RequestParam int cartId, HttpSession session,Authentication auth) {
     	int memberNo = ((MemberExt)auth.getPrincipal()).getMemberNo();
@@ -133,7 +141,10 @@ public class CartController {
             int[] idArr = Arrays.stream(ids.split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray();
             cartService.deleteAll(idArr);
         }
-        return cartService.selectCount(memberNo);
+        int cartCount = cartService.selectCount(memberNo);
+        session.setAttribute("cartCount", cartCount);
+        
+        return cartCount;
     }
 
     private int getLoginUserNo(HttpSession session) {

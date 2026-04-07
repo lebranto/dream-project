@@ -4,11 +4,9 @@
 
 <mapper namespace="communityMapper">
 
-    <!-- ========================= -->
+   
     <!-- 게시글 등록 -->
-    <!-- BoardListController.insertBoard -->
-    <!-- CommunityDaoImpl.insertBoard -->
-    <!-- ========================= -->
+   
     <insert id="insertBoard" parameterType="com.kh.jipshop.community.model.vo.Board">
         <selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
             SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
@@ -37,10 +35,9 @@
         )
     </insert>
 
-    <!-- ========================= -->
+  
     <!-- 메인 인기글 -->
-    <!-- CommunityDaoImpl.selectPopularBoardList -->
-    <!-- ========================= -->
+    
     <select id="selectPopularBoardList" parameterType="map" resultType="com.kh.jipshop.community.model.vo.Board">
         SELECT *
         FROM (
@@ -91,18 +88,17 @@
                     </otherwise>
                 </choose>
             </if>
-            ORDER BY NVL(L.LIKE_COUNT, 0) DESC,
-                     B.READ_COUNT DESC,
-                     B.CREATE_DATE DESC,
-                     B.BOARD_NO DESC
+           ORDER BY B.READ_COUNT DESC,
+         NVL(L.LIKE_COUNT, 0) DESC,
+         B.CREATE_DATE DESC,
+         B.BOARD_NO DESC
         )
         WHERE ROWNUM &lt; 6
     </select>
 
-    <!-- ========================= -->
+  
     <!-- 메인 최신글 -->
-    <!-- CommunityDaoImpl.selectLatestBoardList -->
-    <!-- ========================= -->
+    
     <select id="selectLatestBoardList" parameterType="map" resultType="com.kh.jipshop.community.model.vo.Board">
         SELECT *
         FROM (
@@ -158,10 +154,9 @@
         WHERE ROWNUM &lt; 6
     </select>
 
-    <!-- ========================= -->
+  
     <!-- 게시판별 목록 -->
-    <!-- CommunityDaoImpl.selectBoardListByBoardCode -->
-    <!-- ========================= -->
+   
    <select id="selectBoardListByBoardCode" parameterType="int" resultType="com.kh.jipshop.community.model.vo.Board">
     SELECT
         B.BOARD_NO           AS boardNo,
@@ -210,10 +205,9 @@
     ORDER BY B.BOARD_NO DESC
 </select>
 
-    <!-- ========================= -->
+  
     <!-- 게시글 검색 -->
-    <!-- CommunityDaoImpl.selectBoardListBySearch -->
-    <!-- ========================= -->
+   
     <select id="selectBoardListBySearch" parameterType="map" resultType="com.kh.jipshop.community.model.vo.Board">
         SELECT
             B.BOARD_NO        AS boardNo,
@@ -264,11 +258,10 @@
         ORDER BY B.CREATE_DATE DESC, B.BOARD_NO DESC
     </select>
 
-    <!-- ========================= -->
+   
     <!-- 게시글 상세 -->
-    <!-- CommunityMainController.detail -->
-    <!-- CommunityDaoImpl.selectBoard -->
-    <!-- ========================= -->
+   
+   
     <select id="selectBoard" parameterType="int" resultType="com.kh.jipshop.community.model.vo.Board">
         SELECT
             B.BOARD_NO        AS boardNo,
@@ -300,10 +293,10 @@
           AND B.BOARD_ACTIVE = 'Y'
     </select>
 
-    <!-- ========================= -->
+   
     <!-- 게시글 이미지 목록 -->
     <!-- CommunityDaoImpl.selectBoardImageList -->
-    <!-- ========================= -->
+    
     <select id="selectBoardImageList" parameterType="int" resultType="com.kh.jipshop.community.model.vo.BoardImage">
         SELECT
             IMG_NO      AS imgNo,
@@ -366,11 +359,9 @@
         WHERE BOARD_NO = #{boardNo}
     </select>
 
-    <!-- ========================= -->
+  
     <!-- 게시글 이미지 등록 -->
-    <!-- BoardListController.saveBoardImages -->
-    <!-- CommunityDaoImpl.insertBoardImage -->
-    <!-- ========================= -->
+   
     <insert id="insertBoardImage" parameterType="com.kh.jipshop.community.model.vo.BoardImage">
         INSERT INTO BOARD_IMG (
             IMG_NO,
@@ -391,11 +382,9 @@
         )
     </insert>
 
-    <!-- ========================= -->
+    
     <!-- 조회수 증가 -->
-    <!-- CommunityMainController.detail -->
-    <!-- CommunityDaoImpl.increaseReadCount -->
-    <!-- ========================= -->
+    
     <update id="increaseReadCount" parameterType="int">
         UPDATE BOARD
            SET READ_COUNT = READ_COUNT + 1
@@ -403,11 +392,9 @@
            AND BOARD_ACTIVE = 'Y'
     </update>
 
-    <!-- ========================= -->
+   
     <!-- 좋아요 눌렀는지 체크 -->
-    <!-- CommunityMainController.detail / like -->
-    <!-- CommunityDaoImpl.checkBoardLike -->
-    <!-- ========================= -->
+  
     <select id="checkBoardLike" parameterType="com.kh.jipshop.community.model.vo.BoardLike" resultType="int">
         SELECT COUNT(*)
         FROM BOARD_LIKE
@@ -416,11 +403,9 @@
           AND LIKE_TYPE = #{likeType}
     </select>
 
-    <!-- ========================= -->
+   
     <!-- 좋아요 추가 -->
-    <!-- CommunityMainController.like -->
-    <!-- CommunityDaoImpl.insertBoardLike -->
-    <!-- ========================= -->
+   
     <insert id="insertBoardLike" parameterType="com.kh.jipshop.community.model.vo.BoardLike">
         INSERT INTO BOARD_LIKE (
             BOARD_NO,
@@ -433,11 +418,9 @@
         )
     </insert>
 
-    <!-- ========================= -->
+   
     <!-- 좋아요 취소 -->
-    <!-- CommunityMainController.like -->
-    <!-- CommunityDaoImpl.deleteBoardLike -->
-    <!-- ========================= -->
+  
     <delete id="deleteBoardLike" parameterType="com.kh.jipshop.community.model.vo.BoardLike">
         DELETE FROM BOARD_LIKE
         WHERE BOARD_NO = #{boardNo}
@@ -445,11 +428,9 @@
           AND LIKE_TYPE = #{likeType}
     </delete>
 
-    <!-- ========================= -->
+   
     <!-- 좋아요 수 -->
-    <!-- CommunityMainController.detail / like -->
-    <!-- CommunityDaoImpl.selectLikeCount -->
-    <!-- ========================= -->
+   
     <select id="selectLikeCount" parameterType="int" resultType="int">
         SELECT COUNT(*)
         FROM BOARD_LIKE
@@ -457,11 +438,9 @@
           AND LIKE_TYPE = 'L'
     </select>
 
-    <!-- ========================= -->
+ 
     <!-- 댓글 목록 -->
-    <!-- CommunityMainController.detail -->
-    <!-- CommunityDaoImpl.selectCommentList -->
-    <!-- ========================= -->
+   
     <select id="selectCommentList" parameterType="int" resultType="com.kh.jipshop.community.model.vo.BoardComment">
         SELECT
             C.COMMENT_ID         AS commentId,
@@ -479,11 +458,10 @@
         ORDER BY C.COMMENT_ID DESC
     </select>
 
-    <!-- ========================= -->
+    
     <!-- 댓글등록 -->
-    <!-- CommunityMainController.insertComment -->
-    <!-- CommunityDaoImpl.insertComment -->
-    <!-- ========================= -->
+  
+    
     <insert id="insertComment" parameterType="com.kh.jipshop.community.model.vo.BoardComment">
         INSERT INTO BOARD_COMMENT (
             COMMENT_ID,
@@ -502,11 +480,10 @@
         )
     </insert>
 
-    <!-- ========================= -->
+   
     <!-- 댓글 신고 -->
-    <!-- CommunityMainController.reportComment -->
-    <!-- CommunityDaoImpl.insertCommentReport -->
-    <!-- ========================= -->
+    
+  
    <insert id="insertCommentReport" parameterType="map">
     INSERT INTO COMMENT_REPORT (
         REPORT_ID,

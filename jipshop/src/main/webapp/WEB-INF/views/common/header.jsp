@@ -101,7 +101,12 @@
                     <a href="${pageContext.request.contextPath}/orders/wishList"><i class="bi bi-heart"></i></a>
                     <a href="${pageContext.request.contextPath}/orders/cartList" class="cart-icon-wrapper">
                         <img src="${pageContext.request.contextPath}/resources/img/장바구니.png" alt="장바구니">
-                        <span id="cartCount" class="cart-count-badge">${cartCount}</span>
+                        
+                        <!-- ⭐ 로그인 했을 때만 보이기 -->
+    					<sec:authorize access="isAuthenticated()">
+        					<span id="cartCount" class="cart-count-badge">${cartCount}</span>
+    					</sec:authorize>
+    					
                     </a>
 
                 </div>

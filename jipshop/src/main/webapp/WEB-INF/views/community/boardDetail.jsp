@@ -10,11 +10,16 @@
 <meta charset="UTF-8">
 <title>${board.boardTitle}</title>
 <link rel="stylesheet" href="${contextPath}/resources/css/community/boardDetail.css">
+<link rel="stylesheet" href="${contextPath}/resources/css/community/communitySidebar.css">
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp" />
+<div class="community-layout">
 
+    <jsp:include page="/WEB-INF/views/community/communitySidebar.jsp" />
+
+    <div class="community-content">
 <div class="detail-wrap">
 
     <!-- 상단 정보 -->
@@ -210,7 +215,9 @@
         </form>
     </div>
 </div>
-
+</div>
+</div>
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
