@@ -218,7 +218,7 @@
                         <div class="product-card">
 
                             <a href="${pageContext.request.contextPath}/product/detail?productId=${p.productId}" 
-                            class="product-image-link"
+                            class="product-link"
                             data-product-id="${p.productId}">
                                 <div class="product-image-box">
                                     <img class="wish-icon"
@@ -455,7 +455,7 @@ window.addEventListener("scroll", function() {
 });
 
 //최근 본 상품
-document.querySelectorAll('.product-image-link').forEach(link => {
+document.querySelectorAll('.product-link').forEach(link => {
 link.addEventListener('click', function(e) {
     e.preventDefault();
 
