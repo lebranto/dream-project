@@ -2,6 +2,7 @@ package com.kh.jipshop.member.controller;
  
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.jipshop.member.model.service.MemberService;
-import com.kh.jipshop.member.model.vo.Member;
-
 import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.service.DefaultMessageService;
  
 @Controller
@@ -41,8 +40,8 @@ public class SmsController {
  
         try {
             // 6자리 난수 생성
-            //String authCode = String.format("%06d", new Random().nextInt(1000000));
-        	String authCode = "123456"; // ← 테스트용 고정값
+            String authCode = String.format("%06d", new Random().nextInt(1000000));
+        	//String authCode = "123456"; // ← 테스트용 고정값
         	
             // Coolsms 메시지 발송
             DefaultMessageService messageService =
@@ -54,7 +53,7 @@ public class SmsController {
             message.setText("[집사상점] 인증번호: " + authCode + "\n3분 이내에 입력해주세요.");
             
             // 돈 때문에 테스트 끝나고 주석해제
-            //messageService.sendOne(new SingleMessageSendingRequest(message)); 
+            messageService.sendOne(new SingleMessageSendingRequest(message)); 
  
             // 세션에 인증번호 + 만료시간 저장
             session.setAttribute("smsAuthCode", authCode);
@@ -62,7 +61,7 @@ public class SmsController {
  
             result.put("success", true);
             // 테스트 중 인증번호 발송되는지 확인 끝나면 authCode변수 삭제
-            result.put("message", "인증번호가 발송되었습니다."+ authCode);
+            result.put("message", "인증번호가 발송되었습니다.");
  
         } catch (Exception e) {
             e.printStackTrace();

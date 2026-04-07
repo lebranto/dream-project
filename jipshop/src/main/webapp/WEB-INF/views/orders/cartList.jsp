@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -136,6 +137,23 @@ body { background:#f5f5f5; }
     cursor: pointer;
     accent-color: #666;
 }
+
+/* 삭제 버튼 */
+.single-delete-btn {
+    background: #fff;      /* 흰 배경 */
+    border: none;          /* 테두리 제거 */
+    outline: none;         /* 클릭시 테두리 제거 */
+    cursor: pointer;       /* 손가락 모양 */
+    font-size: 14px;
+    color: #333;
+    padding: 0;
+}
+
+/* ⭐ hover 효과 (선택 - 추천) */
+.single-delete-btn:hover {
+    text-decoration: underline;
+    color: #ff4d4f; /* 살짝 빨간 느낌 */
+}
 </style>
 </head>
 
@@ -196,15 +214,14 @@ body { background:#f5f5f5; }
     </td>
 
     <td class="price" data-price="${c.productPrice}">
-    ${c.productPrice * c.cartQty}원
+     <fmt:formatNumber value="${c.productPrice * c.cartQty}" type="number" groupingUsed="true"/>원
 </td>
 
     <td>무료배송</td>
 
     <td>
-        <a href="${pageContext.request.contextPath}/cartList/delete?cartId=${c.cartId}">
-            삭제
-        </a>
+        <button class="single-delete-btn">삭제</button>
+        
     </td>
 </tr>
 </c:forEach>
@@ -243,6 +260,28 @@ body { background:#f5f5f5; }
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 <script>
+//금액 숫자 애니메이션
+function animatePrice(element, start, end, duration = 400){
+
+    let startTime = null;
+
+    function animate(time){
+        if(!startTime) startTime = time;
+
+        const progress = Math.min((time - startTime) / duration, 1);
+
+        const current = Math.floor(start + (end - start) * progress);
+
+        element.innerText = current.toLocaleString() + "원";
+
+        if(progress < 1){
+            requestAnimationFrame(animate);
+        }
+    }
+
+    requestAnimationFrame(animate);
+}
+
 const contextPath = "${pageContext.request.contextPath}";
 
 // 전체 선택
@@ -252,30 +291,44 @@ document.getElementById("allCheck").addEventListener("change", function(){
     updateTotal();
 });
 
-// 금액 계산
+//금액 계산
 function updateTotal() {
     let total = 0;
     let count = 0;
 
-    document.querySelectorAll("tbody tr").forEach(row => {
+    const rows = document.querySelectorAll("tbody tr[data-id]");
+
+    rows.forEach(row => {
+
         const chk = row.querySelector(".itemCheck");
+        const qtyEl = row.querySelector(".qty");
         const priceEl = row.querySelector(".price");
 
-        if (!priceEl || !chk) return;
+        if (!chk || !qtyEl || !priceEl) return;
 
-        // ⭐ 체크된 것만 계산
         if (chk.checked) {
-            const price = parseInt(priceEl.innerText.replace(/[^0-9]/g, ""));
-            total += price;
-            count++;
+
+            const qty = parseInt(qtyEl.textContent.replace(/[^0-9]/g, "")) || 0;
+            const unitPrice = parseInt(priceEl.dataset.price) || 0;
+
+            count += qty;
+            total += unitPrice * qty;
         }
     });
 
-    document.getElementById("totalPrice").innerText = total.toLocaleString()+"원";
-    document.getElementById("finalPrice").innerText = total.toLocaleString()+"원";
-    document.getElementById("totalCount").innerText = `총 ${count}개의 상품금액`;
+    document.getElementById("totalCount").innerText = `총 \${count}개의 상품금액`;
+
+    const totalPriceEl = document.getElementById("totalPrice");
+    const finalPriceEl = document.getElementById("finalPrice");
+
+    const currentTotal = parseInt(totalPriceEl.innerText.replace(/[^0-9]/g, "")) || 0;
+
+    animatePrice(totalPriceEl, currentTotal, total);
+    animatePrice(finalPriceEl, currentTotal, total);
 }
 
+
+// 체크박스 이벤트
 document.addEventListener("change", function(e){
     if(e.target.classList.contains("itemCheck")){
         updateTotal();
@@ -325,6 +378,11 @@ document.querySelector(".delete-btn").addEventListener("click", function(){
         alert("선택하세요");
         return;
     }
+    
+ // ⭐ 알림창 추가
+    if(!confirm("선택한 상품을 장바구니에서 삭제하시겠습니까?")){
+        return;
+    }
 
     let ids = [];
 
@@ -342,9 +400,13 @@ document.querySelector(".delete-btn").addEventListener("click", function(){
 
         // 화면 제거
         checked.forEach(chk => chk.closest("tr").remove());
+        
+        updateTotal(); // ⭐ 추가 (금액 갱신)
 
         // 헤더 반영
-        updateCartCountUI(parseInt(count));
+        if(typeof updateCartCountUI === "function"){
+            updateCartCountUI(parseInt(count));
+            }
     });
 });
 
@@ -368,6 +430,37 @@ document.querySelector(".order-btn").addEventListener("click", function() {
 
     // 주문 페이지로 이동 (GET 방식 예시)
     location.href = contextPath + "/orders/orderNew?cartIds=" + idParam;
+});
+
+//⭐ 개별 삭제 (confirm 포함)
+document.querySelectorAll(".single-delete-btn").forEach(btn => {
+
+    btn.addEventListener("click", function(){
+
+        if(!confirm("해당 상품을 장바구니에서 삭제하시겠습니까?")){
+            return;
+        }
+
+        const row = this.closest("tr");
+        const cartId = row.dataset.id;
+
+        fetch(contextPath + "/cartList/deleteAjax", {
+            method:"POST",
+            headers:{"Content-Type":"application/x-www-form-urlencoded"},
+            body:"cartId=" + cartId
+        })
+        .then(res => res.text())
+        .then(count => {
+
+            row.remove(); // 화면 삭제
+            updateTotal(); // 금액 갱신
+
+            if(typeof updateCartCountUI === "function"){
+                updateCartCountUI(parseInt(count));
+            }
+        });
+    });
+
 });
 </script>
 

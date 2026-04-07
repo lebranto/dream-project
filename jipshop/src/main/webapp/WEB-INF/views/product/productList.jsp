@@ -391,10 +391,16 @@ document.querySelectorAll(".wish-icon").forEach(icon => {
         .then(result => {
             if(result.trim() === "add"){
                 this.src = "${pageContext.request.contextPath}/resources/images/heart.png";
+                
+                alert("찜 목록에 추가되었습니다 ❤️");
+                
                 this.classList.add("active");
                 animateHeart(this);
             } else {
                 this.src = "${pageContext.request.contextPath}/resources/images/empty-heart.png";
+                
+                alert("찜 목록에서 제거되었습니다");
+                
                 this.classList.remove("active");
                 animateHeart(this);
             }
@@ -409,6 +415,33 @@ function animateHeart(el){
         el.style.transform = "scale(1)";
     }, 200);
 }
+
+//===============================
+//⭐ 페이지 로드시 찜 상태 반영
+//===============================
+window.addEventListener("DOMContentLoaded", () => {
+
+ fetch("${pageContext.request.contextPath}/wishList/getIds")
+ .then(res => res.json())
+ .then(ids => {
+
+     document.querySelectorAll(".wish-icon").forEach(icon => {
+
+         const productId = parseInt(icon.dataset.id);
+
+         if(ids.includes(productId)){
+             icon.src = "${pageContext.request.contextPath}/resources/images/heart.png";
+             icon.classList.add("active");
+         }else{
+             icon.src = "${pageContext.request.contextPath}/resources/images/empty-heart.png";
+             icon.classList.remove("active");
+         }
+
+     });
+
+ });
+
+});
 </script>
 
 <script>
