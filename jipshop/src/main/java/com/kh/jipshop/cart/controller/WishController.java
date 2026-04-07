@@ -1,8 +1,10 @@
 package com.kh.jipshop.cart.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.kh.jipshop.cart.model.vo.CartDTO;
+import com.kh.jipshop.wish.model.service.WishService;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -12,6 +14,9 @@ import java.util.List;
 @RequestMapping("/wishList")
 public class WishController {
 
+    @Autowired
+    private WishService wishService;
+    
     @PostMapping("/toggle")
     public String toggleWish(
             @RequestParam int productId,

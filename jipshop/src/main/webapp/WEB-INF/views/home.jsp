@@ -122,7 +122,13 @@
 				    <div class="price"><fmt:formatNumber value="${p.productPrice}" pattern="#,###"/>원</div>
 			  	</a>
 			  <div class="badge">NEW</div>
-			  <div class="cart">🛒</div>
+			  <div class="cart"
+     			data-id="${p.productId}"
+     			data-name="${p.productName}"
+     			data-price="${p.productPrice}"
+     			data-photo="${p.productPhoto1}">
+    			🛒
+			</div>
 			</div>
         </c:forEach>
       </div>
@@ -143,7 +149,13 @@
 			    <div class="price"><fmt:formatNumber value="${p.productPrice}" pattern="#,###"/>원</div>
 		  	</a>
 		    <div class="badge">NEW</div>
-		    <div class="cart">🛒</div>
+		    <div class="cart"
+     			data-id="${p.productId}"
+     			data-name="${p.productName}"
+     			data-price="${p.productPrice}"
+     			data-photo="${p.productPhoto1}">
+    			🛒
+			</div>
 		  </div>
         </c:forEach>
       </div>
@@ -263,7 +275,11 @@
             html += '    <div class="price">' + price + '원</div>';
             html += '  </a>';
             html += '  <div class="badge">BEST</div>';
-            html += '  <div class="cart">🛒</div>';
+            html += '  <div class="cart" '
+                + 'data-id="' + p.productId + '" '
+                + 'data-name="' + p.productName + '" '
+                + 'data-price="' + p.productPrice + '" '
+                + 'data-photo="' + p.productPhoto1 + '">🛒</div>';
             html += '</div>';
           });
         } else {
@@ -335,7 +351,46 @@
         location.href = moveUrl;
     });
 });
-  
+
+//===============================
+//⭐ 장바구니 담기
+//===============================
+document.addEventListener("click", function(e){
+
+   const cartBtn = e.target.closest(".cart");
+   if(!cartBtn) return;
+
+   const productId = cartBtn.dataset.id;
+   const productName = cartBtn.dataset.name;
+   const productPrice = cartBtn.dataset.price;
+   const productPhoto = cartBtn.dataset.photo;
+
+   fetch("${pageContext.request.contextPath}/cartList/addAjax", {
+	    method:"POST",
+	    headers:{"Content-Type":"application/x-www-form-urlencoded"},
+	    body:
+	        "productId=" + productId +
+	        "&qty=1"
+	})
+	.then(res => res.text())
+	.then(result => {
+
+	    console.log("서버 응답:", result);
+
+	    if(result == -1){
+	        alert("로그인 후 이용해주세요");
+	        
+	     // ⭐⭐⭐ 헤더 장바구니에 숫자 반영
+	        document.getElementById("cartCount").innerText = result;
+	        
+	        location.href = "${pageContext.request.contextPath}/member/login";
+	        return;
+	    }
+
+	    alert("장바구니에 담겼습니다 🛒 (담긴 상품종류 총 개수: " + result + ")");
+	});
+
+});
 </script>
 
 </body>
