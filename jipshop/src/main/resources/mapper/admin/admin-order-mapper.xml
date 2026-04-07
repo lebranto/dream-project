@@ -383,77 +383,95 @@
         </if>
     </select>
 
-    <select id="selectOrderCancelList"
-            parameterType="com.kh.jipshop.admin.model.vo.AdminOrderCancelSearch"
-            resultMap="adminOrderResultMap">
-        SELECT
-            OD.DETAIL_ID,
-            O.ORDER_ID,
-            M.MEMBER_NAME || ' (' || M.MEMBER_ID || ')' AS ORDERER_NAME,
-            NVL(P.PRODUCT_NAME, '상품 정보 없음') AS PRODUCT_NAME,
-            NVL(OD.CANCEL_REASON, '-') AS CANCEL_REASON,
-            TO_CHAR(OD.CANCEL_REQUEST_DATE, 'YYYY-MM-DD') AS CANCEL_REQUEST_DATE_STR,
-            NVL(OD.CANCEL_STATUS, 'PENDING') AS CANCEL_STATUS,
-            CASE
-                WHEN NVL(OD.CANCEL_STATUS, 'PENDING') = 'APPROVED' THEN '취소 승인'
-                WHEN NVL(OD.CANCEL_STATUS, 'PENDING') = 'REJECTED' THEN '취소 반려'
-                ELSE '승인 대기'
-            END AS CANCEL_STATUS_LABEL,
-            NVL(ST.DELIVERY_STATUS, '준비중') AS DELIVERY_STATUS,
-            CASE
-                WHEN OD.CANCEL_REASON LIKE '단순변심|%' THEN '사용자 귀책'
-                WHEN OD.CANCEL_REASON LIKE '주문실수|%' THEN '사용자 귀책'
-                WHEN OD.CANCEL_REASON LIKE '상품불량|%' THEN '판매자 귀책'
-                WHEN OD.CANCEL_REASON LIKE '오배송|%' THEN '판매자 귀책'
-                WHEN OD.CANCEL_REASON LIKE '배송지연|%' THEN '판매자 귀책'
-                ELSE '확인 필요'
-            END AS RESPONSIBILITY_TYPE,
-            CASE
-                WHEN OD.CANCEL_REASON LIKE '단순변심|%' THEN '배송비 부과'
-                WHEN OD.CANCEL_REASON LIKE '주문실수|%' THEN '배송비 부과'
-                WHEN OD.CANCEL_REASON LIKE '상품불량|%' THEN '배송비 면제'
-                WHEN OD.CANCEL_REASON LIKE '오배송|%' THEN '배송비 면제'
-                WHEN OD.CANCEL_REASON LIKE '배송지연|%' THEN '배송비 면제'
-                WHEN NVL(ST.DELIVERY_STATUS, '준비중') IN ('준비중', '결제완료', '상품준비중')
-                    THEN '배송비 없음'
-                ELSE '확인 필요'
-            END AS SHIPPING_FEE_POLICY
-        FROM ORDER_DETAIL OD
-        JOIN ORDERS O
-          ON OD.ORDER_ID = O.ORDER_ID
-        JOIN MEMBER M
-          ON O.MEMBER_NO = M.MEMBER_NO
-        JOIN PRODUCT P
-          ON OD.PRODUCT_ID = P.PRODUCT_ID
-        LEFT JOIN DELIVERY D
-          ON O.ORDER_ID = D.ORDER_ID
-        LEFT JOIN (
-            SELECT S.DELIVERY_ID, S.DELIVERY_YN, S.DELIVERY_STATUS
-            FROM STATUS S
-            WHERE S.DNUM = (
-                SELECT MAX(S2.DNUM)
-                FROM STATUS S2
-                WHERE S2.DELIVERY_ID = S.DELIVERY_ID
-            )
-        ) ST
-          ON D.DELIVERY_ID = ST.DELIVERY_ID
-        WHERE NVL(OD.CANCEL_STATUS, 'NONE') IN ('PENDING', 'APPROVED', 'REJECTED')
-        <if test="startDate != null and startDate != ''">
-            AND OD.CANCEL_REQUEST_DATE <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
-        </if>
-        <if test="endDate != null and endDate != ''">
-            AND OD.CANCEL_REQUEST_DATE <![CDATA[<]]> TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
-        </if>
-        <if test="keyword != null and keyword != ''">
-            AND (
-                M.MEMBER_NAME LIKE '%' || #{keyword} || '%'
-                OR M.MEMBER_ID LIKE '%' || #{keyword} || '%'
-                OR TO_CHAR(O.ORDER_ID) LIKE '%' || #{keyword} || '%'
-                OR P.PRODUCT_NAME LIKE '%' || #{keyword} || '%'
-            )
-        </if>
-        ORDER BY OD.CANCEL_REQUEST_DATE DESC, OD.DETAIL_ID DESC
-    </select>
+  <select id="selectOrderCancelList"
+        parameterType="com.kh.jipshop.admin.model.vo.AdminOrderCancelSearch"
+        resultMap="adminOrderResultMap">
+    SELECT
+        OD.DETAIL_ID,
+        O.ORDER_ID,
+        M.MEMBER_NAME || ' (' || M.MEMBER_ID || ')' AS ORDERER_NAME,
+        NVL(P.PRODUCT_NAME, '상품 정보 없음') AS PRODUCT_NAME,
+        NVL(OD.CANCEL_REASON, '-') AS CANCEL_REASON,
+        TO_CHAR(OD.CANCEL_REQUEST_DATE, 'YYYY-MM-DD') AS CANCEL_REQUEST_DATE_STR,
+        NVL(OD.CANCEL_STATUS, 'PENDING') AS CANCEL_STATUS,
+        CASE
+            WHEN NVL(OD.CANCEL_STATUS, 'PENDING') = 'APPROVED' THEN '취소 승인'
+            WHEN NVL(OD.CANCEL_STATUS, 'PENDING') = 'REJECTED' THEN '취소 반려'
+            ELSE '승인 대기'
+        END AS CANCEL_STATUS_LABEL,
+        NVL(ST.DELIVERY_STATUS, '준비중') AS DELIVERY_STATUS,
+        CASE
+            WHEN OD.CANCEL_REASON LIKE '단순변심%' THEN '사용자 귀책'
+            WHEN OD.CANCEL_REASON LIKE '단순 변심%' THEN '사용자 귀책'
+            WHEN OD.CANCEL_REASON LIKE '주문실수%' THEN '사용자 귀책'
+            WHEN OD.CANCEL_REASON LIKE '주문 실수%' THEN '사용자 귀책'
+            WHEN OD.CANCEL_REASON LIKE '상품불량%' THEN '판매자 귀책'
+            WHEN OD.CANCEL_REASON LIKE '상품 불량%' THEN '판매자 귀책'
+            WHEN OD.CANCEL_REASON LIKE '오배송%' THEN '판매자 귀책'
+            WHEN OD.CANCEL_REASON LIKE '배송지연%' THEN '판매자 귀책'
+            WHEN OD.CANCEL_REASON LIKE '배송 지연%' THEN '판매자 귀책'
+            ELSE '확인 필요'
+        END AS RESPONSIBILITY_TYPE,
+        CASE
+            -- 배송 시작 전
+            WHEN ST.DELIVERY_STATUS IS NULL THEN '배송비 없음'
+            WHEN NVL(ST.DELIVERY_STATUS, '준비중') IN ('준비중', '결제완료', '상품준비중') THEN '배송비 없음'
+
+            -- 판매자 귀책
+            WHEN OD.CANCEL_REASON LIKE '상품불량%' THEN '배송비 면제'
+            WHEN OD.CANCEL_REASON LIKE '상품 불량%' THEN '배송비 면제'
+            WHEN OD.CANCEL_REASON LIKE '오배송%' THEN '배송비 면제'
+            WHEN OD.CANCEL_REASON LIKE '배송지연%' THEN '배송비 면제'
+            WHEN OD.CANCEL_REASON LIKE '배송 지연%' THEN '배송비 면제'
+
+            -- 사용자 귀책 + 배송 진행 이후
+            WHEN NVL(ST.DELIVERY_STATUS, '준비중') IN ('배송진행중', '배송중', '출고완료', '배송완료', '완료')
+                 AND OD.CANCEL_REASON LIKE '단순변심%' THEN '배송비 부과'
+            WHEN NVL(ST.DELIVERY_STATUS, '준비중') IN ('배송진행중', '배송중', '출고완료', '배송완료', '완료')
+                 AND OD.CANCEL_REASON LIKE '단순 변심%' THEN '배송비 부과'
+            WHEN NVL(ST.DELIVERY_STATUS, '준비중') IN ('배송진행중', '배송중', '출고완료', '배송완료', '완료')
+                 AND OD.CANCEL_REASON LIKE '주문실수%' THEN '배송비 부과'
+            WHEN NVL(ST.DELIVERY_STATUS, '준비중') IN ('배송진행중', '배송중', '출고완료', '배송완료', '완료')
+                 AND OD.CANCEL_REASON LIKE '주문 실수%' THEN '배송비 부과'
+
+            ELSE '확인 필요'
+        END AS SHIPPING_FEE_POLICY
+    FROM ORDER_DETAIL OD
+    JOIN ORDERS O
+      ON OD.ORDER_ID = O.ORDER_ID
+    JOIN MEMBER M
+      ON O.MEMBER_NO = M.MEMBER_NO
+    JOIN PRODUCT P
+      ON OD.PRODUCT_ID = P.PRODUCT_ID
+    LEFT JOIN DELIVERY D
+      ON O.ORDER_ID = D.ORDER_ID
+    LEFT JOIN (
+        SELECT S.DELIVERY_ID, S.DELIVERY_YN, S.DELIVERY_STATUS
+        FROM STATUS S
+        WHERE S.DNUM = (
+            SELECT MAX(S2.DNUM)
+            FROM STATUS S2
+            WHERE S2.DELIVERY_ID = S.DELIVERY_ID
+        )
+    ) ST
+      ON D.DELIVERY_ID = ST.DELIVERY_ID
+    WHERE NVL(OD.CANCEL_STATUS, 'NONE') IN ('PENDING', 'APPROVED', 'REJECTED')
+    <if test="startDate != null and startDate != ''">
+        AND OD.CANCEL_REQUEST_DATE <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
+    </if>
+    <if test="endDate != null and endDate != ''">
+        AND OD.CANCEL_REQUEST_DATE <![CDATA[<]]> TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+    </if>
+    <if test="keyword != null and keyword != ''">
+        AND (
+            M.MEMBER_NAME LIKE '%' || #{keyword} || '%'
+            OR M.MEMBER_ID LIKE '%' || #{keyword} || '%'
+            OR TO_CHAR(O.ORDER_ID) LIKE '%' || #{keyword} || '%'
+            OR P.PRODUCT_NAME LIKE '%' || #{keyword} || '%'
+        )
+    </if>
+    ORDER BY OD.CANCEL_REQUEST_DATE DESC, OD.DETAIL_ID DESC
+</select>
 
     <select id="selectPendingCancelCount" resultType="_int">
         SELECT COUNT(*)
